@@ -10,6 +10,7 @@ Konten, Formulare, Lizenzzustimmungen und E-Mails erledigt der Projektinhaber se
 | 4 | **Versuchsstandorte Hatzendorf** | Versuchsstation für Pflanzenbau Hatzendorf, versuchlwschulen@stmk.gv.at (laut Versuchsbericht 2025) | Österreich-Test V2 (lokale Erträge) | mittel | offen |
 | 5 | **Feld-Erträge Landwirt:innen (V3)** | Landwirt:innen, LK Steiermark, Maschinenring | Österreich-Test V3 (bester Test) | mittel, läuft parallel | offen |
 | 6 | **Bodenklimazahl** (optional) | Amt der Stmk. Landesregierung, Abteilung 17, Referat Statistik und Geoinformation (Kontakt über https://www.landesentwicklung.steiermark.at); ggf. BEV | Österreich-Test: Plausibilitätsprüfung Boden | niedrig | offen |
+| 7 | **One Acre Fund: ungerundete Koordinaten + Feldgröße** | Autor:innen Juan Aramburu-Merlos / Patricio Grassini (University of Nebraska–Lincoln, Kontakt laut Artikel PMC11130130) bzw. One Acre Fund (Zenodo 10.5281/zenodo.11115815) | Satellitenkurven für One-Acre-Fund-Felder (bis dahin nur Tabellenanalyse, DECISIONS 2026-10-15) | mittel | offen |
 
 **Ohne Anfrage** (lädt der Agent selbst): One Acre Fund (Zenodo, CC BY 4.0), SSURGO (Soil Data Access), Versuchsberichte Hatzendorf und LK-OÖ-Praxisversuche (öffentliche PDFs).
 
@@ -85,4 +86,23 @@ Kurzer Text für Gespräch, Kammer oder Maschinenring:
 > Liegen diese Daten bei Ihnen vor, und unter welchen Bedingungen könnte ich sie für ein nicht-kommerzielles Schülerprojekt nutzen? Falls nicht Sie zuständig sind, wäre ich für einen Hinweis auf die richtige Stelle dankbar.
 >
 > Freundliche Grüße
+> [Name]
+
+## 7. One Acre Fund – Koordinaten und Feldgröße
+
+**Betreff:** Request: unrounded field coordinates and field size for the One Acre Fund maize dataset (student project)
+
+> Dear Dr. Aramburu-Merlos, dear Prof. Grassini,
+>
+> I am a high-school student in Austria preparing a project for the Austrian National AI Competition for students (BWKI Österreich). I am using your dataset "Maize management and yield data from One Acre Fund 2016–2022" (Zenodo 10.5281/zenodo.11115815) to study how weather, soil, management and – if possible – Sentinel-2 time series relate to measured maize yield.
+>
+> In the public file the coordinates are rounded to 0.001° and the field size is not included. For small fields this means that a satellite pixel window around the published point often lies outside the field. Would it be possible to receive, for the fields with farm-level GPS position only,
+> 1. the unrounded coordinates (or coordinates rounded to ~10 m), and
+> 2. the reported field size?
+>
+> The data would only be used for this non-commercial student project, never redistributed, and only aggregated results would be shown. If sharing is not possible, a flag "field size ≥ 0.5 ha" would already help a lot.
+>
+> Thank you very much for publishing this dataset and for considering my request.
+>
+> Best regards,
 > [Name]

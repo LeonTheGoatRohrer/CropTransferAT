@@ -199,3 +199,14 @@ n/a – noch keine Merkmale. Festgehalten: `RY_nb` darf das Feld selbst nicht im
   2. Bis zur Antwort One Acre Fund **nur als Tabellendatensatz** nutzen, ohne Satellitenkurven: Phase 2.4 (Bewirtschaftung vs. Wetter) und Phase 3 4a nur mit Wetter/Boden. Merkmale wären dann nicht transferfähig und nur für die Analyse geeignet.
   3. **Neuer Filter vor dem Ansehen der Satellitendaten**, z. B. Kreis mit ≥ 60 m Radius um den gerundeten Punkt und nur Punkte ohne weitere Felder in derselben Saison. Das ist eine Planänderung und braucht einen Eintrag in `DECISIONS.md`. Die Mischpixel-Gefahr ist hoch, weil die Felder vermutlich klein sind.
   Außerdem festzulegen: die `RY_nb`-Gruppierung (Klimazone × Saison × Jahr statt Bezirk), und dass Phase 3 4a für Trockenheit und Hagel mit One Acre Fund nicht prüfbar ist.
+## N.7 Entscheidungen des Projektinhabers (2026-10-15, abends)
+
+| # | Thema | Entscheidung |
+|---|---|---|
+| 1 | RY-Normalwert | **trendbereinigt** (linearer Trend je Datensatz, nie mit Zieljahr geschätzt) → `DECISIONS.md` |
+| 2 | One Acre Fund | **nur Tabellendatensatz** ohne Satellitenkurven, nicht im Hauptmodell; Anfrage Nr. 7 in `ANFRAGEN.md` → ⛔ aus N.6 damit aufgelöst |
+| 3 | `RY_nb`-Gruppierung | `cz` × `season` × `year`, ≥ 10 andere Felder (vor jeder Auswertung festgelegt) |
+| 4 | CCM | offen, vor Phase 6 |
+| 5 | AT 2021–2023 in CY-Bench | offen, vor dem AT-Zero-Shot-Test (Phase 5) |
+
+Damit ist Phase 0 abnahmefähig: Jede Quelle liefert Daten oder ist begründet als „angefragt“ markiert (Mead, YieldSAT, Bodenklimazahl); Tests laufen in GitHub Actions. **Entscheidung Phase 0 gesamt: ⚠️ weiter mit Einschränkung.**
