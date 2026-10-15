@@ -4,6 +4,19 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+## [0.0.4] – 2026-10-15
+### Changed
+- `PLAN.md` neu geordnet: **Österreich ist nur noch Testfall (Beweis).** Phasen: 0 Setup → 1 alle Ertragsdaten aufbereiten → 2 Basismodelle „Was bestimmt den Ertrag?“ → 3 Problemfelder erkennen → 4 „Stark genug?“ + Einfrieren → 5 CY-Bench (parallel) → 6 Österreich-Daten → 7 Test in Österreich → 8 Zusatz (optional) → 9 Demo → 10 Abgabe.
+- Forschungsfragen neu: F0 Ertragsvorhersage, F1 Ertragsfaktoren, F2 Problemfelder, F3 Beweis Österreich, F4 CY-Bench-Gegenprobe, F5 Zusatz.
+- GO/NO-GO mit österreichischen Daten entfällt; Stressindikator K1–K5 wird nur mit US-Daten gewählt; selbstüberwachtes Feldmodell, Radar und Few-Shot sind optionaler Zusatz (Phase 8).
+- `AGENTS.md`: Versionstabelle (v0.1.0 … v0.10.0, v1.0.0), Österreich-Regel in der Datenkritik, Stopp-Bedingung, Pflicht-Test `test_freeze.py`.
+
+### Added
+- Modellfamilie je Merkmalsgruppe (Satellit, Wetter, Boden/Gelände, Kombination), Faktorenanalyse, Modell innerhalb der Felder (Problemzonen aus Ertragskarten).
+- Referenzkurve „gesunder Mais“, Gefährdet-Klassifikation, vorab festgelegte Ursachen-Regeln.
+- Vorab festgelegtes Kriterium „stark genug“, Freeze mit Prüfsummen und vorab registriertem Österreich-Testprotokoll.
+- Datenerweiterung: KBS-Jahre vor 2013 über Landsat 5/7 (nach Harmonisierungsprüfung); GDD-Zeitachse.
+
 ## [0.0.3] – 2026-10-15
 ### Changed
 - `PLAN.md` neu aufgebaut: nach dem Setup zuerst der **Ertrags-Datensatz** (KBS LTER, USDA BARC, Colorado; Mead nach Klärung) mit HLS- und Sentinel-2-Saisonkurven; danach Steiermark-Pilot, Ertragsbezug in Österreich (GO/NO-GO), CY-Bench parallel, dann Phasen 5–11.

@@ -6,6 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Umbau von PLAN.md/AGENTS.md nach Vorgabe des Projektinhabers (erst US-Modelle + Faktoren + Problemfelder, Einfrieren, Österreich nur als Test) |
 | 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Phase 0: Python-Umgebung, Paketgerüst, `config.yaml`, Tests, GitHub Actions; GEE-Zugangstest inkl. Fehlerdiagnose (HLS-Footprints, TLS); Recherche, Download und Sichtung der Datenquellen durch KI-Unteragenten; Entwurf von `DATA_SOURCES.md`, Datenkritik-Bericht und Notebook 00 |
 | 2026-10-15 | Claude (Anthropic), Claude Code | Diskussion und Verfeinerung der Projektidee, Recherche zu Datenquellen (u. a. Feld-Ertragsdatensätze KBS, BARC, Colorado, Mead), Entwurf und Überarbeitung von PLAN.md und AGENTS.md, Repository-Grundgerüst |
 

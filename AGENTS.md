@@ -67,6 +67,7 @@ Für jeden Punkt: *geprüft wie?* → *Befund* → *Konsequenz*. Ergebnis als `r
 - Werden Normalwerte (`I_normal`, YAS-Erwartung), Skalierungen, Imputationen oder Schwellen **ohne** das Testjahr berechnet?
 - Hyperparameter nur in den Trainingsjahren getunt (verschachtelt)?
 - Räumliche Nähe: Liegen Trainings- und Testfelder im selben Jahr direkt nebeneinander? (räumlicher Block-Split als Gegenprobe)
+- **Österreich-Regel (PLAN.md §0, §6):** Wurden österreichische Daten vor dem Freeze ausgewertet oder für Training, Merkmalsauswahl, Schwellen oder Modellwahl genutzt? Wurde nach dem Freeze etwas am Modell geändert? Beides muss mit „nein“ beantwortet werden.
 
 ### 3.5 Ergebnis-Plausibilität
 - Schlägt das Modell die Baselines B0/B1? Wenn nicht: warum?
@@ -105,19 +106,18 @@ Am Ende jeder Prüfung eine von drei Entscheidungen festhalten:
 | Tag | Bedeutung |
 |---|---|
 | `v0.1.0` | Phase 0 – Setup & Datenzugang |
-| `v0.2.0` | Phase 1 – Ertrags-Datensatz & Saisonkurven (F0) |
-| `v0.3.0` | Phase 2 – Pilot Steiermark |
-| `v0.4.0` | Phase 3 – Ertragsbezug AT (GO/NO-GO) |
-| `v0.5.0` | Phase 4 – V0 Regionalmodell CY-Bench (parallel; Tag bei Abschluss) |
-| `v0.6.0` | Phase 5 – Volle Feld-Pipeline |
-| `v0.7.0` | Phase 6 – Ziele & EDA |
-| `v0.8.0` | Phase 7 – V1 Feldmodell |
-| `v0.9.0` | Phase 8 – V2 Ablation/Radar/Unsicherheit |
-| `v0.10.0` | Phase 9 – V3 Ertragsbezug & Transfer |
-| `v0.11.0` | Phase 10 – Demo |
-| `v1.0.0` | Phase 11 – Abgabe |
+| `v0.2.0` | Phase 1 – Alle Ertragsdaten aufbereiten |
+| `v0.3.0` | Phase 2 – Basismodelle: Was bestimmt den Ertrag? (F0, F1) |
+| `v0.4.0` | Phase 3 – Problemfelder erkennen (F2) |
+| `v0.5.0` | Phase 4 – „Stark genug?“ + Einfrieren (zusätzlich Tag `freeze-<n>`) |
+| `v0.6.0` | Phase 5 – CY-Bench-Regionalmodell (parallel; Tag bei Abschluss) |
+| `v0.7.0` | Phase 6 – Österreich-Daten aufbereiten |
+| `v0.8.0` | Phase 7 – Der Beweis: Test in Österreich (F3) |
+| `v0.9.0` | Phase 8 – Zusatz: Anpassung mit AT-Daten (optional) |
+| `v0.10.0` | Phase 9 – Demo |
+| `v1.0.0` | Phase 10 – Abgabe |
 
-Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Phase 4 parallel läuft, werden Tags in der Reihenfolge des Abschlusses gesetzt; die Versionsnummer bleibt an die Phase gebunden. Jeder Tag hat einen Eintrag in `CHANGELOG.md`.
+Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Phase 5 parallel läuft, werden Tags in der Reihenfolge des Abschlusses gesetzt; die Versionsnummer bleibt an die Phase gebunden. Jeder Tag hat einen Eintrag in `CHANGELOG.md`.
 
 ### 4.5 Was niemals ins Repository kommt
 - Rohdaten, große Zwischendateien, Modelle > 50 MB (`data/`, `results/**/models/` sind in `.gitignore`).
@@ -137,6 +137,7 @@ Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Pha
   - `test_groundtruth_schema.py` – einheitliches Schema des Ertrags-Datensatzes, Einheit t/ha bei 15,5 % Feuchte, nur Mais-Feld-Jahre, `RY` nur mit ≥ 2 anderen Jahren.
   - `test_schemas.py` – Spalten, Datentypen, Wertebereiche der Parquet-Dateien (Indizes in [−1,1], Datumsbereiche, keine doppelten Schlüssel).
   - `test_splits.py` – LOYO/LOFO/LOFYO: kein Jahr bzw. Feld gleichzeitig in Train und Test.
+  - `test_freeze.py` – eingefrorenes Modell lädt mit passenden Prüfsummen und liefert auf der Fixture identische Vorhersagen.
 - Neue Logik mit Verzweigungen oder Rechenformeln → Test dazu. Reine Plot-Skripte brauchen keinen Test.
 - Bugfix → zuerst Test, der den Fehler zeigt, dann Fix.
 - Ab Phase 0: GitHub Actions führt `pytest` bei jedem Push aus.
@@ -174,6 +175,7 @@ Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Pha
 - Konten anlegen, Logins, Lizenzzustimmungen, kostenpflichtige Dienste → macht der Projektinhaber selbst.
 - Repository öffentlich machen, Daten löschen, History umschreiben (`push --force`, `reset --hard` auf gepushte Commits).
 - Ein Ergebnis wirkt zu gut, um wahr zu sein, und die Ursache ist nach §3.4 nicht geklärt.
+- Eine Arbeit würde österreichische Daten vor dem Freeze auswerten oder das eingefrorene Modell nach dem Freeze verändern.
 
 ---
 
