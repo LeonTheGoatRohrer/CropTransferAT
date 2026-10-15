@@ -46,18 +46,28 @@ In Phase 0 gibt es noch keine Merkmale und kein Modell. Geprüft wird deshalb, o
 - *Befund:*
   - CY-Bench-Erträge für AT enden **2020**, die Prädiktoren laufen bis 2023. Die Dürrejahre 2022 und 2024 fehlen in CY-Bench.
   - Statistik Austria liefert nur die **Bundesland**-Ebene. Bezirke werden nicht veröffentlicht (nur Sonderauswertung, und auch dann geschätzt).
-  - 2026 ist vorläufig, und die Erträge sind extrem niedrig (Bgld 5,3, NÖ 5,2 t/ha).
+  - 2026 ist nur vorläufig.
 - *Konsequenz:*
-  - In Phase 4 AT 2021–2023 aus Statistik Austria ergänzen. Das muss vor Phase 4 entschieden und in `DECISIONS.md` begründet werden.
-  - V1 (Phase 3) bleibt auf Bundesland-Ebene mit wenigen Region-Jahren, deshalb n und KI immer angeben.
+  - Im CY-Bench-Regionalmodell (Phase 5) AT 2021–2023 aus Statistik Austria ergänzen. Das muss vor Phase 5 entschieden und in `DECISIONS.md` begründet werden.
+  - Der Österreich-Test (Phase 7) bleibt regional auf Bundesland-Ebene mit wenigen Region-Jahren, deshalb n und KI immer angeben.
   - 2026 erst nach endgültigen Zahlen verwenden (PLAN-Zeitraum ist ohnehin 2018–2025).
 
 **d) Kleine Bundesländer**
-- *Befund:* Wien, Salzburg, Tirol und Vorarlberg haben < 250 ha Körnermais. Die aus Eurostat-Rundungswerten berechneten Erträge 2010–2018 sind dort stark verzerrt (z. B. Vbg 2014: 13,0 statt 9,5 t/ha).
-- *Konsequenz:* Diese vier Länder für V1/Phase 4 ausschließen oder nach Fläche gewichten. Für 2010–2018 dort CY-Bench-Werte verwenden.
+- *Befund:* Wien, Salzburg, Tirol und Vorarlberg haben < 250 ha Körnermais. Die aus Eurostat-Rundungswerten berechneten Erträge 2010–2018 sind dort durch Rundung stark verzerrt (bis > 30 %; in `stat_at_maize.csv` markiert).
+- *Konsequenz:* Diese vier Länder im Österreich-Test und in Phase 5 ausschließen oder nach Fläche gewichten. Für 2010–2018 dort CY-Bench-Werte verwenden.
 
-**e) INVEKOS – Filter und Ausschlüsse**
-- *Status:* Der Bericht des INVEKOS-Agenten steht noch aus. Dieser Abschnitt wird nach Abschluss ergänzt (Anteil Körnermais-Schläge ≥ 1 ha, Silomais, ungültige Geometrien, Steiermark je Jahr).
+**e) INVEKOS – Bestand und Filter (nur Zählung, Österreich-Regel)**
+- *Geprüft wie:* `invekos.crop_code_counts` und `invekos.count_in_state` (Notebook 00 §7). Unabhängige Zweitzählung, die exakt mit dem Bericht des Download-Agenten übereinstimmt. Dateien vollständig verifiziert (Größe, `unzip -t`, alle Features lesbar).
+- *Befund:*
+  - Körnermais (Code 105): 107–115 Tsd. Schläge in Österreich, 34–39 Tsd. in der Steiermark je Jahr (2018–2025).
+  - **Rund 63 % der steirischen Körnermais-Schläge sind < 1 ha** (Median 0,72–0,76 ha). Der Filter ≥ 1,0 ha (PLAN §3.1) behält 12–15 Tsd. Schläge pro Jahr, aber nur gut ein Drittel der Schläge. Kleinbetriebe und Hanglagen sind damit voraussichtlich unterrepräsentiert.
+  - Der Anteil ≥ 1 ha steigt leicht von 36,4 % (2018) auf 37,5 % (2025). Das passt zur Flurbereinigung bzw. Betriebsvergrößerung, ist aber eine schwache Zeitabhängigkeit des Filters.
+  - CCM (Code 106) hat in der Steiermark 7–10 Tsd. Schläge pro Jahr, also so viel wie Silomais. Die Statistik Austria zählt CCM zum Körnermais, der PLAN-Filter (nur Code 105) nicht.
+  - Ungültige Geometrien bei Körnermais Steiermark: 0. Doppelte Schläge (gleiche `GEO_ID` + Geometrie) bei Körnermais Steiermark: nur 2021 und 2024 (je 2).
+- *Konsequenz:*
+  - Im Österreich-Test (Phase 6/7) berichten, welcher Anteil der Fläche bzw. der Schläge abgedeckt ist. Die Ergebnisse gelten für Felder ≥ 1 ha.
+  - Ob CCM mitgezählt wird, entscheidet der Projektinhaber vor Phase 6. Wichtig für den Vergleich mit der Statistik Austria (Definition „inkl. CCM“). Der Eintrag kommt in `DECISIONS.md`, und zwar **vor** dem Ansehen österreichischer Daten.
+  - Duplikate über `GEO_ID` + Geometrie entfernen; nach `SNAR_CODE` filtern, nicht nach Bezeichnung.
 
 ---
 
@@ -72,7 +82,7 @@ In Phase 0 gibt es noch keine Merkmale und kein Modell. Geprüft wird deshalb, o
 | **Feldgrenzen** | Geodaten gesichtet | KBS Shapefile (Stand 2007); BARC nur Rasterumriss; Colorado und KBS Scale-up ohne Polygone | KBS-Parzellen 0,9 ha → nach −10 m Puffer ≈ 6 HLS-Pixel mit vielen Mischpixeln; HLS-Mindestzahl (5) knapp erfüllt, S2 parallel auswerten |
 | **HLS S30 in GEE** | Szenenzählung Graz/KBS Juli 2022 | `filterBounds` liefert ~200 statt ~12 Szenen: Granulen der MGRS-Kacheln in UTM-Zone 01/60 haben Footprints über die Datumsgrenze | behoben in `gee_extract.hls_collection()` (Kachel-Präfix T01/T60 entfernt), Test `test_gee_extract.py`; nach dem Filter plausibel (Graz S30 12 vs. S2 13) |
 | **Regionalstatistik** | Abgleich Statistik Austria ↔ Eurostat ↔ CY-Bench | 2019–2024 Eurostat vs. Statistik Austria ≤ 5 ha/t; CY-Bench 2019/20 identisch; keine Revisionen nach „endgültig“; dt/ha → t/ha umgerechnet; AT-2013-Regionalwerte auffällig rund; Saatmais pauschal mit 35 dt/ha | dokumentiert in `DATA_SOURCES.md`; Erzeugung reproduzierbar per `python -m croptransfer.regional_stats` (getestet) |
-| **CY-Bench Nullerträge** | Zählung je Land | EE, FI, IE, LV nur Nullen; einzelne Nullen in EL, FR, LT, PT u. a. | in Phase 4 vor dem Training filtern |
+| **CY-Bench Nullerträge** | Zählung je Land | EE, FI, IE, LV nur Nullen; einzelne Nullen in EL, FR, LT, PT u. a. | in Phase 5 vor dem Training filtern |
 | **BARC-Feld-IDs** | Dateinamen über Jahre | uneinheitliche Schreibweisen, zusammengelegte Felder, Doppelkulturen (17 Feld-Jahre) | Zuordnungstabelle in `groundtruth.py`; Doppelkultur-Jahre markieren und getrennt auswerten |
 
 Nicht anwendbar in Phase 0 (n/a): Kurvenform, Frühernte, Sensorwechsel S2-Offset, Wolkenmaske, Feld-Matching IoU. Dafür gibt es noch keine Zeitreihen; das wird in Phase 1 und 2 geprüft.
@@ -83,6 +93,18 @@ n/a – noch keine Merkmale oder Modelle. Für später festgehalten: Bei KBS sin
 ## 3.4 Leakage
 n/a – noch keine Features. Für später festgehalten: Der RY-Normalwert darf nur andere Jahre nutzen (§3.1 b); bei einem trendbereinigten Normalwert darf auch der Trend das Testjahr nicht enthalten.
 
+### Österreich-Regel (AGENTS.md §3.4)
+- *Geprüft wie:* Alle Phase-0-Ausgaben zu österreichischen Daten durchgesehen (`DATA_SOURCES.md`, dieser Bericht, Notebook 00, Commits).
+- *Befund:*
+  - Die Österreich-Regel wurde während Phase 0 eingeführt (Commit `fab07f1`).
+  - **Davor** enthielt `DATA_SOURCES.md` (Commit `2d3035b`) eine Tabelle der Statistik-Austria-Körnermaiserträge je Bundesland 2018–2025, und dieser Bericht nannte einzelne Werte (2026 vorläufig, Vbg 2014).
+  - Der Download-Agent hat beim Plausibilisieren die Erträge ebenfalls gelesen.
+  - Diese Werte wurden für **keine** Entscheidung, keinen Filter, keine Schwelle und kein Merkmal verwendet; es gibt auch noch kein Modell. Sie sind jetzt aus beiden Dokumenten entfernt. Notebook 00 zeigt für Österreich nur Schema und Abdeckung.
+  - INVEKOS: nur Schema und Zählungen, keine Satellitendaten.
+- *Konsequenz:*
+  - Offen dokumentiert. Die Werte bleiben in der Git-History des Commits `2d3035b` sichtbar; History wird nicht umgeschrieben (AGENTS §8).
+  - Ab jetzt keine österreichischen Ertragswerte in Doku oder Ausgaben bis zum Freeze.
+
 ## 3.5 Ergebnis-Plausibilität
 Der GEE-Zugangstest ist nach Korrektur plausibel (Szenenzahlen HLS L30 + S30 entsprechen der erwarteten Wiederkehr von 2–3 Tagen). Sonst n/a.
 
@@ -90,12 +112,23 @@ Der GEE-Zugangstest ist nach Korrektur plausibel (Szenenzahlen HLS L30 + S30 ent
 
 ## 3.6 Entscheidung
 
-⚠️ **Weiter mit Einschränkung.** Die Datenquellen sind bis auf Mead erreichbar; die Befunde sind dokumentiert.
+⚠️ **Weiter mit Einschränkung.** Alle Datenquellen aus PLAN.md Phase 0 liefern Daten oder sind begründet als „angefragt“ markiert (Mead, YieldSAT, Bodenklimazahl). Die Befunde sind dokumentiert.
 
-Vor bzw. in Phase 1 zu klären:
-1. **RY-Normalwert** (welche Jahre / Trendbereinigung) – Entscheidung des Projektinhabers.
-2. Kleine effektive Stichprobe (≈ 11 Standort-Jahre). Wird in der Doku als Grenze genannt; Mead hat hohe Priorität.
-3. Behandlung des KBS-Bruchs 2014 (Osthälfte) und der BARC-Einheitenfehler.
+Gesamtbild inklusive Nachtrag (N.6):
+- KBS, BARC, Colorado, CY-Bench, Statistik Austria, INVEKOS, Verwaltungsgrenzen, SSURGO, AT-Versuchsberichte: ✅/⚠️.
+- **One Acre Fund: ⛔ für die Feldauswertung mit Satellitenkurven**, bis der Projektinhaber entscheidet (N.6). Das blockiert den Abschluss von Phase 0 nicht, weil Phase 0 nur Datenzugang prüft. Es **muss aber vor Phase 1 geklärt sein**.
+
+Offene Entscheidungen des Projektinhabers:
+
+| # | Thema | spätestens vor |
+|---|---|---|
+| 1 | **RY-Normalwert:** nur Mais-Jahre 2013–2025 oder trendbereinigt (§3.1 b) | Phase 1 |
+| 2 | **One Acre Fund:** Anfrage an Autoren / nur Tabellenanalyse / neuer Filter (N.6) | Phase 1 |
+| 3 | `RY_nb`-Gruppierung für One Acre Fund (N.2) | Phase 1 |
+| 4 | **CCM (Code 106)** als Körnermais zählen oder nicht (§3.1 e) | Phase 6, vor dem Ansehen österreichischer Daten |
+| 5 | AT 2021–2023 im CY-Bench-Modell aus Statistik Austria ergänzen (§3.1 c) | Phase 5 |
+
+Technisch in Phase 1 zu lösen: kleine effektive Stichprobe (≈ 11 Standort-Jahre, Mead hat hohe Priorität), KBS-Osthälfte bis 2016, BARC-Einheitenfehler, Feuchte-Umrechnung je Quelle.
 
 ---
 

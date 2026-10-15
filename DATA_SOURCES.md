@@ -15,6 +15,10 @@ Umrechnung Mais (gilt für alle US-Quellen): 1 bu/ac = 62,77 kg/ha (56 lb/bu). A
 | 4 | USDA BARC Gridded Yield Archive | ✅ verfügbar | **62 Mais-Feld-Jahre** (~33 Felder), 2014, 2016–2021 | U.S. Public Domain |
 | 5 | Colorado (Akron) Dryland | ✅ verfügbar (nur Stichprobenpunkte) | 10 Mais-Teilflächen-Jahre, 2019–2022 | CC0 |
 | 6 | Mead US-Ne1/2/3 (AmeriFlux BADM) | ⏳ angefragt / Konto nötig | unbekannt | CC-BY-4.0 (nach Login) |
+| 7 | CY-Bench v1.10 (Zenodo 10.5281/zenodo.17279151) | ✅ verfügbar (nur Mais, 23 EU-Länder) | AT: NUTS-2 (9 Bundesländer), Ertrag 1975–2020; Prädiktoren 2001–2023 | EUPL-1.2 |
+| 8 | Statistik Austria / Eurostat – Körnermais je Bundesland | ⚠️ teilweise | `stat_at_maize.csv`: 2010–2026 × 9 Länder + AT (2026 vorläufig); keine Bezirksebene – **nur Österreich-Test** | Quellenangabe |
+| 14 | INVEKOS Schläge (AMA) 2018–2025 | ✅ verfügbar, alle Jahre verifiziert | 2,5–2,95 Mio. Schläge/Jahr; Körnermais (Code 105) 107–115 Tsd. AT, 34–39 Tsd. Stmk – **nur Schema/Zählung** | CC BY 4.0 |
+| 15 | Verwaltungsgrenzen AT (Statistik Austria) | ✅ verfügbar | Gemeinden 2025 (2 114; Stmk 285), Bezirke 2025 (117), NUTS-2 2025 (9) | CC BY 4.0 |
 | 9 | One Acre Fund – Maize management and yield (Zenodo 10.5281/zenodo.11115815) | ⚠️ verfügbar; Filter §3.1 so nicht umsetzbar | 14 773 Maisfelder, 2016–2022 (ohne 2021), je 1 Jahr; 10 332 mit exakter Position; **keine Feldgröße**, Koordinaten auf 0,001° gerundet | CC BY 4.0 |
 | 10 | YieldSAT (yieldsat.github.io) | ⏳ Zugang beim Projektinhaber (Formular) | Mais: 185 Felder AR + 118 BR, 2017–2024 | unklar – erst nach Zugang |
 | 11 | SSURGO (USDA NRCS, Soil Data Access) | ✅ verfügbar (Ertragsschätzung ⚠️ lückenhaft) | NCCPI Mais KBS 0,664 (1 Map-Unit für alle 24 Parzellen), BARC 1-7 0,507; Mais-Ertragsschätzung KBS fehlt, BARC 1-7 116,5 bu/ac | U.S. Public Domain |
@@ -190,18 +194,7 @@ Erzeugung der CSV aus den Originalen: `python -m croptransfer.regional_stats` (M
 - **2010–2018 Bundesländer:** Eurostat `apro_cpshr` (Fläche/Produktion auf 10 gerundet, Ertrag = Produktion / Fläche); Zeilen mit Fläche < 1000 ha (**Sbg, Tirol, Vbg, Wien**) sind durch Rundung stark verzerrt und in `notes` markiert → dort CY-Bench-Werte verwenden.
 - **2010–2018 Österreich:** ebenfalls `apro_cpshr` (geo = AT). Gegenprobe: Abweichung zur ersten explorativen Extraktion (mit `apro_cpnh1`) ≤ 0,005 t/ha.
 
-| Jahr | Bgld | Ktn | NÖ | OÖ | Stmk | Österreich |
-|---|---|---|---|---|---|---|
-| 2018 | 8,82 | 10,08 | 9,44 | 10,56 | 11,55 | 10,15 |
-| 2019 | 8,46 | 11,02 | 9,70 | 10,82 | 11,90 | 10,42 |
-| 2020 | 9,45 | 12,34 | 10,36 | 11,83 | 12,97 | 11,35 |
-| 2021 | 8,76 | 11,73 | 10,99 | 11,52 | 11,98 | 11,16 |
-| 2022 | 6,81 | 8,97 | 8,56 | 11,65 | 11,49 | 9,82 |
-| 2023 | 8,79 | 10,93 | 8,40 | 9,81 | 12,54 | 9,93 |
-| 2024 | 7,47 | 11,19 | 8,65 | 10,55 | 11,67 | 9,90 |
-| 2025 | 9,73 | 8,90 | 10,54 | 12,17 | 12,19 | 11,14 |
-
-(t/ha; 2010–2017 und 2026 vorläufig siehe CSV.)
+> **Österreich-Regel (PLAN.md §0):** Diese Erträge sind Testdaten. Vor dem Freeze werden sie nicht ausgewertet und hier bewusst **nicht tabelliert**. Eine Werte-Tabelle aus der ersten Fassung dieses Dokuments (Commit `2d3035b`, vor Einführung der Regel) wurde entfernt; siehe Datenkritik Phase 0.
 
 **Methodik / Definition:**
 - **Feuchte 14 %** (laut Eurostat `apro_cpnh1` für AT-Körnermais in allen Jahren; Statistik Austria nennt nur „definierten Feuchtigkeitsgehalt“). Für YAS (Verhältnis) unerheblich; bei absolutem Vergleich mit US-Daten (15,5 %) umrechnen.
@@ -210,11 +203,11 @@ Erzeugung der CSV aus den Originalen: `python -m croptransfer.regional_stats` (M
 
 **Feinere Ebene (Bezirke):** **nicht veröffentlicht** – nur als Sonderauswertung auf Anfrage; Bezirkswerte sind ohnehin nicht gemessen, sondern über Ernteberichterstatter geschätzt. STATcube (`depflfeld`) am Abruftag überlastet → Inhalt ungeprüft, später erneut versuchen. OGD-Katalog enthält keinen Feldfrucht-Datensatz. LK Steiermark: nur Landessummen.
 
-**Auffälligkeiten:** Einheit dt/ha in den Quellen; 2010–2018 nur gerundete Eurostat-Werte; Flächenkorrekturen 2024 (Hochwasser) und 2025 (Umwidmung Körner-/Silomais, Stmk/Ktn Richtung Silo); 2026 vorläufig mit extrem niedrigen Erträgen; Kleinst-Maisflächen in Wien/Sbg/Tirol/Vbg.
+**Auffälligkeiten:** Einheit dt/ha in den Quellen; 2010–2018 nur gerundete Eurostat-Werte; Flächenkorrekturen 2024 (Hochwasser) und 2025 (Umwidmung Körner-/Silomais, Stmk/Ktn Richtung Silo); 2026 nur vorläufig; Kleinst-Maisflächen in Wien/Sbg/Tirol/Vbg.
 
 **Status: ⚠️ teilweise** (Bundesland 2010–2026 vorhanden, 2010–2018 nur über Eurostat; Bezirksebene nicht verfügbar).
 
-<!-- INVEKOS und Verwaltungsgrenzen folgen. -->
+Die Abschnitte INVEKOS und Verwaltungsgrenzen stehen am Ende (14, 15).
 
 ---
 
@@ -362,3 +355,91 @@ Hinweise: Die Corn-Teilregel heißt in SDA „(I)“, nicht „(II)“ (nur Cott
 Verhältniszahl 1–100 für die natürliche Ertragsfähigkeit; im Kataster je Grundstück abfragbar, in GIS Steiermark als Layer vorhanden (in Landesplanungen verwendet), **offener Massendownload nicht gefunden**. eBOD (bodenkarte.at) frei einsehbar, kein Rohdatenexport.
 **Status: ⏳ optional, Anfrage beim Projektinhaber.**
 
+
+---
+
+## 14. INVEKOS Schläge (AMA) – Österreich, 2018–2025
+
+> **Österreich-Regel:** In Phase 0 nur Download, Schema und Zählung – keine Auswertung von Satelliten- oder Ertragsdaten auf diesen Feldern vor dem Freeze.
+
+**Quelle:** AMA (Agrarmarkt Austria), INSPIRE-Download `https://inspire.lfrz.gv.at/009501/ds/inspire_schlaege_<STAND>_polygon.gpkg.zip`, gelistet auf data.gv.at (Katalog `harvest-ama`). **Lizenz:** CC BY 4.0.
+Alternativer Zugang ohne Download: OGC API Features `https://gis.lfrz.gv.at/api/geodata/i009501/ogc/features/v1/` (Collections `i009501:invekos_schlaege_<jahr>[_1|_2]_polygon`, CQL2-Filter z. B. `snar_code='105'`; Filter auf `snar_bezeichnung='KÖRNERMAIS'` liefert serverseitig 0 Treffer – Umlautproblem).
+
+**Stände:** ab 2022 je Jahr „-1“ (Sommer) und „-2“ (Winterüberarbeitung). Geladen: **2022–2025 jeweils „-2“** (endgültiger; Körnermais-Schläge AT +0,05–0,4 % gegenüber „-1“); 2018–2021 gibt es nur in einer Version (2021: Stand 2021-06-22).
+
+| Jahr | Datei | ZIP (Byte) | GPKG entpackt | data.gv.at-ID |
+|---|---|---|---|---|
+| 2018 | `inspire_schlaege_2018_polygon.gpkg` | 1 701 901 451 | 6,1 GB | bdddeedb-5381-43cd-8c48-88a946ae2d0b |
+| 2019 | `inspire_schlaege_2019_polygon.gpkg` | 1 783 718 526 | 6,3 GB | 5a7739f5-866f-4f8a-91c6-8898a1ce52b2 |
+| 2020 | `inspire_schlaege_2020_polygon.gpkg` | 917 168 017 | 3,2 GB | e499eacb-df06-4a6a-8175-b9745eeeadc4 |
+| 2021 | `inspire_schlaege_2021_polygon.gpkg` | 2 116 949 865 | 6,7 GB | 89e7d5e0-385f-40b2-9e42-fb3bb29e52a9 |
+| 2022 | `inspire_schlaege_2022-2_polygon.gpkg` | 2 146 741 394 | 6,8 GB | 76e56152-abca-4611-b88a-6ee7d48f9a61 |
+| 2023 | `inspire_schlaege_2023-2_polygon.gpkg` | 1 245 595 845 | 4,6 GB | 7175d2af-d188-4ec2-b079-d4c0e5417f77 |
+| 2024 | `inspire_schlaege_2024-2_polygon.gpkg` | 1 252 226 580 | 4,6 GB | b037d48d-06f3-4af2-ac48-ae07e7ca1e00 |
+| 2025 | `inspire_schlaege_2025-2_polygon.gpkg` | 1 259 234 212 | 4,6 GB | c6e594ce-e151-4ad5-8525-942208f956e8 |
+
+Ablage `data/raw/invekos/<jahr>/` (ZIP + GPKG, zusammen 52 GB). Verifikation: ZIP-Größe = Content-Length, `unzip -t` fehlerfrei, alle Features mit pyogrio lesbar.
+
+**Neu-Download (Beispiel 2025):**
+```bash
+curl -L --fail -C - -o data/raw/invekos/2025/inspire_schlaege_2025-2_polygon.gpkg.zip https://inspire.lfrz.gv.at/009501/ds/inspire_schlaege_2025-2_polygon.gpkg.zip
+unzip -o data/raw/invekos/2025/inspire_schlaege_2025-2_polygon.gpkg.zip -d data/raw/invekos/2025
+```
+
+**Schema** (alle Jahre gleich benannt): `FS_KENNUNG, SNAR_BEZEICHNUNG, SL_FLAECHE_BRUTTO_HA, GEO_ID, INSPIRE_ID, GML_ID, GML_IDENTIFIER, SNAR_CODE, GEO_PART_KEY, LOG_PKEY, GEOM_DATE_CREATED, FART_ID, GEO_TYPE, GML_GEOM, GML_LENGTH, geom`; ab 2022-2 zusätzlich `KZ_BIO_OEPUL_JN`.
+- **Nutzungsart verifiziert:** `SNAR_BEZEICHNUNG = 'KÖRNERMAIS'` ↔ **`SNAR_CODE = '105'`** in allen Jahren (UTF-8, Umlaute korrekt). Gefiltert wird über den Code, weil Bezeichnungen zwischen Jahren leicht variieren (z. B. „WINTERGERSTE/SILOMAIS“ vs. „WINTERGERSTE / SILOMAIS“).
+- Fläche: `SL_FLAECHE_BRUTTO_HA` (stimmt mit Geometriefläche überein, Median relative Abweichung < 1e-7).
+- **CRS EPSG:31287** (MGI / Austria Lambert); 2018–2020 als WKT ohne EPSG-Code gespeichert, inhaltlich identisch.
+- **Kein Bundesland-/Gemeinde-Attribut** → Zuordnung über den repräsentativen Punkt in den Gemeinden 2025-01-01 (erste GKZ-Ziffer 6 = Steiermark); alle Körnermais-Schläge werden einer Gemeinde zugeordnet.
+
+**Zählungen** (`invekos.crop_code_counts` / `invekos.count_in_state`, Notebook 00 §7; Codes 105 Körnermais, 106 CCM, 109 Silomais):
+
+| Jahr | Schläge gesamt | Körnermais AT | Körnermais Stmk | davon ≥ 1 ha | Silomais AT |
+|---|---|---|---|---|---|
+| 2018 | 2 523 190 | 107 154 | 33 764 | 12 299 | 55 120 |
+| 2019 | 2 529 896 | 112 095 | 36 822 | 13 140 | 55 753 |
+| 2020 | 2 614 636 | 106 667 | 34 464 | 12 347 | 56 475 |
+| 2021 | 2 610 510 | 110 175 | 35 605 | 12 907 | 54 482 |
+| 2022 | 2 603 946 | 109 413 | 35 236 | 13 079 | 53 309 |
+| 2023 | 2 947 738 | 113 212 | 37 934 | 14 027 | 51 488 |
+| 2024 | 2 956 434 | 107 687 | 36 808 | 13 933 | 51 624 |
+| 2025 | 2 949 054 | 114 509 | 39 264 | 14 726 | 52 746 |
+
+CCM (106) liegt in der Steiermark bei rund 7–10 Tsd. Schlägen pro Jahr, also in der Größenordnung von Silomais. Ob CCM als Körnermais zählt, entscheidet der Projektinhaber vor Phase 6 (siehe Datenkritik). Weitere maisähnliche Codes werden nicht verwendet: 173 Saatmaisvermehrung, 172 Mais/Käferbohnen, 175 Wintergerste/Körnermais (Zweitfrucht), 184 Kleegras/Silomais, 107 Zuckermais, 135 Grünmais u. a.
+
+**Auffälligkeiten:**
+- Rund 63 % der Körnermais-Schläge in der Steiermark sind kleiner als 1 ha (Median ≈ 0,72–0,76 ha). Mit dem Filter aus PLAN §3.1 (≥ 1,0 ha) bleiben 12–15 Tsd. Schläge pro Jahr.
+- Ungültige Geometrien: alle Schläge 0–17 je Jahr, Körnermais Steiermark 0.
+- Doppelte `GEO_ID`/`INSPIRE_ID` in 14–300 Zeilen je Jahr. Das ist dieselbe Geometrie unter zwei `FS_KENNUNG`. Bei Körnermais in der Steiermark betrifft es nur 2021 und 2024 (je 2 Zeilen). Deduplizieren über `GEO_ID` + Geometrie.
+- `LOG_PKEY` und `GEO_PART_KEY` taugen nicht als Schlüssel.
+- 2023: Sprung der Schlagzahl um ca. 340 Tsd. (neue GAP-Periode, unverifiziert). Mais ist kaum betroffen.
+- 2021 nur als Juni-Stand, ohne Winterkorrektur.
+
+**Status: ✅ verfügbar** (alle 8 Jahre vollständig verifiziert).
+
+---
+
+## 15. Verwaltungsgrenzen Österreich (Statistik Austria)
+
+**Quelle:** Statistik Austria Open Data, WFS `https://www.statistik.gv.at/gs-open/GEODATA/ows` (`service=WFS&version=1.0.0&request=GetFeature&typeName=GEODATA:STATISTIK_AUSTRIA_<LAYER>&outputFormat=SHAPE-ZIP&format_options=CHARSET:UTF-8`).
+data.gv.at: Gemeinden `566c99be-b436-365e-af4f-27be6c536358`, Politische Bezirke `81f390f9-9b42-3a72-ad9b-e11a4dbebab0`, NUTS `bec16f39-2f2f-375a-aa6c-f122d15245d7`.
+**Lizenz:** CC BY 4.0. Letzte Aktualisierung 2026-03-09.
+
+| Layer | Einheiten | Steiermark | Spalten |
+|---|---|---|---|
+| `GEM_20250101` (Gemeinden, **gewählter Stand**) | 2 114 | 285 | `g_id` (GKZ), `g_name` |
+| `GEM_20180101` (Vergleich) | 2 120 | 287 | `g_id`, `g_name` |
+| `POLBEZ_20250101` (Bezirke) | 117 | 13 (601–623) | `g_id`, `g_name` |
+| `NUTS2_20250101` (= Bundesländer) | 9 | AT22 | `g_id`, `g_name` |
+
+- Ablage `data/raw/admin_at/<LAYER>/` (ZIP + Shapefile, 208 MB).
+- EPSG:31287, UTF-8, 0 ungültige Geometrien.
+- Generalisierung nicht dokumentiert. 3,8 Mio. Stützpunkte deuten auf eine detaillierte Geometrie hin.
+- Wien (900) überlappt die Gemeindebezirke 901–923 im Bezirks-Layer.
+- **Gemeindeänderungen in der Steiermark seit 2018:**
+  - 2020: Murfeld aufgelöst; St. Veit i. d. Südsteiermark 61056 → 61060; Straß 61058 → 61061.
+  - 2025: Söchau und Fürstenfeld werden zu 62280.
+  - Dazu einige Umbenennungen.
+  - Für `Z_normal` je Gemeinde gilt ein fester Stand (2025-01-01). Für ältere Tabellen ist eine GKZ-Zuordnung nötig.
+
+**Status: ✅ verfügbar.**
