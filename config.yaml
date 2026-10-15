@@ -56,6 +56,27 @@ groundtruth:
   outlier_sd: 3.0
   ry_min_other_years: 2
 
+one_acre_fund:                   # PLAN.md §3.1 pre-filters (fixed before any satellite data is seen)
+  file: one_acre_fund/One_Acre_Fund_MEL_maize_survey_data_2016-2022.csv
+  min_field_ha: 0.5
+  point_radius_m: 20
+  ry_nb_min_other_fields: 10
+  # Survey-question flags where a country-year rate of exactly 0 means "probably not asked"
+  damage_columns: [pest, disease, striga, water_excess]
+
+ssurgo:
+  sda_url: https://SDMDataAccess.sc.egov.usda.gov/Tabular/post.rest
+  crop_name: Corn                # cocropyld.cropname
+  nccpi_rule: NCCPI - National Commodity Crop Productivity Index (Ver 3.0)
+  nccpi_corn_rule: NCCPI - NCCPI Corn Submodel (I)
+  # soil survey areas of the US sites: KBS (Kalamazoo Co. MI), BARC (Prince George's Co. MD),
+  # Akron (Washington Co. CO), Mead (Saunders Co. NE)
+  survey_areas: [MI077, MD033, CO121, NE155]
+  min_comp_pct_with_value: 50    # field value only if >= 50 % of its soil components have one
+
+at_trials:                       # Austrian test yields - collect only, no analysis before freeze
+  yield_range_t_ha: [1.0, 20.0]  # plausibility (unit check), not a filter for analysis
+
 targets:
   at_risk_threshold: 0.85        # RY < 0.85 or VAS < 0.85
   yas_baseline_years: 5          # olympic average of the 5 previous years

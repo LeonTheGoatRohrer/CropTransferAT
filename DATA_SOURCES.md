@@ -15,10 +15,10 @@ Umrechnung Mais (gilt für alle US-Quellen): 1 bu/ac = 62,77 kg/ha (56 lb/bu). A
 | 4 | USDA BARC Gridded Yield Archive | ✅ verfügbar | **62 Mais-Feld-Jahre** (~33 Felder), 2014, 2016–2021 | U.S. Public Domain |
 | 5 | Colorado (Akron) Dryland | ✅ verfügbar (nur Stichprobenpunkte) | 10 Mais-Teilflächen-Jahre, 2019–2022 | CC0 |
 | 6 | Mead US-Ne1/2/3 (AmeriFlux BADM) | ⏳ angefragt / Konto nötig | unbekannt | CC-BY-4.0 (nach Login) |
-| 9 | One Acre Fund – Maize management and yield (Zenodo 10.5281/zenodo.11115815) | 📋 geplant (Download ohne Login) | 14.773 Maisfelder, 2016–2022, je 1 Jahr | CC BY 4.0 |
+| 9 | One Acre Fund – Maize management and yield (Zenodo 10.5281/zenodo.11115815) | ⚠️ verfügbar; Filter §3.1 so nicht umsetzbar | 14 773 Maisfelder, 2016–2022 (ohne 2021), je 1 Jahr; 10 332 mit exakter Position; **keine Feldgröße**, Koordinaten auf 0,001° gerundet | CC BY 4.0 |
 | 10 | YieldSAT (yieldsat.github.io) | ⏳ Zugang beim Projektinhaber (Formular) | Mais: 185 Felder AR + 118 BR, 2017–2024 | unklar – erst nach Zugang |
-| 11 | SSURGO (USDA NRCS, Soil Data Access) | 📋 geplant (ohne Login) | Mais-Ertragsschätzung + NCCPI je Bodeneinheit (nur US) | U.S. Public Domain |
-| 12 | Versuchsberichte Hatzendorf (Land Steiermark) + LK-OÖ-Praxisversuche | 📋 geplant (öffentliche PDFs); Standortkoordinaten angefragt | Körnermais-Standortmittel je Jahr – **nur Österreich-Test** | öffentlich, Quellenangabe |
+| 11 | SSURGO (USDA NRCS, Soil Data Access) | ✅ verfügbar (Ertragsschätzung ⚠️ lückenhaft) | NCCPI Mais KBS 0,664 (1 Map-Unit für alle 24 Parzellen), BARC 1-7 0,507; Mais-Ertragsschätzung KBS fehlt, BARC 1-7 116,5 bu/ac | U.S. Public Domain |
+| 12 | Versuchsberichte Hatzendorf (Land Steiermark) + LK-OÖ-Sorten-/Praxisversuche | ✅ gesammelt (nicht ausgewertet); Koordinaten fehlen | `at_trials.csv`: 150 Zeilen – Stmk 44 (Wagna, Kalsdorf u. a., 2012–2024), OÖ 106 (13 Orte, 2013–2026) – **nur Österreich-Test** | öffentlich, Quellenangabe |
 | 13 | Bodenklimazahl (Finanzbodenschätzung) | ⏳ optional, Anfrage beim Projektinhaber | Ertragsfähigkeit 1–100 je Fläche (AT) – nur Plausibilitätsprüfung | unklar |
 
 ---
@@ -220,9 +220,51 @@ Erzeugung der CSV aus den Originalen: `python -m croptransfer.regional_stats` (M
 
 ## 9. One Acre Fund – Maize management and yield of smallholder farmers in Sub-Saharan Africa 2016–2022
 
-**Quelle:** Zenodo, DOI 10.5281/zenodo.11115815 (2024-05-06), Datei `One_Acre_Fund_MEL_maize_survey_data_2016-2022.csv` (5,6 MB). **Lizenz:** CC BY 4.0.
-**Inhalt laut Beschreibung:** 14.773 Feldbeobachtungen nach Qualitätskontrolle, nur Mais in Reinkultur; Regionen Nord-Zentral-Nigeria (115), Ruanda/Burundi (2.720), Zentral-Sambia (861), Südwest-Tansania (3.710), Ost-Uganda/West-Kenia (7.367). Ertrag aus zwei zufällig platzierten Ernteproben à 36 m² (ohne Feldrand); Pflanzendichte, Reihenabstand; von Landwirt:innen gemeldet: Aussaat-/Erntedatum, Sorte, Dünger (organisch/mineralisch), Kalkung, Unkrautbekämpfung, Pflanzenschutz, **Schäden** (Schädlinge, Krankheiten, Striga, Hagel, Nässe); Feldgröße (gemeldet, teils vor Ort gemessen). **Geolokalisierung nur bei 70 % exakt**, sonst nächster Ort (21 %) bzw. Bezirk (9 %).
-**Status: 📋 geplant** – Sichtung in Phase 0 (Spalten, Feuchtebasis, Feldgrößen, Kodierung der Schäden).
+**Quelle:** Zenodo, Concept-DOI 10.5281/zenodo.11115815 → einzige Version **10.5281/zenodo.11122388** (2024-05-06). Zugehöriger Artikel: Aramburu-Merlos et al. 2024, *Nature Communications* 15, doi:10.1038/s41467-024-48859-0 (Open Access, PMC11130130). **Lizenz:** CC BY 4.0 (Quellenangabe: One Acre Fund / Aramburu-Merlos et al.).
+
+**Dateien** (`data/raw/one_acre_fund/`): `One_Acre_Fund_MEL_maize_survey_data_2016-2022.csv` (5 637 560 Byte, md5 `7856ff0693dce26817623bc73ac5fa7b` – geprüft gegen Zenodo), `zenodo_record_11115815.json` (Metadaten inkl. Variablenbeschreibung).
+
+**Neu-Download:**
+```bash
+curl -L -o One_Acre_Fund_MEL_maize_survey_data_2016-2022.csv "https://zenodo.org/api/records/11122388/files/One_Acre_Fund_MEL_maize_survey_data_2016-2022.csv/content"
+curl -L -o zenodo_record_11115815.json https://zenodo.org/api/records/11115815
+```
+Kennzahlen reproduzierbar mit `python -m croptransfer.one_acre_fund` (Modul `src/croptransfer/one_acre_fund.py`, Tests `tests/test_one_acre_fund.py`). **Satellitendaten wurden nicht angesehen** (Vorab-Filter, PLAN.md §3.1).
+
+**Inhalt:** 14 773 Zeilen × 53 Spalten, je Zeile ein Feld in einer Saison (keine Feld-ID).
+- Spaltengruppen: Ort/Zeit (`year, country, iso, season, cz` = GYGA-Klimazone, `strat` = Klimazone×Saison-Gruppe, `lon, lat`); Umwelt aus Fremdquellen (`avg_season_gdd/ai/tavg`, `season_prec`, `season_prec_1..3` aus CHIRP, `elev`, `twi`, `soil_rzpawhc, soil_clay, soil_pH, soil_orgC, soil_ECEC`); Bewirtschaftung (`plant_date, harvest_date, plant_date_dev, plant_doy, pl_m2, row_spacing, hybrid, hyb_type, hyb_mat, hyb_yor, hyb_tol_*`, `N/P/K_kg_ha, compost, comp_kg_ha, manure, fert_in_hole, lime_kg_ha, weeding, pesticide`); Schäden (`disease, pest, striga, water_excess`); Ziel `yield_kg_ha`.
+- Felder je Land und Jahr (`year` = Erntejahr der Saison):
+
+  | Land | 2016 | 2017 | 2018 | 2019 | 2020 | 2022 | Summe |
+  |---|---|---|---|---|---|---|---|
+  | Kenia | 1111 | 921 | 1180 | 1755 | 2291 | – | 7258 |
+  | Tansania | 1184 | – | 985 | 1381 | 160 | – | 3710 |
+  | Ruanda (2 Saisonen) | – | – | 556 | 608 | 916 | – | 2080 |
+  | Sambia | – | – | 466 | 395 | – | – | 861 |
+  | Burundi | 142 | 173 | – | 194 | 131 | – | 640 |
+  | Nigeria | – | – | – | – | – | 115 | 115 |
+  | Uganda | – | – | – | – | 109 | – | 109 |
+
+  **2021 fehlt ganz**, 2022 nur Nigeria.
+- Ertrag `yield_kg_ha`: Median 2714 kg/ha (0–11 139); **263 Nullerträge** (Kenia 144, Ruanda 61, Tansania 58).
+- **Feuchtebasis: nicht angegeben** – weder in der CSV noch auf Zenodo noch im Artikel (dort nennt nur ein separater Sortenversuch in Ruanda „standard grain moisture content (15 %)“). Annahme bis zur Klärung: unbekannt, vermutlich 15 %. Für RY_nb (Verhältnis innerhalb Region-Jahr) unerheblich, für absolute Erträge nicht.
+- **Feldgröße: nicht im Datensatz.** Beschreibung und Artikel erwähnen gemeldete/gemessene Feldgrößen, die CSV enthält aber keine Spalte dafür (nur daraus abgeleitete Raten je ha).
+- **GPS-Genauigkeit: keine Spalte.** Die Bodenwerte (WISE/iSDA) wurden laut Beschreibung nur bei feldgenauer Position abgefragt → `soil_*` vorhanden = exakte Position: **10 332 Felder (69,9 %)**, passt zu den 70 % der Beschreibung. Alle fünf Bodenspalten fehlen immer gemeinsam.
+- **Koordinaten auf 3 Nachkommastellen gerundet** (0,001° ≈ 111 m) → Lagefehler bis ±56 m je Achse, auch bei „exakten“ Positionen. 1254 exakte Felder teilen sich Punkt + Jahr + Saison mit anderen (bis zu 12 Felder an einem Punkt).
+- Exakte Positionen je Jahr: Kenia 1084/921/1175/1739/2151 (2016–2020), Tansania 655/894/159 (2018–2020), Sambia 304/395, Ruanda 130/363 (2019/20), Burundi 138 (2017), Nigeria 115, Uganda 109 → **68 % der exakten Felder liegen in Kenia**.
+- Aussaatdatum bei 11 179, Erntedatum bei 10 285 Feldern; frühestes Aussaatdatum 2015-03-25 (Saison 2016); bei 3296 Feldern liegt die Aussaat im Vorjahr von `year` (Saisonen über den Jahreswechsel: Tansania, Sambia, Burundi, Ruanda Saison A).
+- **Kodierung der Schäden:** nur vier Spalten, alle von Landwirt:innen gemeldet, binär. `pest` und `disease` fassen laut Beschreibung viele Einzelursachen zusammen – **auch „drought“ wurde in `pest`/`disease` einsortiert**; **Hagel hat keine eigene Spalte** (nur im Fließtext erwähnt). `striga` ist bei 12 249 Feldern leer. Anteil 0,00 in ganzen Land-Jahren (z. B. `pest` Kenia/Tansania/Burundi 2016, `water_excess` in Tansania, Sambia, Burundi, Nigeria) → dort wurde die Frage vermutlich **nicht gestellt**, „False“ heißt dann „unbekannt“ (Tabelle `damage_likely_not_asked` im Modul).
+- Gruppen für RY_nb: keine Bezirksspalte; feinste Gruppierung `cz` × `season` × `year`. Unter den exakten Feldern haben 76 solche Gruppen ≥ 11 Felder (10 204 Felder).
+
+**Vorab-Filter PLAN.md §3.1:**
+
+| Schritt | Felder |
+|---|---|
+| alle | 14 773 |
+| exakte GPS-Position (Proxy: Bodenwerte vorhanden) | 10 332 |
+| gemeldete Feldgröße ≥ 0,5 ha | **nicht anwendbar – Spalte fehlt** |
+
+**Status: ⚠️ verfügbar, aber der geplante Filter (Feldgröße ≥ 0,5 ha, 20-m-Kreis um exakte Position) ist mit den veröffentlichten Daten nicht umsetzbar** (keine Feldgröße, Koordinaten auf ~111 m gerundet). Entscheidung des Projektinhabers nötig (Optionen in `reports/data_review/phase0_data_access.md`, Abschnitt „Neue Quellen“).
 
 ## 10. YieldSAT
 
@@ -232,18 +274,88 @@ Erzeugung der CSV aus den Originalen: `python -m croptransfer.regional_stats` (M
 
 ## 11. SSURGO (USDA NRCS Soil Survey Geographic Database)
 
-**Zugang:** Soil Data Access (Webdienst, ohne Login) bzw. gSSURGO. **Lizenz:** U.S. Public Domain.
-**Verwendet:** geschätzter Ertrag ohne Bewässerung für Mais (bu/ac; seit dem SSURGO-Update 2019 für Mais, Soja, Weizen, Baumwolle) und NCCPI Version 3 Mais (0–1) je Bodeneinheit (Maßstab 1:12.000–1:24.000). Exakte Tabellen-/Spaltennamen werden bei der Abfrage geprüft und hier eingetragen.
-**Hinweis:** Werte sind Schätzungen von Bodenkundler:innen, keine Messungen → nur Merkmal/Analyse (nur US), nie Label.
-**Status: 📋 geplant.**
+**Zugang:** Soil Data Access (SDA), REST-Endpunkt `https://SDMDataAccess.sc.egov.usda.gov/Tabular/post.rest` (POST, JSON `{"query": <SQL>, "format": "JSON+COLUMNNAME"}`), ohne Login. **Lizenz:** U.S. Public Domain. Stand der abgefragten Bodenkarten (`sacatalog.saverest`): MI077 2026-08-27, MD033 2026-09-13.
+
+**Exakte Tabellen/Spalten:**
+
+| Größe | Tabelle | Filter | Spalte | Einheit | Ebene |
+|---|---|---|---|---|---|
+| Mais-Ertragsschätzung ohne Bewässerung | `cocropyld` | `cropname = 'Corn'` | `nonirryield_r` (+ `_l`, `_h`; bewässert: `irryield_r`) | `yldunits` = `Bu` (bu/ac) | Komponente (`cokey`) |
+| NCCPI Mais | `cointerp` | `mrulename = 'NCCPI - National Commodity Crop Productivity Index (Ver 3.0)'` und `rulename = 'NCCPI - NCCPI Corn Submodel (I)'` | `interphr` | 0–1 | Komponente (`cokey`) |
+| Anteil der Komponente | `component` | – | `comppct_r`, `majcompflag` | % | Komponente → `mukey` |
+| Geometrie | `mupolygon` | `STIntersects` mit Feldpolygon (WGS84) | `mupolygongeo` | – | Map-Unit-Polygon |
+
+Hinweise: Die Corn-Teilregel heißt in SDA „(I)“, nicht „(II)“ (nur Cotton/Small Grains haben „(II)“). Die Gesamt-NCCPI steht unter `rulename` = `mrulename`. Die alte Map-Unit-Tabelle `mucropyld` enthält für die Testflächen keine Mais-Werte.
+
+**Aggregation** (`src/croptransfer/soil_ssurgo.py`, Tests `tests/test_soil_ssurgo.py`): Komponentenwerte mit `comppct_r` gewichtet je Map-Unit (Komponenten ohne Wert fallen heraus), dann flächengewichtet über die Map-Units im Feld. Zusätzlich `<wert>_comp_pct` = Anteil der Feldfläche, deren Bodenkomponenten einen Wert haben; liegt er unter **50 %** (`config.yaml: ssurgo.min_comp_pct_with_value`), ist der Feldwert NaN.
+
+**Testabfrage** (`python -m croptransfer.soil_ssurgo`, ~50 s):
+
+| Feld | Map-Units | Mais-Ertragsschätzung (bu/ac) | Abdeckung | NCCPI Mais | Abdeckung |
+|---|---|---|---|---|---|
+| KBS MCSE T1–T4 R1–R6 (alle 24 Parzellen) | 1 (`187069` KaB, Kalamazoo loam 2–6 %) | **NaN** (Wert 120 nur bei Nebenkomponente Sleeth, 1 %) | 1 % | **0,664** (alle Parzellen identisch) | 100 % |
+| BARC CentralFarm 1-7 (Rasterumriss 2014) | 5 (Russett-Christiana-Komplexe u. a., MD033) | 116,5 | 76 % | 0,507 | 77 % |
+
+**Abdeckung der Mais-Ertragsschätzung** (Hauptkomponenten mit `Corn`-Wert / alle Hauptkomponenten, SDA-Abfrage je Bodenkarte): MI077 Kalamazoo Co. (KBS) **10/50**, MD033 Prince George's Co. (BARC) 222/362, CO121 Washington Co. (Akron) 44/110, NE155 Saunders Co. (Mead) 37/65. NCCPI Mais ist für alle Hauptkomponenten vorhanden.
+
+**Auffälligkeiten:** Mais-Ertragsschätzung lückenhaft (KBS komplett ohne); alle KBS-Parzellen liegen in **einer** Map-Unit → SSURGO unterscheidet die KBS-Parzellen nicht; Werte sind Schätzungen von Bodenkundler:innen, keine Messungen → nur Merkmal/Analyse (nur US), nie Label. Colorado (keine Polygone) und Mead (Daten fehlen) noch nicht abgefragt.
+
+**Status: ✅ verfügbar** (NCCPI Mais vollständig; Mais-Ertragsschätzung ⚠️ lückenhaft).
 
 ## 12. Lokale Testerträge Österreich (nur nach dem Freeze auswerten)
 
-- **Versuchsstation für Pflanzenbau Hatzendorf** (Amt der Stmk. Landesregierung, Landwirtschaftliche Fachschulen): jährliche Versuchsberichte als PDF auf fachschulen.steiermark.at (u. a. 2013–2025), darunter Körnermais-Düngungsversuche Wagna 2007–2015 (12 Varianten, 6 Wiederholungen) und Kalsdorf bei Ilz. Kontakt: versuchlwschulen@stmk.gv.at.
-- **LK Oberösterreich – Praxisversuche Körnermais:** PDFs je Standort und Jahr (z. B. unter `cms2.lko.at/pages/versuchsberichte_pdfs/2024/`), Standortmittel in kg/ha bei 14 % Feuchte.
-- Ziel-Datei: `data/raw/at_trials.csv` (`site, bundesland, lat, lon, loc_precision, year, yield_t_ha, moisture_basis, trial_type, variant, sowing_date, harvest_date, source_pdf, page`).
+**Österreich-Regel:** Die Werte wurden nur gesammelt und abgeschrieben. Es gab keine Auswertung, keine Anomalien und keine Vergleiche. Hier stehen deshalb nur Bestandszahlen, keine Ertragszahlen.
 
-**Status: 📋 geplant** (Sammeln/Digitalisieren erlaubt, Auswertung erst nach dem Freeze).
+**Ziel-Datei:** `data/raw/at_trials.csv` – **150 Zeilen** (Steiermark 44, Oberösterreich 106), Spalten `site, bundesland, lat, lon, loc_precision, year, yield_t_ha, moisture_basis, trial_type, variant, sowing_date, harvest_date, source_pdf, page, notes`. Erzeugung: eine abgeschriebene Roh-CSV je Quelle (`data/raw/at_trials/hatzendorf.csv`, `data/raw/at_trials/lko_ooe.csv`), zusammengeführt und geprüft mit `python -m croptransfer.at_trials` (Schema, Einheiten, ISO-Daten, eindeutiger Schlüssel `site, year, trial_type, variant`; Tests `tests/test_at_trials.py`). Abgeschrieben haben KI-Unteragenten aus `pdftotext -layout`. Stichproben (je 2–3 Zeilen) wurden gegen die PDF-Seiten geprüft.
+
+**Konventionen:**
+- `yield_t_ha` steht auf der **berichteten** Feuchtebasis (nicht umgerechnet). `moisture_basis` = 0.14, wenn angegeben, sonst leer.
+- Je Standort-Jahr und Versuch gibt es eine Zeile „Versuchsmittel“/„Standortmittel“ (Mittel aller Varianten bzw. Sorten), bei LK-OÖ-Versuchen mit Reifegruppen eine Zeile je Reifegruppe. Eine ortsübliche Standard-Variante ist nur eingetragen, wo der Bericht sie ausdrücklich nennt (Düngealternativen 2024 Wagna/Kalsdorf).
+- Hat der Bericht kein Mittel genannt, wurde es aus der vollständigen Tabelle berechnet und in `notes` als „berechnet aus n …“ markiert (Stmk 32, OÖ 21 Zeilen; Stmk teils aus ganzzahligen Diagrammbeschriftungen).
+- `lat/lon` sind leer und `loc_precision = municipality`, weil kein Bericht Koordinaten nennt (Standortkoordinaten fragt der Projektinhaber an, `ANFRAGEN.md` #4).
+
+### 12a. Versuchsstation für Pflanzenbau Hatzendorf (Land Steiermark)
+- **Quelle:** jährliche Versuchsberichte auf https://www.fachschulen.steiermark.at (`/cms/dokumente/…`), Berichtsjahre **2013–2019 und 2022–2025** als Gesamtbericht, dazu Einzelkapitel 2022/2024 (Körnermais-Düngung Wagna und Kalsdorf, Düngealternativen). Der als „Versuchsbericht 2020“ verlinkte Bericht enthält das Versuchsjahr 2019. Die Datei „Wagna 2024“ der Website ist byte-identisch mit der von 2023.
+- **2012, 2020, 2021:** Auf der Website gibt es keinen Gesamtbericht. Einzelkapitel stammen aus dem Web-Archiv der früheren Seite versuchsreferat.com (`web.archive.org/web/<Zeitstempel>id_/…`). Die archivierten Gesamtberichte 2020/2021 sind bei 1 MB abgeschnitten und nicht lesbar.
+- **Dateien:** `data/raw/at_trials/hatzendorf/` (27 PDFs, je eine `.txt` aus `pdftotext -layout`).
+- **Bestand (44 Zeilen):**
+
+  | Standort | Zeilen | Versuche |
+  |---|---|---|
+  | Wagna | 23 | N-Düngung 2013–2024; Großparzellen-Fruchtfolgeversuch 2012, 2015–2019, 2021; Düngealternativen 2022–2024 |
+  | Kalsdorf bei Ilz | 14 | N-Düngung 2013–2016, 2018, 2021, 2022, 2024; Grubber/Pflug 2015, 2017, 2019; Düngealternativen 2022, 2024 |
+  | Hatzendorf (Gütl, Bodenbearbeitung) | 3 | 2019, 2023, 2024 |
+  | Unterhatzendorf, Wagendorf, Wollsdorf, Kühwiesen | je 1 | Gülle 2017, Düngung 2013, **Mischkultur mit Käferbohne** 2016/2017 |
+
+- **Feuchte:** 41 Zeilen mit 14 % („14 % Feuchtigkeit“ bzw. „86 % TM“), 3 ohne Angabe.
+- **Lücken:**
+  - Hirse statt Mais: Kalsdorf 2017 und 2019, Wagendorf 2014.
+  - Nur als Diagrammbild: Kalsdorf 2020, Gütl 2025, Wagna 2007–2012.
+  - Ohne Zahlen: Wagna 2025, Kalsdorf 2025.
+  - Vom Bericht ausgeschlossen: Kalsdorf 2023.
+  - Nur kostenbereinigte Erträge: Wagendorf 2008–2012/2015, Kalkstickstoff-Versuch 2014.
+- **Auffälligkeiten:**
+  - Einzelne Jahreszuordnungen sind abgeleitet (Kalsdorf 2013; Großparzellen 2017–2019 über Mehrjahresmittel; Wagna 2014 aus dem Diagramm-Layout).
+  - Wagna 2022 bekam laut Bericht 30 kg N zu viel.
+  - Die Mischkultur-Zeilen (Mais nur Stützfrucht) sind an `trial_type = mischkultur_duengung` erkennbar. Ob sie in den Test kommen, wird im Österreich-Testprotokoll **vor** dem Freeze festgelegt.
+
+### 12b. Landwirtschaftskammer Oberösterreich – Körnermais-Sorten- und Praxisversuche
+- **Quellen:**
+  - Jahresberichte „Versuchsergebnisse“ der Boden.Wasser.Schutz.Beratung mit der LK OÖ, Abt. Pflanzenbau, **2013–2025** (https://www.bwsb.at/versuchsberichte+2400+1789152, Download `media.php?filename=download%3D…`).
+  - Einzelberichte **2023–2026** aus dem Versuchsportal https://ooe.lko.at/pflanzenbauliche-versuchsberichte+2500++2931746, PDF-Muster `https://ooe.lko.at/src_pages/versuchsberichte_pdfs/<Jahr>/<JJ>_<Kategorie>_<K|B>_<SV|PV|AV>_<Ort>_<PLZ>_<Bezirk>_EJ.pdf`.
+  - Ältere Jahre fehlen im Portal (HTTP 410). Das Verzeichnis auf cms2.lko.at ist gesperrt (403).
+- **Dateien:** `data/raw/at_trials/lko_ooe/` (74 PDFs, ~102 MB: 15 Jahresberichte, 59 Portal-PDFs).
+- **Bestand (106 Zeilen, 2013–2026):** Walding 35, Mauthausen 22 (je Reifegruppe), Linden/Steinerkirchen an der Traun 13, Bad Wimsbach-Neydharting 11, Katzenberg/Kirchdorf am Inn 10, Leonding/Hörsching 5, Geinberg 3, Aistersheim 2, Eberstalzell, Dietach, Enns, Pasching und Nußbach je 1. `trial_type`: sorten 71, praxisversuch_sorten 29, sorten_bio 5, sorten_verfahrenstechnik 1.
+- **Feuchte:** 79 Zeilen mit 14 % („Trockenertrag bei 14 % H2O“), 27 ohne Angabe (Übersichten 2020–2022, Geinberg 2026).
+- **Lücken:** 2019 (Körnermais-Übersicht nur als Bild), 2010–2012 (nicht geladen), Walding 2013 (Überflutung, nicht ausgewertet).
+- **Auffälligkeiten:**
+  - **Ortsnamen uneinheitlich** (z. B. 6 Schreibweisen für Linden/Steinerkirchen) → vor jeder Verknüpfung vereinheitlichen.
+  - Sortenwerte 2014–2017 sind „interpoliert“ (auf eine Standardsorte bezogen).
+  - Mehrfach widersprechen sich Fließtext und Tabellenmittel. Übernommen wurde das Tabellenmittel, der abweichende Wert steht in `notes`.
+  - Bad Wimsbach 2025/26: Eingetragen ist der Parzellenertrag. Die Übersichten verwenden den „Praxisertrag (−10 %)“.
+  - Werte aus Niederösterreich in den Übersichten wurden nicht übernommen.
+
+**Status: ✅ gesammelt** (150 Standort-Versuch-Jahre). ⚠️ Es fehlen Koordinaten, Ortsnamen sind nicht vereinheitlicht, die Feuchte ist teils unbekannt. **Auswertung erst nach dem Freeze.**
 
 ## 13. Bodenklimazahl (Finanzbodenschätzung, Österreich)
 

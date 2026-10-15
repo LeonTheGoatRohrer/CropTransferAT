@@ -96,3 +96,73 @@ Vor bzw. in Phase 1 zu klären:
 1. **RY-Normalwert** (welche Jahre / Trendbereinigung) – Entscheidung des Projektinhabers.
 2. Kleine effektive Stichprobe (≈ 11 Standort-Jahre). Wird in der Doku als Grenze genannt; Mead hat hohe Priorität.
 3. Behandlung des KBS-Bruchs 2014 (Osthälfte) und der BARC-Einheitenfehler.
+
+---
+
+# Nachtrag – neue Quellen aus PLAN.md v0.0.5 (One Acre Fund, SSURGO, AT-Versuchsberichte)
+
+Datum: 2026-10-15. Kennzahlen aus `python -m croptransfer.one_acre_fund` und `python -m croptransfer.soil_ssurgo` (Details in `DATA_SOURCES.md` §9, §11, §12). Für One Acre Fund wurden **keine Satellitendaten angesehen** (Vorab-Filter PLAN.md §3.1). Die österreichischen Versuchsberichte wurden nur gesammelt und abgeschrieben, **nicht ausgewertet** (Österreich-Regel).
+
+## N.1 Repräsentativität (Auswahl-Bias)
+
+**a) One Acre Fund – wer fällt durch den GPS-Filter?**
+- *Geprüft wie:* Exakte Position = alle fünf Bodenspalten vorhanden (laut Beschreibung nur bei feldgenauer Position abgefragt; 69,9 % ≈ die genannten 70 %). Zählung je Land/Jahr, Median-Ertrag exakt vs. nicht exakt.
+- *Befund:*
+  - 10 332 von 14 773 Feldern bleiben. Der Filter wirkt sehr ungleich: Kenia 97 % exakt, Uganda/Nigeria 100 %, Sambia 81 %, Tansania 46 %, Ruanda 24 %, Burundi 22 %. **68 % der verbleibenden Felder liegen in Kenia**; Tansania 2016, Ruanda 2018, Burundi außer 2017 fallen ganz weg.
+  - Ausgeschlossene Felder haben **niedrigere Erträge**: Median Kenia 2028 vs. 2786 kg/ha, Tansania 2445 vs. 3004, Burundi 1565 vs. 2020, Sambia 2106 vs. 2445 (Ruanda ≈ gleich). Vermutung: Felder ohne GPS gehören eher zu Nicht-Programm-Bäuerinnen und -Bauern.
+  - Gemeldete Schäden sind unter den exakten Feldern häufiger (`pest` 36 % vs. 21 %, `water_excess` 9 % vs. 5 %) – vor allem, weil Kenia überwiegt.
+- *Konsequenz:* Der gefilterte Datensatz ist im Wesentlichen „Westkenia + etwas Tansania/Sambia“. Leave-One-Region-Out ist mit Burundi/Ruanda/Nigeria/Uganda nur mit sehr kleinem n möglich (n immer angeben). Ergebnisse auf One Acre Fund nicht als „Subsahara-Afrika“ verallgemeinern.
+
+**b) One Acre Fund – Jahre und Sensor**
+- *Befund:* 2021 fehlt; 2022 nur Nigeria (115). Saison 2016 wurde ab 2015-03 gesät (nur Sentinel-2A; L2A-Abdeckung Afrikas vor Ende 2018 ungeprüft). Bei 3296 Feldern liegt die Aussaat im Vorjahr von `year`.
+- *Konsequenz:* In Phase 1 Abdeckung 2016–2018 prüfen (wie in PLAN.md 3 vorgesehen); `year` als Erntejahr behandeln, Saisonbeginn immer aus `plant_date`.
+
+**c) SSURGO – Variation innerhalb der Standorte**
+- *Befund:* Alle 24 KBS-Parzellen liegen in **einer** Map-Unit (KaB, Kalamazoo loam): NCCPI Mais überall 0,664. Am BARC-Testfeld 5 Map-Units.
+- *Konsequenz:* M-B+ kann bei KBS nichts zwischen Parzellen erklären, SSURGO wirkt dort nur als Standort-Kennung (Orts-Proxy, §3.3). Bei Faktorenanalyse SSURGO-Effekte getrennt für „zwischen Standorten“ und „innerhalb BARC“ berichten.
+
+**d) Österreichische Versuchsberichte (nur Bestand, keine Auswertung)**
+- *Befund:*
+  - 150 Standort-Versuch-Jahre. Steiermark: im Wesentlichen 2 Dauerversuchsstandorte (Wagna, Kalsdorf bei Ilz). Oberösterreich: 13 Orte, Schwerpunkt Walding/Mauthausen.
+  - Jahreslücken: Stmk 2020/2021 nur teilweise, OÖ 2019 fehlt.
+  - Die Lücken haben Ursachen, die mit dem Ertrag zusammenhängen können (Ausfall, Überflutung, technisches Gebrechen, Witterung). Fehlende Zeilen sind also nicht zufällig.
+- *Konsequenz:*
+  - Im Österreich-Testprotokoll (vor dem Freeze) festlegen, wie Ausfalljahre behandelt werden. Vorschlag: als „nicht verfügbar“ berichten, nicht stillschweigend weglassen.
+  - Ebenfalls dort festlegen, ob Mischkultur-Zeilen in den Test kommen.
+  - Versuchsparzellen sind gut gedüngt und betreut, deshalb kann `YAS_site` von Praxisfeldern abweichen. Das in der Interpretation nennen.
+
+## N.2 Korrektheit (Messfehler, Einheiten, Labels)
+
+| Prüfpunkt | Geprüft wie | Befund | Konsequenz |
+|---|---|---|---|
+| **OAF Feldgröße** | Spaltenliste der CSV, Zenodo-Beschreibung, Artikel | **Keine Feldgrößen-Spalte**, obwohl Feldgrößen erhoben wurden | Filter „≥ 0,5 ha“ (PLAN §3.1) **nicht anwendbar** → ⛔ für die geplante Feldauswertung, siehe N.6 |
+| **OAF Koordinaten** | Nachkommastellen von `lon`/`lat` | auf **0,001° gerundet** (±56 m je Achse); 1254 exakte Felder teilen Punkt + Saison mit anderen (bis 12) | Ein 20-m-Kreis um den veröffentlichten Punkt liegt bei einem 0,5-ha-Feld (≈ 70 × 70 m) oft **nicht** im Feld → Satellitenkurve wäre häufig Nachbarfläche; siehe N.6 |
+| **OAF Feuchtebasis** | CSV, Zenodo, Artikel (PMC11130130) | **nicht angegeben**; Artikel nennt 15 % nur für einen separaten Sortenversuch | Für `RY_nb` unerheblich (Verhältnis innerhalb Gruppe); absolute Erträge als „Feuchte unbekannt (≈ 15 %)“ markieren, nicht mit US-Werten mischen |
+| **OAF Nullerträge** | Zählung | 263 Felder mit 0 kg/ha (Kenia 144, Ruanda 61, Tansania 58) | Totalausfall ist plausibel (Schäden), aber als eigene Klasse markieren; bei `RY_nb` bleibt 0 erhalten |
+| **OAF Schadens-Kodierung** | Beschreibung + Anteile je Land-Jahr | nur `pest`, `disease`, `striga`, `water_excess`; **Trockenheit steckt in `pest`/`disease`**, **Hagel fehlt**; Anteil exakt 0 in ganzen Land-Jahren (z. B. `pest` 2016 in Kenia/Tansania/Burundi, `water_excess` außerhalb Kenia/Ruanda/Uganda) → „False“ heißt dort vermutlich „nicht gefragt“ | Phase 3 4a: Prüfung „Trockenheit/Hagel“ an gemeldeten Ursachen **nicht möglich**, nur „Nässe“ und „Schädling/Krankheit (inkl. Trockenheit)“; Land-Jahre mit Anteil 0 als fehlend behandeln |
+| **OAF Gruppen für `RY_nb`** | Spaltenliste | keine Bezirksspalte; feinste Einheit Klimazone `cz` × `season` × `year`: 76 Gruppen mit ≥ 11 exakten Feldern (10 204 Felder) | Gruppierung festlegen (Vorschlag: `cz` × `season` × `year`) → `DECISIONS.md` vor Phase 1 |
+| **SSURGO Mais-Ertragsschätzung** | SDA-Abfrage je Bodenkarte | Hauptkomponenten mit Wert: KBS-Gebiet 10/50, BARC 222/362, Akron 44/110, Mead 37/65; bei KBS hat nur eine 1-%-Nebenkomponente einen Wert | Feldwert nur bei ≥ 50 % Abdeckung (`config.yaml`), sonst NaN; KBS damit ohne Ertragsschätzung → **NCCPI Mais** ist das verlässlichere SSURGO-Merkmal |
+| **SSURGO Regelname** | `cointerp`-Abfrage | Corn-Teilmodell heißt „NCCPI - NCCPI Corn Submodel (I)“ | in `config.yaml` festgehalten, Test vorhanden |
+
+## N.3 Scheinzusammenhänge
+- One Acre Fund: Programmteilnahme (≈ halbe Stichprobe) ist **nicht** als Spalte enthalten, korreliert aber mit Dünger/Sorte/GPS-Verfügbarkeit → Konfundierung bei der Bewirtschaftungsanalyse (Phase 2.4) benennen.
+- Mehrere Felder am selben gerundeten Punkt teilen dieselbe Satellitenkurve, haben aber verschiedene Erträge → würde Rauschen bzw. bei zufälligem Split Leakage erzeugen. Punkt-Duplikate in Phase 1 gemeinsam in einen Fold legen.
+- SSURGO bei KBS = konstante Standort-Kennung (siehe N.1 c).
+
+## N.4 Leakage
+n/a – noch keine Merkmale. Festgehalten: `RY_nb` darf das Feld selbst nicht im Gruppenmedian enthalten (wie PLAN §3.6).
+
+## N.5 Österreich-Regel
+- *Geprüft wie:* Arbeitsablauf der Digitalisierung (Unteragenten mit ausdrücklichem Auswertungsverbot); `at_trials.py` enthält nur Schema- und Einheitenprüfungen und gibt nur Zeilenzahlen je Standort/Jahr aus.
+- *Befund:* Österreichische Erträge wurden **nur abgeschrieben**. Es wurden keine Mittel über Jahre, Anomalien, Trends oder Vergleiche mit Modellen oder Satellitendaten berechnet oder angesehen. Wo ein Bericht kein Standortmittel nennt, wurde das Mittel der Sorten bzw. Varianten aus der vollständigen Tabelle berechnet und in `notes` markiert. Das ist Digitalisierung, keine Auswertung.
+- *Konsequenz:* Die Österreich-Regel ist eingehalten. `data/raw/at_trials.csv` wird bis zum Freeze nur auf Vollständigkeit erweitert (Koordinaten fragt der Projektinhaber an).
+
+## N.6 Entscheidung (neue Quellen)
+
+- **SSURGO:** ⚠️ **Weiter mit Einschränkung.** NCCPI Mais ist vollständig und wird als SSURGO-Hauptmerkmal verwendet. Die Mais-Ertragsschätzung ist lückenhaft und fehlt für KBS. Innerhalb von KBS gibt es keine Variation.
+- **AT-Versuchsberichte:** ⚠️ **Weiter mit Einschränkung.** Die Daten sind gesammelt (Details `DATA_SOURCES.md` §12). Einschränkungen: Feuchtebasis teils nicht angegeben, Ortsnamen uneinheitlich, nur Gemeinde-Genauigkeit, einzelne Widersprüche zwischen Text und Tabelle (in `notes`).
+- **One Acre Fund:** ⛔ **Stopp für die geplante Feld-Auswertung mit Satellitenkurven**, bis der Projektinhaber entscheidet. Der Filter aus PLAN.md §3.1 („Feldgröße ≥ 0,5 ha, 20-m-Kreis um exakte Position“) ist mit den veröffentlichten Daten nicht umsetzbar: Die Feldgröße fehlt, und die Koordinaten sind auf ±56 m gerundet. Satellitendaten wurden nicht angesehen, die Entscheidung ist also noch unbeeinflusst. Vorschläge:
+  1. **Anfrage** (Projektinhaber) an One Acre Fund bzw. die Autoren (Aramburu-Merlos/Grassini, University of Nebraska–Lincoln): ungerundete Koordinaten und Feldgröße für die Felder mit exakter Position. *Empfohlen*, weil damit der Plan unverändert bleibt.
+  2. Bis zur Antwort One Acre Fund **nur als Tabellendatensatz** nutzen, ohne Satellitenkurven: Phase 2.4 (Bewirtschaftung vs. Wetter) und Phase 3 4a nur mit Wetter/Boden. Merkmale wären dann nicht transferfähig und nur für die Analyse geeignet.
+  3. **Neuer Filter vor dem Ansehen der Satellitendaten**, z. B. Kreis mit ≥ 60 m Radius um den gerundeten Punkt und nur Punkte ohne weitere Felder in derselben Saison. Das ist eine Planänderung und braucht einen Eintrag in `DECISIONS.md`. Die Mischpixel-Gefahr ist hoch, weil die Felder vermutlich klein sind.
+  Außerdem festzulegen: die `RY_nb`-Gruppierung (Klimazone × Saison × Jahr statt Bezirk), und dass Phase 3 4a für Trockenheit und Hagel mit One Acre Fund nicht prüfbar ist.
