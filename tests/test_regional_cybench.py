@@ -312,6 +312,21 @@ def test_freeze_detects_tampering(small_cfg, tmp_path):
         rc.predict_zero_shot(df.head(5), "09-01", tmp_path / "freeze", protocol)
 
 
+def test_freeze_protocol_is_written_with_registered_hashes_and_at_protocol(small_cfg, tmp_path):
+    df, feats, files, _ = _freeze_fixture(small_cfg, tmp_path)
+    ci = {"value": 0.1, "lo": 0.0, "hi": 0.2}
+    metrics = {"09-01": {"n_region_years": len(df), "pooled": {"model_r2": ci, "model_spearman": ci, "skill_vs_yas1": ci},
+                         "within_year": {"mean_rho": 0.1, "lo": 0.0, "hi": 0.2}}}
+    path = tmp_path / "protocol.md"
+    rc.write_freeze_protocol(path, small_cfg, files, metrics, {"09-01": feats}, {"09-01": df}, "2026-01-01_cybench_eu",
+                             {"commit": "abc", "dirty": False}, tmp_path / "freeze")
+    text = path.read_text(encoding="utf-8")
+    assert rc.read_registered_hashes(path) == {n: f["sha256"] for n, f in files.items()}
+    assert rc.verify_freeze(tmp_path / "freeze", path)
+    for needle in ("2006–2020", "Wien (AT13)", "Offen, Projektinhaber entscheidet vor dem Test", "ρ > 0", "n = 5 × 15 = 75"):
+        assert needle in text
+
+
 def test_freeze_importance_shares_sum_to_one(small_cfg, tmp_path):
     _freeze_fixture(small_cfg, tmp_path)
     share = rc.freeze_importance(tmp_path / "freeze", ["09-01"], static=[])["09-01"]

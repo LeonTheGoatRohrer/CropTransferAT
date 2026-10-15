@@ -843,6 +843,11 @@ Die exakte Liste je Stichtag steht in `lgbm_<MMTT>_meta.json` (mit Prüfsumme un
 ## 4. EU-Ergebnisse (äußere Leave-One-Country-Out-Evaluation, Zusammenfassung)
 {eval_table}
 
+Einordnung (ehrlich): Das Modell ist **schwach**. Am Stichtag {last_cutoff} erklärt es R² = {r2_last} der Varianz von YAS, ρ = {rho_last} über alle Region-Jahre,
+aber nur ρ = {wy_last} **innerhalb eines Jahres** (der größere Teil des ρ ist das Jahressignal). Vor dem 15.7. besteht kein Skill gegenüber YAS = 1.
+Das vorab festgelegte Kriterium „ρ > 0 mit KI ohne 0“ ist ein niedriger Maßstab; es wird deshalb **nicht** nachträglich verschärft oder gelockert, und die Zusatzkennzahlen unten
+(Skill, ρ innerhalb eines Jahres, Cluster-KI) werden immer mit berichtet.
+
 Vollständige Kennzahlen (inkl. ohne Deutschland, länderbalanciert, innerhalb eines Jahres, Label-Shuffle): `results/{result_dir}/metrics.json`.
 
 ## 5. Prüfsummen (SHA-256) der eingefrorenen Dateien
@@ -862,7 +867,7 @@ Ablage: `results/models/cybench_freeze/` (nicht in Git; mit `python -m croptrans
 - Zielgröße `YAS` exakt wie oben (Vorjahre aus CY-Bench, auch 2001–2005 für 2006).
 - Vorhersage: `predict_zero_shot(features, cutoff, freeze_dir, protocol_path)` – prüft zuerst alle Prüfsummen aus Abschnitt 5, wendet das Modell unverändert an;
   keine Rekalibrierung, keine Verschiebung des Mittelwerts, kein Nachtrainieren, kein Zurücklegen von Österreich in irgendeinen Trainings- oder Tuningschritt.
-- **Offen – Projektinhaber entscheidet vor dem Test:** Ergänzung der Jahre 2021–2023 aus Statistik Austria (Prädiktoren 2021–2023 sind in CY-Bench vorhanden, Erträge nicht).
+- **Offen, Projektinhaber entscheidet vor dem Test:** Ergänzung der Jahre 2021–2023 aus Statistik Austria (Prädiktoren 2021–2023 sind in CY-Bench vorhanden, Erträge nicht).
   Vorschlag: Hauptergebnis nur 2006–2020 (CY-Bench), die Erweiterung zusätzlich und klar getrennt berichten. Die Entscheidung wird **vor** dem ersten Lauf schriftlich in `DECISIONS.md` festgehalten.
 
 **Metriken (je Stichtag {cutoffs}):** Spearman ρ(vorhergesagter YAS, beobachteter YAS); RMSE des Modells und der Baseline YAS = 1 und deren Differenz; R², Skill gegenüber YAS = 1 und gegenüber der
@@ -910,7 +915,10 @@ def write_freeze_protocol(path: Path, cfg: dict[str, Any], files: dict[str, dict
         colsample=lgbc["fixed"]["colsample_bytree"], reg_lambda=lgbc["fixed"]["reg_lambda"], g_depth=lgbc["grid"]["max_depth"],
         g_mcs=lgbc["grid"]["min_child_samples"], g_n=lgbc["grid"]["n_estimators"], hp_table="\n".join(hp_rows),
         n_feat_table=", ".join(f"{c}: {len(f)}" for c, f in features.items()), features_last=", ".join(features[last]),
-        eval_table="\n".join(ev_rows), result_dir=result_dir, hash_rows=hash_rows,
+        eval_table="\n".join(ev_rows), result_dir=result_dir, hash_rows=hash_rows, last_cutoff=last,
+        r2_last=_fmt_ci(metrics[last]["pooled"]["model_r2"], 3), rho_last=_fmt_ci(metrics[last]["pooled"]["model_spearman"], 2),
+        wy_last=_fmt_ci({"value": metrics[last]["within_year"]["mean_rho"], "lo": metrics[last]["within_year"]["lo"],
+                         "hi": metrics[last]["within_year"]["hi"]}, 2),
         cutoffs=", ".join(cfg["cutoffs"]["yield_model"]), n_boot=cfg["validation"]["bootstrap_n"])
     path.write_text(text, encoding="utf-8")
 
