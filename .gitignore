@@ -1,0 +1,29 @@
+# Data & results (never commit, see DATA_SOURCES.md)
+data/
+results/**/models/
+*.gpkg
+*.tif
+*.nc
+*.zip
+*.parquet
+!tests/fixtures/**
+
+# Secrets
+.env
+*.json.key
+credentials*.json
+service-account*.json
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/
+*.egg-info/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
