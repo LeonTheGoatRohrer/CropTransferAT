@@ -310,3 +310,10 @@ def test_freeze_detects_tampering(small_cfg, tmp_path):
         rc.verify_freeze(tmp_path / "freeze", protocol)
     with pytest.raises(AssertionError):
         rc.predict_zero_shot(df.head(5), "09-01", tmp_path / "freeze", protocol)
+
+
+def test_freeze_importance_shares_sum_to_one(small_cfg, tmp_path):
+    _freeze_fixture(small_cfg, tmp_path)
+    share = rc.freeze_importance(tmp_path / "freeze", ["09-01"], static=[])["09-01"]
+    assert sum(share.values()) == pytest.approx(1.0, abs=1e-3)
+    assert share["f1"] > share.get("f2", 0)  # the informative feature carries the gain

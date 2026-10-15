@@ -69,7 +69,7 @@ def git_info() -> dict[str, Any]:
     """Current commit hash of the code and whether the working tree has uncommitted changes."""
     def run(*args: str) -> str:
         return subprocess.run(["git", *args], cwd=REPO_ROOT, capture_output=True, text=True).stdout.strip()
-    return {"commit": run("rev-parse", "HEAD"), "dirty": bool(run("status", "--porcelain"))}
+    return {"commit": run("rev-parse", "HEAD"), "dirty": bool(run("status", "--porcelain", "--untracked-files=no"))}
 
 
 # --------------------------------------------------------------------------------------------
@@ -578,7 +578,20 @@ def case_studies(pred_df: pd.DataFrame, k: int = 3) -> dict[str, list[dict[str, 
     """The k best and k worst predictions by absolute YAS error (to be looked at, not just counted)."""
     d = pred_df.assign(abs_err=(pred_df["pred"] - pred_df["yas"]).abs()).sort_values("abs_err")
     cols = ["country", "adm_id", "year", "yas", "pred", "abs_err"]
-    return {"best": d.head(k)[cols].round(4).to_dict("records"), "worst": d.tail(k)[cols].round(4).to_dict("records")}
+    return {"best": d.head(k)[cols].round(6).to_dict("records"), "worst": d.tail(k)[cols].round(6).to_dict("records")}
+
+
+def freeze_importance(freeze_dir: Path, cutoffs: list[str], static: list[str]) -> dict[str, dict[str, float]]:
+    """Share of the total split gain per predictor variable in each frozen model (who carries the signal?)."""
+    import lightgbm as lgb
+    out = {}
+    for cutoff in cutoffs:
+        booster = lgb.Booster(model_file=str(freeze_dir / f"lgbm_{cutoff_tag(cutoff)}.txt"))
+        gain = pd.Series(booster.feature_importance("gain"), index=booster.feature_name())
+        group = pd.Series([n if n in static else n.split("_")[0] for n in gain.index], index=gain.index)
+        share = gain.groupby(group).sum() / gain.sum()
+        out[cutoff] = {k: round(float(v), 4) for k, v in share.sort_values(ascending=False).items()}
+    return out
 
 
 def target_summary(df: pd.DataFrame, cfg: dict[str, Any]) -> dict[str, Any]:
@@ -724,6 +737,9 @@ def run_experiments(cfg: dict[str, Any], data: dict[str, pd.DataFrame]) -> dict[
                                                 only_countries=non_de)
         coord_df = df.assign(lat=df["latitude"], lon=df["longitude"])
         preds["with_coordinates"], _ = run_loco(coord_df, [*feats, "lat", "lon"], cfg, seed, fixed=fixed)
+        static = list(cy["static_features"])
+        preds["without_static_features"], _ = run_loco(df, [f for f in feats if f not in static], cfg, seed,
+                                                       fixed=fixed)
         for r in range(cy["shuffle_repeats"]):
             preds[f"shuffle_{r}"], _ = run_loco(df, feats, cfg, seed, fixed=fixed, shuffle_seed=seed + 1000 * (r + 1))
         preds_by_cutoff[cutoff] = preds
@@ -747,20 +763,22 @@ def plot_earlywarning(metrics: dict[str, Any], path: Path) -> None:
     blue, orange, grey = "#0072B2", "#E69F00", "#6b6b6b"
     fig, axes = plt.subplots(1, 3, figsize=(10, 3.1), constrained_layout=True)
 
-    def band(ax, key, getter, color, label, ls="-"):
+    def band(ax, key, getter, color, label, ls="-", ci=True):
         vals = [getter(metrics[c], key) for c in cutoffs]
         ax.plot(x, [v["value"] for v in vals], ls, color=color, marker="o", ms=3, label=label)
-        if all("lo" in v for v in vals):
+        if ci:
             ax.fill_between(x, [v["lo"] for v in vals], [v["hi"] for v in vals], color=color, alpha=0.18, lw=0)
 
     pooled = lambda m, k: m["pooled"][k]
     band(axes[0], "model_r2", pooled, blue, "LightGBM (LOCO)")
-    band(axes[0], "trend_r2", pooled, orange, "Trend")
+    band(axes[0], "trend_r2", pooled, orange, "Trend (ohne KI)", ci=False)
     axes[0].axhline(metrics[cutoffs[0]]["pooled"]["yas1_r2"]["value"], color=grey, ls="--", lw=1, label="YAS = 1")
     axes[0].set_ylabel("R² (YAS)")
     band(axes[1], "model_spearman", pooled, blue, "alle Region-Jahre")
     axes[1].plot(x, [metrics[c]["within_year"]["mean_rho"] for c in cutoffs], "-", color=orange, marker="s", ms=3,
                  label="innerhalb eines Jahres")
+    axes[1].fill_between(x, [metrics[c]["within_year"]["lo"] for c in cutoffs],
+                         [metrics[c]["within_year"]["hi"] for c in cutoffs], color=orange, alpha=0.18, lw=0)
     axes[1].axhline(0, color=grey, lw=0.8)
     axes[1].set_ylabel("Spearman ρ")
     band(axes[2], "skill_vs_yas1", pooled, blue, "Skill vs. YAS = 1")
@@ -973,6 +991,9 @@ def main(argv: list[str] | None = None) -> None:
             freeze_info = {"status": "already frozen; re-training reproduces registered checksums"
                                      if all(same.values()) else "already frozen; RE-TRAINING DIFFERS",
                            "reproduced": same, "verified_files": verified}
+    if not args.no_freeze:
+        extras["freeze_gain_share_by_variable"] = freeze_importance(
+            REPO_ROOT / cy["freeze"]["dir"], list(data), list(cy["static_features"]))
     metrics_json = {"meta": {"date": today, "git": git, "seed": cfg["seed"], "n_features_by_cutoff": {c: len(f) for c, f in run["features"].items()},
                              "versions": {"python": platform.python_version()}, "freeze": freeze_info},
                     "cutoffs": metrics, **extras}

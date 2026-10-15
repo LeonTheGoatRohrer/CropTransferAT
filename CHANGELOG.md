@@ -3,6 +3,11 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/) – ein Minor-Release pro Phase (siehe AGENTS.md §4.4).
 
 ## [Unreleased]
+### Added
+- Phase 5 (bis EU-Freeze, **ohne jeden Österreich-Test**): `regional_cybench.py` – CY-Bench-Mais für 18 EU-Länder (Länderliste ohne AT, `assert_no_austria` an allen Einstiegen), Prädiktoren je Region-Jahr und Stichtag nach As-of-Regel (Monatsmittel/min/max, Summe für prec/cwb; fPAR/NDVI mit Verfügbarkeitsverzug), Ziel `YAS` (olympischer Durchschnitt der 5 Vorjahre), Baselines YAS = 1 und lineare Trendfortschreibung, flaches LightGBM (`max_depth ≤ 3`), Tuning nur verschachtelt per Leave-One-Country-Out, äußere LOCO-Evaluation mit Bootstrap-KI (Region-Jahre, Land-Jahr-Cluster, länderbalanciert, ohne DE), Frühwarnkurve, Kontrollen (Label-Shuffle, Training ohne DE, Koordinaten-Ablation, Adversarial Validation, Spearman innerhalb eines Jahres).
+- EU-Freeze: Modelle je Stichtag unter `results/models/cybench_freeze/` (nicht im Repository), SHA-256, Merkmalsliste, Hyperparameter und vorab registriertes AT-Zero-Shot-Protokoll in `reports/freeze_protocol_cybench.md`; `verify_freeze` und `predict_zero_shot` (nicht auf Österreich ausgeführt).
+- `tests/test_regional_cybench.py`: YAS-Handbeispiel, As-of-Regel, AT-Ausschluss, LOCO-Splits, Label-Shuffle, Freeze-Roundtrip.
+- Datenkritik `reports/data_review/phase5_cybench_eu.md`; `reports/results.md`; Abschnitt `cybench` in `config.yaml`.
 
 ## [0.1.0] – 2026-10-15 – Phase 0: Setup & Datenzugang
 ### Added
