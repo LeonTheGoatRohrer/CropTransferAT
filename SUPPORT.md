@@ -6,7 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
-| 2026-10-15 | Claude (Anthropic), Claude Code | Diskussion und Verfeinerung der Projektidee, Recherche zu Datenquellen, Entwurf von PLAN.md und AGENTS.md, Repository-Grundgerüst |
+| 2026-10-15 | Claude (Anthropic), Claude Code | Diskussion und Verfeinerung der Projektidee, Recherche zu Datenquellen (u. a. Feld-Ertragsdatensätze KBS, BARC, Colorado, Mead), Entwurf und Überarbeitung von PLAN.md und AGENTS.md, Repository-Grundgerüst |
 
 ## Datensätze
 _(wird in Phase 0 mit DATA_SOURCES.md befüllt)_

@@ -105,18 +105,19 @@ Am Ende jeder Prüfung eine von drei Entscheidungen festhalten:
 | Tag | Bedeutung |
 |---|---|
 | `v0.1.0` | Phase 0 – Setup & Datenzugang |
-| `v0.2.0` | Phase 1 – Pilot Steiermark |
-| `v0.3.0` | Phase 2 – Zielgrößen-Check (GO/NO-GO) |
-| `v0.4.0` | Phase 3 – V0 Regionalmodell CY-Bench (parallel; Tag bei Abschluss) |
-| `v0.5.0` | Phase 4 – Volle Feld-Pipeline |
-| `v0.6.0` | Phase 5 – Ziele & EDA |
-| `v0.7.0` | Phase 6 – V1 Feldmodell |
-| `v0.8.0` | Phase 7 – V2 Ablation/Radar/Unsicherheit |
-| `v0.9.0` | Phase 8 – V3 Ertragsbezug & Transfer |
-| `v0.10.0` | Phase 9 – Demo |
-| `v1.0.0` | Phase 10 – Abgabe |
+| `v0.2.0` | Phase 1 – Ertrags-Datensatz & Saisonkurven (F0) |
+| `v0.3.0` | Phase 2 – Pilot Steiermark |
+| `v0.4.0` | Phase 3 – Ertragsbezug AT (GO/NO-GO) |
+| `v0.5.0` | Phase 4 – V0 Regionalmodell CY-Bench (parallel; Tag bei Abschluss) |
+| `v0.6.0` | Phase 5 – Volle Feld-Pipeline |
+| `v0.7.0` | Phase 6 – Ziele & EDA |
+| `v0.8.0` | Phase 7 – V1 Feldmodell |
+| `v0.9.0` | Phase 8 – V2 Ablation/Radar/Unsicherheit |
+| `v0.10.0` | Phase 9 – V3 Ertragsbezug & Transfer |
+| `v0.11.0` | Phase 10 – Demo |
+| `v1.0.0` | Phase 11 – Abgabe |
 
-Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Phase 3 parallel läuft, werden Tags in der Reihenfolge des Abschlusses gesetzt; die Versionsnummer bleibt an die Phase gebunden. Jeder Tag hat einen Eintrag in `CHANGELOG.md`.
+Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Phase 4 parallel läuft, werden Tags in der Reihenfolge des Abschlusses gesetzt; die Versionsnummer bleibt an die Phase gebunden. Jeder Tag hat einen Eintrag in `CHANGELOG.md`.
 
 ### 4.5 Was niemals ins Repository kommt
 - Rohdaten, große Zwischendateien, Modelle > 50 MB (`data/`, `results/**/models/` sind in `.gitignore`).
@@ -133,8 +134,9 @@ Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Pha
   - `test_no_leakage.py` – Feature-Builder liefert für Stichtag *t* keine Werte mit Zeitstempel > *t*; Normalwerte enthalten nie das Testjahr.
   - `test_targets.py` – `I_Aug`, `I_normal`, `VAS`, `YAS` an Handbeispielen.
   - `test_field_matching.py` – IoU-Zuordnung an konstruierten Geometrien.
+  - `test_groundtruth_schema.py` – einheitliches Schema des Ertrags-Datensatzes, Einheit t/ha bei 15,5 % Feuchte, nur Mais-Feld-Jahre, `RY` nur mit ≥ 2 anderen Jahren.
   - `test_schemas.py` – Spalten, Datentypen, Wertebereiche der Parquet-Dateien (Indizes in [−1,1], Datumsbereiche, keine doppelten Schlüssel).
-  - `test_splits.py` – LOYO: kein Jahr gleichzeitig in Train und Test.
+  - `test_splits.py` – LOYO/LOFO/LOFYO: kein Jahr bzw. Feld gleichzeitig in Train und Test.
 - Neue Logik mit Verzweigungen oder Rechenformeln → Test dazu. Reine Plot-Skripte brauchen keinen Test.
 - Bugfix → zuerst Test, der den Fehler zeigt, dann Fix.
 - Ab Phase 0: GitHub Actions führt `pytest` bei jedem Push aus.

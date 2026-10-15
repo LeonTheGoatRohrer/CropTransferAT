@@ -10,4 +10,4 @@ Projekt für den Bundeswettbewerb Künstliche Intelligenz (BWKI) Österreich.
 
 ## Status
 
-Planungsphase abgeschlossen; nächster Schritt: Phase 0 (Setup & Datenzugang).
+Planungsphase abgeschlossen (v0.0.3); nächster Schritt: Phase 0 (Setup & Datenzugang), danach Phase 1 (Ertrags-Datensatz USA).
