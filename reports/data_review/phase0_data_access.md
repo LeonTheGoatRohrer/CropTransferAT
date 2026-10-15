@@ -16,10 +16,10 @@ In Phase 0 gibt es noch keine Merkmale und kein Modell. Geprüft wird deshalb, o
   | Quelle | Mais-Feld-Jahre | davon mit RY | unabhängige Standort-Jahre |
   |---|---|---|---|
   | KBS MCSE | 96 | 96 | 4 (2014, 2017, 2020, 2023) |
-  | BARC | 62 | 27 | 7 (2014, 2016–2021) |
+  | BARC | 62 | **16–27** (je nach Zuordnung der Feldnamen über die Jahre) | 7 (2014, 2016–2021) |
   | Colorado | 10 | **0** | 4 |
 
-  Das ergibt **≈ 123 RY-Labels aus nur ≈ 11 Standort-Jahren**. Die Felder einer Station im selben Jahr teilen Wetter und Bewirtschaftung, deshalb sind sie keine unabhängigen Fälle.
+  Das ergibt **≈ 112–123 RY-Labels aus nur ≈ 11 Standort-Jahren**. Bei BARC ist die Feldidentität über die Jahre unsicher: Die Namen wechseln (z. B. „5-03C“ vs. „5-3A“), und Felder wurden zusammengelegt. Notebook 00 kommt mit einfacher Namensnormalisierung auf 41 Felder und 16 RY-Feld-Jahre, eine Zählung mit enger Zuordnung auf 27. Phase 1 braucht deshalb eine geprüfte Zuordnungstabelle (über die Rasterumrisse). Die Felder einer Station im selben Jahr teilen Wetter und Bewirtschaftung, deshalb sind sie keine unabhängigen Fälle.
 - *Konsequenz:*
   - Effektive Stichprobe für das Jahressignal ist klein. Daraus folgen breite Konfidenzintervalle, Bootstrap über Standort-Jahre und LOFYO als primärer Split (wie geplant).
   - Colorado liefert kein RY und dient nur der Ergänzung für absolute Erträge und Muster innerhalb der Felder.

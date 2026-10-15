@@ -4,6 +4,12 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+## [0.1.1] – 2026-10-15 – Phase 0 Korrektur
+### Fixed
+- `notebooks/00_data_access.ipynb` ausgeführt (alle Zellen fehlerfrei); Spalte `plot` → `plot_id` (Kollision mit pandas `.plot`).
+- BARC-RY-Feld-Jahre in Datenkritik/CHANGELOG: 16–27 je nach Feldnamen-Zuordnung (geprüfte Zuordnung folgt in Phase 1).
+- `.claude/worktrees/` in `.gitignore`.
+
 ## [0.1.0] – 2026-10-15 – Phase 0: Setup & Datenzugang
 ### Added
 - Python-3.11-Umgebung mit fixierten Paketen (`requirements.txt`, CPU-torch), Paket `src/croptransfer/`, `pyproject.toml`, zentrale `config.yaml`, GitHub Actions (`pytest` bei jedem Push).
@@ -25,7 +31,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 ### Found
 - One Acre Fund: **keine Feldgrößen-Spalte**, Koordinaten auf 0,001° gerundet, Feuchtebasis nicht angegeben, Trockenheit in `pest`/`disease` eingeordnet, Hagel fehlt → Vorab-Filter PLAN §3.1 so nicht umsetzbar (Entscheidung offen).
 - SSURGO: alle 24 KBS-Parzellen in einer Map-Unit; Mais-Ertragsschätzung für KBS nicht vorhanden.
-- US-Ertragslabels: ≈ 123 RY-Labels aus nur ≈ 11 Standort-Jahren; KBS-Ertragstrend +0,087 t/ha/Jahr → RY-Normalwert muss festgelegt werden.
+- US-Ertragslabels: ≈ 112–123 RY-Labels (BARC-Feldzuordnung unsicher) aus nur ≈ 11 Standort-Jahren; KBS-Ertragstrend +0,087 t/ha/Jahr → RY-Normalwert muss festgelegt werden.
 - INVEKOS: ~63 % der steirischen Körnermais-Schläge < 1 ha; CCM (Code 106) so häufig wie Silomais.
 - Feuchtebasen der Quellen verschieden (14 / 15 / 15,5 % / nass); CY-Bench-Erträge AT enden 2020.
 

@@ -27,3 +27,6 @@ __pycache__/
 Thumbs.db
 .vscode/
 .idea/
+
+# agent worktrees
+.claude/worktrees/
