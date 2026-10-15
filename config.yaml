@@ -13,7 +13,7 @@ paths:
 
 gee:
   # Google Cloud project registered for Earth Engine. Set here or via env var EE_PROJECT.
-  project: null
+  project: croptransfer
   collections:
     hls_l30: NASA/HLS/HLSL30/v002
     hls_s30: NASA/HLS/HLSS30/v002
