@@ -4,6 +4,53 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+## [0.1.0] – 2026-10-15 – Phase 0: Setup & Datenzugang
+### Added
+- Python-3.11-Umgebung mit fixierten Paketen (`requirements.txt`, CPU-torch), Paket `src/croptransfer/`, `pyproject.toml`, zentrale `config.yaml`, GitHub Actions (`pytest` bei jedem Push).
+- `gee_extract.py`: Earth-Engine-Initialisierung (Projekt `croptransfer`, TLS über Windows-Zertifikatsspeicher) und Zugangstest; Filter gegen HLS-Granulen mit Datumsgrenzen-Footprints (UTM-Zone 01/60).
+- `regional_stats.py`: Statistik-Austria-/Eurostat-Körnermais je Bundesland → `data/raw/stat_at_maize.csv`.
+- `invekos.py`: INVEKOS-Dateien finden, Schema lesen, Kulturcodes zählen, Schläge je Bundesland über Gemeinde-Join (nur Zählung, Österreich-Regel).
+- `notebooks/00_data_access.ipynb`: Erreichbarkeit und Kennzahlen aller Quellen, direkt aus den Rohdaten.
+- `DATA_SOURCES.md` für alle Quellen (KBS, BARC, Colorado, Mead, CY-Bench, Statistik Austria, One Acre Fund, YieldSAT, SSURGO, AT-Versuchsberichte, Bodenklimazahl, INVEKOS, Verwaltungsgrenzen).
+- Datenkritik `reports/data_review/phase0_data_access.md` (Entscheidung ⚠️ weiter mit Einschränkung; One Acre Fund ⛔ für die Feldauswertung bis zur Entscheidung).
+- `one_acre_fund.py`: Sichtung des One-Acre-Fund-Datensatzes (Spalten, exakte Positionen, Vorab-Filter, Schadens-Kodierung, `RY_nb`-Gruppen); `python -m croptransfer.one_acre_fund`.
+- `soil_ssurgo.py`: SSURGO über Soil Data Access (Mais-Ertragsschätzung `cocropyld.nonirryield_r`, NCCPI Mais aus `cointerp`), Aggregation Komponente → Map-Unit → Feld mit Abdeckungsregel; Testabfrage KBS + BARC.
+- `at_trials.py`: Zusammenführung und Schemaprüfung der abgeschriebenen österreichischen Versuchserträge → `data/raw/at_trials.csv` (nur Sammeln, keine Auswertung).
+- `DATA_SOURCES.md` §9, §11, §12 mit Kennzahlen; Datenkritik-Nachtrag für die neuen Quellen.
+
+### Changed
+- Entscheidungen des Projektinhabers in `DECISIONS.md`: RY-Normalwert trendbereinigt, One Acre Fund nur Tabellendatensatz (`RY_nb`-Gruppe `cz` × Saison × Jahr), Arbeitsgrenze Freeze, nichts veröffentlichen; `ANFRAGEN.md` Nr. 7 (One Acre Fund Koordinaten/Feldgröße).
+- Österreich-Regel nachträglich umgesetzt: Werte-Tabelle der Statistik-Austria-Erträge aus `DATA_SOURCES.md` und Einzelwerte aus der Datenkritik entfernt (offen dokumentiert).
+
+### Found
+- One Acre Fund: **keine Feldgrößen-Spalte**, Koordinaten auf 0,001° gerundet, Feuchtebasis nicht angegeben, Trockenheit in `pest`/`disease` eingeordnet, Hagel fehlt → Vorab-Filter PLAN §3.1 so nicht umsetzbar (Entscheidung offen).
+- SSURGO: alle 24 KBS-Parzellen in einer Map-Unit; Mais-Ertragsschätzung für KBS nicht vorhanden.
+- US-Ertragslabels: ≈ 123 RY-Labels aus nur ≈ 11 Standort-Jahren; KBS-Ertragstrend +0,087 t/ha/Jahr → RY-Normalwert muss festgelegt werden.
+- INVEKOS: ~63 % der steirischen Körnermais-Schläge < 1 ha; CCM (Code 106) so häufig wie Silomais.
+- Feuchtebasen der Quellen verschieden (14 / 15 / 15,5 % / nass); CY-Bench-Erträge AT enden 2020.
+
+## [0.0.5] – 2026-10-15
+### Added
+- Trainingsdaten: **One Acre Fund** (14.773 Maisfelder, Afrika, inkl. gemeldeter Schäden) und **YieldSAT** (303 Maisfelder mit Mähdrescher-Karten, Argentinien/Brasilien); Nachbar-relativer Ertrag `RY_nb`; Stichtag-Übertragung über Wärmesumme seit Saisonbeginn; zweite Satelliten-Basis (S2).
+- **SSURGO** als US-Boden-Ertragspotenzial (Analysemodell M-B+).
+- Österreich-Test **V2 lokal**: Versuchsberichte Hatzendorf + LK-OÖ-Praxisversuche (`YAS_site`); Bodenklimazahl optional.
+- Prüfung der Ursachen-Zuordnung an den gemeldeten Schäden (Phase 3).
+- `ANFRAGEN.md`: alle Anfragen des Projektinhabers mit Textentwürfen.
+- `DATA_SOURCES.md`: Einträge 9–13 (Status geplant/angefragt).
+
+## [0.0.4] – 2026-10-15
+### Changed
+- `PLAN.md` neu geordnet: **Österreich ist nur noch Testfall (Beweis).** Phasen: 0 Setup → 1 alle Ertragsdaten aufbereiten → 2 Basismodelle „Was bestimmt den Ertrag?“ → 3 Problemfelder erkennen → 4 „Stark genug?“ + Einfrieren → 5 CY-Bench (parallel) → 6 Österreich-Daten → 7 Test in Österreich → 8 Zusatz (optional) → 9 Demo → 10 Abgabe.
+- Forschungsfragen neu: F0 Ertragsvorhersage, F1 Ertragsfaktoren, F2 Problemfelder, F3 Beweis Österreich, F4 CY-Bench-Gegenprobe, F5 Zusatz.
+- GO/NO-GO mit österreichischen Daten entfällt; Stressindikator K1–K5 wird nur mit US-Daten gewählt; selbstüberwachtes Feldmodell, Radar und Few-Shot sind optionaler Zusatz (Phase 8).
+- `AGENTS.md`: Versionstabelle (v0.1.0 … v0.10.0, v1.0.0), Österreich-Regel in der Datenkritik, Stopp-Bedingung, Pflicht-Test `test_freeze.py`.
+
+### Added
+- Modellfamilie je Merkmalsgruppe (Satellit, Wetter, Boden/Gelände, Kombination), Faktorenanalyse, Modell innerhalb der Felder (Problemzonen aus Ertragskarten).
+- Referenzkurve „gesunder Mais“, Gefährdet-Klassifikation, vorab festgelegte Ursachen-Regeln.
+- Vorab festgelegtes Kriterium „stark genug“, Freeze mit Prüfsummen und vorab registriertem Österreich-Testprotokoll.
+- Datenerweiterung: KBS-Jahre vor 2013 über Landsat 5/7 (nach Harmonisierungsprüfung); GDD-Zeitachse.
+
 ## [0.0.3] – 2026-10-15
 ### Changed
 - `PLAN.md` neu aufgebaut: nach dem Setup zuerst der **Ertrags-Datensatz** (KBS LTER, USDA BARC, Colorado; Mead nach Klärung) mit HLS- und Sentinel-2-Saisonkurven; danach Steiermark-Pilot, Ertragsbezug in Österreich (GO/NO-GO), CY-Bench parallel, dann Phasen 5–11.
