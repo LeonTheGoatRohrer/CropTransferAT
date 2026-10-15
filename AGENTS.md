@@ -163,6 +163,7 @@ Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Pha
 | `DECISIONS.md` | Jede Abweichung/Festlegung mit Datum, Grund, Alternativen |
 | `DATA_SOURCES.md` | Quelle, Version, Lizenz, Abrufdatum, Download-/Erzeugungsschritte je Datensatz |
 | `SUPPORT.md` | Jede Unterstützung (Personen, KI-Tools, Datensätze, Code Dritter) – BWKI-Pflicht |
+| `ANFRAGEN.md` | Anfragen, die der Projektinhaber selbst stellt (Status aktuell halten) |
 | `reports/data_review/` | Datenkritik-Berichte (§3) |
 | `reports/results.md` | Ergebnisübersicht |
 

@@ -15,6 +15,11 @@ Umrechnung Mais (gilt für alle US-Quellen): 1 bu/ac = 62,77 kg/ha (56 lb/bu). A
 | 4 | USDA BARC Gridded Yield Archive | ✅ verfügbar | **62 Mais-Feld-Jahre** (~33 Felder), 2014, 2016–2021 | U.S. Public Domain |
 | 5 | Colorado (Akron) Dryland | ✅ verfügbar (nur Stichprobenpunkte) | 10 Mais-Teilflächen-Jahre, 2019–2022 | CC0 |
 | 6 | Mead US-Ne1/2/3 (AmeriFlux BADM) | ⏳ angefragt / Konto nötig | unbekannt | CC-BY-4.0 (nach Login) |
+| 9 | One Acre Fund – Maize management and yield (Zenodo 10.5281/zenodo.11115815) | 📋 geplant (Download ohne Login) | 14.773 Maisfelder, 2016–2022, je 1 Jahr | CC BY 4.0 |
+| 10 | YieldSAT (yieldsat.github.io) | ⏳ Zugang beim Projektinhaber (Formular) | Mais: 185 Felder AR + 118 BR, 2017–2024 | unklar – erst nach Zugang |
+| 11 | SSURGO (USDA NRCS, Soil Data Access) | 📋 geplant (ohne Login) | Mais-Ertragsschätzung + NCCPI je Bodeneinheit (nur US) | U.S. Public Domain |
+| 12 | Versuchsberichte Hatzendorf (Land Steiermark) + LK-OÖ-Praxisversuche | 📋 geplant (öffentliche PDFs); Standortkoordinaten angefragt | Körnermais-Standortmittel je Jahr – **nur Österreich-Test** | öffentlich, Quellenangabe |
+| 13 | Bodenklimazahl (Finanzbodenschätzung) | ⏳ optional, Anfrage beim Projektinhaber | Ertragsfähigkeit 1–100 je Fläche (AT) – nur Plausibilitätsprüfung | unklar |
 
 ---
 
@@ -210,3 +215,38 @@ Erzeugung der CSV aus den Originalen: `python -m croptransfer.regional_stats` (M
 **Status: ⚠️ teilweise** (Bundesland 2010–2026 vorhanden, 2010–2018 nur über Eurostat; Bezirksebene nicht verfügbar).
 
 <!-- INVEKOS und Verwaltungsgrenzen folgen. -->
+
+---
+
+## 9. One Acre Fund – Maize management and yield of smallholder farmers in Sub-Saharan Africa 2016–2022
+
+**Quelle:** Zenodo, DOI 10.5281/zenodo.11115815 (2024-05-06), Datei `One_Acre_Fund_MEL_maize_survey_data_2016-2022.csv` (5,6 MB). **Lizenz:** CC BY 4.0.
+**Inhalt laut Beschreibung:** 14.773 Feldbeobachtungen nach Qualitätskontrolle, nur Mais in Reinkultur; Regionen Nord-Zentral-Nigeria (115), Ruanda/Burundi (2.720), Zentral-Sambia (861), Südwest-Tansania (3.710), Ost-Uganda/West-Kenia (7.367). Ertrag aus zwei zufällig platzierten Ernteproben à 36 m² (ohne Feldrand); Pflanzendichte, Reihenabstand; von Landwirt:innen gemeldet: Aussaat-/Erntedatum, Sorte, Dünger (organisch/mineralisch), Kalkung, Unkrautbekämpfung, Pflanzenschutz, **Schäden** (Schädlinge, Krankheiten, Striga, Hagel, Nässe); Feldgröße (gemeldet, teils vor Ort gemessen). **Geolokalisierung nur bei 70 % exakt**, sonst nächster Ort (21 %) bzw. Bezirk (9 %).
+**Status: 📋 geplant** – Sichtung in Phase 0 (Spalten, Feuchtebasis, Feldgrößen, Kodierung der Schäden).
+
+## 10. YieldSAT
+
+**Quelle:** https://yieldsat.github.io/ (Code auf GitHub). **Zugang:** Anfrageformular (Projektinhaber, siehe `ANFRAGEN.md`). **Lizenz:** auf der Seite nicht angegeben.
+**Inhalt laut Seite:** 2.173 Felder (AR 751, BR 551, UY 572, DE 299), 2016–2024; **Mais nur AR (185) und BR (118)**; Mähdrescher mit GPS-Ertragsmonitor (Nassertrag, Feuchte → Trockenertrag), > 12 Mio. Ertragspunkte, gerastert auf 10 m passend zu Sentinel-2; Sentinel-2 L2A (13 Bänder + SCL), ERA5-Land, SoilGrids 2.0, SRTM. Mais-Jahre pro Feld: unbekannt.
+**Status: ⏳ Zugang beantragt.**
+
+## 11. SSURGO (USDA NRCS Soil Survey Geographic Database)
+
+**Zugang:** Soil Data Access (Webdienst, ohne Login) bzw. gSSURGO. **Lizenz:** U.S. Public Domain.
+**Verwendet:** geschätzter Ertrag ohne Bewässerung für Mais (bu/ac; seit dem SSURGO-Update 2019 für Mais, Soja, Weizen, Baumwolle) und NCCPI Version 3 Mais (0–1) je Bodeneinheit (Maßstab 1:12.000–1:24.000). Exakte Tabellen-/Spaltennamen werden bei der Abfrage geprüft und hier eingetragen.
+**Hinweis:** Werte sind Schätzungen von Bodenkundler:innen, keine Messungen → nur Merkmal/Analyse (nur US), nie Label.
+**Status: 📋 geplant.**
+
+## 12. Lokale Testerträge Österreich (nur nach dem Freeze auswerten)
+
+- **Versuchsstation für Pflanzenbau Hatzendorf** (Amt der Stmk. Landesregierung, Landwirtschaftliche Fachschulen): jährliche Versuchsberichte als PDF auf fachschulen.steiermark.at (u. a. 2013–2025), darunter Körnermais-Düngungsversuche Wagna 2007–2015 (12 Varianten, 6 Wiederholungen) und Kalsdorf bei Ilz. Kontakt: versuchlwschulen@stmk.gv.at.
+- **LK Oberösterreich – Praxisversuche Körnermais:** PDFs je Standort und Jahr (z. B. unter `cms2.lko.at/pages/versuchsberichte_pdfs/2024/`), Standortmittel in kg/ha bei 14 % Feuchte.
+- Ziel-Datei: `data/raw/at_trials.csv` (`site, bundesland, lat, lon, loc_precision, year, yield_t_ha, moisture_basis, trial_type, variant, sowing_date, harvest_date, source_pdf, page`).
+
+**Status: 📋 geplant** (Sammeln/Digitalisieren erlaubt, Auswertung erst nach dem Freeze).
+
+## 13. Bodenklimazahl (Finanzbodenschätzung, Österreich)
+
+Verhältniszahl 1–100 für die natürliche Ertragsfähigkeit; im Kataster je Grundstück abfragbar, in GIS Steiermark als Layer vorhanden (in Landesplanungen verwendet), **offener Massendownload nicht gefunden**. eBOD (bodenkarte.at) frei einsehbar, kein Rohdatenexport.
+**Status: ⏳ optional, Anfrage beim Projektinhaber.**
+

@@ -1,6 +1,6 @@
 # CropTransfer AT – Arbeitsplan
 
-> Früherkennung von Stress und Ertragsverlust auf einzelnen Maisfeldern aus Satelliten-Zeitreihen, Wetter und Boden: **vollständig gelernt an Feldern mit gemessenem Ertrag** (USA, viele Jahre), dann **eingefroren** und **ohne jede Anpassung in Österreich getestet**. Österreich ist der Beweis, ob der Algorithmus gut genug ist – nicht Trainingsgebiet.
+> Früherkennung von Stress und Ertragsverlust auf einzelnen Maisfeldern aus Satelliten-Zeitreihen, Wetter und Boden: **vollständig gelernt an Feldern mit gemessenem Ertrag** (USA mit vielen Jahren je Feld, dazu viele Felder aus Afrika und Südamerika), dann **eingefroren** und **ohne jede Anpassung in Österreich getestet**. Österreich ist der Beweis, ob der Algorithmus gut genug ist – nicht Trainingsgebiet.
 
 Dieser Plan ist so geschrieben, dass er Schritt für Schritt abgearbeitet werden kann. Jede Phase hat: **Ziel → Aufgaben → Ergebnis (Deliverable) → Abnahmekriterium**. Alle technischen Entscheidungen sind in Abschnitt 2 festgelegt; Abweichungen werden in `DECISIONS.md` begründet. Wie gearbeitet wird, regelt `AGENTS.md`.
 
@@ -9,7 +9,10 @@ Dieser Plan ist so geschrieben, dass er Schritt für Schritt abgearbeitet werden
 ## 0. Kernidee
 
 1. Ein Maisfeld „sieht man“ im Satelliten als **Kurve über die Saison** (NDVI, NDRE, Wassergehalt …) – gesund = grün, dicht, chlorophyllreich; Stress = Kurve bleibt flach oder fällt früh ab.
-2. **Alle heruntergeladenen Ertragsdaten werden zuerst sauber aufbereitet** (Phase 1): Maisfeld × Jahr × gemessener Ertrag × Satellitenkurve × Wetter × Boden/Gelände. Quellen: Kellogg Biological Station (KBS), USDA Beltsville (BARC), Colorado, ggf. Mead. Wenige Felder × viele Jahre: Von Jahr zu Jahr ändern sich vor allem Wetter und Stress – genau das Signal, das wir brauchen.
+2. **Alle heruntergeladenen Ertragsdaten werden zuerst sauber aufbereitet** (Phase 1): Maisfeld × Jahr × gemessener Ertrag × Satellitenkurve × Wetter × Boden/Gelände. Zwei Arten von Quellen ergänzen sich:
+   - **Wenige Felder × viele Jahre** (Kellogg Biological Station KBS, USDA Beltsville BARC, Colorado, ggf. Mead): Von Jahr zu Jahr ändern sich vor allem Wetter und Stress – das Signal für Ertragsverluste.
+   - **Viele Felder** (One Acre Fund, Afrika, ~14.800 Felder; YieldSAT, Südamerika, ~300 Maisfelder mit Mähdrescher-Karten): Unterschiede **zwischen** Feldern im selben Jahr – und bei One Acre Fund von Landwirt:innen gemeldete Ursachen (Schädlinge, Krankheiten, Hagel, Nässe).
+   - Für die US-Felder zusätzlich **SSURGO**: amtlich geschätztes Ertragspotenzial des Bodens je Bodeneinheit.
 3. **Darauf werden mehrere Basismodelle trainiert** (Phase 2), die je einen Blickwinkel haben – nur Satellit, nur Wetter, nur Boden/Gelände, Kombination – und gemeinsam beantworten: **Welche Faktoren bestimmen, wie viel geerntet wird?** Zusätzlich innerhalb der Felder: Wo im Feld fehlt Ertrag und warum (Ertragskarten)?
 4. **Erst wenn das funktioniert, wird daraus Problemfeld-Erkennung** (Phase 3): gefährdete Felder und Problemzonen früh in der Saison finden und die wahrscheinliche Ursache eingrenzen (Trockenheit, Hitze, Nässe, abrupter Schaden).
 5. **Einfrieren** (Phase 4): Erfüllen die Modelle das vorab festgelegte Kriterium „stark genug“, werden Modelle, Merkmale, Schwellen und das Österreich-Testprotokoll unveränderlich festgehalten (Git-Tag + Prüfsummen).
@@ -27,7 +30,7 @@ Dieser Plan ist so geschrieben, dass er Schritt für Schritt abgearbeitet werden
 |---|---|---|---|
 | **F0** | Wie gut sagen Satellitenkurve, Wetter und Boden den **gemessenen Feldertrag** voraus – und ab welchem Zeitpunkt der Saison? | Basismodelle, Test mit ausgelassenen Feldern + Jahren | 2 |
 | **F1** | **Welche Faktoren bestimmen den Ertrag** – zwischen Jahren, zwischen Feldern und innerhalb eines Feldes? Was trägt Satellit, Wetter, Boden/Gelände jeweils bei? | Modellfamilie + Ablation + SHAP; Ertragskarten | 2 |
-| **F2** | Wie früh und wie zuverlässig erkennt man **gefährdete Felder und Problemzonen**, und lässt sich die wahrscheinliche Ursache eingrenzen? | Klassifikation „gefährdet“, Referenzkurve gesunder Mais, Ursachen-Zuordnung | 3 |
+| **F2** | Wie früh und wie zuverlässig erkennt man **gefährdete Felder und Problemzonen**, und lässt sich die wahrscheinliche Ursache eingrenzen? | Klassifikation „gefährdet“, Referenzkurve gesunder Mais, Ursachen-Zuordnung (geprüft an den gemeldeten Ursachen im One-Acre-Fund-Datensatz) | 3 |
 | **F3** | **Der Beweis:** Funktioniert das eingefrorene US-Modell in Österreich ohne Anpassung – regional und (wo Daten vorhanden) pro Feld? Ab welchem Stichtag? Steiermark und andere Bundesländer? | Vorhersage ↔ österreichischer Ertrag, vorab registriertes Protokoll | 7 |
 | **F4** | Unabhängige Gegenprobe: regionaler Transfer EU → Österreich (CY-Bench), Zero-Shot. | Regionalmodell | 5 |
 | *F5* | *Zusatz, nicht Teil des Beweises:* Wie viel bringt Anpassung mit österreichischen Daten (Few-Shot, selbstüberwachtes Feldmodell, Radar)? | Few-Shot, selbstüberwacht | 8 |
@@ -40,28 +43,33 @@ Dieser Plan ist so geschrieben, dass er Schritt für Schritt abgearbeitet werden
 
 | Thema | Entscheidung | Begründung | Später optional |
 |---|---|---|---|
-| **Ertrags-Datensatz (Feld-Labels)** | **KBS LTER** (MCSE-Parzellen, Ertragspunkte, Scale-up), **USDA BARC** (Ertragskarten 2014, 2016–2021), **Colorado-Trockenfarm** (2019–2022); **Mead US-Ne1/2/3** nach Klärung der Ertragsdaten | offen, Mähdrescher-gemessen, viele Jahre pro Feld | weitere öffentliche Ertragskarten; One Acre Fund |
-| Trainingsgebiet | **ausschließlich Ertrags-Datensatz USA** (+ EU-Regionen für das Regionalmodell) | Österreich bleibt unberührter Testfall | – |
+| **Ertrags-Datensatz (Feld-Labels), Längsschnitt** | **KBS LTER** (MCSE-Parzellen, Ertragspunkte, Scale-up), **USDA BARC** (Ertragskarten 2014, 2016–2021), **Colorado-Trockenfarm** (2019–2022); **Mead US-Ne1/2/3** nach Klärung der Ertragsdaten | offen, Mähdrescher-gemessen, viele Jahre pro Feld | weitere öffentliche Ertragskarten |
+| **Ertrags-Datensatz (Feld-Labels), Querschnitt** | **One Acre Fund** (Zenodo 10.5281/zenodo.11115815, CC BY 4.0; 14.773 Reinbestand-Maisfelder, 5 Regionen in Subsahara-Afrika, 2016–2022, Ernteproben 2 × 36 m², Feldgröße, Aussaat-/Erntedatum, Dünger, gemeldete Schäden); **YieldSAT** (yieldsat.github.io; Mähdrescher-Ertragskarten 10 m, Mais: 185 Felder Argentinien + 118 Felder Brasilien, 2017–2024; Zugang auf Anfrage) | viele Felder → Unterschiede zwischen Feldern; Ursachen-Labels (One Acre Fund) | – |
+| Trainingsgebiet | **ausschließlich USA, Afrika (One Acre Fund), Südamerika (YieldSAT)** (+ EU-Regionen für das Regionalmodell) | Österreich bleibt unberührter Testfall | – |
+| Aufnahme der Querschnitt-Datensätze ins Hauptmodell | nur, wenn sie die Güte auf den **US-Längsschnitt-Feldern** (LOFYO) verbessern oder nicht verschlechtern (Regel in Phase 2) | ferne Regionen könnten auch schaden | – |
 | Region Österreich (Test, Feldebene) | **Steiermark** (alle Körnermaisfelder) | viel Körnermais, kaum Bewässerung, Hagel + Trockenstress | – |
 | Region Österreich (Test, regional) | **ganz Österreich, Stichprobe** | Steiermark allein = zu wenige Region-Jahre | – |
 | Kultur | **nur Körnermais**; in Österreich Silomais ausgeschlossen | Silomais früh geerntet → verfälscht Spätsaison | Silomais als Vergleich |
 | Jahre | Ertrags-Datensatz **2013–2025 (HLS)**, zusätzlich **KBS-Jahre vor 2013** über Landsat 5/7, falls die Harmonisierungsprüfung besteht (Phase 1); Österreich **2018–2025** | „alle Daten nutzen“: verdreifacht die KBS-Feld-Jahre; HLS ab 2013; stabile S2-Abdeckung AT ab 2018 | – |
 | Satellit lange Reihen | **HLS v2** (`NASA/HLS/HLSL30/v002` + `NASA/HLS/HLSS30/v002`), 30 m, Fmask; vor 2013 **Landsat 5/7 Collection 2 L2**, auf HLS-L30 harmonisiert | Landsat 8/9 + Sentinel-2 harmonisiert → 10+ Jahre, ~2–3 Tage | – |
 | Satellit hochaufgelöst | **Sentinel-2 L2A** `COPERNICUS/S2_SR_HARMONIZED` (10–20 m) + **Cloud Score+** `GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED`, `cs_cdf ≥ 0.60` | Red-Edge (NDRE) nur bei S2; kleine Felder; Problemzonen im Feld | Schwelle tunen |
-| Gemeinsame Basis für Transfer | **Hauptmodell nutzt nur Merkmale, die in USA und Österreich identisch berechenbar sind** (HLS, ERA5-Land, SoilGrids, Copernicus-DEM) | gleiches Produkt → Modell direkt übertragbar | – |
+| Gemeinsame Basis für Transfer | **Hauptmodell nutzt nur Merkmale, die in allen Trainingsregionen und in Österreich identisch berechenbar sind** (ERA5-Land, SoilGrids, Copernicus-DEM + Satellit). Zwei Satelliten-Basen: **HLS-Basis** (lange Reihen, US ab 2013 / KBS davor) und **S2-Basis** (US ab 2017, One Acre Fund, YieldSAT, Österreich ab 2018) | gleiches Produkt → Modell direkt übertragbar; kleine One-Acre-Fund-Felder nur mit 10 m auswertbar | – |
 | Radar | **Sentinel-1 GRD** `COPERNICUS/S1_GRD` (VV, VH) – nur Phase 8 | wolkenunabhängig | – |
 | Wetter | **ERA5-Land Daily** `ECMWF/ERA5_LAND/DAILY_AGGR` – für US- und AT-Felder gleich | global konsistent, inkl. Bodenwasser | GeoSphere **SPARTACUS** 1 km für AT (Phase 8) |
-| Boden | **SoilGrids 250 m** + nutzbare Feldkapazität (Saxton & Rawls 2006) | global konsistent | österreichische eBOD |
+| Boden | **SoilGrids 250 m** + nutzbare Feldkapazität (Saxton & Rawls 2006) – im Hauptmodell | global konsistent | – |
+| Boden-Ertragspotenzial USA | **SSURGO** (USDA NRCS, über Soil Data Access): geschätzter Maisertrag ohne Bewässerung (bu/ac) und **NCCPI Mais** (0–1) je Bodeneinheit, Maßstab 1:12.000–1:24.000 | sagt direkt, „wie viel dieser Boden hergibt“; viel feiner als SoilGrids | POLARIS 30 m |
+| Boden-Ertragspotenzial Österreich | **Bodenklimazahl** (Finanzbodenschätzung, 1–100), **falls beschafft** – nur im Österreich-Test als Plausibilitätsprüfung | gibt es nur in AT → nicht im Hauptmodell | eBOD |
 | Gelände | **Copernicus DEM GLO-30** → Höhe, Neigung, Nord-/Ostexposition, **TPI**, TWI | in GEE; TPI erklärt Ertragsmuster im Feld (Colorado-Studie) | 10-m-DGM Österreich |
 | Felder Österreich | **INVEKOS Schläge** (AMA, GeoPackage, CC BY 4.0) | offizielle Feldgrenzen + Kultur | – |
 | Regionalerträge | **CY-Bench** (AT + EU) + **Statistik Austria** (Körnermais, Bundesland) | harmonisiert / offiziell | – |
+| Lokale Erträge Österreich (nur Test) | **Versuchsberichte der Versuchsstation Hatzendorf** (Land Steiermark; Körnermais-Versuche an festen Standorten, z. B. Wagna, Kalsdorf bei Ilz) + **Praxisversuche der LK Oberösterreich** (Standortmittel je Jahr) | Ertrag je Standort und Jahr → viel feiner als Bundesland | weitere LK-Versuchsportale |
 | Rechenplattform | **Google Earth Engine** (Python API), Export CSV → Google Drive | serverseitig | – |
 | Zeitraster | **Dekaden** (10 Tage), 1. April – 31. Oktober; zusätzlich Variante mit **Wärmesummen-Achse (GDD)** | Dekaden glätten Wolkenlücken; GDD-Achse gleicht Unterschiede im Anbaukalender US ↔ AT aus | – |
 | Indizes | NDVI, EVI, GNDVI, NDMI, SAVI (HLS + S2); **NDRE** nur S2 | Red-Edge fehlt bei Landsat | MTCI |
-| Ertrags-Zielgröße | **relativer Ertrag RY** (3.6) primär; absoluter Ertrag t/ha sekundär (dort zählt Boden) | RY entfernt Standortniveau → übertragbar | – |
+| Ertrags-Zielgröße | **relativer Ertrag RY** (3.6) primär; bei Feldern mit nur einem Jahr **Nachbar-relativer Ertrag RY_nb** (3.6); absoluter Ertrag t/ha sekundär (dort zählt Boden) | RY entfernt Standortniveau → übertragbar | – |
 | „Gefährdet“ | **RY < 0,85** | ≥ 15 % unter eigenem Normalniveau | – |
 | Satelliten-Stressindikator | Kandidaten **K1–K5** (3.3); Auswahl in **Phase 3 nur mit US-Daten** | Karte „Gesundheit jetzt“ + Phase 8 | Seneszenz-Datum |
-| Stichtage | **1.6., 15.6., 1.7., 15.7., 1.8., 15.8., 1.9.** (Phase 8 selbstüberwacht: 15.5.–15.7.) | Ertrag am Saisonende → Stichtage bis Sept. | – |
+| Stichtage | **1.6., 15.6., 1.7., 15.7., 1.8., 15.8., 1.9.** (Phase 8 selbstüberwacht: 15.5.–15.7.); für One Acre Fund und YieldSAT über den Saisonbeginn übertragen (3.8) | Ertrag am Saisonende → Stichtage bis Sept. | – |
 | Modelle | **Modellfamilie** (Phase 2): je Merkmalsgruppe ein Modell + Kombination; **Ridge + flaches LightGBM** (max_depth ≤ 3) | wenige Feld-Jahre → einfache, robuste Modelle | GRU nur Phase 8 |
 | Validierung USA | **LOFYO** (Feld *und* Jahr ungesehen) primär; LOFO, LOYO, Leave-One-Dataset-Out sekundär; Tuning verschachtelt | verhindert Auswendiglernen von Feldern/Jahren | – |
 | Validierung Österreich | **eingefrorenes Modell, keine Anpassung**; vorab registriertes Protokoll (Phase 4) | echter Beweis statt nachträglicher Anpassung | – |
@@ -77,6 +85,8 @@ Dieser Plan ist so geschrieben, dass er Schritt für Schritt abgearbeitet werden
 ### 3.1 Feld & Feldhistorie
 - **Österreich:** Feld-Jahr = INVEKOS-Schlag mit Körnermais in Jahr *y*. Filter: Fläche ≥ 1,0 ha; nach Innenpuffer −10 m mindestens 50 S2-Pixel; Geometrie gültig. Feld-ID über Jahre per Geometrie-Überlappung (**IoU ≥ 0,7**) → `field_uid`, inkl. Fruchtfolge.
 - **Ertrags-Datensatz:** Feld-Jahr = Feld/Parzelle/Teilfläche mit Mais in Jahr *y* und gemessenem Ertrag. Feldgrenze aus den Quell-Geodaten; falls nicht vorhanden: konvexe Hülle der Ertragspunkte bzw. Rasterumriss. Immer Innenpuffer −10 m (Vorgewende, Randeffekte). Mindestens 5 HLS-Pixel (30 m) nach Puffer, sonst nur S2-Auswertung.
+- **One Acre Fund (nur GPS-Punkt, kein Umriss):** nur Felder mit **exakter GPS-Position** (nicht Ort/Bezirk) und gemeldeter Feldgröße ≥ 0,5 ha; Auswertungsfläche = Kreis mit 20 m Radius um den Punkt (~12 S2-Pixel, liegt bei ≥ 0,5 ha mit hoher Wahrscheinlichkeit im Feld); nur S2-Basis. Die Schwellen werden **vor** dem Ansehen der Satellitendaten festgelegt und nur geändert, wenn Phase 1 zeigt, dass zu viele Kurven nicht maistypisch sind (dann in `DECISIONS.md`).
+- **YieldSAT:** Feldgrenze = Umriss des Ertragsrasters, Innenpuffer −10 m; S2-Basis.
 
 ### 3.2 Satellitenbeobachtung pro Feld
 - Pro Szene: Median aller klaren Pixel im gepufferten Feld je Band + `clear_frac`.
@@ -108,13 +118,23 @@ Für Stichtag *t* darf ein Feature nur Daten mit Zeitstempel ≤ *t* nutzen. Dur
 - **Einheit:** Körnermais in **t/ha bei 15,5 % Kornfeuchte** (US-Standard); jede Quelle wird darauf umgerechnet, Umrechnung in `DATA_SOURCES.md`.
 - **Feld-Ertrag `Y`:** Mittel der bereinigten Ertragspunkte im gepufferten Feld (bzw. offizieller Parzellenwert, z. B. KBS Tabelle 51). Bereinigung (falls Quelle nicht schon bereinigt): Punkte außerhalb 1–25 t/ha und außerhalb ±3 SD je Feld-Jahr entfernen; Anteil entfernter Punkte protokollieren.
 - **Relativer Ertrag `RY(field, y)` = `Y(field, y)` / Mittel `Y` desselben Feldes in seinen **anderen** Mais-Jahren**; nur definiert, wenn ≥ 2 andere Mais-Jahre existieren.
-- **Gefährdet:** `RY < 0.85`.
+- **Nachbar-relativer Ertrag `RY_nb(field, y)` = `Y(field, y)` / Median `Y` der **anderen** Felder derselben Region im selben Jahr** (One Acre Fund: Bezirk bzw. Region; YieldSAT: Felder im Umkreis von 50 km). Nur definiert bei ≥ 10 anderen Feldern. RY_nb misst Unterschiede **zwischen Feldern** im selben Jahr (nicht den Jahreseffekt); wird getrennt von RY ausgewertet und nie als dasselbe behandelt. Hat ein YieldSAT-Feld ≥ 3 Mais-Jahre, wird zusätzlich RY berechnet.
+- **Gefährdet:** `RY < 0.85` bzw. `RY_nb < 0.85`.
 - **Innerhalb des Feldes:** Ertragspunkte werden auf das HLS-Raster (30 m) und das S2-Raster (10 m) gemittelt → Pixel-Paare; **relativer Pixel-Ertrag** = Pixel-Ertrag / Feldmittel desselben Feld-Jahres. **Problemzone** = zusammenhängende Pixel mit relativem Pixel-Ertrag < 0,85.
 - **Bewässerung** (z. B. Mead US-Ne1/Ne2) als Spalte `irrigated`; wird getrennt ausgewertet.
 
 ### 3.7 „Stark genug“ und Einfrieren
 - Das Kriterium „stark genug“ (Phase 4) ist **jetzt** festgelegt und wird nicht nachträglich geändert.
 - **Freeze** = Modelldateien, Merkmalsliste, Vorverarbeitung, Schwellen, Conformal-Quantile, gewählter Indikator und Österreich-Testprotokoll mit SHA-256-Prüfsummen in `reports/freeze_protocol.md`, Git-Tag `freeze-<n>`.
+
+### 3.8 Andere Anbaukalender (One Acre Fund, YieldSAT)
+- Saisonbeginn = gemeldetes Aussaatdatum (One Acre Fund) bzw. Aufgang aus der Satellitenkurve (erster Anstieg über Grundniveau; YieldSAT und als Gegenprobe überall).
+- Ein Stichtag wird als **„Wärmesumme seit Saisonbeginn“** übertragen: Für jeden Stichtag wird die mediane GDD-Summe seit Aufgang auf den US-Feldern bestimmt; auf Feldern mit anderem Kalender gilt der Tag, an dem diese GDD-Summe erreicht ist. Die Regel wird in Phase 1 an den US-Feldern geprüft und in `DECISIONS.md` festgehalten.
+- Merkmale werden für alle Datensätze auf der GDD-Achse berechnet; die Kalender-Variante gibt es nur für US und AT.
+
+### 3.9 Lokaler Ertrags-Anomalie-Score Österreich (nur Test)
+- Versuchsstandort-Jahr: Mittel aller Sorten bzw. der ortsüblichen Variante (Körnermais, 14 % Feuchte → 15,5 %). `YAS_site(s, y) = Ertrag(s, y)` / olympischer Durchschnitt der 5 Vorjahre desselben Standorts (bei kürzeren Reihen: Mittel der anderen Jahre, gekennzeichnet).
+- Vergleich: vorhergesagter RY, gemittelt über die INVEKOS-Körnermaisfelder im Umkreis von **5 km** um den Standort im selben Jahr.
 
 ---
 
@@ -129,7 +149,9 @@ CropTransferAT/
 ├─ data/                       # nicht in Git
 │  ├─ raw/  interim/  processed/
 ├─ src/croptransfer/
-│  ├─ groundtruth.py           # KBS, BARC, Colorado, Mead laden → einheitliches Schema
+│  ├─ groundtruth.py           # KBS, BARC, Colorado, Mead, One Acre Fund, YieldSAT → einheitliches Schema
+│  ├─ soil_ssurgo.py           # SSURGO über Soil Data Access (nur US)
+│  ├─ at_trials.py             # österreichische Versuchsstandort-Erträge (nur Test)
 │  ├─ invekos.py               # INVEKOS laden, filtern, Feld-IDs über Jahre
 │  ├─ gee_extract.py           # HLS, Landsat 5/7, S2, S1, ERA5-Land, SoilGrids, DEM → Exporte
 │  ├─ timeseries.py            # Wolkenfilter, Indizes, Dekaden, GDD-Achse, Interpolation
@@ -186,10 +208,14 @@ Aufgaben:
 2. Paketstruktur `src/croptransfer/`, `config.yaml`, erster Test, **GitHub Actions** (`pytest` bei jedem Push).
 3. **GEE:** Konto + Cloud-Projekt (*Projektinhaber*), dann `earthengine authenticate`. Test: Anzahl HLS- und S2-Szenen über Graz und über Hickory Corners (KBS) im Juli 2022.
 4. **Ertrags-Datensätze herunterladen und sichten:** KBS (Tabellen 51, 185, 828, Scale-up 145/163/254, GIS), BARC (Ertragsarchiv + `BARCFarmMgmt.zip`), Colorado, Mead (AmeriFlux-BADM, *Konto: Projektinhaber*). Je Datensatz in `DATA_SOURCES.md`: Lizenz, Jahre, Anzahl **Mais**-Feld-Jahre, Feldgrößen, Koordinatensystem, Messmethode, Einheit/Feuchte.
+   - **One Acre Fund** (Zenodo-CSV, 5,6 MB): Spalten, Anteil exakter GPS-Positionen, Verteilung Feldgröße je Region und Jahr, Feuchtebasis, Kodierung der gemeldeten Schäden.
+   - **YieldSAT** (*Zugang beantragt der Projektinhaber*): Lizenz, Mais-Felder je Land und Jahr, **Mais-Jahre pro Feld**, Feuchtebasis, Format.
+   - **SSURGO** über Soil Data Access (kein Login): Abfrage für die Feldflächen von KBS, BARC, Colorado, Mead – Mais-Ertragsschätzung ohne Bewässerung und NCCPI Mais je Bodeneinheit; Tabellen-/Spaltennamen in `DATA_SOURCES.md` dokumentieren.
 5. **INVEKOS** Schläge 2018–2025; Spalte der Nutzungsart verifizieren. *(Nur Download und Schema – keine Auswertung, siehe Österreich-Regel.)*
 6. **Verwaltungsgrenzen** AT (Bundesländer, Bezirke, Gemeinden).
 7. **CY-Bench**: Ebene von AT (NUTS-2/3?), Jahre, Prädiktoren.
 8. **Statistik Austria:** Körnermais-Hektarerträge je Bundesland 2010–2025 → `data/raw/stat_at_maize.csv`.
+9. **Lokale österreichische Testerträge sammeln:** Versuchsberichte der Versuchsstation Hatzendorf (fachschulen.steiermark.at, alle verfügbaren Jahre) und Praxisversuche der LK Oberösterreich (Körnermais) laden; je Standort-Jahr Ort, Ertrag (Mittel/ortsübliche Variante), Feuchte, Aussaat-/Erntedatum, Versuchsart in `data/raw/at_trials.csv` übertragen. *Nur Sammeln und Digitalisieren – keine Auswertung vor dem Freeze (Österreich-Regel).* Genaue Standortkoordinaten fragt der Projektinhaber an.
 
 **Deliverable:** `notebooks/00_data_access.ipynb`, `DATA_SOURCES.md` vollständig.
 **Abnahme:** Jede Quelle liefert Daten oder ist begründet als „nicht verfügbar / angefragt“ markiert; Tests laufen in GitHub Actions.
@@ -200,12 +226,15 @@ Aufgaben:
 **Ziel:** **Ein** sauberer, reproduzierbarer Datensatz aus **allen** heruntergeladenen Ertragsdaten: Maisfeld × Jahr × gemessener Ertrag × Satellitenkurve × Wetter × Boden/Gelände – plus Ertragskarten innerhalb der Felder.
 
 Aufgaben:
-1. `groundtruth.py`: KBS, BARC, Colorado (+ Mead sobald verfügbar) in ein Schema überführen:
-   - `gt_field_years`: `dataset, field_id, year, crop, geometry, Y_t_ha, n_points, irrigated, moisture_basis, source`
+1. `groundtruth.py`: KBS, BARC, Colorado (+ Mead sobald verfügbar), **One Acre Fund** und **YieldSAT** (sobald Zugang besteht) in ein Schema überführen:
+   - `gt_field_years`: `dataset, design (longitudinal|cross_section), field_id, year, crop, geometry, Y_t_ha, n_points, irrigated, moisture_basis, sowing_date, reported_damage, source`
    - `gt_yield_points`: `dataset, field_id, year, x, y, yield_t_ha` (innerhalb des Feldes; BARC: 5-m-Kriging-Raster)
    Nur Mais-Feld-Jahre; Umrechnung auf 15,5 % Feuchte; Bereinigung nach 3.6; alle Auffälligkeiten aus `DATA_SOURCES.md` (Einheitenfehler, Doppelkultur, Feld-ID-Wechsel, KBS-Ernte Osthälfte bis 2016) behandelt und protokolliert.
-2. `RY` und relativer Pixel-Ertrag berechnen (3.6); Verteilung je Datensatz; Anteil „gefährdet“.
-3. Satellitenkurven je Feld-Jahr über GEE: **HLS 2013–2025**, **S2 2017–2025**.
+2. `RY`, `RY_nb` und relativer Pixel-Ertrag berechnen (3.6); Verteilung je Datensatz; Anteil „gefährdet“.
+3. Satellitenkurven je Feld-Jahr über GEE: **HLS 2013–2025**, **S2 2017–2025** (One Acre Fund 2016 nur Sentinel-2A → Abdeckung prüfen, ggf. 2016 ausschließen); Saisonbeginn und Stichtag-Übertragung nach 3.8.
+3a. **One Acre Fund prüfen:** Anteil maistypischer Kurven, Wolkenabdeckung je Region/Saison, Zusammenhang Feldgröße ↔ Kurvenqualität; gemeldete Schäden in Kategorien (Trockenheit, Schädlinge/Herbstheerwurm, Krankheit, Striga, Hagel, Nässe, keine) übertragen.
+3b. **YieldSAT prüfen:** Mais-Jahre pro Feld, Abgleich der mitgelieferten Sentinel-2-Daten mit der eigenen Extraktion (gleiche Pipeline für alle Datensätze).
+3c. **SSURGO** je US-Feld (flächengewichtet) und je Ertragspixel: Mais-Ertragsschätzung, NCCPI Mais.
 4. **Datenerweiterung „alle Daten“:** KBS-Mais-Jahre vor 2013 (MCSE 1989–2012, Scale-up 2006–2012) mit **Landsat 5/7**. Vorher Harmonisierungsprüfung: Landsat 7 vs. HLS-L30 auf denselben Feldern in den Überlappjahren 2013–2021 (Abweichung je Index). Nur wenn die Abweichung klein ist (Grenze vor der Prüfung in `DECISIONS.md` festlegen), werden diese Jahre aufgenommen – mit `sensor`-Spalte; Hauptergebnisse werden immer auch **nur mit HLS-Jahren** berichtet.
 5. Wetter (ERA5-Land täglich am Feldzentroid → Dekaden: GDD Basis 10 °C/Deckel 30 °C, Hitzetage > 30/32 °C, Niederschlag, klimatische Wasserbilanz, VPD, Bodenwasser Schicht 1–3), **Wurzelzonen-Wasserstress-Index (RZWSI)** (FAO-56-Bucket mit nutzbarer Feldkapazität), SoilGrids, DEM (Höhe, Neigung, Exposition, TPI, TWI) – für Feld **und** Pixel.
 6. **Ansehen:** Je Datensatz Kurven der besten und schlechtesten RY-Jahre desselben Feldes übereinander – sieht man den Unterschied, und ab wann?
@@ -223,6 +252,7 @@ Aufgaben:
 - **S – Satellit:** Dekadenwerte bis *t* (Kalender- und GDD-Achse), Steigungen, Maximum bis *t*, Fläche unter Kurve, K1–K5 soweit bis *t* berechenbar.
 - **W – Wetter:** GDD, Niederschlag, Wasserbilanz, Hitzetage (gesamt und um die Blüte), VPD, RZWSI, Bodenwasser – bis *t*.
 - **B – Boden & Gelände:** SoilGrids (Textur, org. Kohlenstoff, nFK), Höhe, Neigung, Exposition, TPI, TWI.
+- **B+ – Boden-Ertragspotenzial (nur US):** SSURGO-Maisertragsschätzung, NCCPI Mais. Nur in Analysemodellen (unten), nie im Hauptmodell.
 - **H – Feldhistorie:** Vorfrucht (nur wo in US **und** AT verfügbar; sonst nicht im Hauptmodell).
 
 **Modellfamilie** (jeweils Ridge + flaches LightGBM):
@@ -234,14 +264,16 @@ Aufgaben:
 | M-S | nur Satellit | Wie viel verrät die Kurve allein? |
 | M-W | nur Wetter | Wie viel erklärt das Wetter allein? |
 | M-B | nur Boden & Gelände | Erklärt der Standort den Ertrag? (v. a. für absoluten Ertrag `Y` und innerhalb des Feldes) |
+| M-B+ | SSURGO (+ B), nur US | Wie gut sagt das amtliche Boden-Ertragspotenzial den gemessenen Ertrag voraus – und ist SoilGrids ein brauchbarer Ersatz? |
 | M-WB | Wetter + Boden | Erklärt das Zusammenspiel *warum* (ohne Satellit)? |
 | M-alle | S + W + B (+ H) | Hauptmodell-Kandidat |
 
 Aufgaben:
 1. `features.py` mit Merkmalsgruppen und As-of-Regel; `models/family.py`.
-2. Alle Modelle × alle Stichtage × Zielgrößen `RY` (primär) und `Y` (sekundär). Splits: **LOFYO** (primär), LOFO, LOYO, **Leave-One-Dataset-Out**. Hyperparameter nur verschachtelt.
+2. Alle Modelle × alle Stichtage × Zielgrößen `RY` (primär), `RY_nb` (Querschnitt) und `Y` (sekundär). Splits: **LOFYO** (primär), LOFO, LOYO, **Leave-One-Dataset-Out** (inkl. One Acre Fund und YieldSAT, bei One Acre Fund zusätzlich Leave-One-Region-Out). Hyperparameter nur verschachtelt.
+2a. **Trainingsdaten-Varianten** (beide Satelliten-Basen): (i) nur US-Längsschnitt, (ii) + YieldSAT, (iii) + One Acre Fund, (iv) alle. **Regel (vorab):** Bewertet wird immer auf den **US-Längsschnitt-Feldern** (LOFYO, Ziel RY). Eine Quelle kommt ins Hauptmodell, wenn der Median-ρ damit nicht um mehr als 0,02 schlechter ist; bei Verbesserung mit KI ohne 0 wird sie bevorzugt. Kein Datensatz-Kennzeichen als Merkmal (sonst lernt das Modell „welcher Kontinent“).
 3. **Innerhalb des Feldes** (`models/within_field.py`): relativer Pixel-Ertrag aus S2-Pixelkurve (10 m) + Gelände (TPI, TWI, Neigung) + SoilGrids; Validierung: ganzes Feld-Jahr ausgelassen. Frage: Welche Feldteile bringen weniger – und hängt das am Gelände, am Boden oder am Jahr?
-4. **Faktorenanalyse:** Gruppen-Ablation (Modell ohne jeweils eine Gruppe), SHAP (global, je Datensatz, je Stichtag), Partial-Dependence für die wichtigsten 5 Faktoren; Kalender- vs. GDD-Achse vergleichen (Auswahl nach Leave-One-Dataset-Out, nur US).
+4. **Faktorenanalyse:** Gruppen-Ablation (Modell ohne jeweils eine Gruppe), SHAP (global, je Datensatz, je Stichtag), Partial-Dependence für die wichtigsten 5 Faktoren; Kalender- vs. GDD-Achse vergleichen (Auswahl nach Leave-One-Dataset-Out, nur US). One Acre Fund zusätzlich: Wie viel erklären gemeldete Bewirtschaftung (Dünger, Saatdichte, Sorte) im Vergleich zu Satellit/Wetter/Boden? (nur Analyse – diese Angaben gibt es in AT nicht)
 5. Metriken: Spearman ρ, RMSE auf RY, R²; Skill = 1 − RMSE/RMSE_B0; **Frühwarnkurve** (Güte vs. Stichtag); Bootstrap-KI.
 6. **Unsicherheit:** Quantil-LightGBM + Split-Conformal, kalibriert auf US-Daten; Coverage-Plot.
 7. Kontrolltests nach AGENTS.md §3.3: Label-Shuffle-Test, Leistung innerhalb eines Jahres, mit/ohne Feld-Kennungen, Adversarial Validation zwischen Datensätzen.
@@ -259,6 +291,7 @@ Aufgaben:
 2. **Referenzkurve „gesunder Mais“:** Kurven der Feld-Jahre mit RY ≥ 0,95 (nur Trainingsfolds), auf GDD-Achse; Abweichung von der Referenz bis Stichtag *t* als **Stress-Score**. Test: Zeigt der Stress-Score spätere Ertragsverluste an (Spearman, PR-AUC)?
 3. **Problemzonen im Feld:** Erkennt das Pixel-Modell (Phase 2.3) die Problemzonen aus den Ertragskarten? (PR-AUC je Pixel, Überlappung der Zonen); ab welchem Stichtag?
 4. **Ursache eingrenzen** (`stress.py`): je gefährdetem Feld-Jahr Top-SHAP-Gruppen + vorab festgelegte, einfache Regeln: *Trockenstress* (RZWSI/Wasserbilanz auffällig), *Hitze* (Hitzetage um die Blüte), *Nässe* (Niederschlagsüberschuss im Frühjahr), *abrupter Schaden* (plötzlicher Einbruch der Kurve → Hagel-/Sturm-/Lager-Verdacht), sonst *Ursache unklar*. Krankheiten/Schädlinge werden **nicht** behauptet. Plausibilität an Fallstudien und Wetterarchiv prüfen.
+4a. **Prüfung an echten Ursachen (One Acre Fund):** Stimmen die Regeln aus 4 mit den von Landwirt:innen gemeldeten Schäden überein (Trockenheit, Hagel, Nässe)? Zusätzlich: Lässt sich „Schädlinge/Krankheit gemeldet“ aus Satellit + Wetter überhaupt von den anderen Ursachen unterscheiden (Klassifikator, PR-AUC gegen Prävalenz, Leave-One-Region-Out)? Ergebnis wird ehrlich berichtet; nur wenn es klar über Zufall liegt, darf die Demo eine Kategorie „Schädling/Krankheit möglich“ zeigen. Grenzen: Meldungen sind subjektiv, Herbstheerwurm & Co. gibt es so in Österreich nicht.
 5. **Satelliten-Stressindikator wählen** (K1–K5, nur US-Daten): höchster Median-ρ mit RY über die Datensätze; bei Differenz < 0,05 der einfachere (K1 < K3 < K2 < K4; NDVI < EVI < NDRE). Voraussetzung: ρ ≥ 0,4 (gepoolt oder in mindestens einem Datensatz, KI angeben) – sonst wird kein Indikator festgelegt und die Karte nutzt nur den vorhergesagten RY.
 
 **Deliverable:** `notebooks/03_problem_fields.ipynb`; Frühwarnkurve „gefährdet“; Fallstudien (3 richtig erkannte, 3 verpasste, 3 Fehlalarme); Datenkritik-Bericht.
@@ -275,7 +308,7 @@ Aufgaben:
 3. **Leave-One-Dataset-Out:** ρ > 0 in beiden Richtungen KBS → BARC und BARC → KBS (Vorgeschmack auf Transfer).
 4. Label-Shuffle-Test fällt auf Baseline-Niveau.
 
-**Wahl des Hauptmodells:** höchster Median-ρ über die LOFYO-Folds am 1.9. unter den Modellen, die nur transferfähige Merkmale nutzen (Abschnitt 2); bei Differenz < 0,05 das einfachere (Ridge < LightGBM; weniger Gruppen < mehr Gruppen).
+**Wahl des Hauptmodells:** höchster Median-ρ über die LOFYO-Folds am 1.9. (US-Längsschnitt-Felder, Ziel RY) unter den Modellen, die nur transferfähige Merkmale nutzen (Abschnitt 2) – über beide Satelliten-Basen (HLS, S2) und die Trainingsdaten-Varianten aus Phase 2.2a; bei Differenz < 0,05 das einfachere (Ridge < LightGBM; weniger Gruppen < mehr Gruppen; HLS-Basis < S2-Basis wegen längerer Reihen in AT; weniger Trainingsquellen < mehr). Kriterium 2 gilt für das gewählte Modell; die Güte auf One Acre Fund und YieldSAT (RY_nb) wird zusätzlich berichtet.
 
 **Nicht stark genug?** Nicht nach Österreich gehen. Optionen (jede Runde in `DECISIONS.md`): mehr Daten (Mead, Landsat-5/7-Jahre), einfachere Merkmale, engere Frage (nur späte Stichtage), Phase 5 als Hauptergebnis. Weiterentwicklung ist mit US-Daten erlaubt – Österreich bleibt unberührt.
 
@@ -311,7 +344,7 @@ Aufgaben:
 **Ziel:** Für alle Testfelder dieselben Merkmale berechnen wie in den USA – mit genau der eingefrorenen Pipeline.
 
 Aufgaben:
-1. `invekos.py`: Körnermais Steiermark 2018–2025 filtern (3.1), Innenpuffer, Feld-IDs über Jahre (IoU), Fruchtfolge; Österreich-Stichprobe: je Bundesland mit relevantem Körnermais (u. a. Stmk, OÖ, NÖ, Bgld, Ktn) und Jahr bis zu 300 Felder, stratifiziert, Auswahl per Seed.
+1. `invekos.py`: Körnermais Steiermark 2018–2025 filtern (3.1), Innenpuffer, Feld-IDs über Jahre (IoU), Fruchtfolge; Österreich-Stichprobe: je Bundesland mit relevantem Körnermais (u. a. Stmk, OÖ, NÖ, Bgld, Ktn) und Jahr bis zu 300 Felder, stratifiziert, Auswahl per Seed; zusätzlich **alle** Körnermaisfelder im 5-km-Umkreis jedes Versuchsstandorts (V2).
 2. **Pilot zuerst:** 200 steirische Felder × 2 Jahre (vorab anhand Statistik Austria gewählt: ein schwaches, ein normales Jahr) durch die Pipeline; Prüfungen: Kurvenform maistypisch? Frühernte? Datenabdeckung je Monat/Jahr? Abbruch und Klärung, wenn < 80 % maistypisch oder < 70 % der Feld-Jahre ausreichend beobachtet.
 3. Danach alle Felder: HLS (+ S2) je Feld, ERA5-Land, SoilGrids, DEM, Merkmale mit der **eingefrorenen** Merkmalsliste.
 4. Qualitätsbericht. Filter dürfen nur Datenqualität betreffen (nie Ertrag oder Modellausgabe).
@@ -329,12 +362,15 @@ Validierungswege:
 | Weg | Daten | Ebene |
 |---|---|---|
 | **V1 – regional** | Statistik Austria (Bundesland) + CY-Bench (feinste verfügbare Ebene) | Region-Jahr |
+| **V2 – lokal** | Versuchsstation Hatzendorf (Steiermark) + LK-OÖ-Praxisversuche, `YAS_site` (3.9) | Standort-Jahr |
 | **V3 – Feld** | Erträge österreichischer Landwirt:innen, **falls beschafft** | Feld-Jahr (Goldstandard) |
 
 Aufgaben:
 1. Eingefrorenes Modell laden (Prüfsummen-Check), für jeden Stichtag auf alle Testfelder anwenden: vorhergesagter RY, Gefährdet-Wahrscheinlichkeit, Unsicherheitsintervall, Ursachen-Zuordnung.
 2. **V1:** vorhergesagten RY flächengewichtet je Region-Jahr mitteln ↔ YAS; Pearson + Spearman, Bootstrap-95-%-KI, n angeben; RMSE gegen Baseline YAS = 1; je Stichtag (Frühwarnkurve Österreich).
+2a. **V2:** vorhergesagter RY der Körnermaisfelder im 5-km-Umkreis je Versuchsstandort-Jahr ↔ `YAS_site`; Spearman, Bootstrap-KI über Standort-Jahre, n angeben; Steiermark und Oberösterreich getrennt und gemeinsam.
 3. **V3:** wenn Daten vorliegen – wie Phase 2/3 feldweise auswerten (RY, gefährdet, Coverage der Intervalle).
+3a. **Boden-Plausibilität** (falls Bodenklimazahl beschafft): Hängt der vom Modell erwartete Ertrag bzw. die Gefährdungshäufigkeit über die Jahre mit der Bodenklimazahl zusammen (Spearman je Gemeinde/Bezirk)? Nur Plausibilitätsprüfung, kein Erfolgskriterium.
 4. **Steiermark vs. andere Bundesländer:** Ergebnis je Bundesland getrennt.
 5. **Vergleich:** Feldmodell (regional gemittelt) vs. CY-Bench-Zero-Shot (Phase 5) vs. Baseline.
 6. **Verteilungsvergleich US ↔ AT** (Merkmale außerhalb des Trainingsbereichs?) – nur zur Erklärung, nicht zur Anpassung.
@@ -343,6 +379,7 @@ Aufgaben:
 **Vorab registrierte Erfolgskriterien** (Teil von `freeze_protocol.md`):
 - **Bestanden (regional):** Spearman ρ(regional gemittelter vorhergesagter RY, YAS) > 0 mit 95-%-KI ohne 0 am Stichtag 1.9.
 - **Stark (regional):** zusätzlich RMSE kleiner als Baseline YAS = 1 (KI der Differenz ohne 0).
+- **Bestanden (lokal, V2):** Spearman ρ(vorhergesagter RY im 5-km-Umkreis, `YAS_site`) > 0 mit 95-%-KI ohne 0 am Stichtag 1.9. (nur wenn ≥ 15 Standort-Jahre vorliegen, sonst nur beschreibend).
 - **Bestanden (Feld, falls V3):** Spearman ρ mit Feld-RY > 0 mit KI ohne 0; **stark:** ρ ≥ 0,4.
 - Alle Stichtage werden berichtet, nicht nur der beste.
 
@@ -403,7 +440,12 @@ Aufgaben:
 
 | Risiko | Gegenmaßnahme |
 |---|---|
-| Wenige Mais-Feld-Jahre (~170 in der HLS-Zeit; Mais nur jedes 2.–3. Jahr) → Modell nicht „stark genug“ | alle Quellen poolen; KBS-Jahre vor 2013 über Landsat 5/7; Mead; Pixel-Ebene innerhalb der Felder; einfache Modelle; KI immer angeben |
+| Wenige Mais-Feld-Jahre (~170 in der HLS-Zeit; Mais nur jedes 2.–3. Jahr) → Modell nicht „stark genug“ | alle Quellen poolen; One Acre Fund + YieldSAT; KBS-Jahre vor 2013 über Landsat 5/7; Mead; Pixel-Ebene innerhalb der Felder; einfache Modelle; KI immer angeben |
+| One Acre Fund: kleine Felder, nur GPS-Punkt, Ernteproben auf 72 m², Tropen (Wolken, zwei Saisonen) | strenge Vorab-Filter (exakte GPS, ≥ 0,5 ha, 20-m-Kreis); nur S2; Kurvenprüfung; Aufnahme nur nach Regel 2.2a; RY_nb getrennt von RY |
+| Ferne Regionen (Afrika, Südamerika) verzerren das Modell für Mitteleuropa | Bewertung immer auf US-Längsschnitt-Feldern; kein Datensatz-Kennzeichen; Adversarial Validation zwischen Datensätzen; GDD-Achse |
+| YieldSAT-Zugang verzögert oder Lizenz verbietet Veröffentlichung | Plan läuft ohne YieldSAT; nur aggregierte Ergebnisse veröffentlichen, falls Lizenz das verlangt |
+| SSURGO-Werte sind Schätzungen von Bodenkundler:innen, keine Messungen | nur als Merkmal/Analyse, nie als Label; nur US |
+| Versuchsparzellen ≠ Praxisfelder (andere Bewirtschaftung, kleine Parzellen) | nur Jahresanomalie je Standort (`YAS_site`) mit Feldern im 5-km-Umkreis vergleichen, nicht absolute Erträge |
 | Modell lernt Felder/Jahre auswendig | LOFYO primär; Label-Shuffle-Test; mit/ohne Feld-Kennungen |
 | Versuchung, nach dem Österreich-Test nachzubessern | Freeze mit Tag + Prüfsummen; vorab registriertes Protokoll; neuer Freeze nur bei dokumentiertem Fehler, beide Ergebnisse berichtet |
 | US-Felder ≠ steirische Felder (Klima, Sorten, Anbaukalender, Feldgröße) | relativer Ertrag RY; GDD-Achse; nur transferfähige Merkmale; Leave-One-Dataset-Out als Vorgeschmack; Verteilungsvergleich in Phase 7 |
@@ -421,14 +463,17 @@ Aufgaben:
 ---
 
 ## 8. Was der Projektinhaber selbst erledigen muss
+Fertige Texte und Kontaktwege stehen in **`ANFRAGEN.md`**.
 - Anmeldung zum Wettbewerb.
+- **YieldSAT-Zugang** über das Formular auf yieldsat.github.io beantragen (Nutzungsbedingungen liest und akzeptiert der Projektinhaber).
+- **Versuchsstation Hatzendorf** (Land Steiermark): Standortkoordinaten der Körnermais-Versuche und, falls möglich, die Erträge als Tabelle anfragen.
+- **Bodenklimazahl** (Finanzbodenschätzung) für steirische Ackerflächen bei GIS Steiermark bzw. BEV anfragen (optional, nur für Plausibilitätsprüfung).
 - Google-Earth-Engine-Konto + Cloud-Projekt anlegen, `earthengine authenticate` im Browser bestätigen.
 - **E-Mail an die Kellogg Biological Station (KBS LTER):** Bitte um Erlaubnis, die MCSE-Ertragsdaten in einem Schülerwettbewerbsprojekt zu verwenden und daraus abgeleitete Ergebnisse zu veröffentlichen (keine Weitergabe der Rohdaten).
 - **AmeriFlux-Konto** anlegen (für Mead); ggf. Standort nach Ertragsdaten fragen.
 - **Feld-Ertragsdaten in Österreich anfragen (V3)** – parallel zu allem: Landwirt:innen, Landwirtschaftskammer Steiermark, Maschinenring. Gesucht: Körnermais-Erträge pro Feld (Mähdrescher-Ertragskarte oder Wiegeschein + Feldlage) ab 2018. Schon 20–50 Feld-Jahre sind wertvoll. Nur mit Zustimmung, anonymisiert, Rohdaten nie ins Repository. *Diese Daten werden erst nach dem Freeze angesehen.*
 
 ## 9. Bewusst *nicht* Teil dieses Plans (Ausblick)
-- One Acre Fund (Afrika): viele Felder, aber je nur ein Jahr – passt nicht zum Ansatz „wenige Felder, viele Jahre“; ggf. später als zusätzlicher Transfertest.
 - Europäische Mähdrescher-Ertragsdaten aus Studien (Autor:innen anfragen).
 - Kalibrierung auf absolute t/ha in Österreich mit größeren Feld-Ertragsdaten (Kooperationen).
 - Diagnose von Krankheiten/Schädlingen (bräuchte eigene Labels); Kausalanalyse der Stressursachen über Fallstudien hinaus.

@@ -4,6 +4,15 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+## [0.0.5] – 2026-10-15
+### Added
+- Trainingsdaten: **One Acre Fund** (14.773 Maisfelder, Afrika, inkl. gemeldeter Schäden) und **YieldSAT** (303 Maisfelder mit Mähdrescher-Karten, Argentinien/Brasilien); Nachbar-relativer Ertrag `RY_nb`; Stichtag-Übertragung über Wärmesumme seit Saisonbeginn; zweite Satelliten-Basis (S2).
+- **SSURGO** als US-Boden-Ertragspotenzial (Analysemodell M-B+).
+- Österreich-Test **V2 lokal**: Versuchsberichte Hatzendorf + LK-OÖ-Praxisversuche (`YAS_site`); Bodenklimazahl optional.
+- Prüfung der Ursachen-Zuordnung an den gemeldeten Schäden (Phase 3).
+- `ANFRAGEN.md`: alle Anfragen des Projektinhabers mit Textentwürfen.
+- `DATA_SOURCES.md`: Einträge 9–13 (Status geplant/angefragt).
+
 ## [0.0.4] – 2026-10-15
 ### Changed
 - `PLAN.md` neu geordnet: **Österreich ist nur noch Testfall (Beweis).** Phasen: 0 Setup → 1 alle Ertragsdaten aufbereiten → 2 Basismodelle „Was bestimmt den Ertrag?“ → 3 Problemfelder erkennen → 4 „Stark genug?“ + Einfrieren → 5 CY-Bench (parallel) → 6 Österreich-Daten → 7 Test in Österreich → 8 Zusatz (optional) → 9 Demo → 10 Abgabe.
