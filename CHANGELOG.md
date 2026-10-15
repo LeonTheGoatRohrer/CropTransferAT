@@ -4,6 +4,20 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+## [0.2.0] – 2026-10-16 – Phase 1: Ertragsdaten aufbereiten
+### Added
+- `groundtruth.py`: KBS (Tabelle 51, 1989–2023), BARC (Kriging-Raster), Colorado → einheitliches Schema `gt_field_years` (365 Mais-Feld-Jahre, t/ha bei 15,5 %), `gt_yield_points` (BARC 10 m), Ausschluss-Protokoll; Feldzuordnung über IoU ≥ 0,7.
+- `targets.py`: trendbereinigter RY (Trend nie mit Zieljahr, in der CV nur aus Trainingszeilen), `RY_nb`, „gefährdet“.
+- `gee_extract.py`/`extract_us.py`: Szenenstatistik je Feld (HLS, Landsat 5/7, S2 mit Cloud Score+), ERA5-Land täglich, SoilGrids, Copernicus-DEM (TPI, TWI); 67 GEE-Jobs.
+- `timeseries.py`/`features.py`: Reflexion, Roy-2016-Harmonisierung, Indizes, As-of-Dekaden, Merkmalsgruppen S/W/B/B+, RZWSI (FAO-56-Bucket), nFK nach Saxton & Rawls.
+- `dataset_us.py`, `explore_phase1.py`, `evaluate.py` (Cluster-Bootstrap); Tests `test_targets`, `test_groundtruth_schema`, `test_field_matching`, `test_no_leakage`.
+- `notebooks/01_groundtruth.ipynb`; Datenkritik `reports/data_review/phase1_groundtruth.md` (⚠️).
+
+### Found
+- Landsat-7-vs-HLS-Harmonisierung **nicht bestanden** (NDVI-RMSD 0,073 > 0,07) → keine Satellitenmerkmale vor 2013.
+- KBS 2014/2017 ohne HLS-Sommertermine; RY-Labels der HLS-Zeit: 123 Feld-Jahre aus 11 Standort-Jahren.
+- Erste Zusammenhänge: EVI-Integral (K4) vs. RY gepoolt ρ = 0,44 (KI 0,10–0,75, 9 Cluster).
+
 ## [0.1.1] – 2026-10-15 – Phase 0 Korrektur
 ### Fixed
 - `notebooks/00_data_access.ipynb` ausgeführt (alle Zellen fehlerfrei); Spalte `plot` → `plot_id` (Kollision mit pandas `.plot`).
