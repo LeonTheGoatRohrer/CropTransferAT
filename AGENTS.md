@@ -105,16 +105,18 @@ Am Ende jeder Prüfung eine von drei Entscheidungen festhalten:
 | Tag | Bedeutung |
 |---|---|
 | `v0.1.0` | Phase 0 – Setup & Datenzugang |
-| `v0.2.0` | Phase 1 – V0 Regionalmodell CY-Bench |
-| `v0.3.0` | Phase 2 – Feld-Pipeline |
-| `v0.4.0` | Phase 3 – Ziele & EDA |
-| `v0.5.0` | Phase 4 – V1 Feldmodell |
-| `v0.6.0` | Phase 5 – V2 Ablation/Radar/Unsicherheit |
-| `v0.7.0` | Phase 6 – V3 Ertragsbrücke & Transfer |
-| `v0.8.0` | Phase 7 – Demo |
-| `v1.0.0` | Phase 8 – Abgabe |
+| `v0.2.0` | Phase 1 – Pilot Steiermark |
+| `v0.3.0` | Phase 2 – Zielgrößen-Check (GO/NO-GO) |
+| `v0.4.0` | Phase 3 – V0 Regionalmodell CY-Bench (parallel; Tag bei Abschluss) |
+| `v0.5.0` | Phase 4 – Volle Feld-Pipeline |
+| `v0.6.0` | Phase 5 – Ziele & EDA |
+| `v0.7.0` | Phase 6 – V1 Feldmodell |
+| `v0.8.0` | Phase 7 – V2 Ablation/Radar/Unsicherheit |
+| `v0.9.0` | Phase 8 – V3 Ertragsbezug & Transfer |
+| `v0.10.0` | Phase 9 – Demo |
+| `v1.0.0` | Phase 10 – Abgabe |
 
-Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Jeder Tag hat einen Eintrag in `CHANGELOG.md`.
+Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Phase 3 parallel läuft, werden Tags in der Reihenfolge des Abschlusses gesetzt; die Versionsnummer bleibt an die Phase gebunden. Jeder Tag hat einen Eintrag in `CHANGELOG.md`.
 
 ### 4.5 Was niemals ins Repository kommt
 - Rohdaten, große Zwischendateien, Modelle > 50 MB (`data/`, `results/**/models/` sind in `.gitignore`).
