@@ -65,3 +65,21 @@ def test_winter_wheat_window_uses_previous_autumn_and_base0():
     first_day = pd.Timestamp("2017-10-01")
     n_days = (pd.Timestamp("2018-06-01") - first_day).days + 1
     assert f["prec"] == pytest.approx(2.0 * n_days)       # window starts 1.10. of the year before
+
+
+def test_weather_features_as_of_for_winter_wheat():
+    ww = get_crop("winter_wheat")
+    dates = pd.date_range("2017-09-01", "2018-09-30")
+    n = len(dates)
+    rng = np.random.default_rng(1)
+    w = pd.DataFrame({"date": dates.strftime("%Y-%m-%d"), "tmax_K": 290 + rng.normal(0, 3, n), "tmin_K": 280 + rng.normal(0, 3, n),
+                      "tmean_K": 285 + rng.normal(0, 2, n), "tdew_K": 278 + rng.normal(0, 2, n), "prec_m": rng.exponential(0.002, n),
+                      "pev_m": -0.003 * np.ones(n), "rad_J_m2": 1.5e7 * np.ones(n),
+                      "swvl1": 0.3 * np.ones(n), "swvl2": 0.3 * np.ones(n), "swvl3": 0.3 * np.ones(n)})
+    cut = date(2018, 6, 15)
+    a = features.weather_features(features.daily_weather(w, 48.0, ww), cut, 150, ww)
+    w2 = w.copy()
+    late = pd.to_datetime(w2.date).dt.date > cut
+    w2.loc[late, ["tmax_K", "prec_m"]] = [320.0, 0.2]
+    b = features.weather_features(features.daily_weather(w2, 48.0, ww), cut, 150, ww)
+    assert a == b
