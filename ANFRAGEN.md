@@ -11,6 +11,8 @@ Konten, Formulare, Lizenzzustimmungen und E-Mails erledigt der Projektinhaber se
 | 5 | **Feld-Erträge Landwirt:innen (V3)** | Landwirt:innen, LK Steiermark, Maschinenring | Österreich-Test V3 (bester Test) | mittel, läuft parallel | offen |
 | 6 | **Bodenklimazahl** (optional) | Amt der Stmk. Landesregierung, Abteilung 17, Referat Statistik und Geoinformation (Kontakt über https://www.landesentwicklung.steiermark.at); ggf. BEV | Österreich-Test: Plausibilitätsprüfung Boden | niedrig | offen |
 | 7 | **One Acre Fund: ungerundete Koordinaten + Feldgröße** | Autor:innen Juan Aramburu-Merlos / Patricio Grassini (University of Nebraska–Lincoln, Kontakt laut Artikel PMC11130130) bzw. One Acre Fund (Zenodo 10.5281/zenodo.11115815) | Satellitenkurven für One-Acre-Fund-Felder (bis dahin nur Tabellenanalyse, DECISIONS 2026-10-15) | mittel | offen |
+| 8 | **Hagelversicherung: Schadensdaten Österreich** (Feinjustierung F0.2) | Österreichische Hagelversicherung (Kontakt durch den Projektinhaber) | nur Österreich-Test nach dem Freeze; Datei **ungeöffnet** unter `data/raw/hagel_at/` ablegen, nicht an Claude geben. Gewünschte Spalten: Schadendatum, Schlag/Koordinate oder Gemeinde, Kultur, Schadenshöhe %, Ursache, Versicherungsjahr; ohne Namen | mittel | offen |
+| 9 | **Feldkarten YIPEEO, SwissYield, Booßen** (Feinjustierung F0.3) | Texte und Reihenfolge in `reports/plan_mehrkultur.md` §8 bzw. `reports/data_search.md` | mehr unabhängige Standort-Jahre (Option b nach Gate H2) | hoch | offen |
 
 **Ohne Anfrage** (lädt der Agent selbst): One Acre Fund (Zenodo, CC BY 4.0), SSURGO (Soil Data Access), Versuchsberichte Hatzendorf und LK-OÖ-Praxisversuche (öffentliche PDFs).
 

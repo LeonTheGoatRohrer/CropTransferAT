@@ -1,0 +1,72 @@
+{
+  "main_model": "A0",
+  "alarm_threshold_oof": 0.5323854107375512,
+  "alarm_recall": 0.6896551724137931,
+  "alarm_fpr": 0.18333333333333332,
+  "alarm_precision": 0.6451612903225806,
+  "n": 89,
+  "n_alarm": 31,
+  "top_k_by_site_year": [
+    {
+      "site_year": "BARC-2019",
+      "n": 5,
+      "at_risk": 1,
+      "hit_rate_top_k": 0.0,
+      "random": 0.2
+    },
+    {
+      "site_year": "KBS-2017",
+      "n": 24,
+      "at_risk": 9,
+      "hit_rate_top_k": 0.7777777777777778,
+      "random": 0.375
+    },
+    {
+      "site_year": "KBS-2020",
+      "n": 24,
+      "at_risk": 7,
+      "hit_rate_top_k": 0.14285714285714285,
+      "random": 0.2916666666666667
+    },
+    {
+      "site_year": "KBS-2023",
+      "n": 24,
+      "at_risk": 6,
+      "hit_rate_top_k": 1.0,
+      "random": 0.25
+    }
+  ],
+  "main_phase_alarms": {
+    "Juli": 22,
+    "August": 8,
+    "Juni": 1
+  },
+  "main_phase_at_risk": {
+    "Juli": 15,
+    "August": 11,
+    "Juni": 3
+  },
+  "phase_sum_mean": {
+    "gef\u00e4hrdet": {
+      "Juni": -0.083,
+      "Juli": -0.282,
+      "August": -0.17
+    },
+    "nicht gef\u00e4hrdet": {
+      "Juni": -0.058,
+      "Juli": -0.131,
+      "August": -0.065
+    }
+  },
+  "within_field_map": {
+    "n_fy": 41,
+    "median_precision": 0.5803571428571429,
+    "median_prevalence": 0.27494615936826994,
+    "median_lift": 2.2524271844660193,
+    "median_recall": 0.5631067961165048,
+    "examples": [
+      "BARC|BARC:CentralFarm_2_72|2021",
+      "BARC|BARC:EastFarm_5_12|2021"
+    ]
+  }
+}

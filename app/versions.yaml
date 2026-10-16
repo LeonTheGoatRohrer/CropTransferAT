@@ -17,6 +17,71 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: feinjustierung-f3
+    date: 2026-10-16
+    phase: "Feinjustierung (Plan reports/plan_feinjustierung.md, Etappen F0–F3)"
+    title: "Radar, Temperatur, Temperatursumme und Begrünungsdatum: keines hilft"
+    status: nicht_bestanden
+    changed: "Vier neue Datenquellen wurden einzeln nach einer vorher festgelegten Regel zum Stress-Score hinzugefügt; keine verbesserte die Erkennung gefährdeter Felder, deshalb bleibt der Stress-Score ohne Zusatz das Hauptmodell."
+    plain: >
+      Ziel war, die Erkennung auffälliger Felder mit zusätzlichen Satellitendaten zu verbessern: Radar (sieht durch Wolken),
+      Oberflächentemperatur und Verdunstung (Trockenstress), eine Zeitachse nach Temperatursumme und das Datum, an dem das Feld grün wird.
+      Jede Quelle machte die Erkennung schlechter statt besser. Außerdem zeigte die Fallprüfung, dass der Stress-Score bei den
+      US-Versuchsfeldern vor allem spät gesäte Bio-Parzellen markiert. Die Karte innerhalb eines Feldes bleibt das robusteste Ergebnis.
+    metrics:
+      - label: "Stress-Score allein (PR-AUC, 1.9.)"
+        value: "0,69"
+        ci: "[0,42; 0,89]"
+        n: "89 Feld-Jahre / 8 Standort-Jahre"
+        plain: "Zufall wäre 0,33. Der Wert ist die Messlatte, die neue Merkmale schlagen mussten."
+      - label: "Änderung mit Radar"
+        value: "−0,14"
+        ci: "[−0,32; +0,17]"
+        n: "89"
+        plain: "Negativ heißt schlechter; gebraucht wäre mindestens +0,02 mit Intervall über 0."
+      - label: "Änderung mit Temperatur + Verdunstung"
+        value: "−0,22"
+        ci: "[−0,28; −0,01]"
+        n: "89"
+        plain: "Sicher schlechter: diese Daten messen vor allem das Wetterjahr, nicht das einzelne Feld."
+      - label: "Ohne die Bio-Parzellen (KBS T4)"
+        value: "0,60"
+        ci: "[0,18; 0,95]"
+        n: "71"
+        plain: "Zufall wäre hier 0,24; das Intervall schließt den Zufall ein, ohne T4 ist der Nachweis also nicht gesichert."
+      - label: "Innerhalb des Feldes (NDVI 16.7.–15.8., Median-ρ)"
+        value: "0,68"
+        ci: "[0,54; 0,72]"
+        n: "41 Feld-Jahre"
+        plain: "Hoher Zusammenhang zwischen Grünwert und Pixel-Ertrag; Radar dazu ändert ihn um −0,01."
+    found:
+      - "Gate H1 bestanden: die alten Werte (0,71 und 0,68) wurden exakt nachgerechnet, bevor Neues getestet wurde."
+      - "Alle vier Merkmale verschlechtern das Hauptziel; die Regel wurde vorher festgelegt und nicht geändert."
+      - "Der Stress-Score markiert die Bio-Parzellen der Kellogg Biological Station jedes Jahr, auch 2020, als sie normal geerntet haben (sechs Fehlalarme an der Spitze)."
+      - "Kontrollen ohne Auffälligkeit: kein Ortseffekt, Übertragung zwischen den Standorten ohne Verlust."
+    limits:
+      - "Nur 8 Standort-Jahre; die Oberflächentemperatur fehlt bei 47 % der Feld-Jahre (Wolken), KBS-Parzellen sind für Temperatur und MODIS zu klein."
+      - "Die Regel für das Begrünungsdatum wurde nach der Kurvenprüfung einmal korrigiert (Zwischenfrucht), bevor Erträge verglichen wurden; offengelegt in DECISIONS.md."
+      - "Gate H2 verfehlt: laut Plan keine Prüfrunde H3, kein Freeze, kein Österreich-Test mit diesem Ansatz. Wie es weitergeht, entscheidet der Projektinhaber."
+    figures:
+      - file: fj_ranking.png
+        caption: "Rangliste je Standort-Jahr: rot = tatsächlich gefährdet, Linie = Alarmschwelle (höchstens 20 % Fehlalarme)."
+      - file: fj_field_map.png
+        caption: "Feldkarte: unterstes NDVI-Viertel (links) und gemessene Problemzonen (rechts), zwei BARC-Felder 2021."
+      - file: fj_score_phases.png
+        caption: "Gefährdete Felder liegen vor allem im Juli unter der Referenzkurve."
+    links:
+      - label: "Bericht Feinjustierung"
+        path: reports/feinjustierung_ergebnis.md
+      - label: "Vorab-Festlegungen"
+        path: reports/feinjust_vorab.md
+      - label: "Datenkritik Merkmale"
+        path: reports/data_review/f2_merkmale.md
+      - label: "Datenkritik Ablation"
+        path: reports/data_review/f3_ablation.md
+      - label: "Hauptergebnis (Doku-Entwurf)"
+        path: reports/doku/hauptergebnis.md
+
   - id: mehrkultur-etappe4
     date: 2026-10-16
     phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 3–4)"

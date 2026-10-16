@@ -458,3 +458,16 @@ Abruf 2026-10-16 mit `python -m croptransfer.fetch_open_sets`; je Paket `data/ra
 Nicht geladen: NVT Australien (A10, 423 MB, nur mit `--include-large`), Genomes to Fields (A3, CAPTCHA, Projektinhaber), Rothamsted (Formular).
 Auffälligkeiten: `reports/data_review/phase1b_mehrkultur.md` (zwei Versuchstypen in Frankreich, Nordic-Einheit ungeprüft).
 **Status: ⚠️ verfügbar mit Einschränkungen.**
+
+## 17. Feinjustierung: Radar, Oberflächentemperatur, Verdunstung (über Google Earth Engine)
+Abruf 2026-10-16 mit `python -m croptransfer.extract_s1` und `python -m croptransfer.extract_lst` für die US-Feld-Jahre ab 2017 (HLS-Ära). Nur Zwischendateien unter `data/interim/obs_s1/`, `obs_lst/`, `obs_et/`, nicht im Repository.
+
+| Datensatz | GEE-ID | Verwendung | Lizenz |
+|---|---|---|---|
+| Sentinel-1 GRD (IW, VV/VH, dB) | `COPERNICUS/S1_GRD` | M1: Feld-Median je Szene, BARC-Pixel (Fenster 16.7.–15.8.) | Copernicus, frei |
+| Landsat 8/9 Collection 2 Level 2 (ST_B10, QA_PIXEL) | `LANDSAT/LC08/C02/T1_L2`, `LANDSAT/LC09/C02/T1_L2` | M2: Oberflächentemperatur je Feld-Szene | USGS, gemeinfrei |
+| MODIS MOD16A2GF v061 (ET, PET, 8 Tage, 500 m) | `MODIS/061/MOD16A2GF` | M2: ET/PET am Feldmittelpunkt | NASA LP DAAC, frei |
+| ERA5-Land täglich (total/potential evaporation) | `ECMWF/ERA5_LAND/DAILY_AGGR` | M2: Verdunstungsverhältnis an den Wetterpunkten | Copernicus C3S, frei |
+
+**CY-Bench für M5 (F1.4):** Die lokale Kopie `data/raw/cybench/cybench-data/maize` enthält 23 EU-Länder (AT … SK) und **0 US-Region-Jahre**; M5 entfällt. Saattermine: in keiner lokalen Quelle (Feld `sowing_date` leer).
+**Status: ✅ verfügbar** (Einschränkungen: `reports/data_review/f2_merkmale.md`).

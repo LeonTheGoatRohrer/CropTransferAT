@@ -73,3 +73,11 @@ def test_emergence_ignores_spring_cover_crop_peak():
     obs = pd.DataFrame({"date": dates.strftime("%Y-%m-%d"), "ndvi": 0.2 + cover + maize})
     e = fjf.emergence_doy(obs, date(2020, 9, 1), CFG)
     assert e > 160                          # after the tillage minimum, not in April/May
+
+
+def test_conformal_threshold_controls_fpr():
+    from croptransfer.fj_product import conformal_threshold
+
+    neg = np.arange(1, 10, dtype=float)          # n = 9 -> k = ceil(10 * 0.8) = 8 -> 8th smallest
+    t = conformal_threshold(neg, 0.2)
+    assert t == 8.0 and (neg > t).mean() <= 0.2

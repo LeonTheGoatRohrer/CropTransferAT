@@ -1,5 +1,7 @@
 # Plan: Feinjustierung – Stress-Erkennung statt Jahresvorhersage
 
+> **Status 2026-10-16:** F0.1 bestätigt; F1 umgesetzt (Gate H1 ✓); F2–F3 umgesetzt, **Gate H2 ✗** (kein Merkmal behalten) – F4/F5 entfallen laut Plan. Ergebnis: `reports/feinjustierung_ergebnis.md`. F0.2/F0.3 (Hagel, Feldkarten) liegen beim Projektinhaber.
+
 Stand 2026-10-16. Entwurf. Dieser Plan ersetzt `PLAN.md` nicht. Alle Festlegungen sind **Vorschläge** und gelten erst, wenn der Projektinhaber sie in Schritt F0 bestätigt. Laut `DECISIONS.md` (2026-10-16, G3) braucht jede weitere Modellrunde eine neue Entscheidung; dieser Plan ist die Vorlage dafür.
 
 ---

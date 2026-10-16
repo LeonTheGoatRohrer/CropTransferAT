@@ -1,0 +1,724 @@
+{
+  "n_field_years": 123,
+  "n_eval": 89,
+  "missing_share_eval": {
+    "s1_rvi_mean": 0.0,
+    "s1_rvi_anom": 0.0,
+    "s1_vhvv_anom": 0.0,
+    "lst_dt_mean": 0.472,
+    "lst_anom_mean": 0.472,
+    "modis_et_ratio": 0.0,
+    "era5_et_ratio": 0.0,
+    "emerge_doy": 0.034,
+    "emerge_anom": 0.034
+  },
+  "missing_by_site_year": [
+    {
+      "dataset": "BARC",
+      "year": 2017,
+      "s1_rvi_mean": 0.0,
+      "s1_rvi_anom": 0.0,
+      "s1_vhvv_anom": 0.0,
+      "lst_dt_mean": 1.0,
+      "lst_anom_mean": 1.0,
+      "modis_et_ratio": 0.0,
+      "era5_et_ratio": 0.0,
+      "emerge_doy": 0.0,
+      "emerge_anom": 0.0
+    },
+    {
+      "dataset": "BARC",
+      "year": 2018,
+      "s1_rvi_mean": 0.0,
+      "s1_rvi_anom": 0.0,
+      "s1_vhvv_anom": 0.0,
+      "lst_dt_mean": 1.0,
+      "lst_anom_mean": 1.0,
+      "modis_et_ratio": 0.0,
+      "era5_et_ratio": 0.0,
+      "emerge_doy": 0.0,
+      "emerge_anom": 0.0
+    },
+    {
+      "dataset": "BARC",
+      "year": 2019,
+      "s1_rvi_mean": 0.0,
+      "s1_rvi_anom": 0.0,
+      "s1_vhvv_anom": 0.0,
+      "lst_dt_mean": 1.0,
+      "lst_anom_mean": 1.0,
+      "modis_et_ratio": 0.0,
+      "era5_et_ratio": 0.0,
+      "emerge_doy": 0.0,
+      "emerge_anom": 0.0
+    },
+    {
+      "dataset": "BARC",
+      "year": 2020,
+      "s1_rvi_mean": 0.0,
+      "s1_rvi_anom": 0.0,
+      "s1_vhvv_anom": 0.0,
+      "lst_dt_mean": 0.2,
+      "lst_anom_mean": 0.2,
+      "modis_et_ratio": 0.0,
+      "era5_et_ratio": 0.0,
+      "emerge_doy": 0.0,
+      "emerge_anom": 0.0
+    },
+    {
+      "dataset": "BARC",
+      "year": 2021,
+      "s1_rvi_mean": 0.0,
+      "s1_rvi_anom": 0.0,
+      "s1_vhvv_anom": 0.0,
+      "lst_dt_mean": 1.0,
+      "lst_anom_mean": 1.0,
+      "modis_et_ratio": 0.0,
+      "era5_et_ratio": 0.0,
+      "emerge_doy": 0.0,
+      "emerge_anom": 0.0
+    },
+    {
+      "dataset": "KBS",
+      "year": 2017,
+      "s1_rvi_mean": 0.0,
+      "s1_rvi_anom": 0.0,
+      "s1_vhvv_anom": 0.0,
+      "lst_dt_mean": 1.0,
+      "lst_anom_mean": 1.0,
+      "modis_et_ratio": 0.0,
+      "era5_et_ratio": 0.0,
+      "emerge_doy": 0.12,
+      "emerge_anom": 0.12
+    },
+    {
+      "dataset": "KBS",
+      "year": 2020,
+      "s1_rvi_mean": 0.0,
+      "s1_rvi_anom": 0.0,
+      "s1_vhvv_anom": 0.0,
+      "lst_dt_mean": 0.21,
+      "lst_anom_mean": 0.21,
+      "modis_et_ratio": 0.0,
+      "era5_et_ratio": 0.0,
+      "emerge_doy": 0.0,
+      "emerge_anom": 0.0
+    },
+    {
+      "dataset": "KBS",
+      "year": 2023,
+      "s1_rvi_mean": 0.0,
+      "s1_rvi_anom": 0.0,
+      "s1_vhvv_anom": 0.0,
+      "lst_dt_mean": 0.0,
+      "lst_anom_mean": 0.0,
+      "modis_et_ratio": 0.0,
+      "era5_et_ratio": 0.0,
+      "emerge_doy": 0.0,
+      "emerge_anom": 0.0
+    }
+  ],
+  "describe": {
+    "s1_rvi_mean": {
+      "count": 123.0,
+      "mean": 0.763,
+      "std": 0.105,
+      "min": 0.475,
+      "25%": 0.708,
+      "50%": 0.752,
+      "75%": 0.82,
+      "max": 1.009
+    },
+    "s1_rvi_anom": {
+      "count": 113.0,
+      "mean": -0.0,
+      "std": 0.097,
+      "min": -0.359,
+      "25%": -0.032,
+      "50%": 0.009,
+      "75%": 0.046,
+      "max": 0.19
+    },
+    "s1_vhvv_anom": {
+      "count": 113.0,
+      "mean": -0.084,
+      "std": 0.73,
+      "min": -2.987,
+      "25%": -0.332,
+      "50%": 0.048,
+      "75%": 0.303,
+      "max": 1.178
+    },
+    "lst_dt_mean": {
+      "count": 62.0,
+      "mean": 4.916,
+      "std": 5.359,
+      "min": -2.283,
+      "25%": 0.372,
+      "50%": 2.308,
+      "75%": 8.681,
+      "max": 18.048
+    },
+    "lst_anom_mean": {
+      "count": 52.0,
+      "mean": 0.068,
+      "std": 0.844,
+      "min": -1.516,
+      "25%": -0.463,
+      "50%": 0.032,
+      "75%": 0.638,
+      "max": 2.154
+    },
+    "modis_et_ratio": {
+      "count": 119.0,
+      "mean": 0.547,
+      "std": 0.153,
+      "min": 0.091,
+      "25%": 0.529,
+      "50%": 0.563,
+      "75%": 0.591,
+      "max": 0.867
+    },
+    "era5_et_ratio": {
+      "count": 123.0,
+      "mean": 0.303,
+      "std": 0.069,
+      "min": 0.124,
+      "25%": 0.302,
+      "50%": 0.312,
+      "75%": 0.328,
+      "max": 0.471
+    },
+    "emerge_doy": {
+      "count": 118.0,
+      "mean": 174.18,
+      "std": 12.541,
+      "min": 146.275,
+      "25%": 166.576,
+      "50%": 175.151,
+      "75%": 181.807,
+      "max": 201.613
+    },
+    "emerge_anom": {
+      "count": 110.0,
+      "mean": 1.662,
+      "std": 10.336,
+      "min": -21.853,
+      "25%": -3.265,
+      "50%": -0.101,
+      "75%": 9.719,
+      "max": 28.597
+    },
+    "s1_n_scenes": {
+      "count": 123.0,
+      "mean": 7.797,
+      "std": 3.544,
+      "min": 4.0,
+      "25%": 5.0,
+      "50%": 5.0,
+      "75%": 11.0,
+      "max": 19.0
+    },
+    "lst_n_scenes": {
+      "count": 123.0,
+      "mean": 2.496,
+      "std": 1.231,
+      "min": 1.0,
+      "25%": 2.0,
+      "50%": 3.0,
+      "75%": 3.0,
+      "max": 8.0
+    }
+  },
+  "s1_scenes_by_year_platform": [
+    {
+      "year": 2017,
+      "platform": "A",
+      "n": 43
+    },
+    {
+      "year": 2017,
+      "platform": "B",
+      "n": 15
+    },
+    {
+      "year": 2018,
+      "platform": "A",
+      "n": 35
+    },
+    {
+      "year": 2018,
+      "platform": "B",
+      "n": 2
+    },
+    {
+      "year": 2019,
+      "platform": "A",
+      "n": 63
+    },
+    {
+      "year": 2019,
+      "platform": "B",
+      "n": 17
+    },
+    {
+      "year": 2020,
+      "platform": "A",
+      "n": 86
+    },
+    {
+      "year": 2020,
+      "platform": "B",
+      "n": 34
+    },
+    {
+      "year": 2021,
+      "platform": "A",
+      "n": 65
+    },
+    {
+      "year": 2021,
+      "platform": "B",
+      "n": 17
+    },
+    {
+      "year": 2022,
+      "platform": "A",
+      "n": 60
+    },
+    {
+      "year": 2023,
+      "platform": "A",
+      "n": 18
+    }
+  ],
+  "s1_db_range": {
+    "vv": [
+      -22.566426202941507,
+      -2.9639357987532127
+    ],
+    "vh": [
+      -33.15715153947821,
+      -12.975872456934079
+    ]
+  },
+  "s1_rvi_mean_by_site_year": [
+    {
+      "dataset": "BARC",
+      "year": 2017,
+      "rvi": 0.773
+    },
+    {
+      "dataset": "BARC",
+      "year": 2018,
+      "rvi": 0.636
+    },
+    {
+      "dataset": "BARC",
+      "year": 2019,
+      "rvi": 0.679
+    },
+    {
+      "dataset": "BARC",
+      "year": 2020,
+      "rvi": 0.701
+    },
+    {
+      "dataset": "BARC",
+      "year": 2021,
+      "rvi": 0.659
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2019,
+      "rvi": 0.578
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2020,
+      "rvi": 0.509
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2021,
+      "rvi": 0.57
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2022,
+      "rvi": 0.657
+    },
+    {
+      "dataset": "KBS",
+      "year": 2017,
+      "rvi": 0.63
+    },
+    {
+      "dataset": "KBS",
+      "year": 2020,
+      "rvi": 0.545
+    },
+    {
+      "dataset": "KBS",
+      "year": 2023,
+      "rvi": 0.584
+    }
+  ],
+  "lst_range_c_clear": [
+    4.784550440000032,
+    54.745748779999985
+  ],
+  "lst_clear_scenes_by_site_year": [
+    {
+      "dataset": "BARC",
+      "year": 2017,
+      "lst_n_scenes": 1.0
+    },
+    {
+      "dataset": "BARC",
+      "year": 2018,
+      "lst_n_scenes": 1.0
+    },
+    {
+      "dataset": "BARC",
+      "year": 2019,
+      "lst_n_scenes": 2.0
+    },
+    {
+      "dataset": "BARC",
+      "year": 2020,
+      "lst_n_scenes": 3.0
+    },
+    {
+      "dataset": "BARC",
+      "year": 2021,
+      "lst_n_scenes": 2.0
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2019,
+      "lst_n_scenes": 4.0
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2020,
+      "lst_n_scenes": 4.0
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2021,
+      "lst_n_scenes": 4.0
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2022,
+      "lst_n_scenes": 8.0
+    },
+    {
+      "dataset": "KBS",
+      "year": 2017,
+      "lst_n_scenes": 1.0
+    },
+    {
+      "dataset": "KBS",
+      "year": 2020,
+      "lst_n_scenes": 3.0
+    },
+    {
+      "dataset": "KBS",
+      "year": 2023,
+      "lst_n_scenes": 3.0
+    }
+  ],
+  "within_site_year_sd": [
+    {
+      "dataset": "BARC",
+      "year": 2017,
+      "modis_et_ratio": 0.1705,
+      "era5_et_ratio": 0.0,
+      "lst_dt_mean": NaN
+    },
+    {
+      "dataset": "BARC",
+      "year": 2018,
+      "modis_et_ratio": 0.1215,
+      "era5_et_ratio": 0.0934,
+      "lst_dt_mean": NaN
+    },
+    {
+      "dataset": "BARC",
+      "year": 2019,
+      "modis_et_ratio": 0.1691,
+      "era5_et_ratio": 0.0898,
+      "lst_dt_mean": NaN
+    },
+    {
+      "dataset": "BARC",
+      "year": 2020,
+      "modis_et_ratio": 0.1347,
+      "era5_et_ratio": 0.0927,
+      "lst_dt_mean": 1.5557
+    },
+    {
+      "dataset": "BARC",
+      "year": 2021,
+      "modis_et_ratio": 0.1434,
+      "era5_et_ratio": 0.0727,
+      "lst_dt_mean": NaN
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2019,
+      "modis_et_ratio": 0.0311,
+      "era5_et_ratio": 0.0,
+      "lst_dt_mean": 0.7672
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2020,
+      "modis_et_ratio": 0.007,
+      "era5_et_ratio": 0.0,
+      "lst_dt_mean": 0.4375
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2021,
+      "modis_et_ratio": 0.0275,
+      "era5_et_ratio": 0.0,
+      "lst_dt_mean": 0.208
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2022,
+      "modis_et_ratio": 0.0102,
+      "era5_et_ratio": 0.0,
+      "lst_dt_mean": 1.0024
+    },
+    {
+      "dataset": "KBS",
+      "year": 2017,
+      "modis_et_ratio": 0.03,
+      "era5_et_ratio": 0.0,
+      "lst_dt_mean": NaN
+    },
+    {
+      "dataset": "KBS",
+      "year": 2020,
+      "modis_et_ratio": 0.0198,
+      "era5_et_ratio": 0.0,
+      "lst_dt_mean": 0.6333
+    },
+    {
+      "dataset": "KBS",
+      "year": 2023,
+      "modis_et_ratio": 0.0217,
+      "era5_et_ratio": 0.0,
+      "lst_dt_mean": 0.8518
+    }
+  ],
+  "cloud_bias_lst_nscenes_vs_RY_within_site_year": [
+    -0.7071067811865475,
+    0.0,
+    0.3118242939920416,
+    0.10542917959114906
+  ],
+  "corr_features_eval": {
+    "s1_rvi_mean": {
+      "s1_rvi_mean": 1.0,
+      "s1_rvi_anom": 0.81,
+      "s1_vhvv_anom": 0.82,
+      "lst_dt_mean": -0.19,
+      "lst_anom_mean": 0.09,
+      "modis_et_ratio": 0.06,
+      "era5_et_ratio": 0.05,
+      "emerge_doy": -0.46,
+      "emerge_anom": -0.44
+    },
+    "s1_rvi_anom": {
+      "s1_rvi_mean": 0.81,
+      "s1_rvi_anom": 1.0,
+      "s1_vhvv_anom": 0.99,
+      "lst_dt_mean": 0.05,
+      "lst_anom_mean": 0.09,
+      "modis_et_ratio": -0.04,
+      "era5_et_ratio": 0.17,
+      "emerge_doy": -0.49,
+      "emerge_anom": -0.56
+    },
+    "s1_vhvv_anom": {
+      "s1_rvi_mean": 0.82,
+      "s1_rvi_anom": 0.99,
+      "s1_vhvv_anom": 1.0,
+      "lst_dt_mean": 0.01,
+      "lst_anom_mean": 0.06,
+      "modis_et_ratio": -0.02,
+      "era5_et_ratio": 0.13,
+      "emerge_doy": -0.53,
+      "emerge_anom": -0.6
+    },
+    "lst_dt_mean": {
+      "s1_rvi_mean": -0.19,
+      "s1_rvi_anom": 0.05,
+      "s1_vhvv_anom": 0.01,
+      "lst_dt_mean": 1.0,
+      "lst_anom_mean": 0.38,
+      "modis_et_ratio": -0.63,
+      "era5_et_ratio": 0.89,
+      "emerge_doy": 0.12,
+      "emerge_anom": 0.09
+    },
+    "lst_anom_mean": {
+      "s1_rvi_mean": 0.09,
+      "s1_rvi_anom": 0.09,
+      "s1_vhvv_anom": 0.06,
+      "lst_dt_mean": 0.38,
+      "lst_anom_mean": 1.0,
+      "modis_et_ratio": -0.01,
+      "era5_et_ratio": 0.01,
+      "emerge_doy": 0.24,
+      "emerge_anom": 0.29
+    },
+    "modis_et_ratio": {
+      "s1_rvi_mean": 0.06,
+      "s1_rvi_anom": -0.04,
+      "s1_vhvv_anom": -0.02,
+      "lst_dt_mean": -0.63,
+      "lst_anom_mean": -0.01,
+      "modis_et_ratio": 1.0,
+      "era5_et_ratio": -0.5,
+      "emerge_doy": -0.08,
+      "emerge_anom": -0.02
+    },
+    "era5_et_ratio": {
+      "s1_rvi_mean": 0.05,
+      "s1_rvi_anom": 0.17,
+      "s1_vhvv_anom": 0.13,
+      "lst_dt_mean": 0.89,
+      "lst_anom_mean": 0.01,
+      "modis_et_ratio": -0.5,
+      "era5_et_ratio": 1.0,
+      "emerge_doy": 0.06,
+      "emerge_anom": -0.17
+    },
+    "emerge_doy": {
+      "s1_rvi_mean": -0.46,
+      "s1_rvi_anom": -0.49,
+      "s1_vhvv_anom": -0.53,
+      "lst_dt_mean": 0.12,
+      "lst_anom_mean": 0.24,
+      "modis_et_ratio": -0.08,
+      "era5_et_ratio": 0.06,
+      "emerge_doy": 1.0,
+      "emerge_anom": 0.77
+    },
+    "emerge_anom": {
+      "s1_rvi_mean": -0.44,
+      "s1_rvi_anom": -0.56,
+      "s1_vhvv_anom": -0.6,
+      "lst_dt_mean": 0.09,
+      "lst_anom_mean": 0.29,
+      "modis_et_ratio": -0.02,
+      "era5_et_ratio": -0.17,
+      "emerge_doy": 0.77,
+      "emerge_anom": 1.0
+    }
+  },
+  "emerge_doy_by_site_year": [
+    {
+      "dataset": "BARC",
+      "year": 2017,
+      "count": 4.0,
+      "min": 180.9,
+      "50%": 182.4,
+      "max": 183.8
+    },
+    {
+      "dataset": "BARC",
+      "year": 2018,
+      "count": 4.0,
+      "min": 157.7,
+      "50%": 160.0,
+      "max": 172.4
+    },
+    {
+      "dataset": "BARC",
+      "year": 2019,
+      "count": 11.0,
+      "min": 147.6,
+      "50%": 159.4,
+      "max": 187.7
+    },
+    {
+      "dataset": "BARC",
+      "year": 2020,
+      "count": 10.0,
+      "min": 159.6,
+      "50%": 165.1,
+      "max": 173.5
+    },
+    {
+      "dataset": "BARC",
+      "year": 2021,
+      "count": 12.0,
+      "min": 146.3,
+      "50%": 152.4,
+      "max": 160.3
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2019,
+      "count": 3.0,
+      "min": 178.9,
+      "50%": 183.0,
+      "max": 184.4
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2020,
+      "count": 0.0,
+      "min": NaN,
+      "50%": NaN,
+      "max": NaN
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2021,
+      "count": 3.0,
+      "min": 167.2,
+      "50%": 170.0,
+      "max": 172.0
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2022,
+      "count": 2.0,
+      "min": 170.0,
+      "50%": 173.1,
+      "max": 176.3
+    },
+    {
+      "dataset": "KBS",
+      "year": 2017,
+      "count": 21.0,
+      "min": 160.5,
+      "50%": 178.2,
+      "max": 192.9
+    },
+    {
+      "dataset": "KBS",
+      "year": 2020,
+      "count": 24.0,
+      "min": 172.6,
+      "50%": 175.4,
+      "max": 188.3
+    },
+    {
+      "dataset": "KBS",
+      "year": 2023,
+      "count": 24.0,
+      "min": 171.1,
+      "50%": 180.3,
+      "max": 201.6
+    }
+  ]
+}

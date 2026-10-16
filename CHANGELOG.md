@@ -3,6 +3,9 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/) – ein Minor-Release pro Phase (siehe AGENTS.md §4.4).
 
 ## [Unreleased]
+### Added (Branch `phase-fj-feinjustierung`; F0.1 am 2026-10-16 bestätigt)
+- Feinjustierung (`reports/plan_feinjustierung.md`): Vorab-Festlegungen `reports/feinjust_vorab.md`; `extract_s1.py` (Sentinel-1 je Feld-Szene und BARC-Pixel), `extract_lst.py` (Landsat-8/9-Oberflächentemperatur, MOD16A2GF, ERA5-Land-Verdunstung), `fj_features.py` (M1–M4 as-of), `feinjust.py` (Gate H1, Ablation, Kontrollen), `fj_review.py`, `fj_product.py` (Rangliste mit konformer Alarmschwelle, Erklärung nach Monaten, Feldkarte); Tests `test_feinjust.py`, Leakage-Tests je Merkmal.
+- Ergebnis: **H1 ✓, H2 ✗** – kein neues Merkmal hilft; Bericht `reports/feinjustierung_ergebnis.md`, Datenkritik `reports/data_review/f2_merkmale.md`, `f3_ablation.md`, Doku `reports/doku/hauptergebnis.md`, Abbildungen `fj_*.png`.
 ### Added (Branch `phase-mk-mehrkultur`; D1–D12 am 2026-10-16 bestätigt)
 - W3.2–W3.4 und Etappe 4: `extract_multi.py`, `weather_multi.py`, `features_multi.py`, `curve_check.py`, `experiments_multi.py`; G2 ✓ (formal), **G3 ✗** (`reports/phase4_mehrkultur.md`): kein Signal über den Mittelwert hinaus; G2F-Mais (104 S2-Zellen-Jahre) über figshare.
 - W3.1: `config.yaml` Block `crops:` (Mais, Winterweizen, Sommergerste, Erbse, Winterraps, Soja), `crops.py`, `features.py` kulturabhängig (Standard Mais, per Regressionstest `tests/test_crops.py` unverändert).
