@@ -6,6 +6,8 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-10-16 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Abgleich des Codex-Katalogs mit der eigenen Recherche, Nachprüfung an Originalquellen (u. a. YIPEEO, Nordic), Korrekturblock in `reports/data_search.md`, Plan `reports/plan_mehrkultur.md` |
+| 2026-10-16 | Codex (OpenAI), Deep-Research-Lauf | Zweite, unabhängige Quellenrecherche zu offenen Ertragsdaten: `reports/extern/codex_2026-10-16/Ertragsdaten_Katalog.csv` und `Ertragsdaten_Recherche_2026-10-16.md` (Zählung Ort × Erntejahr, Quelleneignung) |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Fable 5.1) – KI-Recherche mit Unteragenten | Weltweite Recherche offener Ertragsdatensätze auf Feld-/Standortebene (Repositorien-APIs, Browser, Download-Verifikation von 12 Datensätzen); Bericht `reports/data_search.md` (Tabelle, Top 10, Standort-Jahre je Kultur, Anfragetexte) |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5 / Fable 5.1) | Zusammenfassung des Nachtlaufs für den Projektinhaber; Sentinel-2-Galerien der Trainingsfelder (`gallery.py`); mehrseitige Website (`app/ui/`, `app/versions.yaml`, Vergleich, Trainingsaufträge), Tests und Doku; Entwurf eines Recherche-Prompts für weitere Ertragsdatensätze |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) – autonomer Nachtlauf | Phase 1–4 nach PLAN.md: Ertrags-Datensatz, GEE-Extraktion, Merkmale, Modellfamilie, Kontrolltests, Datenkritik; Notebooks 01–03, Streamlit-App, Innerhalb-Feld-Analyse, One-Acre-Fund-Tabellenanalyse, Phase-5-Regionalmodell und Doku-Entwürfe durch KI-Unteragenten (Claude Sonnet); private Fortschrittsseite (Claude-Artifact) |

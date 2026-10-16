@@ -4,6 +4,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 ### Added
+- **Datensuche und Mehr-Kulturen-Plan:** `reports/data_search.md` (118 Quellen, Top 10, Zählung je Kultur, Anfragetexte; Korrekturblock zu YIPEEO und Nordic), `reports/plan_mehrkultur.md` (25 Schritte, 4 Gates, Entwurf D1–D12), Kopie des Codex-Katalogs unter `reports/extern/codex_2026-10-16/`; Eintrag `datensuche-mehrkultur` in `app/versions.yaml`.
 - **Website (Phase 9, vorgezogen):** `app/streamlit_app.py` als mehrseitige Streamlit-Site (Ziel · Vorgehen & Quellen · Ergebnisse · Vergleich · Felder ansehen · Eigenes Modell · Projektlog), Seiten unter `app/ui/`, Versionsregister `app/versions.yaml` (je Version: was geändert wurde, Kennzahlen in einfacher Sprache, Befunde, Grenzen, Abbildungen, Pfade), Glossar „Was heißt das?“, Theme `.streamlit/config.toml`.
 - `app/precompute.py` schreibt zusätzlich `benchmarks.csv` (alle Läufe aus `versions.yaml`) und `stages.json` (gewähltes Modell + Kriterien je Stufe) für den interaktiven Vergleich.
 - Seite „Eigenes Modell“: speichert Trainingsaufträge (Kultur, Datensätze, Merkmale) als JSON unter `data/app/train_requests/`; das Training selbst läuft weiterhin über die Module.

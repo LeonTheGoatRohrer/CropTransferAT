@@ -17,6 +17,43 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: datensuche-mehrkultur
+    date: 2026-10-16
+    phase: "Datenerweiterung (nach Phase 4, Plan)"
+    title: "Weitere Ertragsdaten gesucht – Plan für Training auf mehreren Kulturen"
+    status: zwischenstand
+    changed: "Weltweit nach offenen Ertragsdaten gesucht (zwei unabhängige KI-Recherchen abgeglichen) und daraus einen Plan für das Training auf Mais, Getreide und Soja gemacht."
+    plain: >
+      Weil Phase 4 an zu wenigen unabhängigen Standort-Jahren scheiterte, wurde nach weiteren Datensätzen mit
+      gemessenem Ertrag gesucht, auch für Weizen, Gerste, Raps und Soja. Zwei getrennte KI-Recherchen wurden
+      verglichen und an den Originalquellen nachgeprüft; dabei wurde ein Fehler im ersten Bericht gefunden und
+      korrigiert. Der Plan legt fest, wie das Modell auf mehreren Kulturen lernt und wann es nach Österreich darf.
+    metrics:
+      - label: "Offen ladbar, gezählt: Körnermais"
+        value: "112 Standort-Jahre"
+        plain: "Fast alle aus Genomes to Fields (USA), Versuchsparzellen und keine ganzen Felder. Bisher hatten wir 8–11 unabhängige Standort-Jahre."
+      - label: "Offen ladbar, gezählt: Winterweizen Europa"
+        value: "464 Standort-Jahre"
+        plain: "Aus Sortenprüfungen in Tschechien, Ungarn, Schweiz, Frankreich und Deutschland. Noch nicht auf gleiche Wetterzellen zusammengeführt."
+      - label: "Soja offen"
+        value: "ca. 30–40 Standort-Jahre"
+        plain: "Schätzung aus Beschreibungen. Soja reicht frühestens mit Anfragen für ein eigenes Modell."
+    found:
+      - "Die größte Quelle für Felder ab 1 ha (YIPEEO, Tschechien) hat die Ertragswerte nur in einer geschützten Sammlung. Sie muss angefragt werden."
+      - "Die nordischen Gerstenwerte sind modellierte Sortenwerte und keine gewogenen Rohmittel."
+      - "Mehr Kulturen am selben Ort bringen keine neue Witterung. Gezählt wird deshalb pro Wetterzelle und Jahr."
+    limits:
+      - "Fast alle neuen Daten sind Versuchsparzellen-Mittel. Als Satellitenlabel sind sie verrauscht."
+      - "Die meisten Zahlen sind Schätzungen aus Beschreibungen und noch nicht aus den Dateien gezählt."
+      - "Die Festlegungen im Plan gelten erst nach Bestätigung durch den Projektinhaber."
+    links:
+      - label: "Recherchebericht"
+        path: reports/data_search.md
+      - label: "Plan Mehr-Kulturen"
+        path: reports/plan_mehrkultur.md
+      - label: "Codex-Katalog (zweite Recherche)"
+        path: reports/extern/codex_2026-10-16/Ertragsdaten_Katalog.csv
+
   - id: nachtlauf-extras
     date: 2026-10-16
     phase: "Zusatzanalysen (Phase 2.4 / 3.4a)"
