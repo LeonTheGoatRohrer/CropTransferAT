@@ -10,7 +10,7 @@ Stand 2026-10-16. Entwurf. Dieser Plan ersetzt `PLAN.md` nicht. Alle Festlegunge
 2. **Mehr Kulturen sind nur noch Nebeneffekt** (Entscheidung des Projektinhabers im Chat, 2026-10-16): kein Training zusätzlich auf Weizen, Erbse oder Gerste im Hauptmodell. Vorhandene Ergebnisse bleiben als Dokumentation.
 3. **Neue Datenquellen werden einzeln getestet** (Radar, Oberflächentemperatur, Entwicklungsstadium, Aussaattermin) und nur behalten, wenn sie nach vorab festgelegter Regel messbar helfen.
 4. **Die Hagelversicherung liefert Österreich-Daten.** Sie werden ungeöffnet abgelegt und erst nach dem Freeze verwendet (Österreich-Regel).
-5. **Der Plan hat 5 Etappen, 17 Schritte und 3 Gates.** Es gibt höchstens eine Modellrunde je Etappe 2–3, danach Bericht.
+5. **Der Plan hat 5 Etappen, 19 Schritte und 3 Gates.** Es gibt höchstens eine Modellrunde je Etappe 2–3, danach Bericht.
 6. **Vom Projektinhaber gebraucht:** vier Entscheidungen (F0.1), die Hagel-Datenübergabe (F0.2), Anfragen für Feldkarten (F0.3, Texte in `reports/data_search.md`).
 
 ---
@@ -51,13 +51,25 @@ Sonst: verworfen und als negatives Ergebnis dokumentiert (AGENTS.md §7.1).
 | ID | Maßnahme | Idee | Konkret | Grenzen (ehrlich) |
 |---|---|---|---|---|
 | **M1** | Sentinel-1 Radar | wolkenunabhängig, füllt Lücken (in Mehr-Kulturen hatten nur 235 von 474 Zeilen eine gültige Kurve) | `COPERNICUS/S1_GRD`, VV, VH, VH/VV, RVI; Median im Feldpolygon je Szene; Dekaden-Komposit wie bei HLS; ab 2017 | nur ab 2017, daher weniger US-Jahre; Radar reagiert auf Feuchte und Struktur, nicht direkt auf Grün |
-| **M2** | Oberflächentemperatur (Landsat 8/9 ST_B10, 30 m, 16 Tage) und MODIS LST (1 km) als Kontext | Trockenstress zeigt sich oft früher in der Temperatur als im Grünindex | Mittel der Kronentemperatur minus Lufttemperatur (ERA5-Land) je klarer Szene; Anomalie gegen Nachbarfelder desselben Tages | wenige klare Szenen pro Saison; ECOSTRESS nicht in GEE; MODIS zu grob für Einzelfelder |
+| **M2** | Oberflächentemperatur (Landsat 8/9 ST_B10, 30 m, 16 Tage), MODIS LST (1 km) und Verdunstung (MODIS MOD16, ERA5-Land) | Trockenstress zeigt sich oft früher in der Temperatur als im Grünindex | Mittel der Kronentemperatur minus Lufttemperatur (ERA5-Land) je klarer Szene; Anomalie gegen Nachbarfelder desselben Tages | wenige klare Szenen pro Saison; ECOSTRESS nicht in GEE; MODIS zu grob für Einzelfelder |
 | **M3** | Entwicklungsstadium (GDD-Achse) | Jahre mit früher/später Saat vergleichbar machen | `gdd_axis.py` existiert; neu: Stress-Score und Referenzkurve auf GDD-Achse; Phase 2.4 zeigte für das Jahresmodell keinen robusten Unterschied, für den Stress-Score noch nicht getestet | Aussaat ungenau (siehe M4) |
-| **M4** | Aussaat-/Auflaufdatum aus der Kurve | größte unbekannte Störgröße | Begrünungsbeginn (NDVI-Schwellendurchgang, Schwelle vorab) als Merkmal; Prüfung gegen KBS-Saattermine, wo bekannt | HLS-Lücken im Frühjahr; Sorte bleibt unbekannt |
+| **M4** | Aussaat-/Auflaufdatum aus der Kurve. **Sorte ist nicht ableitbar**: nur wo die Quelle sie nennt (KBS), sonst als bekannte Störgröße benannt | größte unbekannte Störgröße | Begrünungsbeginn (NDVI-Schwellendurchgang, Schwelle vorab) als Merkmal; Prüfung gegen KBS-Saattermine, wo bekannt | HLS-Lücken im Frühjahr; Sorte bleibt unbekannt |
 | **M5** | Regionalmodell als Merkmal | Jahrescharakter aus Feldern der Umgebung und Region | CY-Bench-Vorhersage (YAS) als Merkmal, **nur wenn** CY-Bench US-Regionen für die Trainingsjahre enthält (prüfen in F1.4) | sonst entfällt; in Österreich später möglich |
 | **M6** | Feldkarten | löst den Engpass der unabhängigen Jahre | YIPEEO (CZ/SK), SwissYield Witzwil, Booßen; Anfragen laufen parallel | nur nach Freigabe |
 
 ---
+
+## 3b. Zuordnung Ihrer sieben Punkte
+
+| Punkt | Schritt |
+|---|---|
+| 1 Fokus auf Innerhalb-Feld und Stress-Score als Hauptergebnis | Abschnitt 2, F1.1, F3.4 |
+| 2 Sentinel-1 Radar | M1, F2.1 |
+| 3 Temperatur und Verdunstung | M2, F2.2, F2.5 (ECOSTRESS nicht in GEE, ersetzt durch Landsat-Temperatur) |
+| 4 Entwicklungsstadium (GDD) | M3, F2.3 |
+| 5 Aussaattermin und Sorte | M4, F2.4 (Sorte nur wo bekannt) |
+| 6 Regionalmodell als Merkmal | M5, F1.4 (erst Machbarkeit prüfen) |
+| 7 Mehr Feldkarten | M6, F0.3 |
 
 ## 4. Arbeitsplan
 
@@ -90,6 +102,7 @@ Aufwand: S = unter ½ Tag, M = 1 Tag, L = 2–3 Tage. „Claude“ = KI-Agent im
 | **F2.2** | Claude | M2 Temperatur: Landsat-8/9-Oberflächentemperatur je Feld-Szene, Anomalie gegen Nachbarfelder und gegen ERA5-Lufttemperatur | `data/interim/obs_lst/` | L |
 | **F2.3** | Claude | M3 GDD-Achse für Stress-Score und Referenzkurve (`gdd_axis.py` erweitern) | Referenzkurve je Achse | M |
 | **F2.4** | Claude | M4 Auflaufdatum aus der Kurve, Schwelle vorab; Plausibilität gegen bekannte Saattermine | Merkmal `emerge_doy` | M |
+| **F2.5** | Claude | M2b Verdunstung: MODIS-Verdunstung (MOD16A2GF, 500 m) und ERA5-Land-Verdunstungsanomalie als Trockenstress-Merkmale, Verhältnis tatsächliche zu potenzieller Verdunstung | `data/interim/obs_et/` | M |
 
 ### Etappe F3 – Ablation (eine Runde, vorab festgelegt)
 
@@ -98,6 +111,7 @@ Aufwand: S = unter ½ Tag, M = 1 Tag, L = 2–3 Tage. „Claude“ = KI-Agent im
 | **F3.1** | Claude | Je Merkmal M1–M4 einzeln zum Stand von Phase 3 hinzufügen (Ziel A und B), danach alle behaltenen zusammen; LOFYO wie in `DECISIONS.md` | `results/<datum>_feinjust_ablation/metrics.csv` | L |
 | **F3.2** | Claude | Kontrollen: Label-Shuffle, Koordinaten-Ablation, Adversarial Validation, Lauf ohne KBS bzw. ohne BARC (Leave-One-Dataset-Out) | `controls.json` | M |
 | **F3.3** | Claude | Bericht mit Tabelle „behalten/verworfen“ nach Regel aus Abschnitt 3 | `reports/feinjustierung_ergebnis.md` | M |
+| **F3.4** | Claude | **Hauptergebnis formulieren (Ihr Punkt 1):** Stress-Score und Innerhalb-Feld-Karte als Produkt „Welches Feld und welcher Feldteil fällt auf?“ ausbauen: Rangliste der Felder je Region, Feldkarte mit auffälligen Zonen, Score-Erklärung (welche Kurvenphase löst den Alarm aus); Texte in `reports/doku/` und Website-Eintrag. Reihenfolge der Metrik im Bericht: A, B vor C | `reports/doku/hauptergebnis.md`, Website-Seite | M |
 
 **Gate H2:** Mindestens ein Merkmal erfüllt die Regel **oder** der Plan endet mit einem negativen, vollständig dokumentierten Ergebnis. Keine nachträgliche Änderung der Regel. Bei Misserfolg Ziel A/B bleibt auf Stand von Phase 3, Mais-Jahresvorhersage bleibt „nicht stark genug“.
 
