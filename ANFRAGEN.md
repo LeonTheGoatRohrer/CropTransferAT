@@ -11,8 +11,11 @@ Konten, Formulare, Lizenzzustimmungen und E-Mails erledigt der Projektinhaber se
 | 5 | **Feld-Erträge Landwirt:innen (V3)** | Landwirt:innen, LK Steiermark, Maschinenring | Österreich-Test V3 (bester Test) | mittel, läuft parallel | offen |
 | 6 | **Bodenklimazahl** (optional) | Amt der Stmk. Landesregierung, Abteilung 17, Referat Statistik und Geoinformation (Kontakt über https://www.landesentwicklung.steiermark.at); ggf. BEV | Österreich-Test: Plausibilitätsprüfung Boden | niedrig | offen |
 | 7 | **One Acre Fund: ungerundete Koordinaten + Feldgröße** | Autor:innen Juan Aramburu-Merlos / Patricio Grassini (University of Nebraska–Lincoln, Kontakt laut Artikel PMC11130130) bzw. One Acre Fund (Zenodo 10.5281/zenodo.11115815) | Satellitenkurven für One-Acre-Fund-Felder (bis dahin nur Tabellenanalyse, DECISIONS 2026-10-15) | mittel | offen |
-| 8 | **Hagelversicherung: Schadensdaten Österreich** (Feinjustierung F0.2) | Österreichische Hagelversicherung (Kontakt durch den Projektinhaber) | nur Österreich-Test nach dem Freeze; Datei **ungeöffnet** unter `data/raw/hagel_at/` ablegen, nicht an Claude geben. Gewünschte Spalten: Schadendatum, Schlag/Koordinate oder Gemeinde, Kultur, Schadenshöhe %, Ursache, Versicherungsjahr; ohne Namen | mittel | offen |
-| 9 | **Feldkarten YIPEEO, SwissYield, Booßen** (Feinjustierung F0.3) | Texte und Reihenfolge in `reports/plan_mehrkultur.md` §8 bzw. `reports/data_search.md` | mehr unabhängige Standort-Jahre (Option b nach Gate H2) | hoch | offen |
+| 8 | **Hagelversicherung: Schadensdaten Österreich** (Feinjustierung F0.2) | Österreichische Hagelversicherung, Kontakt über https://www.hagel.at (Ansprechperson vorher auf der Seite suchen) | nur Österreich-Test nach dem Freeze; Datei **ungeöffnet** unter `data/raw/hagel_at/` ablegen, nicht an Claude geben. Gewünschte Spalten: Schadendatum, Schlag/Koordinate oder Gemeinde, Kultur, Schadenshöhe %, Ursache, Versicherungsjahr; ohne Namen | mittel | offen |
+| 9 | **YIPEEO: Erträge CZ/SK auf Feldebene** | Emanuel Büechi, TU Wien (emanuel.bueechi@geo.tuwien.ac.at laut YIPEEO-Deliverable D4.2) | Praxisfelder statt Versuchsparzellen für Ziel A (gegen den KBS-T4-Effekt); 411 Körnermais-Feld-Jahre 2017–2022 | **hoch** | offen |
+| 10 | **DWFI: Mais-Ertragskarten MN/IA/NE** | Zenodo-Anfrageformular https://zenodo.org/records/15367430 | Ertragskarten an drei weiteren Standorten: prüft, ob die Karte innerhalb des Feldes (Hauptergebnis) auch außerhalb von BARC hält | **hoch** | offen |
+| 11 | **SwissYield Witzwil (ETH)** | Gregor Perich, ETH Zürich (gregor.perich@usys.ethz.ch laut Codex-Recherche) | Mähdrescher-Karten 2017–2021 (Weizen, Gerste, Triticale): Robustheit der Feldkarte über Kulturen (Nebeneffekt) | mittel | offen |
+| 12 | **Booßen Roggenkarte (ZALF)** | Pablo Rosso, ZALF (pablo.rosso@zalf.de laut Codex-Recherche) | 1 Feld-Jahr (70 ha, Roggen 2021): zusätzlicher Standort für die Feldkarte | niedrig | offen |
 
 **Ohne Anfrage** (lädt der Agent selbst): One Acre Fund (Zenodo, CC BY 4.0), SSURGO (Soil Data Access), Versuchsberichte Hatzendorf und LK-OÖ-Praxisversuche (öffentliche PDFs).
 
@@ -108,3 +111,87 @@ Kurzer Text für Gespräch, Kammer oder Maschinenring:
 >
 > Best regards,
 > [Name]
+
+---
+
+## Versandfertig ab 2026-10-16 (Hauptergebnis und Feinjustierung)
+
+**Reihenfolge:** zuerst 9 YIPEEO und 10 DWFI (hoch), dann 8 Hagel, danach 11 und 12. Vor dem Senden die Platzhalter `[…]` ersetzen und die E-Mail-Adresse auf der Seite der Institution prüfen; Adressen aus Recherchen können veraltet sein. Nach dem Senden hier das Datum eintragen und Antworten in `DATA_SOURCES.md` vermerken. Erhaltene Daten **nie** ins Repository legen (AGENTS §4.5).
+
+## 8. Österreichische Hagelversicherung – Schadensdaten (nur für den Österreich-Test)
+
+**Wichtig für die Österreich-Regel:** Die Datei nach Eingang **ungeöffnet** unter `data/raw/hagel_at/` ablegen und nicht an Claude geben, bis das Testprotokoll committet und freigegeben ist. Sie dient nur dem Test, nie dem Training oder dem Einstellen von Schwellen.
+
+**Betreff:** Anfrage anonymisierter Schadensdaten Körnermais für ein Schülerforschungsprojekt (BWKI Österreich)
+
+> Sehr geehrte Damen und Herren,
+>
+> ich heiße [Name] und besuche die [Klasse, Schule, Ort]. Für den Bundeswettbewerb Künstliche Intelligenz Österreich (BWKI) arbeite ich am Projekt „CropTransfer AT“. Ein Verfahren erkennt aus Satellitenbildern (Sentinel-2), welche Maisfelder im Sommer auffällig schwach wachsen und wo innerhalb eines Feldes Ertrag fehlt. Entwickelt wird es ausschließlich mit Daten aus den USA; danach wird es unverändert in Österreich geprüft. Für diese Prüfung bräuchte ich unabhängige Angaben zu tatsächlichen Schäden.
+>
+> Darf ich Sie fragen, ob Sie mir für die nicht-kommerzielle Forschung **anonymisierte** Schadensmeldungen für Körnermais in der Steiermark (gerne auch Niederösterreich, Burgenland und Oberösterreich) aus den Jahren 2018–2025 zur Verfügung stellen könnten? Hilfreich wären je Schadensfall:
+> - Schadensdatum und Schadensursache (z. B. Hagel, Sturm, Dürre, Überschwemmung),
+> - Schadensausmaß in Prozent,
+> - Lage: Schlag (z. B. INVEKOS-Feldstück-Nummer) oder Koordinate; falls das nicht möglich ist, Katastralgemeinde oder Gemeinde,
+> - Kultur und Versicherungsjahr,
+> - wenn möglich auch Felder **ohne** Schaden in denselben Gemeinden (nur Lage und Jahr), damit sich Treffer und Fehlalarme zählen lassen.
+>
+> Namen oder Betriebsdaten brauche ich nicht. Die Daten werden nur innerhalb des Projekts verwendet, nicht weitergegeben und nicht veröffentlicht. Im Wettbewerbsbeitrag erscheinen nur zusammengefasste Ergebnisse (z. B. „x % der Hagelflächen wurden erkannt“) ohne Einzelfälle. Ihre Institution nenne ich gerne in der von Ihnen gewünschten Form als Datenquelle. Eine Nutzungsvereinbarung unterschreiben ich und meine betreuende Lehrkraft gerne.
+>
+> Vielen Dank für Ihre Zeit.
+>
+> Mit freundlichen Grüßen
+> [Name, Schule, E-Mail, betreuende Lehrkraft]
+
+## 9. YIPEEO – Erträge Tschechien/Slowakei auf Feldebene
+
+**An:** Emanuel Büechi, TU Wien (laut YIPEEO-Deliverable D4.2; Projektleitung Wouter Dorigo). **Betreff:** Zugang zu den YIPEEO-Felderträgen (CZ/SK) für ein Schülerforschungsprojekt (BWKI Österreich)
+
+> Sehr geehrter Herr Büechi,
+>
+> ich heiße [Name] und besuche die [Klasse, Schule, Ort]. Für den Bundeswettbewerb Künstliche Intelligenz Österreich (BWKI) arbeite ich am Projekt „CropTransfer AT“. Aus Sentinel-2-Zeitreihen soll erkannt werden, welche Maisfelder in einem Jahr auffällig schwach sind. Trainiert wird außerhalb Österreichs; danach wird das Verfahren unverändert in der Steiermark getestet.
+>
+> Bisher habe ich nur US-Versuchsparzellen mit gemessenem Ertrag. Dabei zeigt sich, dass mein Verfahren vor allem Bewirtschaftungsunterschiede zwischen den Versuchsvarianten erkennt (z. B. späte Bio-Saat), nicht den Stress auf Praxisfeldern. Die YIPEEO-Felder aus Südmähren wären dafür ideal: echte Praxisfelder in Maisgröße, nahe an Österreich und aus den Sentinel-2-Jahren.
+>
+> In der öffentlichen Sammlung `pub_yipeeo_yield_fl` sind die Erträge für Tschechien und die Slowakei leer; sie liegen in `prv_yipeeo_yield_field`. Wäre es möglich, mir für die nicht-kommerzielle Forschung Zugang zu diesen Erträgen zu geben, zumindest für Körnermais (gerne auch Silomais) 2017–2022? Dazu hätte ich drei kurze Fragen:
+> 1. Unter welcher Lizenz darf ich die Daten nutzen? DataCite nennt „proprietary“, die EODC-Collection „public“.
+> 2. Auf welche Kornfeuchte beziehen sich die t/ha-Werte?
+> 3. Lassen sich Felder über die Jahre zuordnen (Feld-ID), oder gibt es Saat- und Erntedaten?
+>
+> Die Daten werden nicht weitergegeben und nicht veröffentlicht; im Beitrag erscheinen nur abgeleitete Ergebnisse. YIPEEO und die beteiligten Institutionen zitiere ich in der gewünschten Form. Eine Nutzungsvereinbarung unterschreibe ich gerne.
+>
+> Vielen Dank und freundliche Grüße
+> [Name, Schule, E-Mail, betreuende Lehrkraft]
+
+## 10. DWFI – Mais-Ertragskarten (Zenodo-Anfrageformular)
+
+**Wo:** „Request access“ auf https://zenodo.org/records/15367430. Das Formular verlangt eine Begründung und die Zustimmung zu den Bedingungen (Vertraulichkeit, Danksagung, keine Veröffentlichung ohne schriftliche Zustimmung). Lesen Sie die Bedingungen selbst und stimmen Sie nur zu, wenn sie für Sie passen.
+
+**Begründung (Formularfeld):**
+
+> I am a secondary-school student in Austria working on "CropTransfer AT" for the Austrian national AI competition for students (BWKI Österreich). The project shows from Sentinel-2 imagery where yield is missing inside maize fields. At one site (USDA BARC, Maryland, 41 field-years), mid-summer NDVI ranks within-field yield well (median Spearman 0.68). I would like to use the DWFI yield maps 2021–2024 (Morris MN, Williams IA, Mead NE) only as independent held-out validation, to test whether this holds at other sites; no model will be trained on them. I agree to keep the data confidential, to acknowledge DWFI and ARPA-E (DE-AR0001226), and not to publish or share the data or maps without DWFI's written consent. Only aggregated statistics would appear in the competition entry, and only with your consent. The crop per field and year, the yield unit and the moisture basis would be very helpful.
+
+## 11. SwissYield Witzwil (ETH Zürich)
+
+**An:** Gregor Perich, ETH Zürich (Adresse auf der ETH-Seite prüfen). **Betreff:** Use of the Witzwil yield maps in a student research project (BWKI Österreich)
+
+> Dear Mr Perich,
+>
+> I am a secondary-school student in Austria working on "CropTransfer AT" for the Austrian national AI competition for students (BWKI Österreich). The project shows from Sentinel-2 imagery where yield is missing inside fields; at a US maize site, mid-summer NDVI ranks within-field yield well (median Spearman 0.68). I would like to test whether this also holds for other crops and in a Central European climate, and your Witzwil combine yield maps 2017–2021 would be an ideal test.
+>
+> Could you tell me whether I may use the SwissYield/Witzwil yield maps (ETH Research Collection) for this non-commercial project, and how I can access them? It would also help to know the field boundaries, the yield unit and moisture basis, and the crop per field and year. The data would be used only as held-out validation and would not be redistributed; only aggregated results would be shown. I will cite your dataset and paper as you prefer.
+>
+> Thank you very much, and best regards,
+> [Name, school, e-mail, supervising teacher]
+
+## 12. Booßen Roggenkarte (ZALF)
+
+**An:** Pablo Rosso, ZALF (Adresse auf der ZALF-Seite prüfen). **Betreff:** Gemessene Ertragskarte Booßen 2021 für ein Schülerforschungsprojekt (BWKI Österreich)
+
+> Sehr geehrter Herr Rosso,
+>
+> ich heiße [Name] und besuche die [Klasse, Schule, Ort]. Für den Bundeswettbewerb Künstliche Intelligenz Österreich (BWKI) prüfe ich, wie gut Sentinel-2 innerhalb eines Feldes zeigt, wo Ertrag fehlt; an einem US-Maisstandort gelingt das gut (Median-Spearman 0,68). In Ihrem Artikel (Precision Agriculture 2025, doi 10.1007/s11119-025-10274-w) beschreiben Sie eine gemessene Mähdrescherkarte des 70-ha-Roggenfeldes bei Booßen aus 2021.
+>
+> Dürfte ich die **gemessenen** Ertragspunkte bzw. das Raster 2021 mit Feldgrenze für mein nicht-kommerzielles Projekt nutzen, ausschließlich als unabhängige Prüfung? Hilfreich wären Einheit, Feuchtebasis und Angaben zur Kalibrierung. Die Daten werden nicht weitergegeben und nicht veröffentlicht; ich zitiere Ihren Artikel und das ZALF in der gewünschten Form.
+>
+> Vielen Dank und freundliche Grüße
+> [Name, Schule, E-Mail, betreuende Lehrkraft]

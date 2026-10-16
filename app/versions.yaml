@@ -17,6 +17,43 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: abgabe-hauptergebnis
+    date: 2026-10-16
+    phase: "Entscheidung des Projektinhabers (Abgabe)"
+    title: "Hauptergebnis: die Karte innerhalb des Feldes und das EU-Regionalmodell"
+    status: abgeschlossen
+    changed: "Der Projektinhaber hat festgelegt, dass die Abgabe die belastbarsten Ergebnisse in den Vordergrund stellt: wo im Feld Ertrag fehlt, und welche Jahre in EU-Regionen schlechter werden."
+    plain: >
+      Nach der Feinjustierung ist klar, welche Aussagen halten: Innerhalb eines Feldes zeigt der Grünwert im Hochsommer
+      zuverlässig, wo Ertrag fehlt. Auf Regionalebene erkennt das EU-Modell schwach, aber gesichert, welche Jahre schlechter werden.
+      Die Rangliste ganzer Felder bleibt Teil des Projekts, aber mit der Grenze, dass ein auffälliges Feld auch spät gesät sein kann.
+      Es wurde dafür nichts neu gerechnet.
+    metrics:
+      - label: "Innerhalb des Feldes (Median-ρ)"
+        value: "0,68"
+        ci: "[0,54; 0,72]"
+        n: "41 Feld-Jahre"
+        plain: "Je höher der Grünwert eines Pixels, desto höher meist sein Ertrag; 1 wäre eine perfekte Rangfolge."
+      - label: "EU-Regionalmodell am 1.9. (Spearman-ρ)"
+        value: "0,38"
+        ci: "[0,36; 0,40]"
+        n: "8371 Region-Jahre"
+        plain: "Schwacher, aber sicher von 0 verschiedener Zusammenhang zwischen Vorhersage und tatsächlicher Jahresabweichung."
+    found:
+      - "Die Karte braucht kein Training und hängt nicht an wenigen Wetter-Jahren; das macht sie zum robustesten Ergebnis."
+      - "Negative Ergebnisse (Phase 4, Mehr-Kulturen, Feinjustierung) werden vollständig berichtet, weil ihre Kriterien vorab feststanden."
+    limits:
+      - "Die Karte ist nur an einem Standort (BARC, Maryland) mit Ertragskarten geprüft."
+      - "Weder Feld- noch Regionalmodell sind bisher in Österreich getestet."
+    figures:
+      - file: fj_field_map.png
+        caption: "Auffällige Zonen (unterstes NDVI-Viertel) und gemessene Problemzonen."
+    links:
+      - label: "Hauptergebnis (Doku-Entwurf)"
+        path: reports/doku/hauptergebnis.md
+      - label: "Entscheidungen"
+        path: DECISIONS.md
+
   - id: feinjustierung-f3
     date: 2026-10-16
     phase: "Feinjustierung (Plan reports/plan_feinjustierung.md, Etappen F0–F3)"

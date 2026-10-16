@@ -10,7 +10,7 @@ Projekt für den Bundeswettbewerb Künstliche Intelligenz (BWKI) Österreich.
 
 ## Status
 
-Phasen 0–3 abgeschlossen (v0.4.0), Phase 4 „stark genug“ **nicht bestanden** (kein Freeze, kein Österreich-Test), Phase 5 bis zum EU-Freeze (`freeze-cybench-1`). Offene Entscheidungen: [reports/NACHTLAUF.md](reports/NACHTLAUF.md). Offene Anfragen: [ANFRAGEN.md](ANFRAGEN.md).
+Phasen 0–3 abgeschlossen (v0.4.0), Phase 4 „stark genug“ **nicht bestanden** (kein Freeze, kein Österreich-Test), Phase 5 bis zum EU-Freeze (`freeze-cybench-1`), Feinjustierung ohne Verbesserung (Gate H2 ✗). **Hauptergebnis der Abgabe:** [reports/doku/hauptergebnis.md](reports/doku/hauptergebnis.md) – Karte innerhalb des Feldes (ρ 0,68) und EU-Regionalmodell (ρ 0,38). Offene Entscheidungen: [reports/NACHTLAUF.md](reports/NACHTLAUF.md). Offene Anfragen: [ANFRAGEN.md](ANFRAGEN.md).
 
 ## Website (lokal, privat)
 

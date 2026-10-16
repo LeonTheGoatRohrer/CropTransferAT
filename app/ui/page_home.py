@@ -40,15 +40,16 @@ def page() -> None:
     st.markdown("---")
     st.subheader("Wo stehen wir?")
     versions = load_versions()["versions"]
-    main = [v for v in versions if v["id"] in ("v0.4.0", "freeze-cybench-1", "v0.3.0", "v0.2.0")]
+    main = [v for v in versions if v["id"] in ("abgabe-hauptergebnis", "feinjustierung-f3", "v0.4.0", "freeze-cybench-1", "v0.3.0", "v0.2.0")]
     for v in main:
         st.markdown(f"{status_badge(v['status'])} **{v['phase']} – {v['title']}**  \n{v['changed']}",
                     unsafe_allow_html=True)
     st.markdown("")
     st.info(
-        "**Stand in einem Satz:** Innerhalb eines Feldes sieht der Satellit sehr gut, wo Ertrag fehlt. "
-        "Ob ein ganzes Jahr gut oder schlecht wird, kann das Modell aus den bisherigen Daten noch nicht "
-        "verlässlich sagen – dafür fehlen unabhängige Standort-Jahre. Deshalb wurde das Modell **nicht** eingefroren "
+        "**Stand in einem Satz:** Innerhalb eines Feldes sieht der Satellit sehr gut, wo Ertrag fehlt (das ist das "
+        "Hauptergebnis). Auf Regionalebene in der EU erkennt ein Modell schwach, aber nachweisbar, welche Jahre "
+        "schlechter werden. Welches ganze Feld gefährdet ist, zeigt die Grünkurve nur mit Einschränkung – ein "
+        "auffälliges Feld kann auch einfach spät gesät sein. Das Feldmodell wurde deshalb **nicht** eingefroren "
         "und Österreich **noch nicht** getestet."
     )
 

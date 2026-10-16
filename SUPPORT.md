@@ -6,6 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) | Vorschlag und Ausformulierung des Hauptergebnisses der Abgabe (Doku-Entwurf, Website-Texte); Entwürfe der Anfragetexte Hagelversicherung, YIPEEO, DWFI, SwissYield, Booßen (Versand durch den Projektinhaber) |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) | Umsetzung des Plans Feinjustierung nach Bestätigung F0.1 durch den Projektinhaber: Vorab-Festlegungen, GEE-Extraktion (Sentinel-1, Landsat-Temperatur, MODIS/ERA5-Verdunstung), Merkmale M1–M4, Ablation und Kontrollen, Datenkritik, Bericht, Hauptergebnis-Text und Abbildungen, Tests, Website-Eintrag |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Abgleich des Codex-Katalogs mit der eigenen Recherche, Nachprüfung an Originalquellen (u. a. YIPEEO, Nordic), Korrekturblock in `reports/data_search.md`, Plan `reports/plan_mehrkultur.md` |
 | 2026-10-16 | Codex (OpenAI), Deep-Research-Lauf | Zweite, unabhängige Quellenrecherche zu offenen Ertragsdaten: `reports/extern/codex_2026-10-16/Ertragsdaten_Katalog.csv` und `Ertragsdaten_Recherche_2026-10-16.md` (Zählung Ort × Erntejahr, Quelleneignung) |

@@ -8,11 +8,12 @@ Stand: 16.10.2026. Grundlage sind nur die Projektdateien (PLAN, DECISIONS, DATA_
 
 | Nr. | Kapitel | Datei | Status |
 |---|---|---|---|
+| 0 | **Hauptergebnis** (Zusammenfassung vorn: Karte innerhalb des Feldes, EU-Regionalmodell, Stress-Score mit Grenzen, negative Ergebnisse) | `hauptergebnis.md` | Entwurf vorhanden (2026-10-16), Festlegung DECISIONS 2026-10-16 |
 | 1 | Motivation und Relevanz (Landwirte, Kammer, Versicherung, AMA, Ministerium), Idee, Forschungsfragen; Abschnitt 1.5 Stand der Forschung und Abgrenzung | `01_motivation.md` | Entwurf vorhanden. Relevanz-Aussagen sind allgemein gehalten, Belege fehlen. **Stand der Forschung (1.5): Platzhalter.** CY-Bench ist belegt; JRC MARS, SCYM und Mähdrescher-Studien: „[Literatur ergänzen: …]“ |
 | 2 | Daten und Lizenzen, Pipeline, Definitionen, Leakage-Schutz, Vorab-Festlegungen | `02_daten_pipeline.md` | Entwurf vorhanden. Lizenz der Satelliten-/Wetterprodukte steht nicht in den Quellen (`[Lizenz prüfen]`) |
 | 2a | Freeze-Protokoll des Feldmodells | – | **Entfällt vorerst:** Es gab keinen Freeze des Feldmodells (Kriterium „stark genug“ nicht erfüllt). Vorhanden ist nur das Protokoll des EU-Modells (`reports/freeze_protocol_cybench.md`), siehe Kapitel 5 |
 | 3 | Was bestimmt den Ertrag? (F0, F1; Phase 1 und 2, inkl. innerhalb der Felder) | `03_was_bestimmt_den_ertrag.md` | Entwurf vorhanden (Ergebnis: Jahre nicht übertragbar, innerhalb des Feldes stark). Bewirtschaftungsanalyse One Acre Fund: **[ergänzen]** |
-| 4 | Problemfelder erkennen und „Stark genug?“ (F2; Phase 3 und 4) | `04_problemfelder_und_stark_genug.md` | Entwurf vorhanden (Ergebnis: keine Stufe bestanden, kein Freeze) |
+| 4 | Problemfelder erkennen und „Stark genug?“ (F2; Phase 3 und 4), Feinjustierung (4.6) | `04_problemfelder_und_stark_genug.md` | Entwurf vorhanden (Ergebnis: keine Stufe bestanden, kein Freeze; Feinjustierung H2 ✗, T4-Befund) |
 | 5 | Regionalmodell EU → Österreich (F4; Phase 5) bis EU-Freeze | `05_regionalmodell_eu.md` | Entwurf vorhanden; **AT-Zero-Shot-Test ausstehend** (gesperrt bis zur Freigabe des Protokolls) |
 | 6 | Fehlerquellen und Grenzen; Ausblick | `06_grenzen_ausblick.md` | Entwurf vorhanden |
 | 7 | **Der Beweis in Österreich (F3)** | – | **Platzhalter: erst nach Freeze und Freigabe.** Es gibt keinen Freeze des Feldmodells; ohne neue Entscheidung des Projektinhabers (PLAN Phase 4, „Nicht stark genug?“) kein Test in Österreich. Das Kapitel bleibt leer, bis ein Freeze vorliegt und der Projektinhaber das Protokoll freigegeben hat. Gegenprobe F4 siehe Kapitel 5. Keine österreichische Zahl steht in diesen Entwürfen |
