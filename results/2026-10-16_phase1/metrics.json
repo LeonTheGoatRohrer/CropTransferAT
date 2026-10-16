@@ -1,0 +1,358 @@
+{
+  "git": "6754bdf68516ce9d1e27bf59c2ef133df6525c9a",
+  "harmonisation_dekad": {
+    "criteria": {
+      "bias_max": 0.03,
+      "rmsd_max": 0.07,
+      "indices": [
+        "ndvi",
+        "evi"
+      ]
+    },
+    "results": {
+      "ndvi": {
+        "n_pairs": 413,
+        "n_field_years": 133,
+        "median_diff": -0.015506265611541892,
+        "rmsd": 0.0731335940810237,
+        "spearman": 0.9370669574824944
+      },
+      "evi": {
+        "n_pairs": 413,
+        "n_field_years": 133,
+        "median_diff": -0.0214673707083331,
+        "rmsd": 0.08038530741227665,
+        "spearman": 0.9332958229975494
+      }
+    },
+    "passed": false
+  },
+  "harmonisation_sameday_diagnostic": {
+    "ndvi": {
+      "n_pairs": 292,
+      "median_diff": -0.010452845339608108,
+      "rmsd": 0.0741917194406417
+    },
+    "evi": {
+      "n_pairs": 292,
+      "median_diff": -0.0259794434608428,
+      "rmsd": 0.07660093574182021
+    }
+  },
+  "counts": [
+    {
+      "dataset": "BARC",
+      "sensor_era": "HLS",
+      "field_years": 61,
+      "with_RY": 27,
+      "site_years": 7
+    },
+    {
+      "dataset": "Colorado",
+      "sensor_era": "HLS",
+      "field_years": 10,
+      "with_RY": 0,
+      "site_years": 4
+    },
+    {
+      "dataset": "KBS",
+      "sensor_era": "HLS",
+      "field_years": 96,
+      "with_RY": 96,
+      "site_years": 4
+    },
+    {
+      "dataset": "KBS",
+      "sensor_era": "L57",
+      "field_years": 198,
+      "with_RY": 198,
+      "site_years": 10
+    }
+  ],
+  "coverage_by_year": [
+    {
+      "dataset": "BARC",
+      "year": 2014,
+      "n_obs": 3.0,
+      "obsfrac": 0.188,
+      "ry": 1.215
+    },
+    {
+      "dataset": "BARC",
+      "year": 2016,
+      "n_obs": 9.5,
+      "obsfrac": 0.531,
+      "ry": 1.147
+    },
+    {
+      "dataset": "BARC",
+      "year": 2017,
+      "n_obs": 9.0,
+      "obsfrac": 0.375,
+      "ry": 0.789
+    },
+    {
+      "dataset": "BARC",
+      "year": 2018,
+      "n_obs": 10.5,
+      "obsfrac": 0.594,
+      "ry": 0.517
+    },
+    {
+      "dataset": "BARC",
+      "year": 2019,
+      "n_obs": 15.0,
+      "obsfrac": 0.625,
+      "ry": 0.893
+    },
+    {
+      "dataset": "BARC",
+      "year": 2020,
+      "n_obs": 15.0,
+      "obsfrac": 0.625,
+      "ry": 1.208
+    },
+    {
+      "dataset": "BARC",
+      "year": 2021,
+      "n_obs": 25.5,
+      "obsfrac": 0.875,
+      "ry": 1.419
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2019,
+      "n_obs": 24.0,
+      "obsfrac": 0.875,
+      "ry": NaN
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2020,
+      "n_obs": 22.5,
+      "obsfrac": 0.875,
+      "ry": NaN
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2021,
+      "n_obs": 27.0,
+      "obsfrac": 0.875,
+      "ry": NaN
+    },
+    {
+      "dataset": "Colorado",
+      "year": 2022,
+      "n_obs": 25.0,
+      "obsfrac": 0.875,
+      "ry": NaN
+    },
+    {
+      "dataset": "KBS",
+      "year": 2014,
+      "n_obs": 3.0,
+      "obsfrac": NaN,
+      "ry": 1.186
+    },
+    {
+      "dataset": "KBS",
+      "year": 2017,
+      "n_obs": 4.0,
+      "obsfrac": NaN,
+      "ry": 0.916
+    },
+    {
+      "dataset": "KBS",
+      "year": 2020,
+      "n_obs": 13.0,
+      "obsfrac": 0.688,
+      "ry": 0.955
+    },
+    {
+      "dataset": "KBS",
+      "year": 2023,
+      "n_obs": 16.0,
+      "obsfrac": 0.75,
+      "ry": 1.156
+    }
+  ],
+  "cloud_bias_spearman_nobs_RY": -0.09054471685838154,
+  "curve_check": [
+    {
+      "dataset": "BARC",
+      "sensor_era": "HLS",
+      "maize_like": 0.984,
+      "early_harvest": 0.0
+    },
+    {
+      "dataset": "Colorado",
+      "sensor_era": "HLS",
+      "maize_like": 0.3,
+      "early_harvest": 0.4
+    },
+    {
+      "dataset": "KBS",
+      "sensor_era": "HLS",
+      "maize_like": 0.615,
+      "early_harvest": 0.146
+    },
+    {
+      "dataset": "KBS",
+      "sensor_era": "L57",
+      "maize_like": 0.848,
+      "early_harvest": 0.045
+    }
+  ],
+  "curve_not_maize_like": [
+    "BARC|BARC:CentralFarm_2_68B|2018",
+    "Colorado|Colorado:S4|2021",
+    "Colorado|Colorado:SB1|2022",
+    "Colorado|Colorado:SB4|2021",
+    "Colorado|Colorado:SB7|2020",
+    "Colorado|Colorado:SCD2|2021",
+    "Colorado|Colorado:SCD5|2020",
+    "Colorado|Colorado:SCD6|2022",
+    "KBS|KBS:T1R1|2002",
+    "KBS|KBS:T1R1|2014",
+    "KBS|KBS:T1R2|2014",
+    "KBS|KBS:T1R3|2014",
+    "KBS|KBS:T1R4|2002",
+    "KBS|KBS:T1R4|2014",
+    "KBS|KBS:T1R5|2014",
+    "KBS|KBS:T1R6|2014",
+    "KBS|KBS:T2R1|2014",
+    "KBS|KBS:T2R2|2014",
+    "KBS|KBS:T2R3|2014",
+    "KBS|KBS:T2R4|2014",
+    "KBS|KBS:T2R5|2014",
+    "KBS|KBS:T2R6|2014",
+    "KBS|KBS:T3R1|1990",
+    "KBS|KBS:T3R1|1993",
+    "KBS|KBS:T3R1|2014",
+    "KBS|KBS:T3R1|2017",
+    "KBS|KBS:T3R2|1990",
+    "KBS|KBS:T3R2|1993",
+    "KBS|KBS:T3R2|1999",
+    "KBS|KBS:T3R2|2014",
+    "KBS|KBS:T3R2|2017",
+    "KBS|KBS:T3R3|1990",
+    "KBS|KBS:T3R3|1993",
+    "KBS|KBS:T3R3|1999",
+    "KBS|KBS:T3R3|2014",
+    "KBS|KBS:T3R3|2017",
+    "KBS|KBS:T3R4|1990",
+    "KBS|KBS:T3R4|1993",
+    "KBS|KBS:T3R4|1999",
+    "KBS|KBS:T3R4|2014",
+    "KBS|KBS:T3R4|2017",
+    "KBS|KBS:T3R5|1990",
+    "KBS|KBS:T3R5|1993",
+    "KBS|KBS:T3R5|1999",
+    "KBS|KBS:T3R5|2014",
+    "KBS|KBS:T3R5|2017",
+    "KBS|KBS:T3R6|1990",
+    "KBS|KBS:T3R6|1999",
+    "KBS|KBS:T3R6|2014",
+    "KBS|KBS:T3R6|2017",
+    "KBS|KBS:T4R1|1990",
+    "KBS|KBS:T4R1|1999",
+    "KBS|KBS:T4R1|2014",
+    "KBS|KBS:T4R1|2017",
+    "KBS|KBS:T4R1|2020",
+    "KBS|KBS:T4R2|1990",
+    "KBS|KBS:T4R2|1999",
+    "KBS|KBS:T4R2|2014",
+    "KBS|KBS:T4R2|2017",
+    "KBS|KBS:T4R3|1990"
+  ],
+  "indicators_vs_RY_top": [
+    {
+      "index": "gndvi",
+      "indicator": "K3 peak",
+      "target": "RY_descr",
+      "dataset": "KBS",
+      "n": 48,
+      "clusters": 2,
+      "rho": 0.706,
+      "lo": 0.143,
+      "hi": 0.706
+    },
+    {
+      "index": "ndvi",
+      "indicator": "K3 peak",
+      "target": "RY_descr",
+      "dataset": "KBS",
+      "n": 48,
+      "clusters": 2,
+      "rho": 0.638,
+      "lo": 0.223,
+      "hi": 0.638
+    },
+    {
+      "index": "ndvi",
+      "indicator": "K1 I_Aug",
+      "target": "RY_descr",
+      "dataset": "KBS",
+      "n": 48,
+      "clusters": 2,
+      "rho": 0.637,
+      "lo": 0.389,
+      "hi": 0.637
+    },
+    {
+      "index": "ndmi",
+      "indicator": "K1 I_Aug",
+      "target": "RY_descr",
+      "dataset": "KBS",
+      "n": 48,
+      "clusters": 2,
+      "rho": 0.637,
+      "lo": 0.154,
+      "hi": 0.637
+    },
+    {
+      "index": "ndmi",
+      "indicator": "K3 peak",
+      "target": "RY_descr",
+      "dataset": "KBS",
+      "n": 48,
+      "clusters": 2,
+      "rho": 0.595,
+      "lo": 0.051,
+      "hi": 0.595
+    },
+    {
+      "index": "evi",
+      "indicator": "K4 integral",
+      "target": "RY_descr",
+      "dataset": "BARC",
+      "n": 26,
+      "clusters": 7,
+      "rho": 0.503,
+      "lo": -0.042,
+      "hi": 0.869
+    },
+    {
+      "index": "evi",
+      "indicator": "K3 peak",
+      "target": "RY_descr",
+      "dataset": "KBS",
+      "n": 48,
+      "clusters": 2,
+      "rho": 0.494,
+      "lo": 0.117,
+      "hi": 0.494
+    },
+    {
+      "index": "ndmi",
+      "indicator": "K1 I_Aug",
+      "target": "RY_descr",
+      "dataset": "pooled",
+      "n": 62,
+      "clusters": 6,
+      "rho": 0.475,
+      "lo": -0.283,
+      "hi": 0.63
+    }
+  ]
+}

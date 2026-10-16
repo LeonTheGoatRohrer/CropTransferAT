@@ -4,6 +4,16 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+## [0.3.0] – 2026-10-16 – Phase 2: Basismodelle (F0, F1)
+### Added
+- `splits.py` (LOFYO/LOYO/LOFO/LODO), `models/family.py` (Ridge + flaches LightGBM je Merkmalsgruppe), `run_phase2.py` (238 Läufe, verschachtelt), `phase2_extras.py` (Auswahlregel, Kriterien 1–4, LODO, Label-Shuffle, Cross-Conformal, SHAP, Adversarial Validation), `rounds.py` (vorab festgelegte Verbesserungsrunden), `within_field.py` (BARC-Ertragskarten vs. S2-Pixel).
+- Datenkritik `phase2_models.md`, `phase2_within_field.md`; `reports/results.md`.
+
+### Found
+- Zwischen Jahren: gewähltes Modell ρ(1.9.) = −0,04 [−0,29; 0,37] (LOFYO), aber 0,65 bei gesehenem Jahr (LOFO) → Jahreseffekt nicht übertragbar; Kriterium „stark genug“ nicht erfüllt.
+- Runde 1 (relative Satellitenmerkmale): ρ = 0,37 [−0,01; 0,70], LODO beide Richtungen > 0; Runde 2 schlechter.
+- Innerhalb der Felder: NDVI Mitte Juli–Mitte August vs. Pixel-Ertrag Median-ρ 0,68 [0,54; 0,72].
+
 ## [0.2.0] – 2026-10-16 – Phase 1: Ertragsdaten aufbereiten
 ### Added
 - `groundtruth.py`: KBS (Tabelle 51, 1989–2023), BARC (Kriging-Raster), Colorado → einheitliches Schema `gt_field_years` (365 Mais-Feld-Jahre, t/ha bei 15,5 %), `gt_yield_points` (BARC 10 m), Ausschluss-Protokoll; Feldzuordnung über IoU ≥ 0,7.
