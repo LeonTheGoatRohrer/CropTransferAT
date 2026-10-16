@@ -17,6 +17,30 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: mehrkultur-w31
+    date: 2026-10-16
+    phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 3 – W3.1)"
+    title: "Kulturparameter festgelegt, Merkmalsrechnung nicht mehr nur für Mais"
+    status: abgeschlossen
+    changed: "Wetter- und Wachstumsparameter (Temperatursumme, Wasserbedarf, Blütezeit, Hitzeschwelle) stehen jetzt je Kultur in der Konfiguration, und die Merkmalsrechnung kann sie verwenden."
+    plain: >
+      Bisher waren die Mais-Werte fest im Code. Jetzt gibt es für Mais, Winterweizen, Gerste, Erbse, Raps und Soja
+      je einen Satz Werte, festgelegt aus Fachliteratur und bevor ein Experiment läuft. Für Mais kommt exakt dasselbe
+      heraus wie vorher, das prüft ein Test. Der Projektinhaber hat die zwölf Festlegungen D1–D12 des Plans bestätigt.
+    metrics:
+      - label: "Tests"
+        value: "alle grün"
+        plain: "Die bestehenden Leckage-Tests und neue Mais-Regressionstests bestehen; Mais-Ergebnisse bleiben unverändert."
+    found:
+      - "Winterkulturen brauchen Wetter ab Herbst des Vorjahres; das Saisonfenster ist je Kultur einstellbar."
+    limits:
+      - "Die Werte sind Literaturwerte für Mitteleuropa und noch nicht an den Daten geprüft (das wäre Leckage). Satellitenmerkmale je Kultur (W3.2–W3.4) fehlen noch."
+    links:
+      - label: "Entscheidungen"
+        path: DECISIONS.md
+      - label: "Plan"
+        path: reports/plan_mehrkultur.md
+
   - id: mehrkultur-etappe1
     date: 2026-10-16
     phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 1–2)"

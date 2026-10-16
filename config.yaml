@@ -133,3 +133,76 @@ cybench:
   freeze:
     dir: results/models/cybench_freeze
     protocol: reports/freeze_protocol_cybench.md
+
+# Crop parameters for multi-crop training (plan_mehrkultur.md D6; fixed BEFORE any experiment).
+# Sources: FAO-56 (Allen et al. 1998) Kc stages mapped to thermal time; GDD base/cap and flowering windows
+# from standard agronomic literature for Central Europe. Maize values equal the former hard-coded
+# constants in features.py (regression-tested). `season_start_offset_year` = -1: season starts in the
+# autumn before the harvest year. `gdd_nodes`/`kc_nodes` form a piecewise-linear Kc(thermal time) curve.
+crops:
+  maize:
+    winter: false
+    season_start_mmdd: "04-01"
+    season_start_offset_year: 0
+    gdd_base: 10.0
+    gdd_cap: 30.0
+    flower_window: ["07-10", "08-20"]
+    heat_threshold: 32.0
+    mid_start_mmdd: "06-01"
+    gdd_nodes: [0, 200, 900, 1700, 2600]
+    kc_nodes: [0.3, 0.3, 1.2, 1.2, 0.6]
+  winter_wheat:
+    winter: true
+    season_start_mmdd: "10-01"
+    season_start_offset_year: -1
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["05-10", "06-05"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "04-01"
+    gdd_nodes: [0, 150, 1000, 1500, 1900, 2300]
+    kc_nodes: [0.3, 0.4, 0.4, 1.15, 1.15, 0.3]
+  spring_barley:
+    winter: false
+    season_start_mmdd: "03-15"
+    season_start_offset_year: 0
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["06-01", "06-25"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "05-01"
+    gdd_nodes: [0, 100, 500, 1000, 1400]
+    kc_nodes: [0.3, 0.3, 1.15, 1.15, 0.25]
+  field_pea:
+    winter: false
+    season_start_mmdd: "03-01"
+    season_start_offset_year: 0
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["05-15", "06-15"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "04-15"
+    gdd_nodes: [0, 150, 600, 1100, 1400]
+    kc_nodes: [0.4, 0.4, 1.15, 1.15, 0.3]
+  winter_rapeseed:
+    winter: true
+    season_start_mmdd: "08-20"
+    season_start_offset_year: -1
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["04-10", "05-10"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "03-15"
+    gdd_nodes: [0, 200, 1000, 1700, 2400]
+    kc_nodes: [0.35, 0.4, 1.15, 1.15, 0.35]
+  soybean:
+    winter: false
+    season_start_mmdd: "04-15"
+    season_start_offset_year: 0
+    gdd_base: 10.0
+    gdd_cap: 30.0
+    flower_window: ["07-10", "08-10"]
+    heat_threshold: 32.0
+    mid_start_mmdd: "06-15"
+    gdd_nodes: [0, 200, 700, 1300, 1900]
+    kc_nodes: [0.4, 0.4, 1.15, 1.15, 0.5]

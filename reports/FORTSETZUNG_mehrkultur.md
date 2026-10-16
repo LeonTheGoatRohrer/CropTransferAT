@@ -1,7 +1,7 @@
 # Fortsetzung Mehr-Kulturen-Plan (Übergabe bei Kontingentende)
 
 Branch: `phase-mk-mehrkultur`. Plan: `reports/plan_mehrkultur.md`. Start 2026-10-16, Weiterarbeit ab 17:00.
-Auftrag des Projektinhabers: Plan umsetzen, soweit das Kontingent reicht. D1–D12 gelten **vorläufig** (W0.1 steht aus; in DECISIONS.md vermerkt).
+Auftrag des Projektinhabers: Plan umsetzen, soweit das Kontingent reicht. D1–D12 sind **bestätigt** (2026-10-16, DECISIONS.md).
 Python: `.venv/Scripts/python` (Modul per `-m croptransfer.<name>`; `pytest` mit derselben venv).
 
 ## Erledigt
@@ -11,11 +11,13 @@ Python: `.venv/Scripts/python` (Modul per `-m croptransfer.<name>`; `pytest` mit
 - [x] W2.1/W2.2/W2.3 `groundtruth_multi.py` (+ `review_multi.py`), Test; `data/processed/gt_site_years.parquet`; Zählung: WW S2 202, Erbse S2 257, Gerste S4 711, Mais 0 Zellen-Jahre
 - [x] Doku: CHANGELOG, SUPPORT, DECISIONS, `app/versions.yaml` (Eintrag `mehrkultur-etappe1`), alle Tests grün
 
+- [x] W3.1 `crops.py` + `config.yaml: crops` + `features.py` kulturabhängig + `tests/test_crops.py` (Mais-Regression grün)
+
 ## Offen, als Nächstes (in dieser Reihenfolge)
 1. Offene Prüfpunkte aus der Datenkritik: Nordic-Einheit gegen README (DataverseNO IZ3EFE) prüfen; Bedeutung `Y0/Y2` (INVITE Frankreich) klären; Querduplikate suchen; 0,5°-Sensitivität in `count_cells`.
 2. A4 Bernburg (BonaRes API, Mais/WW/WG/Raps), A7 Grignon (10.57745/5TJJZA, Mais 6 Standort-Jahre), A6 Iowa/UGA — Loader in `groundtruth_multi.py` ergänzen (Mais ist die Zielkultur!).
-3. W3.1 `config.yaml` Block `crops:` (D6) + Regressionstest Mais — **erst nach W0.1**.
-4. Etappe 3/4 erst nach Bestätigung durch den Projektinhaber und nach Mais-Daten (G2F).
+3. W3.2 GEE-Extraktion für S2-Punkte (30-m-Kreis, HLS ab 2013, S2 ab 2017, Winterfenster ab Oktober Vorjahr) in `gee_extract.py` erweitern; braucht funktionierenden GEE-Login (Projekt `croptransfer`).
+4. W3.3 Kurvenprüfung (Schwelle vorab in DECISIONS.md), W3.4 kulturrelative Merkmale + Horizont h + `test_no_leakage.py` je Kultur. Etappe 4 erst nach Gate G2 und nach Mais-Daten (G2F, W0.3).
 
 ## Nicht ohne Projektinhaber
 W0.1 (Entscheidungen D1–D12), W0.2 (Anfragen), W0.3 (G2F/CyVerse-CAPTCHA), Rothamsted-Formular. Österreich-Daten nie ansehen.
