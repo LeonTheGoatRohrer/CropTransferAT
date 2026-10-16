@@ -3,6 +3,10 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/) – ein Minor-Release pro Phase (siehe AGENTS.md §4.4).
 
 ## [Unreleased]
+### Added (Branch `phase-mk-mehrkultur`, vorläufig bis W0.1)
+- `fetch_open_sets.py`: Download mit Manifest und sicherem Entpacken (INVITE, BRIWECS, Erbsen FR, Nordic Gerste; NVT optional).
+- `groundtruth_multi.py`: Schema `gt_site_years` (Stufen S1–S4, RY, RY_nb, 0,1°-Zelle); `review_multi.py`: Zahlen zur Datenkritik.
+- Datenkritik `reports/data_review/phase1b_mehrkultur.md`; Zählung: Winterweizen S2 202, Erbse S2 257 Zellen-Jahre, Mais 0 (G2F fehlt).
 ### Added
 - **Datensuche und Mehr-Kulturen-Plan:** `reports/data_search.md` (118 Quellen, Top 10, Zählung je Kultur, Anfragetexte; Korrekturblock zu YIPEEO und Nordic), `reports/plan_mehrkultur.md` (25 Schritte, 4 Gates, Entwurf D1–D12), Kopie des Codex-Katalogs unter `reports/extern/codex_2026-10-16/`; Eintrag `datensuche-mehrkultur` in `app/versions.yaml`.
 - **Website (Phase 9, vorgezogen):** `app/streamlit_app.py` als mehrseitige Streamlit-Site (Ziel · Vorgehen & Quellen · Ergebnisse · Vergleich · Felder ansehen · Eigenes Modell · Projektlog), Seiten unter `app/ui/`, Versionsregister `app/versions.yaml` (je Version: was geändert wurde, Kennzahlen in einfacher Sprache, Befunde, Grenzen, Abbildungen, Pfade), Glossar „Was heißt das?“, Theme `.streamlit/config.toml`.

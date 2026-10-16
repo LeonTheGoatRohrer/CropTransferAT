@@ -443,3 +443,18 @@ data.gv.at: Gemeinden `566c99be-b436-365e-af4f-27be6c536358`, Politische Bezirke
   - Für `Z_normal` je Gemeinde gilt ein fester Stand (2025-01-01). Für ältere Tabellen ist eine GKZ-Zuordnung nötig.
 
 **Status: ✅ verfügbar.**
+
+
+## 16. Mehr-Kulturen-Pakete (Plan `reports/plan_mehrkultur.md`, Pakete A1/A2/A9/A11)
+Abruf 2026-10-16 mit `python -m croptransfer.fetch_open_sets`; je Paket `data/raw/<name>/MANIFEST.json` (URL, SHA-256, Größe, Lizenznotiz). Rohdaten nicht im Repository. Verarbeitung: `python -m croptransfer.groundtruth_multi` → `data/processed/gt_site_years.parquet`.
+
+| Paket | Quelle | Kultur | Lizenz / Hinweis | Größe |
+|---|---|---|---|---|
+| `invite` (A1) | Zenodo 20786880 `Dataset.zip` (Ordner `SiriusQyality/` mit .exe wird nicht entpackt) | Winterweizen, CZ/HU/CH/FR | CC BY laut Zenodo, Datei-Kopf „Confidential" → nur lokal (D12), Anfrage Pierre Martre offen | 49,9 MB |
+| `briwecs` (A2) | figshare 27910269, Datei 50832927 | Winterweizen, 6 DE-Stationen | siehe figshare-Eintrag | 11,3 MB |
+| `peas_fr` (A9) | Recherche Data Gouv 10.57745/FW78RE (Dateien 764683–764685) | Körnererbse FR | siehe Eintrag | 6,0 MB |
+| `nordic_barley` (A11) | DataverseNO 10.18710/IZ3EFE, Datei 268105 | Sommergerste DK/SE/NO/IS/FI, BLUP/bereinigt (Stufe S4) | siehe Eintrag | 17,3 MB |
+
+Nicht geladen: NVT Australien (A10, 423 MB, nur mit `--include-large`), Genomes to Fields (A3, CAPTCHA, Projektinhaber), Rothamsted (Formular).
+Auffälligkeiten: `reports/data_review/phase1b_mehrkultur.md` (zwei Versuchstypen in Frankreich, Nordic-Einheit ungeprüft).
+**Status: ⚠️ verfügbar mit Einschränkungen.**

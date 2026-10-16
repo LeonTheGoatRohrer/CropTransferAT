@@ -17,6 +17,44 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: mehrkultur-etappe1
+    date: 2026-10-16
+    phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 1–2)"
+    title: "Vier offene Datenpakete geladen, vereinheitlicht und gezählt"
+    status: eingeschraenkt
+    changed: "Winterweizen-, Erbsen- und Gerstendaten aus vier offenen Quellen heruntergeladen, in eine gemeinsame Tabelle gebracht und nach unabhängigen Wetterzellen-Jahren gezählt."
+    plain: >
+      Aus vier offenen Quellen (INVITE, BRIWECS, französische Erbsen, nordische Gerste) liegen jetzt Erträge je
+      Standort und Jahr in einer gemeinsamen Tabelle. Gezählt wird nicht nach Feldern, sondern nach Wetterzelle und
+      Jahr, weil nur das neue Witterung bedeutet. Für Winterweizen und Erbsen reicht die Menge für einen Test, für
+      Mais gibt es noch keine Daten, weil der Download von Genomes to Fields vom Projektinhaber freigeschaltet werden muss.
+    metrics:
+      - label: "Winterweizen, Versuchsmittel mit genauem Ort"
+        value: "202 Wetterzellen-Jahre"
+        n: "202"
+        plain: "So viele voneinander unabhängige Wetter-Jahre stehen für Winterweizen bereit (Stufe S2)."
+      - label: "Körnererbse, Frankreich"
+        value: "257 Wetterzellen-Jahre"
+        n: "257"
+        plain: "Ebenfalls genug für einen eigenen Test."
+      - label: "Körnermais"
+        value: "0 Wetterzellen-Jahre"
+        plain: "Noch keine Maisdaten in dieser Tabelle; Genomes to Fields fehlt."
+    found:
+      - "In Frankreich gibt es pro Standort und Jahr oft zwei verschiedene Versuchstypen. Sie werden getrennt geführt, sonst würde die relative Ertragsgröße verfälscht."
+      - "Die Zahlen aus dem Plan waren Schätzungen und weichen von den echten Zählungen ab; die Zählung aus dem Code gilt."
+    limits:
+      - "Alles sind Versuchsparzellen-Mittel, keine Felder ab 1 ha."
+      - "Die Einheit der nordischen Gerste ist aus dem Wertebereich abgeleitet und muss noch gegen die Dokumentation geprüft werden."
+      - "Die Festlegungen D1–D12 des Plans gelten bis zur Bestätigung durch den Projektinhaber nur vorläufig. Es wurde noch kein Modell trainiert und nichts aus Österreich angesehen."
+    links:
+      - label: "Datenkritik"
+        path: reports/data_review/phase1b_mehrkultur.md
+      - label: "Zahlen"
+        path: reports/data_review/phase1b_mehrkultur_zahlen.md
+      - label: "Plan"
+        path: reports/plan_mehrkultur.md
+
   - id: datensuche-mehrkultur
     date: 2026-10-16
     phase: "Datenerweiterung (nach Phase 4, Plan)"
