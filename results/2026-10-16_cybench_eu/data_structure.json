@@ -1,0 +1,221 @@
+{
+ "n_region_years": 8371,
+ "n_regions": 652,
+ "share_by_level": {
+  "NUTS3": 0.935,
+  "NUTS2": 0.065
+ },
+ "share_DE": 0.306,
+ "n_yield_above_20": 0,
+ "n_yas_outside_robust_range": 143,
+ "per_country": {
+  "BE": {
+   "region_years": 21,
+   "regions": 7,
+   "level": "NUTS2",
+   "years": [
+    2017,
+    2020
+   ],
+   "mean_yield": 10.21,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 5,
+   "n_yas_outside_robust_range": 0
+  },
+  "BG": {
+   "region_years": 108,
+   "regions": 6,
+   "level": "NUTS2",
+   "years": [
+    2003,
+    2020
+   ],
+   "mean_yield": 4.88,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 19,
+   "n_yas_outside_robust_range": 4
+  },
+  "CZ": {
+   "region_years": 136,
+   "regions": 13,
+   "level": "NUTS3",
+   "years": [
+    2010,
+    2020
+   ],
+   "mean_yield": 7.74,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 32,
+   "n_yas_outside_robust_range": 0
+  },
+  "DE": {
+   "region_years": 2565,
+   "regions": 229,
+   "level": "NUTS3",
+   "years": [
+    2003,
+    2021
+   ],
+   "mean_yield": 9.22,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 363,
+   "n_yas_outside_robust_range": 10
+  },
+  "EL": {
+   "region_years": 245,
+   "regions": 43,
+   "level": "NUTS3",
+   "years": [
+    2014,
+    2019
+   ],
+   "mean_yield": 10.03,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 13,
+   "n_yas_outside_robust_range": 22
+  },
+  "ES": {
+   "region_years": 760,
+   "regions": 50,
+   "level": "NUTS3",
+   "years": [
+    2003,
+    2020
+   ],
+   "mean_yield": 9.1,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 57,
+   "n_yas_outside_robust_range": 6
+  },
+  "FR": {
+   "region_years": 1599,
+   "regions": 92,
+   "level": "NUTS3",
+   "years": [
+    2003,
+    2020
+   ],
+   "mean_yield": 8.76,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 235,
+   "n_yas_outside_robust_range": 1
+  },
+  "HR": {
+   "region_years": 22,
+   "regions": 2,
+   "level": "NUTS2",
+   "years": [
+    2010,
+    2020
+   ],
+   "mean_yield": 6.37,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 2,
+   "n_yas_outside_robust_range": 1
+  },
+  "HU": {
+   "region_years": 327,
+   "regions": 20,
+   "level": "NUTS3",
+   "years": [
+    2003,
+    2020
+   ],
+   "mean_yield": 6.49,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 73,
+   "n_yas_outside_robust_range": 6
+  },
+  "IT": {
+   "region_years": 1359,
+   "regions": 100,
+   "level": "NUTS3",
+   "years": [
+    2003,
+    2020
+   ],
+   "mean_yield": 7.58,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 177,
+   "n_yas_outside_robust_range": 22
+  },
+  "LT": {
+   "region_years": 53,
+   "regions": 8,
+   "level": "NUTS3",
+   "years": [
+    2007,
+    2020
+   ],
+   "mean_yield": 5.63,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 7,
+   "n_yas_outside_robust_range": 8
+  },
+  "NL": {
+   "region_years": 58,
+   "regions": 8,
+   "level": "NUTS2",
+   "years": [
+    2013,
+    2020
+   ],
+   "mean_yield": 11.34,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 14,
+   "n_yas_outside_robust_range": 0
+  },
+  "PL": {
+   "region_years": 216,
+   "regions": 17,
+   "level": "NUTS2",
+   "years": [
+    2008,
+    2020
+   ],
+   "mean_yield": 6.24,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 27,
+   "n_yas_outside_robust_range": 0
+  },
+  "PT": {
+   "region_years": 123,
+   "regions": 7,
+   "level": "NUTS2",
+   "years": [
+    2003,
+    2020
+   ],
+   "mean_yield": 6.87,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 8,
+   "n_yas_outside_robust_range": 0
+  },
+  "RO": {
+   "region_years": 729,
+   "regions": 42,
+   "level": "NUTS3",
+   "years": [
+    2003,
+    2020
+   ],
+   "mean_yield": 4.09,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 169,
+   "n_yas_outside_robust_range": 63
+  },
+  "SK": {
+   "region_years": 50,
+   "regions": 8,
+   "level": "NUTS3",
+   "years": [
+    2012,
+    2018
+   ],
+   "mean_yield": 6.57,
+   "n_yield_above_20": 0,
+   "n_yas_below_threshold": 18,
+   "n_yas_outside_robust_range": 0
+  }
+ }
+}
