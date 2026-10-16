@@ -4,6 +4,10 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 ### Added
+- `oaf_analysis.py`: One Acre Fund als Tabellendatensatz (RY_nb, Leave-One-Country-Out, Ablation, SHAP, Schadens-Odds-Ratios); Datenkritik `phase2_oaf_tabular.md` (⚠️).
+- `notebooks/02_drivers.ipynb`, `notebooks/03_problem_fields.ipynb`; Doku-Entwürfe `reports/doku/`; Nachtlauf-Bericht `reports/NACHTLAUF.md`.
+- App zeigt den Phase-3-Kandidaten mit Hinweis „nicht stark genug“.
+### Added
 - Phase 5 (bis EU-Freeze, **ohne jeden Österreich-Test**): `regional_cybench.py` – CY-Bench-Mais für 18 gelistete EU-Länder, 16 davon mit Region-Jahren (Länderliste ohne AT, `assert_no_austria` an allen Einstiegen), Prädiktoren je Region-Jahr und Stichtag nach As-of-Regel (Monatsmittel/min/max, Summe für prec/cwb; fPAR/NDVI mit Verfügbarkeitsverzug), Ziel `YAS` (olympischer Durchschnitt der 5 Vorjahre), Baselines YAS = 1 und lineare Trendfortschreibung, flaches LightGBM (`max_depth ≤ 3`), Tuning nur verschachtelt per Leave-One-Country-Out, äußere LOCO-Evaluation mit Bootstrap-KI (Region-Jahre, Land-Jahr-Cluster, länderbalanciert, ohne DE), Frühwarnkurve, Kontrollen (Label-Shuffle, Training ohne DE, Koordinaten-Ablation, Adversarial Validation, Spearman innerhalb eines Jahres).
 - EU-Freeze: Modelle je Stichtag unter `results/models/cybench_freeze/` (nicht im Repository), SHA-256, Merkmalsliste, Hyperparameter und vorab registriertes AT-Zero-Shot-Protokoll in `reports/freeze_protocol_cybench.md`; `verify_freeze` und `predict_zero_shot` (nicht auf Österreich ausgeführt).
 - `tests/test_regional_cybench.py`: YAS-Handbeispiel, As-of-Regel, AT-Ausschluss, LOCO-Splits, Label-Shuffle, Freeze-Roundtrip.
