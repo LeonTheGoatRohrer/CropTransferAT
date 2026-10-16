@@ -332,3 +332,23 @@ def test_freeze_importance_shares_sum_to_one(small_cfg, tmp_path):
     share = rc.freeze_importance(tmp_path / "freeze", ["09-01"], static=[])["09-01"]
     assert sum(share.values()) == pytest.approx(1.0, abs=1e-3)
     assert share["f1"] > share.get("f2", 0)  # the informative feature carries the gain
+
+
+# ---------------------------------------------------------------- data structure summary
+def test_data_structure_summary_hand_example(cfg):
+    df = pd.DataFrame({
+        "country": ["DE", "DE", "DE", "BG"],
+        "adm_id": ["DE111", "DE111", "DE112", "BG31"],  # 5 characters = NUTS3, 4 = NUTS2
+        "year": [2010, 2011, 2011, 2012],
+        "yield": [9.0, 8.0, 21.0, 5.0],
+        "yas": [1.0, 0.80, 2.5, 0.40],
+    })
+    s = rc.data_structure_summary(df, cfg)
+    assert s["n_region_years"] == 4 and s["n_regions"] == 3
+    assert s["share_DE"] == pytest.approx(0.75)
+    assert s["share_by_level"] == {"NUTS3": 0.75, "NUTS2": 0.25}
+    assert s["n_yield_above_20"] == 1
+    assert s["n_yas_outside_robust_range"] == 2  # 2.5 > 2.0 and 0.40 < 0.5
+    de = s["per_country"]["DE"]
+    assert de["region_years"] == 3 and de["regions"] == 2 and de["years"] == [2010, 2011]
+    assert de["n_yas_below_threshold"] == 1  # 0.80 < 0.85

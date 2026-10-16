@@ -581,6 +581,25 @@ def case_studies(pred_df: pd.DataFrame, k: int = 3) -> dict[str, list[dict[str, 
     return {"best": d.head(k)[cols].round(6).to_dict("records"), "worst": d.tail(k)[cols].round(6).to_dict("records")}
 
 
+def data_structure_summary(df: pd.DataFrame, cfg: dict[str, Any]) -> dict[str, Any]:
+    """Who is in the dataset: rows/regions per country, NUTS level (by id length), yield and YAS extremes."""
+    thr = cfg["targets"]["at_risk_threshold"]
+    lo, hi = cfg["cybench"]["robust_yas_range"]
+    level = df["adm_id"].str.len().map({4: "NUTS2", 5: "NUTS3"}).fillna("other")
+    per_country = {}
+    for c, g in df.assign(level=level).groupby("country"):
+        per_country[c] = {"region_years": len(g), "regions": int(g["adm_id"].nunique()), "level": g["level"].mode().iloc[0],
+                          "years": [int(g["year"].min()), int(g["year"].max())], "mean_yield": round(float(g["yield"].mean()), 2),
+                          "n_yield_above_20": int((g["yield"] > 20).sum()), "n_yas_below_threshold": int((g["yas"] < thr).sum()),
+                          "n_yas_outside_robust_range": int(((g["yas"] < lo) | (g["yas"] > hi)).sum())}
+    return {"n_region_years": len(df), "n_regions": int(df["adm_id"].nunique()),
+            "share_by_level": level.value_counts(normalize=True).round(3).to_dict(),
+            "share_DE": round(float((df["country"] == "DE").mean()), 3),
+            "n_yield_above_20": int((df["yield"] > 20).sum()),
+            "n_yas_outside_robust_range": int(((df["yas"] < lo) | (df["yas"] > hi)).sum()),
+            "per_country": per_country}
+
+
 def freeze_importance(freeze_dir: Path, cutoffs: list[str], static: list[str]) -> dict[str, dict[str, float]]:
     """Share of the total split gain per predictor variable in each frozen model (who carries the signal?)."""
     import lightgbm as lgb
@@ -953,6 +972,7 @@ def main(argv: list[str] | None = None) -> None:
     ap.add_argument("--rebuild", action="store_true", help="ignore the feature cache")
     ap.add_argument("--refreeze", action="store_true", help="overwrite the freeze files and protocol (never after release!)")
     ap.add_argument("--no-freeze", action="store_true", help="skip the freeze step")
+    ap.add_argument("--summary-only", action="store_true", help="only write data_structure.json (no models)")
     args = ap.parse_args(argv)
     cfg = load_config()
     cy = cfg["cybench"]
@@ -965,6 +985,11 @@ def main(argv: list[str] | None = None) -> None:
 
     data, report = load_dataset(cfg, rebuild=args.rebuild)
     print({c: len(d) for c, d in data.items()}, flush=True)
+    structure = data_structure_summary(data[list(data)[-1]], cfg)
+    (out / "data_structure.json").write_text(json.dumps(json_safe(structure), indent=1), encoding="utf-8")
+    if args.summary_only:
+        print("summary only ->", out / "data_structure.json", flush=True)
+        return
     run = run_experiments(cfg, data)
     metrics = run["metrics"]
     last = list(data)[-1]
