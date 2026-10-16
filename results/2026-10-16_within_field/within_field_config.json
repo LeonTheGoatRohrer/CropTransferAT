@@ -1,0 +1,49 @@
+{
+  "dataset": "BARC",
+  "years": [
+    2017,
+    2021
+  ],
+  "min_pixels": 50,
+  "problem_threshold": 0.85,
+  "windows": {
+    "w1": [
+      "06-15",
+      "07-15"
+    ],
+    "w2": [
+      "07-16",
+      "08-15"
+    ],
+    "w3": [
+      "08-16",
+      "09-15"
+    ]
+  },
+  "indices": [
+    "ndvi",
+    "ndre"
+  ],
+  "terrain": [
+    "elev",
+    "slope",
+    "tpi"
+  ],
+  "tpi_radius_m": 150,
+  "sample_scale_m": 10,
+  "chunk_points": 2500,
+  "example_window": "w2",
+  "lgbm": {
+    "max_depth": 3,
+    "num_leaves": 8,
+    "n_estimators": 200,
+    "learning_rate": 0.05,
+    "min_child_samples": 50
+  },
+  "ridge_alpha": 1.0,
+  "recurring_min_pixels": 50,
+  "interior_min_dist_m": 20,
+  "seed": 42,
+  "bootstrap_n": 1000,
+  "ci_level": 0.95
+}
