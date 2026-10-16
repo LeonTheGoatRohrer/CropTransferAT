@@ -1,0 +1,117 @@
+{
+  "seed": 42,
+  "n_boot": 1000,
+  "risk_threshold": 0.85,
+  "target_group_cols": [
+    "cz",
+    "season",
+    "year"
+  ],
+  "sensitivity_group_cols": [
+    "country",
+    "cz",
+    "season",
+    "year"
+  ],
+  "shuffle_seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "subgroups": {
+    "duenger": [
+      "N_kg_ha",
+      "P_kg_ha",
+      "K_kg_ha",
+      "compost",
+      "comp_kg_ha",
+      "manure",
+      "fert_in_hole",
+      "lime_kg_ha"
+    ],
+    "saatgut": [
+      "hybrid",
+      "hyb_type",
+      "hyb_mat",
+      "hyb_yor",
+      "hyb_tol_mln",
+      "hyb_tol_msv",
+      "hyb_tol_gls",
+      "hyb_tol_nclb",
+      "hyb_tol_rust",
+      "hyb_tol_ear_rot"
+    ],
+    "aussaat": [
+      "pl_m2",
+      "row_spacing",
+      "plant_date_dev"
+    ],
+    "pflege": [
+      "weeding",
+      "pesticide"
+    ],
+    "boden": [
+      "soil_rzpawhc",
+      "soil_clay",
+      "soil_pH",
+      "soil_orgC",
+      "soil_ECEC"
+    ],
+    "wetter": [
+      "season_prec",
+      "season_prec_1",
+      "season_prec_2",
+      "season_prec_3"
+    ],
+    "schaeden": [
+      "disease",
+      "pest",
+      "striga",
+      "water_excess"
+    ],
+    "ort": [
+      "lon",
+      "lat",
+      "elev",
+      "twi"
+    ]
+  },
+  "management": [
+    "duenger",
+    "saatgut",
+    "aussaat",
+    "pflege"
+  ],
+  "lgbm": {
+    "learning_rate": 0.05,
+    "num_leaves": 8,
+    "max_depth": 3,
+    "n_estimators_grid": [
+      50,
+      100,
+      200,
+      400
+    ],
+    "min_child_samples_grid": [
+      20,
+      100
+    ],
+    "reg_lambda": 1.0
+  },
+  "ridge_alpha_grid": [
+    1.0,
+    10.0,
+    100.0,
+    1000.0,
+    10000.0
+  ],
+  "min_other": 10,
+  "damage_columns": [
+    "pest",
+    "disease",
+    "striga",
+    "water_excess"
+  ]
+}
