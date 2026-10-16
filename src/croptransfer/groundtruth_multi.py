@@ -141,7 +141,7 @@ def load_nordic(raw: Path) -> pd.DataFrame:
     """Nordic spring-barley trials (BLUP / adjusted values -> tier S4, additional use only)."""
     d = pd.read_csv(raw / "nordic_barley" / "nordic_268105")
     d = d.rename(columns={"latitude": "lat", "longitude": "lon", "country": "country", "region": "site"})
-    d["y"] = pd.to_numeric(d["dry_matter_yield"], errors="coerce") / 10.0     # dt/ha -> t/ha (checked in W1.3)
+    d["y"] = pd.to_numeric(d["dry_matter_yield"], errors="coerce") / 10.0     # hkg/ha at 15 % moisture -> t/ha (README)
     d["harvest_date"] = pd.to_datetime(d["measure_date"], errors="coerce")
     d["sow_date"] = pd.to_datetime(d["sowing_date"], errors="coerce")
     d["year"] = d["year"].astype(int)
@@ -149,10 +149,30 @@ def load_nordic(raw: Path) -> pd.DataFrame:
     d["site"] = d["lat"].round(3).astype(str) + "_" + d["lon"].round(3).astype(str)   # trial ids are per year
     sy = _site_year(d, ["site", "country", "year"])
     return sy.assign(dataset="nordic_barley", package="A11", crop="spring_barley", crop_variant="spring",
-                     moisture_basis="dry matter", tier="S4", label_type="BLUP/bereinigt")
+                     moisture_basis="15 %", tier="S4", label_type="BLUP/bereinigt")
 
 
-LOADERS = {"invite": load_invite, "briwecs": load_briwecs, "peas_fr": load_peas, "nordic_barley": load_nordic}
+def load_g2f(raw: Path) -> pd.DataFrame:
+    """Genomes to Fields grain maize (curated PHENO.csv): plot yield in t/ha at 15.5 % moisture, 2014-2021.
+
+    Location coordinates are partly estimated by the curators (plan A3) -> tier S3 when the coordinate has
+    <= 2 decimals, else S2. Mean over genotypes/replicates per location x year (hybrid trials).
+    """
+    d = pd.read_csv(raw / "g2f" / "unpacked" / "data" / "PHENO.csv",
+                    usecols=["year", "location", "yield", "date_plant", "date_harvest", "latitude", "longitude", "irrigated"])
+    d = d.rename(columns={"yield": "y", "latitude": "lat", "longitude": "lon", "location": "site"})
+    d = d.dropna(subset=["y", "lat", "lon"])
+    d = d[d["y"].between(1.0, 20.0)]
+    d["harvest_date"] = pd.to_datetime(d["date_harvest"], errors="coerce")
+    d["sow_date"] = pd.to_datetime(d["date_plant"], errors="coerce")
+    sy = _site_year(d, ["site", "year"])
+    sy["country"] = "North America"
+    sy["tier"] = np.where(coord_digits(sy["lat"]) <= 2, "S3", "S2")
+    return sy.assign(dataset="g2f", package="A3", crop="maize", crop_variant="grain",
+                     moisture_basis="15.5 %", label_type="Hybrid-Versuchsmittel")
+
+
+LOADERS = {"invite": load_invite, "g2f": load_g2f, "briwecs": load_briwecs, "peas_fr": load_peas, "nordic_barley": load_nordic}
 
 
 # ------------------------------------------------------------------------------- targets -----

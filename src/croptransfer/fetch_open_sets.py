@@ -59,6 +59,14 @@ PACKAGES: dict[str, dict[str, Any]] = {
         "licence": "DataverseNO 10.18710/IZ3EFE (see record)",
         "files": [("https://dataverse.no/api/access/datafile/268105", "nordic_268105")],
     },
+    "g2f": {
+        "plan_id": "A3",
+        "crop": "grain maize (Genomes to Fields, North America)",
+        "licence": "CC BY 4.0 (figshare 22776806, curated_data.zip); GENO.csv (935 MB) is not extracted",
+        "files": [("https://ndownloader.figshare.com/files/42590572", "curated_data.zip")],
+        "unzip": True,
+        "extract_only": ["data/PHENO.csv", "data/ECOV.csv"],
+    },
     "nvt_au": {
         "plan_id": "A10",
         "crop": "wheat, barley, canola (Australia)",
@@ -90,14 +98,17 @@ def download(url: str, target: Path) -> int:
     return target.stat().st_size
 
 
-def safe_extract(archive: Path, dest: Path, skip_prefixes: list[str] | None = None) -> list[str]:
-    """Unpack a zip below ``dest``; refuse paths that leave ``dest``; skip given prefixes."""
+def safe_extract(archive: Path, dest: Path, skip_prefixes: list[str] | None = None,
+                 only: list[str] | None = None) -> list[str]:
+    """Unpack a zip below ``dest``; refuse paths that leave ``dest``; skip given prefixes; optional whitelist."""
     dest_root = dest.resolve()
     extracted: list[str] = []
     with zipfile.ZipFile(archive) as zf:
         for info in zf.infolist():
             name = info.filename
             if any(name.startswith(p) for p in (skip_prefixes or [])):
+                continue
+            if only is not None and name not in only:
                 continue
             out = (dest / name).resolve()
             if dest_root not in out.parents and out != dest_root:
@@ -122,7 +133,7 @@ def fetch_package(name: str, raw_root: Path, force: bool = False) -> dict[str, A
         size = download(url, target)
         files.append({"url": url, "file": fname, "bytes": size, "sha256": sha256_file(target)})
         if spec.get("unzip") and zipfile.is_zipfile(target):
-            members = safe_extract(target, folder / "unpacked", spec.get("skip_prefixes"))
+            members = safe_extract(target, folder / "unpacked", spec.get("skip_prefixes"), spec.get("extract_only"))
             files[-1]["unpacked_files"] = len(members)
     manifest = {
         "package": name, "plan_id": spec["plan_id"], "crop": spec["crop"], "licence": spec["licence"],
