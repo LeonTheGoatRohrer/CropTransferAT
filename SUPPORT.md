@@ -6,6 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-10-16 | Claude (Anthropic), Claude Code (Fable 5.1) – KI-Recherche mit Unteragenten | Weltweite Recherche offener Ertragsdatensätze auf Feld-/Standortebene (Repositorien-APIs, Browser, Download-Verifikation von 12 Datensätzen); Bericht `reports/data_search.md` (Tabelle, Top 10, Standort-Jahre je Kultur, Anfragetexte) |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5 / Fable 5.1) | Zusammenfassung des Nachtlaufs für den Projektinhaber; Sentinel-2-Galerien der Trainingsfelder (`gallery.py`); mehrseitige Website (`app/ui/`, `app/versions.yaml`, Vergleich, Trainingsaufträge), Tests und Doku; Entwurf eines Recherche-Prompts für weitere Ertragsdatensätze |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) – autonomer Nachtlauf | Phase 1–4 nach PLAN.md: Ertrags-Datensatz, GEE-Extraktion, Merkmale, Modellfamilie, Kontrolltests, Datenkritik; Notebooks 01–03, Streamlit-App, Innerhalb-Feld-Analyse, One-Acre-Fund-Tabellenanalyse, Phase-5-Regionalmodell und Doku-Entwürfe durch KI-Unteragenten (Claude Sonnet); private Fortschrittsseite (Claude-Artifact) |
 | 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Phase 0: Download und Sichtung One Acre Fund (`one_acre_fund.py`), SSURGO-Abfrage über Soil Data Access (`soil_ssurgo.py`), Suche, Download und Abschreiben der Versuchsberichte Hatzendorf/LK OÖ durch KI-Unteragenten (`at_trials.py`, nur Sammeln); Tests, Datenkritik-Nachtrag |
