@@ -32,6 +32,9 @@ def pr_metrics(y_risk, score, clusters, cfg) -> dict:
     s = np.asarray(score, float)
     ok = np.isfinite(s)
     y, s, cl = y[ok], s[ok], pd.Series(np.asarray(clusters)[ok])
+    if len(y) < 5 or y.sum() == 0:
+        return {"n": int(len(y)), "positives": int(y.sum()), "prevalence": np.nan, "pr_auc": np.nan,
+                "recall_at_20fpr": np.nan, "pr_auc_lo": np.nan, "pr_auc_hi": np.nan}
     out = {"n": int(len(y)), "positives": int(y.sum()), "prevalence": float(y.mean()) if len(y) else np.nan,
            "pr_auc": evaluate.pr_auc(y, s), "recall_at_20fpr": evaluate.recall_at_fpr(y, s, 0.2)}
     bs = []
@@ -129,7 +132,9 @@ def main() -> None:
         res["b_direct_classifier"] = pr_metrics(dc.y < THR, dc.p, dc.dataset + "-" + dc.year.astype(str), cfg)
         rs = reference_scores(df, dek, a.basis, mmdd)
         rcl = rs.dataset + "-" + rs.year.astype(str)
-        rho, lo, hi = evaluate.spearman_ci(rs.score.fillna(rs.score.median()), rs.y, rcl, cfg["validation"]["bootstrap_n"], seed)
+        ok = rs.score.notna()
+        rho, lo, hi = (evaluate.spearman_ci(rs.score[ok], rs.y[ok], rcl[ok], cfg["validation"]["bootstrap_n"], seed)
+                       if ok.sum() >= 5 else (np.nan, np.nan, np.nan))
         res["reference_stress_score"] = {"spearman_RY": rho, "lo": lo, "hi": hi,
                                          **pr_metrics(rs.y < THR, -rs.score, rcl, cfg)}
         out["per_cutoff"][mmdd] = res

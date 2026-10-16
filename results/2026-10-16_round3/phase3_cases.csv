@@ -1,0 +1,10 @@
+case,fy_key,dataset,year,y,pred,causes
+richtig erkannt,KBS|KBS:T4R6|2017,KBS,2017,0.305,0.747,Ursache unklar
+richtig erkannt,KBS|KBS:T4R4|2017,KBS,2017,0.444,0.559,Ursache unklar
+richtig erkannt,KBS|KBS:T4R5|2017,KBS,2017,0.451,0.644,Ursache unklar
+verpasst,KBS|KBS:T4R1|2017,KBS,2017,0.414,0.879,Ursache unklar
+verpasst,KBS|KBS:T4R4|2023,KBS,2023,0.501,1.012,Ursache unklar
+verpasst,KBS|KBS:T4R2|2023,KBS,2023,0.507,1.0,Ursache unklar
+Fehlalarm,KBS|KBS:T4R1|2020,KBS,2020,0.998,0.559,
+Fehlalarm,KBS|KBS:T1R4|2017,KBS,2017,0.971,0.577,
+Fehlalarm,KBS|KBS:T2R1|2017,KBS,2017,0.936,0.596,

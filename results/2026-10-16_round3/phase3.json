@@ -1,0 +1,365 @@
+{
+  "model": {
+    "run": "results/2026-10-16_round3",
+    "model": "M-alle-rel",
+    "kind": "ridge",
+    "basis": "S2",
+    "variant": "round3"
+  },
+  "per_cutoff": {
+    "06-01": {
+      "a_threshold_on_pred_RY": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.3482039949376527,
+        "recall_at_20fpr": 0.2413793103448276,
+        "pr_auc_lo": 0.24629747740107133,
+        "pr_auc_hi": 0.6725366922832726
+      },
+      "b_direct_classifier": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.37525239659971565,
+        "recall_at_20fpr": 0.3103448275862069,
+        "pr_auc_lo": 0.27191663636267677,
+        "pr_auc_hi": 0.7252324367212152
+      },
+      "reference_stress_score": {
+        "spearman_RY": NaN,
+        "lo": NaN,
+        "hi": NaN,
+        "n": 0,
+        "positives": 0,
+        "prevalence": NaN,
+        "pr_auc": NaN,
+        "recall_at_20fpr": NaN,
+        "pr_auc_lo": NaN,
+        "pr_auc_hi": NaN
+      }
+    },
+    "06-15": {
+      "a_threshold_on_pred_RY": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.305413302947241,
+        "recall_at_20fpr": 0.034482758620689655,
+        "pr_auc_lo": 0.23342053145414873,
+        "pr_auc_hi": 0.5641963391354471
+      },
+      "b_direct_classifier": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.36367567527946276,
+        "recall_at_20fpr": 0.3103448275862069,
+        "pr_auc_lo": 0.2863550933131245,
+        "pr_auc_hi": 0.7261915588772462
+      },
+      "reference_stress_score": {
+        "spearman_RY": 0.23455703766620928,
+        "lo": -0.5322603175824533,
+        "hi": 0.5626267607584332,
+        "n": 52,
+        "positives": 14,
+        "prevalence": 0.2692307692307692,
+        "pr_auc": 0.5849259436215957,
+        "recall_at_20fpr": 0.42857142857142855,
+        "pr_auc_lo": 0.13781347962382445,
+        "pr_auc_hi": 0.8786047937738477
+      }
+    },
+    "07-01": {
+      "a_threshold_on_pred_RY": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.3470027377808652,
+        "recall_at_20fpr": 0.20689655172413793,
+        "pr_auc_lo": 0.208532502448956,
+        "pr_auc_hi": 0.5764526844712519
+      },
+      "b_direct_classifier": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.2899158585706846,
+        "recall_at_20fpr": 0.10344827586206896,
+        "pr_auc_lo": 0.2302250361287432,
+        "pr_auc_hi": 0.4776922759475614
+      },
+      "reference_stress_score": {
+        "spearman_RY": 0.18509395535968892,
+        "lo": -0.10191664946657003,
+        "hi": 0.6396375221294588,
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.6036850426383047,
+        "recall_at_20fpr": 0.5517241379310345,
+        "pr_auc_lo": 0.4157560110221631,
+        "pr_auc_hi": 0.796747066895609
+      }
+    },
+    "07-15": {
+      "a_threshold_on_pred_RY": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.319809535948927,
+        "recall_at_20fpr": 0.20689655172413793,
+        "pr_auc_lo": 0.22687487198607442,
+        "pr_auc_hi": 0.5108227595388749
+      },
+      "b_direct_classifier": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.3504183974070727,
+        "recall_at_20fpr": 0.3103448275862069,
+        "pr_auc_lo": 0.2394681204320431,
+        "pr_auc_hi": 0.6336599969809209
+      },
+      "reference_stress_score": {
+        "spearman_RY": 0.2790045762372213,
+        "lo": 0.0676529875774274,
+        "hi": 0.6428231525883867,
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.5415239628680023,
+        "recall_at_20fpr": 0.4482758620689655,
+        "pr_auc_lo": 0.2985667792512009,
+        "pr_auc_hi": 0.8113015492203173
+      }
+    },
+    "08-01": {
+      "a_threshold_on_pred_RY": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.43508103963278755,
+        "recall_at_20fpr": 0.5172413793103449,
+        "pr_auc_lo": 0.33342292949749075,
+        "pr_auc_hi": 0.7962103386009248
+      },
+      "b_direct_classifier": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.32065769785822656,
+        "recall_at_20fpr": 0.27586206896551724,
+        "pr_auc_lo": 0.24130269647080013,
+        "pr_auc_hi": 0.5879607449390017
+      },
+      "reference_stress_score": {
+        "spearman_RY": 0.21451371965832336,
+        "lo": 0.017998457756763255,
+        "hi": 0.668625550159635,
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.6239910381736624,
+        "recall_at_20fpr": 0.41379310344827586,
+        "pr_auc_lo": 0.365589739834625,
+        "pr_auc_hi": 0.8766105784117538
+      }
+    },
+    "08-15": {
+      "a_threshold_on_pred_RY": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.39856003844051013,
+        "recall_at_20fpr": 0.3793103448275862,
+        "pr_auc_lo": 0.270046230483409,
+        "pr_auc_hi": 0.7989715620597144
+      },
+      "b_direct_classifier": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.3665629054910269,
+        "recall_at_20fpr": 0.27586206896551724,
+        "pr_auc_lo": 0.2161682000212588,
+        "pr_auc_hi": 0.7456288139158291
+      },
+      "reference_stress_score": {
+        "spearman_RY": 0.2912670615469827,
+        "lo": 0.11551820998399394,
+        "hi": 0.6441816406325823,
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.6437098911801715,
+        "recall_at_20fpr": 0.41379310344827586,
+        "pr_auc_lo": 0.40306203786810046,
+        "pr_auc_hi": 0.8604297955734296
+      }
+    },
+    "09-01": {
+      "a_threshold_on_pred_RY": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.4001573535491072,
+        "recall_at_20fpr": 0.20689655172413793,
+        "pr_auc_lo": 0.315463001589679,
+        "pr_auc_hi": 0.823880105401844
+      },
+      "b_direct_classifier": {
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.38341207551634005,
+        "recall_at_20fpr": 0.27586206896551724,
+        "pr_auc_lo": 0.27837651060531343,
+        "pr_auc_hi": 0.6716900355984082
+      },
+      "reference_stress_score": {
+        "spearman_RY": 0.43329928498467835,
+        "lo": 0.23734609633626916,
+        "hi": 0.7244310301068204,
+        "n": 89,
+        "positives": 29,
+        "prevalence": 0.3258426966292135,
+        "pr_auc": 0.709888670012052,
+        "recall_at_20fpr": 0.6896551724137931,
+        "pr_auc_lo": 0.42914117362776055,
+        "pr_auc_hi": 0.8988906399311555
+      }
+    }
+  },
+  "causes_counts": {
+    "Ursache unklar": 16,
+    "N\u00e4sse": 9,
+    "Hitze": 5,
+    "Trockenstress": 3,
+    "abrupter Schaden": 2
+  },
+  "causes_by_site_year": {
+    "BARC-2017": {
+      "Hitze": 4
+    },
+    "BARC-2018": {
+      "N\u00e4sse": 2
+    },
+    "BARC-2019": {
+      "Hitze": 1
+    },
+    "KBS-2014": {
+      "Ursache unklar": 1
+    },
+    "KBS-2017": {
+      "Ursache unklar": 9
+    },
+    "KBS-2020": {
+      "Trockenstress, N\u00e4sse": 3,
+      "N\u00e4sse": 2,
+      "N\u00e4sse, abrupter Schaden": 2
+    },
+    "KBS-2023": {
+      "Ursache unklar": 6
+    }
+  },
+  "cases": [
+    {
+      "case": "richtig erkannt",
+      "fy_key": "KBS|KBS:T4R6|2017",
+      "y": 0.305,
+      "pred": 0.747,
+      "causes": "Ursache unklar"
+    },
+    {
+      "case": "richtig erkannt",
+      "fy_key": "KBS|KBS:T4R4|2017",
+      "y": 0.444,
+      "pred": 0.559,
+      "causes": "Ursache unklar"
+    },
+    {
+      "case": "richtig erkannt",
+      "fy_key": "KBS|KBS:T4R5|2017",
+      "y": 0.451,
+      "pred": 0.644,
+      "causes": "Ursache unklar"
+    },
+    {
+      "case": "verpasst",
+      "fy_key": "KBS|KBS:T4R1|2017",
+      "y": 0.414,
+      "pred": 0.879,
+      "causes": "Ursache unklar"
+    },
+    {
+      "case": "verpasst",
+      "fy_key": "KBS|KBS:T4R4|2023",
+      "y": 0.501,
+      "pred": 1.012,
+      "causes": "Ursache unklar"
+    },
+    {
+      "case": "verpasst",
+      "fy_key": "KBS|KBS:T4R2|2023",
+      "y": 0.507,
+      "pred": 1.0,
+      "causes": "Ursache unklar"
+    },
+    {
+      "case": "Fehlalarm",
+      "fy_key": "KBS|KBS:T4R1|2020",
+      "y": 0.998,
+      "pred": 0.559,
+      "causes": NaN
+    },
+    {
+      "case": "Fehlalarm",
+      "fy_key": "KBS|KBS:T1R4|2017",
+      "y": 0.971,
+      "pred": 0.577,
+      "causes": NaN
+    },
+    {
+      "case": "Fehlalarm",
+      "fy_key": "KBS|KBS:T2R1|2017",
+      "y": 0.936,
+      "pred": 0.596,
+      "causes": NaN
+    }
+  ],
+  "indicator_choice": {
+    "index": "evi",
+    "indicator": "K4 integral",
+    "median_rho": 0.4883722272324096,
+    "per_dataset": [
+      {
+        "dataset": "KBS",
+        "n": 48,
+        "clusters": 2,
+        "rho": 0.474,
+        "lo": 0.436,
+        "hi": 0.474
+      },
+      {
+        "dataset": "BARC",
+        "n": 26,
+        "clusters": 7,
+        "rho": 0.503,
+        "lo": -0.042,
+        "hi": 0.869
+      },
+      {
+        "dataset": "pooled",
+        "n": 74,
+        "clusters": 9,
+        "rho": 0.439,
+        "lo": 0.095,
+        "hi": 0.75
+      }
+    ],
+    "precondition_rho_ge_0.4": true,
+    "chosen": true
+  }
+}
