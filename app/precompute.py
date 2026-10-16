@@ -118,7 +118,9 @@ def main() -> None:
     ref = build_reference(dek, fields)
     pts = build_yield_points(fields)
     oof = build_oof(spec, fy)
-    metrics = pd.read_csv(Path(spec["run_path"]) / "metrics.csv")
+    metrics = pd.read_csv(Path(spec["run_path"]) / "metrics.csv", dtype={"cutoff": str})
+    if "variant" not in metrics:  # round runs have one variant per run directory
+        metrics["variant"] = spec["variant"]
 
     fields.to_parquet(OUT / "fields.parquet")
     dek[["fy_key", "basis", "index", "dekad", "value", "is_observed"]].to_parquet(OUT / "dekads.parquet")
