@@ -50,3 +50,17 @@ Kein Modell schlägt B0 im RMSE an irgendeinem Stichtag (alle KI der RMSE-Differ
 - **3.4 Leakage:** As-of-Tests grün; RY und Trend in jedem Fold nur aus Trainingszeilen (Test `test_in_fold_uses_training_rows_only`); Tuning verschachtelt; Label-Shuffle neutral; keine österreichischen Daten verwendet.
 - **3.5 Plausibilität:** Kein Ergebnis „zu gut“. Modelle schlagen B0 nicht. Fallstudien → Phase 3.
 - **3.6 Entscheidung:** ⚠️ **Weiter mit Einschränkung** – die Pipeline ist korrekt, das Ergebnis ist ehrlich schwach. Phase 2 wird als abgeschlossen getaggt (Abnahme: alle Modelle mit KI, Kontrolltests, schriftliche Antwort F0/F1), das Kriterium „stark genug“ ist **nicht** erfüllt.
+
+## Nachtrag: sekundäre Zielgröße absoluter Ertrag Y (`python -m croptransfer.run_phase2_y`, `results/2026-10-16_phase2_Y/`)
+
+LOFYO, Stichtag 1.9., gleiche Folds/Tuning; Bewertung HLS: 167 Feld-Jahre / 15 Standort-Jahre (inkl. Colorado), S2: 123 / 12.
+
+| Modell | ρ [KI] | R² | RMSE (Mittelwert-Referenz) | Median-ρ innerhalb Jahr |
+|---|---|---|---|---|
+| M-S Ridge HLS | 0,52 [0,22; 0,76] | 0,32 | 2,37 (2,88) | 0,63 |
+| M-alle LightGBM S2 | 0,55 [0,24; 0,75] | 0,28 | 2,56 (3,02) | 0,40 |
+| M-alle Ridge HLS | 0,49 [0,23; 0,72] | 0,32 | 2,37 (2,88) | 0,33 |
+| M-B LightGBM HLS | 0,16 [0,02; 0,36] | −0,06 | 2,96 | −0,04 |
+| M-B+ (SSURGO) Ridge HLS | 0,09 [−0,09; 0,34] | 0,12 | 2,71 | 0,12 |
+
+*Befund:* Den **absoluten** Ertrag ordnet der Satellit mäßig (ρ ≈ 0,5); innerhalb eines Jahres stecken darin v. a. die dauerhaften Unterschiede der KBS-Behandlungen (Bio-Parzellen niedriger) – das ist leichter als die Jahresabweichung RY. Boden (SoilGrids) und SSURGO erklären Y über ungesehene Felder und Jahre kaum (ρ ≤ 0,16): SoilGrids ist für Parzellen zu grob, SSURGO ist bei KBS konstant. Damit ist auch die PLAN-Frage „ist SoilGrids ein brauchbarer Ersatz für SSURGO?“ hier nicht entscheidbar – beide tragen nichts bei. Referenz-RMSE ist der Mittelwert über die Bewertungszeilen (großzügig zugunsten der Referenz).
