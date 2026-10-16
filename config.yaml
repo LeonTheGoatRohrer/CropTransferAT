@@ -206,3 +206,52 @@ crops:
     mid_start_mmdd: "06-15"
     gdd_nodes: [0, 200, 700, 1300, 1900]
     kc_nodes: [0.4, 0.4, 1.15, 1.15, 0.5]
+
+# Feinjustierung (reports/plan_feinjustierung.md, pre-registered in reports/feinjust_vorab.md BEFORE any run)
+s1:                                # M1 Sentinel-1 radar
+  collection: COPERNICUS/S1_GRD
+  instrument_mode: IW
+  scale_m: 10
+  min_pixels: 5                    # per field x scene
+  vv_range_db: [-30.0, 5.0]
+  vh_range_db: [-40.0, 0.0]
+  window_start_mmdd: "07-01"       # field features: scenes from here to the cutoff
+  min_scenes: 3
+  speckle_radius_m: 15             # pixel level: focal mean per scene before the temporal median
+  min_neighbours: 3                # neighbour anomaly needs >= 3 other fields in the same scene/year
+lst:                               # M2 Landsat 8/9 surface temperature
+  collections: [LANDSAT/LC08/C02/T1_L2, LANDSAT/LC09/C02/T1_L2]
+  scale: 0.00341802
+  offset_k: 149.0
+  window_start_mmdd: "06-15"
+  min_scenes: 3
+  clear_frac_min: 0.7
+et:                                # M2 evapotranspiration
+  modis: MODIS/061/MOD16A2GF
+  modis_scale: 0.1
+  modis_fill_min: 3270.0           # kg/m2 per 8 days after scaling; above = fill value
+  modis_scale_m: 500
+  composite_days: 8
+  window_start_mmdd: "06-01"
+gdd_score:                         # M3 stress score on the thermal-time axis
+  bin_cdd: 100.0
+  first_cdd: 300.0
+emerge:                            # M4 green-up date from the S2 NDVI dekad curve
+  amplitude_frac: 0.2
+  min_amplitude: 0.2
+  min_obs_dekads_before_peak: 2
+feinjust:                          # decision rule (Plan section 3) and H3 criteria (confirmed F0.1)
+  cutoff: "09-01"
+  basis: S2
+  logreg_C: 1.0
+  ridge_alpha: 1.0
+  within_window: w2
+  keep_delta_min: 0.02
+  other_loss_max: 0.02
+  shuffle_repeats: 20
+  h3_recall_min: 0.5
+  h3_rho_min: 0.5
+  h3_rho_lo_min: 0.3
+  h3_shuffle_margin: 0.10
+  h3_lodo_loss_max: 0.15
+  alarm_fpr: 0.2
