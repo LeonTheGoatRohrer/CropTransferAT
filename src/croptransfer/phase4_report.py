@@ -66,6 +66,30 @@ def main() -> None:
                   "Feld-Jahre wird mit relativen Merkmalen besser (ρ ≈ 0,37, beide LODO-Richtungen > 0), aber die Höhe der "
                   "Abweichung vom Normaljahr trifft das Modell nicht genauer als „normales Jahr“. Ursache ist vor allem die kleine "
                   "Zahl unabhängiger Standort-Jahre (8 in der S2-Basis)."]
+    # robustness: does ANY model of any stage meet criterion 1 (and 2), regardless of the selection rule?
+    import pandas as pd
+
+    any_c1, any_c12, n_models = [], [], 0
+    for d in [sorted(results.glob("*_phase2"))[-1]] + [sorted(results.glob(f"*_round{r}"))[-1] for r in (1, 2, 3)
+                                                         if sorted(results.glob(f"*_round{r}"))]:
+        m = pd.read_csv(d / "metrics.csv", dtype={"cutoff": str})
+        m = m[~m.model.isin(["B1", "M-B+"])]
+        keys = [c for c in ["model", "kind", "basis", "variant"] if c in m]
+        for k, g in m.groupby(keys):
+            n_models += 1
+            late = g[g.cutoff.isin(["08-01", "08-15", "09-01"])]
+            c1 = bool(((late.d_rmse_b0_hi < 0) & (late.d_rmse_b1_hi < 0)).any())
+            c2 = bool((g[g.cutoff == "09-01"].rho >= 0.4).any())
+            if c1:
+                any_c1.append(f"{d.name}: {k}")
+            if c1 and c2:
+                any_c12.append(f"{d.name}: {k}")
+    lines += ["", "## Robustheit gegenüber der Auswahlregel", "",
+              f"Geprüft: alle {n_models} Modellvarianten aus Phase 2 und den Runden (ohne B1/M-B+). "
+              f"Kriterium 1 erfüllt von **{len(any_c1)}**, Kriterien 1 und 2 zusammen von **{len(any_c12)}** Varianten. "
+              + ("Das Urteil hängt also nicht an der Auswahlregel: Auch ein anderes Modell wäre nicht „stark genug“ gewesen. "
+                 "(Einige nicht gewählte Varianten erreichen ρ ≥ 0,4, z. B. M-alle-rel Ridge S2 in Runde 1 mit 0,55, "
+                 "scheitern aber an Kriterium 1.)" if not any_c12 else "Betroffene Varianten: " + "; ".join(any_c12))]
     out = repo_path("reports") / "phase4_stark_genug.md"
     out.write_text("\n".join(lines) + "\n", encoding="utf-8")
     fig, ax = plt.subplots(figsize=(5.6, 3.2))

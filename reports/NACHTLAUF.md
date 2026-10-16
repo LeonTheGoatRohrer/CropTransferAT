@@ -39,6 +39,8 @@ Kein `v0.5.0` (Phase 4 nicht bestanden), kein `v0.6.0` (AT-Zero-Shot fehlt). Off
 | Stressindikator | EVI-K4 gewählt (Median-ρ 0,49 über KBS/BARC) | – |
 | CY-Bench EU (Phase 5) | ρ(1.9.) = 0,38 [0,36; 0,40], R² 0,06, Skill vs. YAS = 1 0,07 [0,06; 0,09]; vor 15.7. kein Skill | 8371 Region-Jahre, 16 Länder |
 
+**Robustheit:** Keine der 64 Modellvarianten (Phase 2 + Runden) erfüllt Kriterium 1 (RMSE signifikant besser als B0 und B1). Einzelne nicht gewählte Varianten erreichen zwar ρ ≥ 0,4 (z. B. M-alle-rel Ridge S2 in Runde 1: 0,55), scheitern aber ebenfalls an Kriterium 1. Das Urteil hängt also nicht an der Auswahlregel.
+
 Vollständig: `reports/results.md`, `reports/phase4_stark_genug.md`, `reports/data_review/*.md`.
 
 ## Datenkritik-Befunde (Auswahl)
