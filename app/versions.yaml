@@ -1,0 +1,357 @@
+# Versionsregister der Website (app/streamlit_app.py, Seite "Ergebnisse").
+# Eine Version = ein abgeschlossener Schritt mit eigenem Ergebnis. Jede Zahl hier steht auch in
+# reports/results.md bzw. den results/-Ordnern (AGENTS.md §6). Reihenfolge: neueste zuerst.
+#
+# Felder je Version:
+#   id        eindeutig (Git-Tag oder Kurzname)
+#   date      Datum des Abschlusses
+#   phase     Phase laut PLAN.md
+#   title     kurzer Titel
+#   status    abgeschlossen | eingeschraenkt | nicht_bestanden | eingefroren | zwischenstand
+#   changed   EIN Satz: Was wurde in dieser Version geändert? (steht groß über der Karte)
+#   plain     2–4 Sätze in einfacher Sprache
+#   metrics   Kennzahlen: label, value, ci (optional), n (optional), plain (= was die Zahl heißt)
+#   found     Befunde in einfacher Sprache
+#   limits    Grenzen / Einschränkungen
+#   figures   Dateinamen unter reports/figures/ mit Bildunterschrift
+#   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
+
+versions:
+  - id: nachtlauf-extras
+    date: 2026-10-16
+    phase: "Zusatzanalysen (Phase 2.4 / 3.4a)"
+    title: "Zusatzanalysen aus dem Nachtlauf"
+    status: zwischenstand
+    changed: "Drei Nebenfragen geklärt: Zeitachse, absoluter Ertrag, Afrika-Felder (nur Tabelle)."
+    plain: >
+      Neben den Hauptphasen wurden drei Fragen geprüft. Erstens: Ist es besser, die Saison nach Kalendertagen
+      oder nach Wärmesumme (Grad-Tagen) zu rechnen? Zweitens: Wie gut lässt sich der Ertrag in Tonnen je Hektar
+      (nicht nur relativ zum Normaljahr) vorhersagen? Drittens: Was erklärt bei den 10.204 Feldern aus Afrika
+      (One Acre Fund) die Ertragsunterschiede – ohne Satellitenbilder, nur aus der Tabelle?
+    metrics:
+      - label: "Absoluter Ertrag aus Satellit (t/ha)"
+        value: "ρ = 0,52"
+        ci: "[0,22; 0,76]"
+        n: "167 Feld-Jahre / 15 Standort-Jahre"
+        plain: "Welche Felder viel und welche wenig tragen, sieht der Satellit recht gut. Der Boden allein (ρ ≤ 0,16) erklärt fast nichts."
+      - label: "Kalender vs. Wärmesumme"
+        value: "kein Unterschied"
+        plain: "Beide Zeitachsen liefern ähnliche Ergebnisse; alle Vertrauensbereiche schließen 0 ein."
+      - label: "Afrika: Bewirtschaftung erklärt Ertrag"
+        value: "R² ≈ 0,05–0,07"
+        n: "10 204 Felder"
+        plain: "Düngung, Aussaat usw. erklären nur 5–7 % der Unterschiede. Gemeldete Schäden (Hagel, Nässe) zeigen keinen klaren Effekt."
+    found:
+      - "Der Satellit sieht das Ertragsniveau eines Feldes (hoch/niedrig), aber nicht, ob dieses Jahr besser oder schlechter als sonst ist."
+      - "Die Afrika-Daten sind für Österreich nicht übertragbar (andere Anbauweise, Koordinaten nur grob)."
+    limits:
+      - "Die One-Acre-Fund-Felder wurden ohne Satellitenbilder ausgewertet, weil die Koordinaten auf etwa 100 m gerundet sind und die Feldgröße fehlt."
+    figures:
+      - file: phase2_oaf_damage.png
+        caption: "One Acre Fund: gemeldete Schäden je Land und Jahr."
+      - file: phase2_oaf_groups.png
+        caption: "One Acre Fund: Merkmalsgruppen und ihr Erklärungswert."
+      - file: phase2_oaf_shap.png
+        caption: "One Acre Fund: wichtigste Merkmale (SHAP)."
+    links:
+      - label: "Datenkritik One Acre Fund"
+        path: reports/data_review/phase2_oaf_tabular.md
+      - label: "Ergebnisse absoluter Ertrag"
+        path: results/2026-10-16_phase2_Y
+      - label: "Ergebnisse Zeitachse"
+        path: results/2026-10-16_gdd_axis
+
+  - id: freeze-cybench-1
+    date: 2026-10-16
+    phase: "Phase 5"
+    title: "EU-Regionalmodell eingefroren"
+    status: eingefroren
+    changed: "Unabhängige Gegenprobe: ein Modell auf 16 EU-Ländern (Bundesland-Ebene) trainiert und eingefroren."
+    plain: >
+      Parallel zum Feldmodell wurde ein zweites, ganz anderes Modell gebaut. Es arbeitet nicht mit einzelnen Feldern,
+      sondern mit Ernte-Statistiken ganzer Regionen (vergleichbar mit Bundesländern) aus 16 EU-Ländern – ohne Österreich.
+      Es soll vorhersagen, ob eine Region ein besseres oder schlechteres Jahr als üblich hat. Das Modell ist eingefroren:
+      Modelldateien und Testregeln sind mit Prüfsummen festgehalten. Der Test an Österreich wartet auf die Freigabe des Projektinhabers.
+    metrics:
+      - label: "Rangkorrelation am 1. September"
+        value: "ρ = 0,38"
+        ci: "[0,36; 0,40]"
+        n: "8 371 Region-Jahre / 16 Länder"
+        plain: "Das Modell ordnet gute und schlechte Jahre tendenziell richtig ein – aber nur mittelmäßig."
+      - label: "Erklärte Streuung (R²)"
+        value: "0,06"
+        ci: "[0,04; 0,07]"
+        plain: "Nur 6 % der Schwankungen werden erklärt. Vor dem 15. Juli kann das Modell gar nichts."
+      - label: "Besser als „normales Jahr“?"
+        value: "Skill 0,07"
+        ci: "[0,06; 0,09]"
+        plain: "Ja, aber nur um 7 %. Ein kleiner, statistisch sicherer Vorteil."
+    found:
+      - "Deutschland stellt 31 % der Daten. Ohne Deutschland bleibt das Ergebnis ähnlich (ρ 0,32)."
+      - "Das Modell lernt vor allem „welches Jahr ist das“ (Jahresmittel ρ 0,86) und weniger die Unterschiede zwischen Regionen im selben Jahr (ρ 0,22)."
+    limits:
+      - "Das Hyperparameter-Raster wurde nach einem Pilotlauf erweitert, als erste EU-Ergebnisse sichtbar waren – offen dokumentiert; die EU-Zahlen sind dadurch leicht optimistisch. Der Österreich-Test ist davon nicht betroffen."
+      - "Keine österreichische Datei wurde gelesen (Österreich-Regel eingehalten)."
+    figures:
+      - file: phase5_cybench_earlywarning.png
+        caption: "Frühwarnkurve: Güte des EU-Modells je Stichtag (1. Juni bis 1. September)."
+    links:
+      - label: "Freeze-Protokoll (mit Österreich-Testregeln)"
+        path: reports/freeze_protocol_cybench.md
+      - label: "Datenkritik Phase 5"
+        path: reports/data_review/phase5_cybench_eu.md
+      - label: "Ergebnisse Phase 5"
+        path: reports/results_phase5.md
+
+  - id: v0.4.0
+    date: 2026-10-16
+    phase: "Phase 3 + 4"
+    title: "Problemfelder erkennen · Urteil „stark genug?“"
+    status: nicht_bestanden
+    changed: "Gefährdete Felder werden mit einem Stress-Score erkannt – aber das Modell ist insgesamt NICHT stark genug: kein Einfrieren, kein Österreich-Test."
+    plain: >
+      Jetzt ging es um die eigentliche Frage: Kann man früh in der Saison erkennen, welche Felder gefährdet sind
+      (mindestens 15 % unter ihrem Normalniveau)? Am besten funktioniert die einfachste Methode: Man vergleicht die
+      Satellitenkurve des Feldes mit der Kurve eines „gesunden Maisfeldes“ und misst den Abstand. Für den vorab
+      festgelegten Test „stark genug“ reicht das aber nicht. Nach den eigenen Regeln wird das Modell deshalb nicht
+      eingefroren und nicht in Österreich getestet.
+    metrics:
+      - label: "Stress-Score erkennt gefährdete Felder"
+        value: "PR-AUC 0,71"
+        n: "89 Feld-Jahre / 8 Standort-Jahre · Zufall = 0,33"
+        plain: "Deutlich besser als Raten (0,33). Von den gefährdeten Feldern findet der Score die meisten."
+      - label: "Stress-Score ↔ relativer Ertrag"
+        value: "ρ = 0,43"
+        ci: "[0,24; 0,72]"
+        plain: "Je höher der Stress-Score, desto niedriger der Ertrag. Der Zusammenhang ist statistisch sicher."
+      - label: "Gelerntes Modell (Schwelle auf Vorhersage)"
+        value: "PR-AUC 0,40"
+        ci: "[0,32; 0,82]"
+        plain: "Das aufwendigere gelernte Modell ist kaum besser als Raten."
+      - label: "Urteil Phase 4"
+        value: "nicht stark genug"
+        plain: "Keine der 64 geprüften Modellvarianten erfüllt das vorab festgelegte Kriterium."
+    found:
+      - "Als Stressindikator wurde das EVI-Integral über die Saison gewählt (K4)."
+      - "Bei KBS sind die „gefährdeten“ Parzellen vor allem Bio-Parzellen (13 von 23). Das ist Bewirtschaftung, nicht Wetter."
+      - "Das Urteil hängt nicht an der Auswahlregel: Auch das beste nicht gewählte Modell hätte das Kriterium verfehlt."
+    limits:
+      - "Nur 8 unabhängige Standort-Jahre: Unterschiede zwischen Jahren lassen sich daraus nicht verlässlich lernen."
+      - "Krankheiten oder Schädlinge können ohne passende Daten nicht von anderen Ursachen unterschieden werden."
+    figures:
+      - file: phase3_earlywarning_risk.png
+        caption: "Wie früh erkennt man gefährdete Felder? Güte je Stichtag."
+      - file: phase4_rounds.png
+        caption: "Phase 4: alle Stufen (Phase 2 + Runden 1–3) gegen das Kriterium „stark genug“."
+    links:
+      - label: "Urteil Phase 4"
+        path: reports/phase4_stark_genug.md
+      - label: "Datenkritik Phase 3"
+        path: reports/data_review/phase3_problem_fields.md
+      - label: "Ergebnisse Phase 3 (Lauf Runde 3)"
+        path: results/2026-10-16_round3
+
+  - id: rounds
+    date: 2026-10-16
+    phase: "Phase 4 – Verbesserungsrunden"
+    title: "Drei vorab festgelegte Verbesserungsrunden"
+    status: eingeschraenkt
+    changed: "Drei Verbesserungen ausprobiert – nur die vorab festgelegten, danach ist Schluss."
+    plain: >
+      Weil Phase 2 schwach war, durften laut Plan genau drei Verbesserungen probiert werden. Sie wurden vorher
+      aufgeschrieben, damit man nicht endlos herumprobiert, bis zufällig eine gute Zahl herauskommt. Runde 1:
+      Satellitenwerte relativ zum eigenen Feld statt absolut. Runde 2: weniger, einfachere Merkmale. Runde 3: wie
+      Runde 1, aber stärker „gebremst“ (regularisiert), damit das Modell weniger auswendig lernt.
+    metrics:
+      - label: "Runde 1 – relative Merkmale"
+        value: "ρ = 0,37"
+        ci: "[−0,01; 0,70]"
+        n: "89 / 8"
+        plain: "Besser als Phase 2 (−0,04), und das Modell überträgt sich jetzt zwischen den beiden US-Standorten."
+      - label: "Runde 2 – einfacher"
+        value: "ρ = −0,01"
+        ci: "[−0,21; 0,59]"
+        plain: "Schlechter. Zu wenig Information."
+      - label: "Runde 3 – stärker regularisiert"
+        value: "ρ = 0,37"
+        ci: "[−0,02; 0,68]"
+        plain: "Wie Runde 1. Übertragung Michigan → Maryland ρ 0,77, Maryland → Michigan 0,53."
+    found:
+      - "Relative Merkmale (Vergleich mit dem eigenen Feld in anderen Jahren) sind der wichtigste Fortschritt."
+      - "Trotzdem trifft kein Modell die Höhe des Verlusts besser als die Annahme „normales Jahr“."
+    limits:
+      - "Die drei Runden sind aufgebraucht. Jede weitere Änderung braucht eine neue, dokumentierte Entscheidung."
+    figures:
+      - file: phase4_rounds.png
+        caption: "Alle Stufen im Vergleich (Stichtag 1. September)."
+    links:
+      - label: "Runde 1"
+        path: results/2026-10-16_round1
+      - label: "Runde 2"
+        path: results/2026-10-16_round2
+      - label: "Runde 3"
+        path: results/2026-10-16_round3
+
+  - id: v0.3.0
+    date: 2026-10-16
+    phase: "Phase 2"
+    title: "Basismodelle: Was bestimmt den Ertrag?"
+    status: eingeschraenkt
+    changed: "Erste Modelle trainiert – Satellit, Wetter, Boden einzeln und kombiniert; dazu das Modell innerhalb des Feldes."
+    plain: >
+      Jetzt lernen Modelle aus den aufbereiteten Daten. Jede Merkmalsgruppe (Satellit, Wetter, Boden/Gelände)
+      bekommt ein eigenes Modell, dazu Kombinationen. Geprüft wird immer streng: Das Feld UND das Jahr, das
+      bewertet wird, hat das Modell nie gesehen. Ergebnis: Unterschiede zwischen Jahren lernt das Modell nicht.
+      Unterschiede innerhalb eines Feldes (wo im Feld fehlt Ertrag?) erkennt der Satellit dagegen gut.
+    metrics:
+      - label: "Gewähltes Modell, ungesehenes Feld + Jahr"
+        value: "ρ = −0,04"
+        ci: "[−0,29; 0,37]"
+        n: "89 Feld-Jahre / 8 Standort-Jahre"
+        plain: "Praktisch Zufall. Das Modell kann nicht sagen, ob ein unbekanntes Jahr gut oder schlecht wird."
+      - label: "Dasselbe Modell, Jahr schon gesehen"
+        value: "ρ = 0,65"
+        plain: "Sobald das Modell das Jahr kennt, wird es gut – es lernt also „welches Jahr“ statt „wie geht es dem Feld“."
+      - label: "Innerhalb des Feldes: Satellit ↔ Ertragskarte"
+        value: "ρ = 0,68"
+        ci: "[0,54; 0,72]"
+        n: "41 Feld-Jahre (BARC)"
+        plain: "Wo im Feld der Mais im Juli/August weniger grün ist, wird im Herbst weniger geerntet. Das ist das stärkste Ergebnis."
+    found:
+      - "Michigan und Maryland sind in den Merkmalen zu 100 % unterscheidbar – das Modell erkennt den Standort sofort."
+      - "Problemzonen im Feld kehren von Jahr zu Jahr wieder (ρ 0,67) – das deutet auf Boden oder Gelände."
+      - "Label-Shuffle-Test: Werden die Erträge zufällig vertauscht, fällt jedes Modell auf Zufall. Kein Ergebnis war verdächtig gut."
+    limits:
+      - "Mit 8 Standort-Jahren sind alle Vertrauensbereiche sehr breit."
+    figures:
+      - file: phase2_earlywarning_main.png
+        caption: "Frühwarnkurve: Güte des Hauptmodells je Stichtag."
+      - file: phase2_shap_main.png
+        caption: "Welche Merkmale das Modell nutzt (SHAP)."
+      - file: phase2_within_field_maps.png
+        caption: "Ein BARC-Feld 2020: gemessener Ertrag (links), Satelliten-NDVI (Mitte), Zusammenhang (rechts)."
+      - file: phase2_within_field_rho.png
+        caption: "Innerhalb der Felder: Zusammenhang Satellit ↔ Ertrag je Feld-Jahr."
+    links:
+      - label: "Datenkritik Phase 2"
+        path: reports/data_review/phase2_models.md
+      - label: "Datenkritik innerhalb der Felder"
+        path: reports/data_review/phase2_within_field.md
+      - label: "Ergebnisse Phase 2"
+        path: results/2026-10-16_phase2
+
+  - id: v0.2.0
+    date: 2026-10-16
+    phase: "Phase 1"
+    title: "Ertragsdaten aufbereitet"
+    status: eingeschraenkt
+    changed: "Alle Ertragsdaten in ein Format gebracht und mit Satellitenkurven, Wetter und Boden verbunden."
+    plain: >
+      Jedes Feld und jedes Jahr mit gemessenem Ertrag wurde in eine Tabelle gebracht: Wie viel wurde geerntet,
+      wie sah die Satellitenkurve über die Saison aus, wie war das Wetter, welcher Boden? Dabei wurde geprüft, ob
+      die Kurven wirklich wie Mais aussehen und ob alte Satelliten (Landsat 5/7) mit den neuen vergleichbar sind.
+    metrics:
+      - label: "Mais-Feld-Jahre insgesamt"
+        value: "365"
+        n: "KBS 294 · BARC 61 · Colorado 10"
+        plain: "So viele Kombinationen aus Feld und Jahr mit gemessenem Ertrag gibt es."
+      - label: "Davon mit relativem Ertrag und Satellit"
+        value: "123"
+        n: "aus nur 11 Standort-Jahren"
+        plain: "Nur 123 Fälle haben ein „Normalniveau“ zum Vergleich UND Satellitendaten. Und sie stammen aus nur 11 Jahr-Ort-Kombinationen."
+      - label: "Erster Zusammenhang Satellit ↔ Ertrag"
+        value: "ρ = 0,44"
+        ci: "[0,10; 0,75]"
+        n: "74 / 9"
+        plain: "Je mehr Grün über die Saison (EVI-Integral), desto höher der relative Ertrag. Ein Signal ist da – aber auf wenigen Jahren."
+    found:
+      - "Landsat 5/7 passt nicht gut genug zu den neuen Satelliten (Abweichung 0,073 statt höchstens 0,07) – die Jahre vor 2013 bleiben ohne Satellitenmerkmale."
+      - "KBS 2014 und 2017 haben im Sommer fast keine wolkenfreien Aufnahmen (30-m-Satellit)."
+    limits:
+      - "Effektiv nur 8–11 unabhängige Standort-Jahre."
+      - "Die KBS-Parzellen sind klein (≈ 0,6 ha): nur ≈ 6 Pixel beim 30-m-Satelliten."
+    figures:
+      - file: overview_s2_gallery_barc.png
+        caption: "So sehen die Daten aus: dasselbe Feld in Maryland in einem schlechten (2018) und einem guten Jahr (2021) – Sentinel-2-Aufnahmen, Grünindex und Mähdrescher-Ertrag."
+      - file: overview_s2_gallery_kbs.png
+        caption: "Die 24 Versuchsparzellen in Michigan (2017). Magenta = Ertrag mehr als 15 % unter Normal."
+      - file: phase1_curves_best_worst.png
+        caption: "Saisonkurven (NDVI) eines guten und eines schlechten Jahres je Standort."
+      - file: phase1_curve_sample.png
+        caption: "Stichprobe von Saisonkurven – sieht das aus wie Mais?"
+      - file: phase1_k1_vs_ry.png
+        caption: "Satellitenindikator gegen relativen Ertrag."
+    links:
+      - label: "Datenkritik Phase 1"
+        path: reports/data_review/phase1_groundtruth.md
+      - label: "Ergebnisse Phase 1"
+        path: results/2026-10-16_phase1
+      - label: "Datenquellen"
+        path: DATA_SOURCES.md
+
+  - id: v0.1.0
+    date: 2026-10-15
+    phase: "Phase 0"
+    title: "Setup und Datenzugang"
+    status: abgeschlossen
+    changed: "Alle Datenquellen geprüft, beschrieben und heruntergeladen; Arbeitsumgebung und Regeln festgelegt."
+    plain: >
+      Bevor etwas gerechnet wird: Welche Daten gibt es überhaupt, wem gehören sie, darf man sie nutzen? 13 Quellen
+      wurden gesichtet (Erträge, Satelliten, Wetter, Boden, Feldgrenzen). Dazu wurden die Spielregeln festgelegt –
+      vor allem die Österreich-Regel: Österreichische Daten werden erst nach dem Einfrieren angesehen.
+    metrics:
+      - label: "Datenquellen gesichtet"
+        value: "13"
+        plain: "Davon 9 sofort nutzbar, 4 auf Anfrage oder optional."
+      - label: "Anfragen formuliert"
+        value: "7"
+        plain: "z. B. YieldSAT (Südamerika), Mead (Nebraska), Erlaubnis KBS."
+    found:
+      - "One Acre Fund (Afrika): keine Feldgrößen, Koordinaten gerundet – nur als Tabelle nutzbar."
+      - "In der Steiermark sind 63 % der Körnermais-Schläge kleiner als 1 ha."
+    limits: []
+    figures: []
+    links:
+      - label: "Datenkritik Phase 0"
+        path: reports/data_review/phase0_data_access.md
+      - label: "Datenquellen"
+        path: DATA_SOURCES.md
+      - label: "Anfragen"
+        path: ANFRAGEN.md
+
+# Läufe für die Seite "Vergleich" (alle mit metrics.csv im gleichen Format).
+benchmark_runs:
+  - dir: results/2026-10-16_phase2
+    label: "Phase 2 – Basismodelle"
+    criteria: criteria_main.json
+  - dir: results/2026-10-16_round1
+    label: "Runde 1 – relative Merkmale"
+    criteria: criteria.json
+  - dir: results/2026-10-16_round2
+    label: "Runde 2 – einfachere Merkmale"
+    criteria: criteria.json
+  - dir: results/2026-10-16_round3
+    label: "Runde 3 – stärker regularisiert"
+    criteria: criteria.json
+
+# Modellnamen in einfacher Sprache.
+model_names:
+  B1: "Nur eine Zahl (NDVI-Maximum)"
+  M-S: "Nur Satellit"
+  M-W: "Nur Wetter"
+  M-B: "Nur Boden/Gelände"
+  M-B+: "Boden + US-Bodenpotenzial (SSURGO)"
+  M-WB: "Wetter + Boden"
+  M-SW: "Satellit + Wetter"
+  M-SB: "Satellit + Boden"
+  M-alle: "Satellit + Wetter + Boden"
+  M-Srel: "Satellit, relativ zum eigenen Feld"
+  M-alle-rel: "Satellit relativ + Wetter + Boden"
+  M-Srel-einfach: "Satellit relativ, wenige Merkmale"
+  M-Srel-einfach+W4: "Satellit relativ, wenige Merkmale + 4 Wettermerkmale"
+kind_names:
+  ridge: "lineares Modell (Ridge)"
+  lgbm: "Entscheidungsbäume (LightGBM, flach)"
+basis_names:
+  HLS: "30-m-Satellit (HLS, ab 2013)"
+  S2: "10-m-Satellit (Sentinel-2, ab 2017)"

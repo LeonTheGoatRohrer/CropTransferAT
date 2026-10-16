@@ -94,6 +94,53 @@ def build_oof(spec: dict, fy_keys: set[str]) -> pd.DataFrame:
     return o[["fy_key", "dataset", "year", "y", "pred", "cutoff", "split"]].reset_index(drop=True)
 
 
+def load_versions() -> dict:
+    import yaml
+
+    return yaml.safe_load((ROOT / "app" / "versions.yaml").read_text(encoding="utf-8"))
+
+
+def build_benchmarks(reg: dict) -> pd.DataFrame:
+    """All metrics.csv of the registered runs in one table (column run/run_label)."""
+    frames = []
+    for run in reg["benchmark_runs"]:
+        p = ROOT / run["dir"] / "metrics.csv"
+        if not p.exists():
+            print(f"Warnung: {p} fehlt – Lauf übersprungen")
+            continue
+        m = pd.read_csv(p, dtype={"cutoff": str})
+        if "variant" not in m:
+            m["variant"] = "-"
+        if "shuffle" in m:
+            m = m[~m["shuffle"].astype(bool)]
+        m["run"] = run["dir"]
+        m["run_label"] = run["label"]
+        frames.append(m)
+    if not frames:
+        return pd.DataFrame()
+    return pd.concat(frames, ignore_index=True)
+
+
+def build_stages(reg: dict) -> list[dict]:
+    """Per run the pre-registered selected model at 09-01 and the four Phase-4 criteria."""
+    stages = []
+    for run in reg["benchmark_runs"]:
+        p = ROOT / run["dir"] / run["criteria"]
+        if not p.exists():
+            continue
+        c = json.loads(p.read_text(encoding="utf-8"))
+        sel = c["selected"]
+        flags = [bool(v.get("passed")) for _, v in sorted(c["criteria"].items())]
+        flags += [False] * (4 - len(flags))
+        stages.append({
+            "stage": run["label"].split(" – ")[0], "run": run["dir"], "model": sel["model"], "kind": sel["kind"],
+            "basis": sel["basis"], "n": sel["n"], "clusters": sel.get("clusters"), "rho": sel["rho"],
+            "rho_lo": sel["rho_lo"], "rho_hi": sel["rho_hi"], "c1": flags[0], "c2": flags[1], "c3": flags[2],
+            "c4": flags[3], "passed": bool(c.get("strong_enough", False)),
+        })
+    return stages
+
+
 def build_progress() -> dict:
     changelog = []
     for line in (ROOT / "CHANGELOG.md").read_text(encoding="utf-8").splitlines():
@@ -129,6 +176,12 @@ def main() -> None:
     oof.to_parquet(OUT / "oof.parquet")
     metrics.to_csv(OUT / "metrics.csv", index=False)
     (OUT / "progress.json").write_text(json.dumps(build_progress(), ensure_ascii=False, indent=2), encoding="utf-8")
+    reg = load_versions()
+    bench = build_benchmarks(reg)
+    bench.to_csv(OUT / "benchmarks.csv", index=False)
+    stages = build_stages(reg)
+    (OUT / "stages.json").write_text(json.dumps(stages, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Vergleich: {len(bench)} Zeilen aus {bench['run'].nunique() if len(bench) else 0} Läufen | Stufen: {len(stages)}")
     spec_used = {k: v for k, v in spec.items() if k != "run_path"}
     (OUT / "model_spec_used.json").write_text(json.dumps(spec_used, ensure_ascii=False, indent=2), encoding="utf-8")
 
