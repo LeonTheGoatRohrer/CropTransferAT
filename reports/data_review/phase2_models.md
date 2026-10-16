@@ -64,3 +64,18 @@ LOFYO, Stichtag 1.9., gleiche Folds/Tuning; Bewertung HLS: 167 Feld-Jahre / 15 S
 | M-B+ (SSURGO) Ridge HLS | 0,09 [−0,09; 0,34] | 0,12 | 2,71 | 0,12 |
 
 *Befund:* Den **absoluten** Ertrag ordnet der Satellit mäßig (ρ ≈ 0,5); innerhalb eines Jahres stecken darin v. a. die dauerhaften Unterschiede der KBS-Behandlungen (Bio-Parzellen niedriger) – das ist leichter als die Jahresabweichung RY. Boden (SoilGrids) und SSURGO erklären Y über ungesehene Felder und Jahre kaum (ρ ≤ 0,16): SoilGrids ist für Parzellen zu grob, SSURGO ist bei KBS konstant. Damit ist auch die PLAN-Frage „ist SoilGrids ein brauchbarer Ersatz für SSURGO?“ hier nicht entscheidbar – beide tragen nichts bei. Referenz-RMSE ist der Mittelwert über die Bewertungszeilen (großzügig zugunsten der Referenz).
+
+## Nachtrag: Kalender- vs. GDD-Achse (PLAN 2.4, `python -m croptransfer.gdd_axis`, `results/2026-10-16_gdd_axis/`)
+
+Nur Satellitenmerkmale (M-S), Stichtag 1.9.; GDD-Merkmale = Indexwert bei 300/600/900/1200/1500 °C·d seit 1.4. (+ Maximum), as-of. Kontrolle: Die Kalender-Variante reproduziert exakt die Phase-2-Werte.
+
+| Basis / Modell | Achse | LOFYO ρ [KI] | LODO KBS→BARC / BARC→KBS |
+|---|---|---|---|
+| HLS Ridge | Kalender | −0,16 [−0,45; 0,25] | 0,27 / 0,21 |
+| HLS Ridge | GDD | −0,02 [−0,31; 0,32] | 0,16 / −0,17 |
+| S2 Ridge | Kalender | −0,04 [−0,29; 0,37] | 0,42 / −0,19 |
+| S2 Ridge | GDD | −0,06 [−0,22; 0,37] | 0,41 / 0,31 |
+| S2 LightGBM | Kalender | 0,21 [−0,29; 0,42] | −0,11 / – |
+| S2 LightGBM | GDD | 0,35 [−0,29; 0,63] | 0,43 / – |
+
+„–“: LightGBM mit nur 27 BARC-Trainingszeilen liefert konstante Vorhersagen (kein ρ). *Befund:* kein robuster Unterschied zwischen den Achsen; mit S2 ist die GDD-Achse in der LODO-Richtung BARC→KBS besser (0,31 statt −0,19), alle KI sind breit. Nach PLAN-Regel (Auswahl nach LODO) spräche das leicht für die GDD-Achse bei S2 – für den Österreich-Transfer (kühlerer Anbaukalender) ist sie ohnehin die plausiblere Wahl. Entscheidung erst mit mehr Standort-Jahren.
