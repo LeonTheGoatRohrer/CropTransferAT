@@ -63,3 +63,13 @@ def test_delta_B_paired():
     wf = {"seed": 42, "bootstrap_n": 200}
     d = feinjust.delta_B(t2, t, wf)
     assert np.isclose(d["delta"], 0.1) and np.isclose(d["lo"], 0.1) and np.isclose(d["hi"], 0.1)
+
+
+def test_emergence_ignores_spring_cover_crop_peak():
+    dates = pd.date_range("2020-04-05", "2020-08-30", freq="5D")
+    doy = dates.dayofyear.to_numpy()
+    cover = 0.6 * np.exp(-((doy - 130) / 12.0) ** 2)               # green cover crop in May
+    maize = 0.6 / (1 + np.exp(-(doy - 190) / 8.0))                  # maize green-up in July
+    obs = pd.DataFrame({"date": dates.strftime("%Y-%m-%d"), "ndvi": 0.2 + cover + maize})
+    e = fjf.emergence_doy(obs, date(2020, 9, 1), CFG)
+    assert e > 160                          # after the tillage minimum, not in April/May

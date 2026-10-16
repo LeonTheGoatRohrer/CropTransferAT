@@ -11,7 +11,7 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from croptransfer import timeseries as ts
+from croptransfer import stress, timeseries as ts
 
 
 def _dates(s: pd.Series) -> pd.Series:
@@ -162,9 +162,13 @@ def gdd_score(bins_key: pd.Series, ref: pd.Series) -> float:
 def emergence_doy(obs: pd.DataFrame, cutoff: date, cfg: dict, index: str = "ndvi") -> float:
     """Green-up date: first crossing of base + frac x amplitude on the smoothed as-of dekad curve.
 
-    base = minimum of the smoothed curve before its maximum; the crossing is searched after that
-    minimum (bare soil after tillage), with linear interpolation between dekads. NaN if the
-    amplitude is < min_amplitude or fewer than min_obs_dekads_before_peak observed dekads.
+    base = minimum of the smoothed curve before its maximum; the date is the LAST upward crossing
+    between that minimum and the maximum (main-season green-up, not an earlier cover crop), with
+    linear interpolation between dekads. The maximum is
+    searched only from `peak_from_mmdd` (maize mid-season start) so that a green cover crop in
+    spring is not taken for the maize peak (correction after the curve check, before any yield
+    comparison, DECISIONS 2026-10-16). NaN if the amplitude is < min_amplitude or fewer than
+    min_obs_dekads_before_peak observed dekads.
     """
     e = cfg["emerge"]
     if obs is None or obs.empty:
@@ -175,7 +179,10 @@ def emergence_doy(obs: pd.DataFrame, cutoff: date, cfg: dict, index: str = "ndvi
     if k < 2:
         return np.nan
     sm = ts.smooth(v[: k + 1])
-    ipk = int(np.nanargmax(sm))
+    p0 = stress.last_complete_dekad(e["peak_from_mmdd"]) + 1        # first dekad starting on/after that date
+    if k < p0:
+        return np.nan
+    ipk = p0 + int(np.nanargmax(sm[p0:]))
     if comp.is_observed[:ipk].sum() < e["min_obs_dekads_before_peak"]:
         return np.nan
     imin = int(np.nanargmin(sm[: ipk + 1]))
@@ -183,8 +190,8 @@ def emergence_doy(obs: pd.DataFrame, cutoff: date, cfg: dict, index: str = "ndvi
     if not amp >= e["min_amplitude"]:
         return np.nan
     thr = base + e["amplitude_frac"] * amp
-    for d in range(imin + 1, ipk + 1):
-        if sm[d] >= thr:
+    for d in range(ipk, imin, -1):                       # last upward crossing before the maximum
+        if sm[d] >= thr > sm[d - 1]:
             frac = (d - 1) + (thr - sm[d - 1]) / (sm[d] - sm[d - 1])
             start = pd.Timestamp(f"{cutoff.year}-04-01").dayofyear
             return float(start + 10 * frac + 5)          # dekad midpoint

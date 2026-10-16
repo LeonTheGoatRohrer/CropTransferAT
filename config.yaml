@@ -240,6 +240,7 @@ emerge:                            # M4 green-up date from the S2 NDVI dekad cur
   amplitude_frac: 0.2
   min_amplitude: 0.2
   min_obs_dekads_before_peak: 2
+  peak_from_mmdd: "06-01"          # = crops.maize.mid_start_mmdd; correction after the curve check (DECISIONS)
 feinjust:                          # decision rule (Plan section 3) and H3 criteria (confirmed F0.1)
   cutoff: "09-01"
   basis: S2
