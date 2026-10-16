@@ -10,4 +10,15 @@ Projekt für den Bundeswettbewerb Künstliche Intelligenz (BWKI) Österreich.
 
 ## Status
 
-Plan v0.0.5 (Österreich nur als Test; neue Quellen One Acre Fund, YieldSAT, SSURGO). Offene Anfragen: [ANFRAGEN.md](ANFRAGEN.md). Aktuell: Phase 0 (Setup & Datenzugang); danach Phase 1 (alle Ertragsdaten aufbereiten).
+Phasen 0–3 abgeschlossen (v0.4.0), Phase 4 „stark genug“ **nicht bestanden** (kein Freeze, kein Österreich-Test), Phase 5 bis zum EU-Freeze (`freeze-cybench-1`). Offene Entscheidungen: [reports/NACHTLAUF.md](reports/NACHTLAUF.md). Offene Anfragen: [ANFRAGEN.md](ANFRAGEN.md).
+
+## Website (lokal, privat)
+
+Die Website zeigt Ziel, Vorgehen, Quellen, alle Ergebnisse Version für Version, einen interaktiven Modellvergleich, einzelne Felder und das Projektlog. Sie läuft nur lokal und liest keine österreichischen Daten.
+
+```
+.venv\Scripts\python.exe app\precompute.py          # einmal nach jedem neuen Lauf
+.venv\Scripts\streamlit.exe run app\streamlit_app.py
+```
+
+Dann im Browser http://localhost:8501 öffnen. Inhalte der Seite „Ergebnisse“ stehen in [app/versions.yaml](app/versions.yaml) (ein Eintrag je Version: was geändert wurde, Zahlen, Befunde, Grenzen, Abbildungen); `tests/test_app.py` prüft, dass jede dort genannte Abbildung und jeder Pfad existiert.

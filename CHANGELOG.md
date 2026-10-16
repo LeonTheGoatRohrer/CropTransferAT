@@ -4,6 +4,11 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 ### Added
+- **Website (Phase 9, vorgezogen):** `app/streamlit_app.py` als mehrseitige Streamlit-Site (Ziel · Vorgehen & Quellen · Ergebnisse · Vergleich · Felder ansehen · Eigenes Modell · Projektlog), Seiten unter `app/ui/`, Versionsregister `app/versions.yaml` (je Version: was geändert wurde, Kennzahlen in einfacher Sprache, Befunde, Grenzen, Abbildungen, Pfade), Glossar „Was heißt das?“, Theme `.streamlit/config.toml`.
+- `app/precompute.py` schreibt zusätzlich `benchmarks.csv` (alle Läufe aus `versions.yaml`) und `stages.json` (gewähltes Modell + Kriterien je Stufe) für den interaktiven Vergleich.
+- Seite „Eigenes Modell“: speichert Trainingsaufträge (Kultur, Datensätze, Merkmale) als JSON unter `data/app/train_requests/`; das Training selbst läuft weiterhin über die Module.
+- `gallery.py`: Sentinel-2-Galerien der Trainingsfelder (`reports/figures/overview_s2_gallery_barc.png`, `overview_s2_gallery_kbs.png`).
+- `tests/test_app.py`: Registerprüfung (Abbildungen/Pfade existieren, Status gültig, Reihenfolge) und Render-Test jeder Seite.
 - `oaf_analysis.py`: One Acre Fund als Tabellendatensatz (RY_nb, Leave-One-Country-Out, Ablation, SHAP, Schadens-Odds-Ratios); Datenkritik `phase2_oaf_tabular.md` (⚠️).
 - `notebooks/02_drivers.ipynb`, `notebooks/03_problem_fields.ipynb`; Doku-Entwürfe `reports/doku/`; Nachtlauf-Bericht `reports/NACHTLAUF.md`.
 - `run_phase2_y.py` (Zielgröße absoluter Ertrag Y: Satellit ρ 0,52, Boden/SSURGO ≤ 0,16) und `gdd_axis.py` (Kalender- vs. GDD-Achse: kein robuster Unterschied); `phase4_report.py` mit Robustheitsprüfung (keine von 64 Varianten erfüllt Kriterium 1).
