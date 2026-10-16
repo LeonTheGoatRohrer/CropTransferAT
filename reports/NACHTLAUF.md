@@ -37,6 +37,9 @@ Kein `v0.5.0` (Phase 4 nicht bestanden), kein `v0.6.0` (AT-Zero-Shot fehlt). Off
 | Innerhalb der Felder (BARC) | NDVI 16.7.–15.8. vs. Pixel-Ertrag Median-ρ 0,68 [0,54; 0,72]; Problemzonen PR-AUC 0,66 (Prävalenz 0,28); Zonen wiederkehrend (ρ 0,67) | 41 Feld-Jahre |
 | Gefährdet (Phase 3) | Stress-Score Referenzkurve ρ = 0,43 [0,24; 0,72], PR-AUC 0,71 (Prävalenz 0,33); Modell-Schwelle PR-AUC 0,40 | 89 / 8 |
 | Stressindikator | EVI-K4 gewählt (Median-ρ 0,49 über KBS/BARC) | – |
+| Absoluter Ertrag Y (sekundär) | Satellit (M-S Ridge HLS) ρ = 0,52 [0,22; 0,76], R² 0,32; Boden/SSURGO ρ ≤ 0,16 | 167 / 15 |
+| Kalender- vs. GDD-Achse | kein robuster Unterschied; S2 Ridge LODO GDD 0,41/0,31 vs. Kalender 0,42/−0,19 | 89 / 8 |
+| One Acre Fund (nur Tabelle) | Bewirtschaftung erklärt RY_nb schwach (ρ 0,25–0,30, R² 0,05–0,07); Boden/Schäden nichts; Schadens-OR 1,06–1,63, alle KI mit 1 | 10 204 Felder |
 | CY-Bench EU (Phase 5) | ρ(1.9.) = 0,38 [0,36; 0,40], R² 0,06, Skill vs. YAS = 1 0,07 [0,06; 0,09]; vor 15.7. kein Skill | 8371 Region-Jahre, 16 Länder |
 
 **Robustheit:** Keine der 64 Modellvarianten (Phase 2 + Runden) erfüllt Kriterium 1 (RMSE signifikant besser als B0 und B1). Einzelne nicht gewählte Varianten erreichen zwar ρ ≥ 0,4 (z. B. M-alle-rel Ridge S2 in Runde 1: 0,55), scheitern aber ebenfalls an Kriterium 1. Das Urteil hängt also nicht an der Auswahlregel.
@@ -66,7 +69,8 @@ Vollständig: `reports/results.md`, `reports/phase4_stark_genug.md`, `reports/da
 - Deine Entscheidungen zu Frage 1–3; dann ggf. Phase-5-Zero-Shot-Test AT.
 - ANFRAGEN Nr. 1 (YieldSAT), 3 (Mead), 7 (One Acre Fund Koordinaten) abschicken.
 - Doku-Entwürfe unter `reports/doku/` lesen und in eigenen Worten überarbeiten (BWKI: alles erklären können).
-- Notebooks 02/03 (Deliverables Phase 2/3) aus den vorhandenen Ergebnisdateien bauen.
+- Notebooks 00–03 liegen ausgeführt in `notebooks/`.
+- Aufräumen (optional): Der Worktree `.claude/worktrees/agent-a1ebf9c913a2b80a4` (Branch `phase-5-cybench`, gemergt) kann entfernt werden; die EU-Freeze-Modelle sind nach `results/models/cybench_freeze/` kopiert (Prüfsummen ok).
 
 ## App starten
 
@@ -78,4 +82,4 @@ Danach im Browser http://localhost:8501. Läuft aus `data/app/` (lokal, nicht in
 
 ## Budget
 
-Wochenkontingent („all models“): Start 28 %, Ende siehe unten. 5-Stunden-Fenster nie über 90 %.
+Wochenkontingent („all models“): Start 28 %, Ende 32 % (Grenze 47 % nicht erreicht). 5-Stunden-Fenster maximal 55 %. Netzwerk-/API-Abbrüche zweier Unteragenten wurden aufgefangen (Arbeit fortgesetzt bzw. neu gestartet).

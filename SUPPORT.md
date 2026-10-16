@@ -6,7 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
-| 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) – autonomer Nachtlauf | Phase 1–4 nach PLAN.md: Ertrags-Datensatz, GEE-Extraktion, Merkmale, Modellfamilie, Kontrolltests, Datenkritik; Notebook 01 und Phase-5-Regionalmodell durch KI-Unteragenten (Claude Sonnet); private Fortschrittsseite (Claude-Artifact) |
+| 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) – autonomer Nachtlauf | Phase 1–4 nach PLAN.md: Ertrags-Datensatz, GEE-Extraktion, Merkmale, Modellfamilie, Kontrolltests, Datenkritik; Notebooks 01–03, Streamlit-App, Innerhalb-Feld-Analyse, One-Acre-Fund-Tabellenanalyse, Phase-5-Regionalmodell und Doku-Entwürfe durch KI-Unteragenten (Claude Sonnet); private Fortschrittsseite (Claude-Artifact) |
 | 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Phase 0: Download und Sichtung One Acre Fund (`one_acre_fund.py`), SSURGO-Abfrage über Soil Data Access (`soil_ssurgo.py`), Suche, Download und Abschreiben der Versuchsberichte Hatzendorf/LK OÖ durch KI-Unteragenten (`at_trials.py`, nur Sammeln); Tests, Datenkritik-Nachtrag |
 | 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Recherche weiterer Ertrags- und Bodenquellen (One Acre Fund, YieldSAT, SSURGO, Versuchsberichte Hatzendorf/LK OÖ, Bodenklimazahl), Einbau in PLAN.md, Entwürfe der Anfragen in ANFRAGEN.md |
 | 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Umbau von PLAN.md/AGENTS.md nach Vorgabe des Projektinhabers (erst US-Modelle + Faktoren + Problemfelder, Einfrieren, Österreich nur als Test) |
