@@ -25,6 +25,7 @@ from croptransfer.crops import get_crop
 RADIUS_M = 30.0          # D4
 CHUNK = 12               # fields per GEE request (keeps results < getInfo limit, bounds compact)
 S2_FIRST_YEAR, HLS_FIRST_YEAR = 2017, 2013
+WITH_S2 = False          # DECISIONS 2026-10-16: HLS-only main basis (S2 optional, quota)
 
 
 def point_key(df: pd.DataFrame) -> pd.Series:
@@ -57,6 +58,9 @@ def window(crop: str, year: int) -> tuple[str, str]:
 
 
 def sensors_for(year: int) -> list[str]:
+    """HLS only (30 m circle ~ one HLS pixel; consistent 2013-2024). S2 jobs are optional via --with-s2."""
+    if not WITH_S2:
+        return ["HLS"] if year >= HLS_FIRST_YEAR else []
     return (["HLS"] if year >= HLS_FIRST_YEAR else []) + (["S2"] if year >= S2_FIRST_YEAR else [])
 
 

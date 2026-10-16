@@ -4,6 +4,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 ### Added (Branch `phase-mk-mehrkultur`; D1–D12 am 2026-10-16 bestätigt)
+- W3.2–W3.4 und Etappe 4: `extract_multi.py`, `weather_multi.py`, `features_multi.py`, `curve_check.py`, `experiments_multi.py`; G2 ✓ (formal), **G3 ✗** (`reports/phase4_mehrkultur.md`): kein Signal über den Mittelwert hinaus; G2F-Mais (104 S2-Zellen-Jahre) über figshare.
 - W3.1: `config.yaml` Block `crops:` (Mais, Winterweizen, Sommergerste, Erbse, Winterraps, Soja), `crops.py`, `features.py` kulturabhängig (Standard Mais, per Regressionstest `tests/test_crops.py` unverändert).
 - `fetch_open_sets.py`: Download mit Manifest und sicherem Entpacken (INVITE, BRIWECS, Erbsen FR, Nordic Gerste; NVT optional).
 - `groundtruth_multi.py`: Schema `gt_site_years` (Stufen S1–S4, RY, RY_nb, 0,1°-Zelle); `review_multi.py`: Zahlen zur Datenkritik.

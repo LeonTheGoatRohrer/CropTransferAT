@@ -17,6 +17,42 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: mehrkultur-etappe4
+    date: 2026-10-16
+    phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 3–4)"
+    title: "Training auf Mais, Weizen und Erbsen: kein Signal über den Mittelwert hinaus"
+    status: nicht_bestanden
+    changed: "Wetter- und Satellitenmerkmale für Mais, Winterweizen und Erbse berechnet und Modelle auf allen drei Kulturen gemeinsam und einzeln getestet; das Kriterium „stark genug“ wurde verfehlt."
+    plain: >
+      Das Modell sollte aus mehreren Kulturen lernen, welche Jahre schlechter sind als üblich, und das auf Mais übertragen.
+      Mit den 210 verfügbaren Wetterzellen-Jahren konnte keines der Modelle besser vorhersagen als der einfache
+      Durchschnitt, und das Wissen aus Weizen und Erbse half bei Mais nicht. Deshalb geht dieser Ansatz nicht weiter nach Österreich.
+    metrics:
+      - label: "Kultur-Transfer auf Mais (Spearman)"
+        value: "0,01"
+        ci: "[−0,26; 0,32]"
+        n: "85"
+        plain: "0 heißt kein Zusammenhang; das Intervall enthält 0, ein Transfer ist also nicht nachweisbar."
+      - label: "Mais, Fehler gegenüber dem Durchschnitt (RMSE)"
+        value: "+0,002"
+        ci: "[0,000; 0,006]"
+        n: "85"
+        plain: "Ein Wert über 0 heißt, das Modell ist nicht besser als der Durchschnitt."
+    found:
+      - "Alle Modelle liegen beim Fehler praktisch gleichauf mit dem Durchschnitt; mehr Zeilen (Stufen S3/S4) helfen nicht."
+      - "Das gepoolte Spearman-ρ ist wegen des Trainingsmittel-Effekts auch für den Durchschnitt negativ und damit als Kriterium kaum erreichbar; das Kriterium wird trotzdem nicht geändert."
+      - "Die Regel für Gate G2 (Satellitenkurve passt) ist formal bestanden, die Zusammenhänge sind aber mit |ρ| ≤ 0,08 sehr schwach."
+    limits:
+      - "Nur Versuchsparzellen-Mittel mit wechselnden Sorten, keine Felder ab 1 ha; nur eine Maisquelle; ein 30-m-Kreis liefert wenige Satellitenpixel."
+      - "Es gab nur eine erlaubte Modellrunde; eine weitere braucht eine neue Entscheidung. Österreich wurde nicht berührt."
+    links:
+      - label: "Bericht Etappe 4"
+        path: reports/phase4_mehrkultur.md
+      - label: "Kurvenprüfung (G2)"
+        path: reports/data_review/w33_kurvenpruefung.md
+      - label: "Kriterien"
+        path: results/2026-10-16_mehrkultur_h030/criteria.json
+
   - id: mehrkultur-w31
     date: 2026-10-16
     phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 3 – W3.1)"

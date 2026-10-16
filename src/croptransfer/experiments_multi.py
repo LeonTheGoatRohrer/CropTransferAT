@@ -209,6 +209,53 @@ def criteria(met: pd.DataFrame, main: str, transfer: dict, shuffle: list[dict]) 
             "main_model": main, "all_passed": bool(c1 and c2 and c3 and c4)}
 
 
+def run_controls(h: int, n_boot: int, cfg) -> dict:
+    """E4b / E5: wheat->maize transfer, coordinate ablation, leave-one-dataset-out, adversarial validation,
+    runs with S3 / S4 rows added (weather only). Every number is a diagnostic, none is used to pick a model."""
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import roc_auc_score
+
+    res: dict = {}
+    d = prepare(h, True, cfg)
+    ww = run_transfer(d, "maize", True, train_crops=["winter_wheat"])
+    rho, lo, hi = ev.spearman_ci(ww["pred_M-Pool-ohne-Mais"], ww.RY, ww.cluster, n_boot, SEED)
+    res["transfer_wheat_to_maize"] = dict(n=len(ww), rho=rho, rho_lo=lo, rho_hi=hi)
+    # coordinate ablation: add lat/lon (standardised) to the pooled model; large gain = location proxy
+    d2 = d.copy()
+    d2["lat_f"], d2["lon_f"] = d2.lat, d2.lon
+    base = run_cv(d2, ["B0", "M-Pool"], True)
+    coords = run_cv(d2, ["B0", "M-Pool"], True, feats=WEATHER + ["lat_f", "lon_f"])
+    res["coordinate_ablation"] = dict(
+        rho_without=ev.spearman_ci(base["pred_M-Pool"], base.RY, base.cluster, n_boot, SEED),
+        rho_with=ev.spearman_ci(coords["pred_M-Pool"], coords.RY, coords.cluster, n_boot, SEED))
+    # leave-one-dataset-out (train on all other datasets of ALL crops, test on one dataset)
+    lodo = {}
+    for ds in sorted(d.dataset.unique()):
+        te = d[d.dataset == ds]
+        tr = d[d.dataset != ds]
+        if len(te) < 20 or tr.crop.nunique() < 1:
+            continue
+        p = predict("M-Pool-ohne-Mais", tr, te, WEATHER, True, scale_ref=te)
+        lodo[ds] = dict(n=len(te), rho=ev._spearman(p, te.RY.to_numpy()))
+    res["leave_one_dataset_out"] = lodo
+    # adversarial validation: can weather features tell maize from wheat rows (crop shift diagnostic)
+    X = (d[WEATHER] - d[WEATHER].mean()) / d[WEATHER].std(ddof=0)
+    y = (d.crop == "maize").astype(int)
+    if y.nunique() == 2:
+        gk = list(GroupKFold(5).split(X, y, d.cluster))
+        pr = np.zeros(len(d))
+        for a, b in gk:
+            pr[b] = LogisticRegression(max_iter=500).fit(X.iloc[a], y.iloc[a]).predict_proba(X.iloc[b])[:, 1]
+        res["adversarial_auc_maize_vs_rest"] = float(roc_auc_score(y, pr))
+    # more rows: S3 and S4 added, weather only
+    for label, tiers in (("with_S3", ("S2", "S3")), ("with_S3_S4", ("S2", "S3", "S4"))):
+        dw = prepare(h, False, cfg, tiers=tiers)
+        o = run_cv(dw, ["B0", "B1", "M-Kultur", "M-Pool"], False)
+        mt = metrics(o, ["B0", "B1", "M-Kultur", "M-Pool"], n_boot)
+        res[label] = mt[(mt.crop == "ALL")][["model", "n", "rho", "rho_lo", "rho_hi", "d_rmse_B0", "d_rmse_B0_lo", "d_rmse_B0_hi"]].to_dict("records")
+    return res
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--h", type=int, default=30)
@@ -239,6 +286,9 @@ def main() -> None:
     transfer = dict(n=len(tr), rho=rho, rho_lo=lo, rho_hi=hi)
     shuffle = label_shuffle(d, True, main_model, args.boot)
     crit = criteria(met, main_model, transfer, shuffle)
+    ctrl = run_controls(args.h, args.boot, cfg)
+    (out / "controls.json").write_text(json.dumps(ctrl, indent=2, default=float), encoding="utf-8")
+    print(json.dumps(ctrl, indent=2, default=float))
     (out / "criteria.json").write_text(json.dumps(crit, indent=2, default=float), encoding="utf-8")
     print(json.dumps(crit, indent=2, default=float))
     print(allmet.round(3).to_string())
