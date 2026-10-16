@@ -26,11 +26,12 @@ Ein **großer Schritt** = eine Phase aus `PLAN.md` oder eine nummerierte Aufgabe
 5. Ausführen    → Pipeline/Experiment laufen lassen, Ergebnisse unter results/ ablegen (siehe §6)
 6. DATENKRITIK  → Prüfliste §3 vollständig durchgehen und Ergebnis in reports/data_review/ dokumentieren
 7. Dokumentieren→ CHANGELOG.md, ggf. DECISIONS.md, SUPPORT.md aktualisieren
+                  UND Website-Eintrag in app/versions.yaml (siehe §7.1) – auch bei negativem Ergebnis
 8. Versionieren → Commit(s) + Push (siehe §4); bei Phasenabschluss Merge + Tag
 9. Berichten    → dem Projektinhaber: was wurde gemacht, Ergebnis, Datenkritik-Befunde, offene Punkte
 ```
 
-Schritt 6 wird **nie** übersprungen, auch nicht unter Zeitdruck. Wenn die Datenkritik ein ernstes Problem findet → **stoppen, berichten, Lösung vorschlagen**, nicht stillschweigend weiterarbeiten.
+Schritt 6 wird **nie** übersprungen, auch nicht unter Zeitdruck. Schritt 7 ist erst fertig, wenn der Website-Eintrag (§7.1) steht – auch wenn das Ergebnis „funktioniert nicht“ lautet. Wenn die Datenkritik ein ernstes Problem findet → **stoppen, berichten, Lösung vorschlagen**, nicht stillschweigend weiterarbeiten.
 
 ---
 
@@ -166,6 +167,25 @@ Korrekturen innerhalb einer Phase nach dem Tag: Patch-Version (`v0.3.1`). Da Pha
 | `ANFRAGEN.md` | Anfragen, die der Projektinhaber selbst stellt (Status aktuell halten) |
 | `reports/data_review/` | Datenkritik-Berichte (§3) |
 | `reports/results.md` | Ergebnisübersicht |
+| `app/versions.yaml` | Protokoll für die Website (§7.1): ein Eintrag je großem Schritt |
+
+### 7.1 Website-Protokoll (`app/versions.yaml`) – Pflicht ab 2026-10-16
+
+Die Website (`streamlit run app/streamlit_app.py`) ist das lesbare Protokoll des Projekts für den Projektinhaber und die BWKI-Jury. **Jeder große Schritt (§2) bekommt einen Eintrag in `app/versions.yaml`**, bevor der Schritt als erledigt gemeldet wird. Das gilt ausdrücklich auch für:
+
+- neue oder geänderte Modelle, neue Datensätze, neue Kulturen, neue Merkmale;
+- **negative Ergebnisse**: ein Ansatz funktioniert nicht, ein Kriterium wird verfehlt, eine Prüfung schlägt fehl (z. B. Landsat-Harmonisierung, Phase 4). Ein gescheiterter Ansatz ist ein Fortschritt, weil er eine Richtung ausschließt;
+- Freezes, Freigaben und Tests in Österreich (nach dem Freeze);
+- Entscheidungen des Projektinhabers, die den Weg ändern (Verweis auf `DECISIONS.md`).
+
+Regeln für den Eintrag:
+1. **Neueste zuerst**; `id` = Git-Tag oder Kurzname, `date` = Abschlussdatum, `status` aus {abgeschlossen, eingeschraenkt, nicht_bestanden, eingefroren, zwischenstand}.
+2. `changed` = **ein Satz, was geändert wurde** (steht groß auf der Karte). `plain` = 2–4 Sätze in einfacher Sprache, so dass auch Fachfremde verstehen, was gemacht wurde und was herauskam.
+3. Jede Kennzahl mit `label`, `value`, wo vorhanden `ci` (95-%-KI) und `n`, und immer `plain` (was die Zahl bedeutet). Nur Zahlen, die auch in `reports/results.md` bzw. in `results/` stehen.
+4. `found` (Befunde) und `limits` (Grenzen) ehrlich ausfüllen – Grenzen nie weglassen.
+5. `figures` nur aus `reports/figures/` (aus Code erzeugt), `links` nur auf existierende Pfade. `tests/test_app.py` prüft das.
+6. Läuft ein neuer Modell-Lauf mit `metrics.csv` + Kriterien-Datei, zusätzlich unter `benchmark_runs` eintragen und `python app/precompute.py` ausführen, damit er auf der Seite „Vergleich“ erscheint.
+7. Danach `pytest tests/test_app.py` – die Website muss rendern.
 
 ---
 
