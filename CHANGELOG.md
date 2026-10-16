@@ -4,6 +4,17 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+## [0.4.0] – 2026-10-16 – Phase 3: Problemfelder erkennen (F2)
+### Added
+- `stress.py` (Referenzkurve „gesunder Mais“, As-of-Stress-Score, vorab festgelegte Ursachen-Regeln), `phase3.py` (Gefährdet-Klassifikation a/b, PR-AUC, Recall bei 20 % FPR, Indikatorwahl, Fallstudien), `phase4_report.py`; Tests `test_stress.py`, `test_rounds.py`.
+- Datenkritik `phase3_problem_fields.md`; `reports/phase4_stark_genug.md`.
+
+### Found
+- Stressindikator festgelegt: EVI-Integral (K4), Median-ρ 0,49 über KBS/BARC.
+- Referenzkurven-Stress-Score am 1.9.: ρ = 0,43 [0,24; 0,72], PR-AUC 0,71 bei Prävalenz 0,33; gelernte Modelle kaum besser als Zufall.
+- „Gefährdet“ bei KBS zu 57 % Bio-Parzellen (T4).
+- Phase 4: Phase 2 und alle 3 vorab festgelegten Runden verfehlen „stark genug“ → kein Freeze, kein Österreich-Test.
+
 ## [0.3.0] – 2026-10-16 – Phase 2: Basismodelle (F0, F1)
 ### Added
 - `splits.py` (LOFYO/LOYO/LOFO/LODO), `models/family.py` (Ridge + flaches LightGBM je Merkmalsgruppe), `run_phase2.py` (238 Läufe, verschachtelt), `phase2_extras.py` (Auswahlregel, Kriterien 1–4, LODO, Label-Shuffle, Cross-Conformal, SHAP, Adversarial Validation), `rounds.py` (vorab festgelegte Verbesserungsrunden), `within_field.py` (BARC-Ertragskarten vs. S2-Pixel).
