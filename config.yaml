@@ -89,3 +89,47 @@ validation:
   bootstrap_n: 1000
   ci_level: 0.95
   spatial_block_km: 10
+
+# Phase 5 - CY-Bench regional model (PLAN.md Phase 5). Austria is never part of training or tuning.
+cybench:
+  raw_dir: data/raw/cybench/cybench-data/maize   # relative to the data root (env CROPTRANSFER_DATA_ROOT, default repo root)
+  cache_file: data/interim/cybench_eu_features.parquet
+  # explicit country list WITHOUT AT; EE/FI/IE/LV carry only zero yields and are excluded
+  countries: [BE, BG, CZ, DE, DK, EL, ES, FR, HR, HU, IT, LT, NL, PL, PT, RO, SE, SK]
+  zero_only_countries: [EE, FI, IE, LV]
+  target_years: [2003, 2021]       # soil moisture starts 2003-02; yields end 2020 (DE 2021)
+  variables:                       # daily/composite predictors per source file
+    meteo: [tmax, tmin, prec, cwb]
+    soil_moisture: [rsm, ssm]
+    fpar: [fpar]
+    ndvi: [ndvi]
+  sum_variables: [prec, cwb]       # monthly sum only where physically meaningful
+  static_features: [awc, bulk_density]
+  # physical plausibility bounds; values outside are set to NaN and counted (none expected)
+  valid_ranges: {tmax: [-50, 60], tmin: [-60, 45], prec: [0, 500], cwb: [-100, 500], rsm: [0, 1000], ssm: [0, 100], fpar: [0, 100], ndvi: [-1, 1]}
+  # composites are labelled with their START date; usable only from the END of the composite window
+  availability_lag_days: {fpar: 9, ndvi: 7}
+  trend_window_years: 10           # linear trend baseline: OLS on the (up to) 10 previous years
+  trend_min_years: 5
+  lightgbm:
+    fixed:
+      learning_rate: 0.05
+      subsample: 0.8
+      subsample_freq: 1
+      colsample_bytree: 0.5
+      reg_lambda: 1.0
+      num_threads: 1
+    grid:                          # tuned only by nested leave-one-country-out; max_depth <= 3
+      max_depth: [2, 3]
+      min_child_samples: [50, 200, 600]
+      n_estimators: [50, 100, 200]
+  max_depth_limit: 3
+  n_jobs: 12                       # parallel outer folds
+  shuffle_repeats: 3               # label-shuffle control
+  robust_yas_range: [0.5, 2.0]     # sensitivity: evaluate only region-years with YAS in this range
+  min_region_years_country_metrics: 30
+  min_regions_within_year: 10
+  min_regions_within_country_year: 5
+  freeze:
+    dir: results/models/cybench_freeze
+    protocol: reports/freeze_protocol_cybench.md
