@@ -88,3 +88,84 @@ def test_saxton_rawls_plausible():
     loam = features.saxton_rawls_awc(0.40, 0.20, 2.5)
     sand = features.saxton_rawls_awc(0.90, 0.05, 1.0)
     assert 0.10 < loam < 0.25 and sand < loam
+
+
+# ---------------- Feinjustierung M1-M4 (plan_feinjustierung F1.3) ----------------
+from croptransfer import fj_features as fjf
+from croptransfer.config import load_config
+
+_CFG = load_config()
+
+
+def _s1_raw(year=2020, n_fields=5):
+    rng = np.random.default_rng(1)
+    rows = []
+    for d in pd.date_range(f"{year}-06-01", f"{year}-09-30", freq="6D"):
+        for f in range(n_fields):
+            rows.append({"fy_key": f"F{f}", "date": d.strftime("%Y-%m-%d"), "orbit_pass": "ASCENDING",
+                         "n_pix": 40, "vv_db": -10 + rng.normal(0, 1), "vh_db": -17 + rng.normal(0, 1)})
+    return pd.DataFrame(rows)
+
+
+def _cut(keys, year=2020, mmdd="09-01"):
+    return {k: date.fromisoformat(f"{year}-{mmdd}") for k in keys}
+
+
+def test_s1_features_as_of():
+    raw = _s1_raw()
+    cut = _cut([f"F{i}" for i in range(5)])
+    ds = pd.Series("X", index=list(cut))
+    a = fjf.s1_field_features(fjf.s1_scene_table(raw, _CFG), ds, cut, _CFG)
+    late = raw.copy()
+    late.loc[pd.to_datetime(late.date).dt.date > date(2020, 9, 1), ["vv_db", "vh_db"]] = [-2.0, -3.0]
+    b = fjf.s1_field_features(fjf.s1_scene_table(late, _CFG), ds, cut, _CFG)
+    pd.testing.assert_frame_equal(a, b)
+    assert a.s1_rvi_mean.notna().all()
+
+
+def test_lst_features_as_of():
+    rows = [{"fy_key": f"F{f}", "date": d.strftime("%Y-%m-%d"), "n_clear": 9, "n_total": 10, "lst_k": 300.0 + f}
+            for d in pd.date_range("2020-06-20", "2020-09-20", freq="16D") for f in range(5)]
+    raw = pd.DataFrame(rows)
+    tmax = pd.DataFrame([{"fy_key": f"F{f}", "date": d, "tmax": 25.0}
+                         for d in pd.date_range("2020-06-01", "2020-09-30") for f in range(5)])
+    cut = _cut([f"F{i}" for i in range(5)])
+    ds = pd.Series("X", index=list(cut))
+    a = fjf.lst_field_features(raw, tmax, ds, cut, _CFG)
+    raw2 = raw.copy()
+    raw2.loc[pd.to_datetime(raw2.date).dt.date > date(2020, 9, 1), "lst_k"] = 350.0
+    b = fjf.lst_field_features(raw2, tmax, ds, cut, _CFG)
+    pd.testing.assert_frame_equal(a, b)
+
+
+def test_modis_ratio_excludes_composites_ending_after_cutoff():
+    raw = pd.DataFrame({"fy_key": "F0", "date": ["2020-07-27", "2020-08-28"], "ET": [10.0, 99.0], "PET": [20.0, 1.0]})
+    r = fjf.modis_et_ratio(raw, _cut(["F0"]), _CFG)
+    assert r["F0"] == 0.5       # the composite 28.8.-4.9. ends after 1.9. and is ignored
+
+
+def test_era5_ratio_as_of():
+    d = pd.date_range("2020-06-01", "2020-10-31")
+    ev = pd.DataFrame({"pt": "p", "date": d.strftime("%Y-%m-%d"), "evap_m": -0.002, "pev_m": -0.004})
+    ev2 = ev.copy()
+    ev2.loc[d > "2020-09-01", "evap_m"] = -1.0
+    w = pd.Series({"F0": "p"})
+    assert fjf.era5_et_ratio(ev, w, _cut(["F0"]), _CFG)["F0"] == fjf.era5_et_ratio(ev2, w, _cut(["F0"]), _CFG)["F0"] == 0.5
+
+
+def test_gdd_bins_as_of_and_complete():
+    obs, w = _obs(), features.daily_weather(_weather(), 42.4)
+    cut = date(2020, 8, 1)
+    a = fjf.gdd_bins(obs, w, cut, _CFG)
+    b = fjf.gdd_bins(_tamper_after(obs, cut, "ndvi", 0.99), w, cut, _CFG)
+    pd.testing.assert_series_equal(a, b)
+    cum = w[(w.date >= "2020-04-01") & (w.date <= "2020-08-01")].gdd.sum()
+    assert ((a.index + 1) * _CFG["gdd_score"]["bin_cdd"] <= cum).all()
+    assert (a.index * _CFG["gdd_score"]["bin_cdd"] >= _CFG["gdd_score"]["first_cdd"]).all()
+
+
+def test_emergence_as_of():
+    obs, cut = _obs(), date(2020, 9, 1)
+    a = fjf.emergence_doy(obs, cut, _CFG)
+    b = fjf.emergence_doy(_tamper_after(obs, cut, "ndvi", 0.05), cut, _CFG)
+    assert a == b and np.isfinite(a)
