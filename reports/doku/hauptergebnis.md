@@ -15,6 +15,7 @@ Vom Satelliten aus lässt sich zuverlässig zeigen, **wo innerhalb eines Maisfel
 - **Wie gut?** Innerhalb eines Feldes hängt der Grünindex NDVI zwischen 16.7. und 15.8. mit dem gemessenen Pixel-Ertrag zusammen: Median-ρ **0,68** [0,54; 0,71] über 41 Feld-Jahre und 27 Felder. In allen 41 Feld-Jahren ist der Zusammenhang positiv.
 - **Als Karte:** Markiert man das unterste Viertel der NDVI-Pixel als „auffällig“, liegen 58 % dieser Pixel tatsächlich in einer Problemzone (Ertrag unter 85 % des Feldmittels). Bei zufälliger Auswahl wären es 27 %, also Faktor 2,3. 56 % der Problemzonen werden so gefunden.
 - **Warum robust?** Es braucht kein Training (NDVI selbst ist das Maß). Es hängt nicht an wenigen Wetter-Jahren, und die Zonen wiederholen sich zwischen den Jahren (ρ 0,67, Phase 2.3). Radar dazu verbessert es nicht (−0,01, Feinjustierung).
+- **Update 2026-10-17 (Mehr-Standort-Test, `reports/innerfeld_ergebnis.md`):** Die gleiche Regel zeigt auch in Kayad (Italien, 3 Feld-Jahre, ρ 0,60) und Colorado (6 Teilflächen-Jahre, ρ 0,63) in die gleiche Richtung. Belastbar bleibt nur BARC; die beiden anderen Standorte sind zu klein, ein Gate „überträgt“ ist vorab als nicht prüfbar festgelegt.
 - **Grenzen:** ein Standort (BARC, Maryland), Ertragskarten interpoliert (10-m-Blöcke), 10 m Randpuffer entfernt. Wiederkehrende Zonen können Boden sein, aber auch Fahrgassen oder Ränder.
 
 ## 2. Welche Jahre werden schlecht? (Regionalebene, EU)

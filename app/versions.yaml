@@ -17,6 +17,54 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: if-innerfeld-ergebnis
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, Etappen I3–I5 (Ergebnis)"
+    title: "Feldkarte: gleiche Richtung an drei Standorten, belastbar nur für BARC"
+    status: eingeschraenkt
+    changed: "Die Feldkarte (NDVI-Warnzonen innerhalb eines Feldes) wurde zum ersten Mal an zwei weiteren Standorten (Italien, Colorado) geprüft und mit trainierten Modellen verglichen; alle Regeln standen vorher fest."
+    plain: >
+      An allen drei Orten zeigt ein niedriger Grünwert im Hochsommer meist auch niedrigen Ertrag innerhalb des Feldes: in 49 von 50 Feld-Jahren.
+      Belegt ist das aber nur für BARC (41 Feld-Jahre); Italien (ein Feld, drei Jahre) und Colorado (sechs Teilflächen) sind zu klein für ein Urteil.
+      Ein trainiertes Modell ist auf BARC etwas besser als der rohe Grünwert (Korrelation 0,70 statt 0,67), überträgt aber nicht besser auf andere Orte.
+      Das Fenster muss nicht mehr an den Kalender gebunden sein: ein Fenster um das Maximum der Kurve ist gleich gut.
+    metrics:
+      - label: "BARC: rohe NDVI-Regel (Median-ρ)"
+        value: "0,67"
+        ci: "[0,59; 0,74]"
+        n: "41 Feld-Jahre"
+        plain: "Je höher der Grünwert einer Zelle, desto höher meist ihr Ertrag im selben Feld."
+      - label: "BARC: Modell M1 minus rohe Regel (Differenz im ρ)"
+        value: "+0,04"
+        ci: "[0,02; 0,06]"
+        n: "41 Feld-Jahre"
+        plain: "Training bringt einen kleinen, aber sicher von 0 verschiedenen Gewinn."
+      - label: "Kayad (Italien) und Colorado, rohe Regel"
+        value: "0,60 und 0,63"
+        n: "3 und 6 Feld-Jahre"
+        plain: "Gleiche Richtung wie bei BARC; zu wenige Feld-Jahre für ein Urteil."
+    found:
+      - "Spitzenfenster und Kalenderfenster sind auf BARC gleich gut (Unterschied -0,002); damit sind andere Klimaräume ohne neues Fenster abgedeckt."
+      - "Ein auf Kayad oder Colorado trainiertes Modell ist auf BARC schlechter als der rohe Grünwert (0,58 statt 0,67)."
+      - "Geländemerkmale und reine Position erklären praktisch nichts."
+    limits:
+      - "Gate 'überträgt auf Fremdstandort' ist nach der vorab festgelegten Regel nicht prüfbar, weil kein Fremdstandort mindestens 10 Feld-Jahre hat."
+      - "Der Label-Shuffle-Test ist nach Vorab-Wortlaut nur unter einer von zwei Lesarten bestanden; beide sind offengelegt."
+      - "Kayad hatte variable Düngung und Fahrstreifen, BARC-Zonen können Boden sein; ein Alarm heißt 'auffällige Kurve', nicht 'Stress'."
+    figures:
+      - file: if_perfy_rho.png
+        caption: "Je Feld-Jahr: Rangzusammenhang zwischen Satellitenmerkmal und relativem Ertrag, drei Standorte."
+      - file: if_transfer_matrix.png
+        caption: "Training auf einem Standort, Test auf einem anderen (Median-ρ, nur BARC belastbar)."
+      - file: if_kayad_maps.png
+        caption: "Kayad: gemessene Ertragskarte und NDVI-Warnzonen für drei Jahre."
+    links:
+      - label: "Ergebnisbericht"
+        path: reports/innerfeld_ergebnis.md
+      - label: "Vorab-Festlegungen"
+        path: reports/innerfeld_vorab.md
+      - label: "Datenkritik I4"
+        path: reports/data_review/if_i4_ergebnis.md
   - id: if-i2-merkmale
     date: 2026-10-17
     phase: "Innerhalb-Feld über Standorte, Etappe I2 (Satellitenmerkmale)"

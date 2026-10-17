@@ -320,8 +320,10 @@ def main() -> None:
         pt = pd.Series(fit_predict(s_b, k_df, M1_COLS, shuffle_seed=SEED + r), index=k_df.index)
         shuf_t.append(per_fy_table(k_df, pt, "M1", "shuffle-T").rho.median())
     out["label_shuffle"] = dict(
-        E_BARC_median_rho=dict(mean=float(np.mean(shuf_e)), sd=float(np.std(shuf_e)), max_abs=float(np.max(np.abs(shuf_e)))),
-        T_BARC_to_KAYAD_median_rho=dict(mean=float(np.mean(shuf_t)), sd=float(np.std(shuf_t)), max_abs=float(np.max(np.abs(shuf_t)))),
+        E_BARC_median_rho=dict(mean=float(np.mean(shuf_e)), sd=float(np.std(shuf_e)), max_abs=float(np.max(np.abs(shuf_e))),
+                               frac_positive=float(np.mean(np.array(shuf_e) > 0)), values=[float(v) for v in shuf_e]),
+        T_BARC_to_KAYAD_median_rho=dict(mean=float(np.mean(shuf_t)), sd=float(np.std(shuf_t)), max_abs=float(np.max(np.abs(shuf_t))),
+                                    frac_positive=float(np.mean(np.array(shuf_t) > 0)), values=[float(v) for v in shuf_t]),
         limit_abs=0.10)
 
     # ---- sensitivities (evaluation sets from vorab §1/§6)

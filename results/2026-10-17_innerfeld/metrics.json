@@ -1,0 +1,3332 @@
+{
+  "date": "2026-10-17",
+  "n_cells": 27734,
+  "n_fy": 50,
+  "ridge_alpha": 1.0,
+  "seed": 42,
+  "main": {
+    "untrained": {
+      "BARC": {
+        "B0": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.6744923161256585,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.2586363876716042,
+          "pr_minus_prev_median": 0.3604385682668842,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": 0.06371097535685319,
+          "rho_max": 0.8769568215066486,
+          "rho_ci": [
+            0.5914882914693053,
+            0.7353165387545552
+          ]
+        },
+        "B1": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.6322359399112849,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.2652635314511116,
+          "pr_minus_prev_median": 0.3720157570690227,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": 0.062209534028782716,
+          "rho_max": 0.8820431549509672,
+          "rho_ci": [
+            0.5316104795218596,
+            0.719566041601848
+          ]
+        },
+        "B2": {
+          "n_fy": 8,
+          "n_clusters": 4,
+          "descriptive": true,
+          "rho_median": 0.7076794108434337,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.321099190664408,
+          "pr_minus_prev_median": 0.4612034950673276,
+          "sd_rel_median": 0.28148738304325244,
+          "rho_min": 0.5807534516600242,
+          "rho_max": 0.8471335644427699
+        }
+      },
+      "KAYAD": {
+        "B0": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.6039590716930039,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.5397867357001975,
+          "pr_minus_prev_median": 0.2845391163978702,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.4317871423062887,
+          "rho_max": 0.6210003660838388
+        },
+        "B1": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.5158421452555259,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.0607382392945923,
+          "pr_minus_prev_median": 0.2565533906856268,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.10512821947464442,
+          "rho_max": 0.5927960815330605
+        },
+        "B2": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.24429195787271174,
+          "frac_rho_pos": 1.0,
+          "lift_median": 1.6623376623376622,
+          "pr_minus_prev_median": 0.12227081156800138,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.22576008391793562,
+          "rho_max": 0.2779681714076664
+        }
+      },
+      "COLORADO": {
+        "B0": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.6310935441370225,
+          "frac_rho_pos": 0.8333333333333334,
+          "lift_median": 2.738095238095238,
+          "pr_minus_prev_median": 0.55,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": -0.08241758241758242,
+          "rho_max": 0.8616541353383457
+        },
+        "B1": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.6670948616600791,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.5,
+          "pr_minus_prev_median": 0.5040421965887802,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.37912087912087916,
+          "rho_max": 0.8541353383458646
+        },
+        "B2": {
+          "n_fy": 0,
+          "n_clusters": 0,
+          "descriptive": true
+        }
+      }
+    },
+    "E": {
+      "BARC": {
+        "M1": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.7021002334309188,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.314898065501064,
+          "pr_minus_prev_median": 0.42319367311444667,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": 0.10661046005536134,
+          "rho_max": 0.8730018908752724,
+          "rho_ci": [
+            0.6436088252966767,
+            0.7481014194318478
+          ]
+        },
+        "M2": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.7102160432941804,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.3552344305883235,
+          "pr_minus_prev_median": 0.4288132154696989,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": 0.10500564213164824,
+          "rho_max": 0.8844890719650444,
+          "rho_ci": [
+            0.6361793337364234,
+            0.757789514795878
+          ]
+        },
+        "KRAUM": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.02753534409419352,
+          "frac_rho_pos": 0.5853658536585366,
+          "lift_median": 1.2431839263234612,
+          "pr_minus_prev_median": 0.08129851022109824,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.36215653964404304,
+          "rho_max": 0.6455105711213927,
+          "rho_ci": [
+            -0.03548689145578562,
+            0.2890392266845783
+          ]
+        }
+      },
+      "KAYAD": {
+        "M1": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.5956058628556904,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.1773838000093804,
+          "pr_minus_prev_median": 0.27802730190170777,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.2642561605340859,
+          "rho_max": 0.6160355113876784
+        },
+        "M2": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.5943450478301211,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.1385019464377844,
+          "pr_minus_prev_median": 0.2763284470366509,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.2693519949208341,
+          "rho_max": 0.6250798286128894
+        },
+        "KRAUM": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.26596286958293563,
+          "frac_rho_pos": 1.0,
+          "lift_median": 1.5821622287968444,
+          "pr_minus_prev_median": 0.022724828859127244,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.25589628936784836,
+          "rho_max": 0.39731955336680064
+        }
+      },
+      "COLORADO": {
+        "M1": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.7811029550159985,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.738095238095238,
+          "pr_minus_prev_median": 0.4966725820763087,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.6160361377752683,
+          "rho_max": 0.8932330827067668
+        },
+        "M2": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.7772227772227772,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.5,
+          "pr_minus_prev_median": 0.4643596569062407,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.65330321852061,
+          "rho_max": 0.8520609824957651
+        },
+        "KRAUM": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.15625678669156928,
+          "frac_rho_pos": 0.6666666666666666,
+          "lift_median": 1.0952380952380951,
+          "pr_minus_prev_median": 0.06600364783594598,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": -0.193984962406015,
+          "rho_max": 0.33333333333333326
+        }
+      }
+    },
+    "T": {
+      "KAYAD->BARC": {
+        "M1": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.5746097155489065,
+          "frac_rho_pos": 0.975609756097561,
+          "lift_median": 2.1645346645346644,
+          "pr_minus_prev_median": 0.3584306424803054,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.31159802677825726,
+          "rho_max": 0.8621718393921624,
+          "rho_ci": [
+            0.5049956326975186,
+            0.6379220085359232
+          ]
+        },
+        "M2": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.5678841578203433,
+          "frac_rho_pos": 0.975609756097561,
+          "lift_median": 2.1603766603766603,
+          "pr_minus_prev_median": 0.3595982870006211,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.3289318516781416,
+          "rho_max": 0.8624656813629087,
+          "rho_ci": [
+            0.45348732648325624,
+            0.6293979528676406
+          ]
+        },
+        "KRAUM": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": -0.09549334842662409,
+          "frac_rho_pos": 0.3902439024390244,
+          "lift_median": 0.854940727641877,
+          "pr_minus_prev_median": -0.018244173894860327,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.6196490871633555,
+          "rho_max": 0.5665899446492129,
+          "rho_ci": [
+            -0.29350475399840387,
+            0.03085866373833089
+          ]
+        }
+      },
+      "COLORADO->BARC": {
+        "M1": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.5750681836235735,
+          "frac_rho_pos": 0.975609756097561,
+          "lift_median": 2.197678606284038,
+          "pr_minus_prev_median": 0.36438443543620824,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.25217853441910704,
+          "rho_max": 0.8755913461152625,
+          "rho_ci": [
+            0.501700824604918,
+            0.6369852181067156
+          ]
+        },
+        "M2": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.5365688664054906,
+          "frac_rho_pos": 0.9512195121951219,
+          "lift_median": 2.186442721791559,
+          "pr_minus_prev_median": 0.3231082660595823,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.25493800756251556,
+          "rho_max": 0.8644513933513356,
+          "rho_ci": [
+            0.48439499979321166,
+            0.5954887750161532
+          ]
+        },
+        "KRAUM": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.1321564786779869,
+          "frac_rho_pos": 0.7073170731707317,
+          "lift_median": 1.4273467711923369,
+          "pr_minus_prev_median": 0.11187344611408463,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.38716104299625176,
+          "rho_max": 0.6516220225665942,
+          "rho_ci": [
+            0.03288784960523084,
+            0.27484106000446673
+          ]
+        }
+      },
+      "BARC->KAYAD": {
+        "M1": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.5534621367250314,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.1773838000093804,
+          "pr_minus_prev_median": 0.2706512507314934,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.2194658531737054,
+          "rho_max": 0.5774214617600955
+        },
+        "M2": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.5514603181326587,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.1385019464377844,
+          "pr_minus_prev_median": 0.2599858170520422,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.20406871721232506,
+          "rho_max": 0.5523521359963922
+        },
+        "KRAUM": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": -0.22239203553305326,
+          "frac_rho_pos": 0.3333333333333333,
+          "lift_median": 0.8327169625246549,
+          "pr_minus_prev_median": 0.02770527646691162,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": -0.33642791577245296,
+          "rho_max": 0.0010057642960341318
+        }
+      },
+      "COLORADO->KAYAD": {
+        "M1": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.6063833832880522,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.2162656535809764,
+          "pr_minus_prev_median": 0.28458198723222466,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.2589005014147103,
+          "rho_max": 0.6207143988183628
+        },
+        "M2": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.5705127066246073,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.1385019464377844,
+          "pr_minus_prev_median": 0.2657137893770806,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.24172946167638093,
+          "rho_max": 0.5987835012395766
+        },
+        "KRAUM": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": -0.0760998167388592,
+          "frac_rho_pos": 0.3333333333333333,
+          "lift_median": 1.1664556071478824,
+          "pr_minus_prev_median": 0.04815789517033067,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": -0.2636790080805949,
+          "rho_max": 0.08908838362932388
+        }
+      },
+      "BARC->COLORADO": {
+        "M1": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.6418690005646528,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.738095238095238,
+          "pr_minus_prev_median": 0.5855004209041474,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.2692307692307692,
+          "rho_max": 0.8165413533834586
+        },
+        "M2": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.6109542631281761,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.738095238095238,
+          "pr_minus_prev_median": 0.5813664596273291,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.2967032967032967,
+          "rho_max": 0.8586956521739131
+        },
+        "KRAUM": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.3294205794205794,
+          "frac_rho_pos": 0.8333333333333334,
+          "lift_median": 2.1904761904761902,
+          "pr_minus_prev_median": 0.17575757575757575,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": -0.02089215132693394,
+          "rho_max": 0.4787878787878787
+        }
+      },
+      "KAYAD->COLORADO": {
+        "M1": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.7823451910408432,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.738095238095238,
+          "pr_minus_prev_median": 0.5157202011239277,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.6341050254093734,
+          "rho_max": 0.849624060150376
+        },
+        "M2": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.7932147562582345,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.738095238095238,
+          "pr_minus_prev_median": 0.580005915409642,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.639751552795031,
+          "rho_max": 0.8556390977443609
+        },
+        "KRAUM": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": -0.01821475625823452,
+          "frac_rho_pos": 0.5,
+          "lift_median": 1.6428571428571428,
+          "pr_minus_prev_median": 0.1520833333333333,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": -0.23658949745906271,
+          "rho_max": 0.18012422360248448
+        }
+      }
+    },
+    "L": {
+      "BARC": {
+        "M1": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.568174797214401,
+          "frac_rho_pos": 0.975609756097561,
+          "lift_median": 2.1919673247106877,
+          "pr_minus_prev_median": 0.3621968448653681,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.29541205603484527,
+          "rho_max": 0.8764294684867712,
+          "rho_ci": [
+            0.5004252813379245,
+            0.6391084646270251
+          ]
+        },
+        "M2": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.5524764872099753,
+          "frac_rho_pos": 0.9512195121951219,
+          "lift_median": 2.202550266701037,
+          "pr_minus_prev_median": 0.3315711172178861,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.3086872172890963,
+          "rho_max": 0.8698408110038596,
+          "rho_ci": [
+            0.47573149919791136,
+            0.5826987068228541
+          ]
+        },
+        "KRAUM": {
+          "n_fy": 41,
+          "n_clusters": 27,
+          "descriptive": false,
+          "rho_median": 0.10936448929013984,
+          "frac_rho_pos": 0.6585365853658537,
+          "lift_median": 1.3294337251423078,
+          "pr_minus_prev_median": 0.08266959933707994,
+          "sd_rel_median": 0.26204338036840863,
+          "rho_min": -0.5495068640384801,
+          "rho_max": 0.6061724921000138,
+          "rho_ci": [
+            -0.04252003096215874,
+            0.19902105458641292
+          ]
+        }
+      },
+      "KAYAD": {
+        "M1": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.5665261619881337,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.1773838000093804,
+          "pr_minus_prev_median": 0.2783891454682682,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.23136337162173531,
+          "rho_max": 0.5946067499576057
+        },
+        "M2": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": 0.5608470127517677,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.1773838000093804,
+          "pr_minus_prev_median": 0.2670105185764719,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": 0.21331353737618478,
+          "rho_max": 0.5683468068637575
+        },
+        "KRAUM": {
+          "n_fy": 3,
+          "n_clusters": 1,
+          "descriptive": true,
+          "rho_median": -0.18621800284512266,
+          "frac_rho_pos": 0.3333333333333333,
+          "lift_median": 0.9159886587771203,
+          "pr_minus_prev_median": 0.029508132962309294,
+          "sd_rel_median": 0.13995177211273221,
+          "rho_min": -0.32354133424594106,
+          "rho_max": 0.032096825252410754
+        }
+      },
+      "COLORADO": {
+        "M1": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.6586674195369848,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.738095238095238,
+          "pr_minus_prev_median": 0.5919106773144038,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.2967032967032967,
+          "rho_max": 0.8300751879699247
+        },
+        "M2": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.6058723884810842,
+          "frac_rho_pos": 1.0,
+          "lift_median": 2.738095238095238,
+          "pr_minus_prev_median": 0.6043823326432021,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": 0.2967032967032967,
+          "rho_max": 0.8685770750988143
+        },
+        "KRAUM": {
+          "n_fy": 6,
+          "n_clusters": 6,
+          "descriptive": true,
+          "rho_median": 0.3408065618591934,
+          "frac_rho_pos": 0.8333333333333334,
+          "lift_median": 1.8333333333333333,
+          "pr_minus_prev_median": 0.15194805194805194,
+          "sd_rel_median": 0.16389472291622903,
+          "rho_min": -0.04573687182382835,
+          "rho_max": 0.5164835164835164
+        }
+      }
+    }
+  },
+  "gates": {
+    "K1_B1_minus_B0_BARC": {
+      "n_fy": 41,
+      "delta_median": -0.0018830767357116418,
+      "delta_ci": [
+        -0.01953204534853259,
+        0.0009341517775988128
+      ]
+    },
+    "J3a_M1_minus_B1_BARC": {
+      "n_fy": 41,
+      "delta_median": 0.04589115079391182,
+      "delta_ci": [
+        0.03126327500371168,
+        0.059071680809715144
+      ]
+    },
+    "J3a_M1_minus_B0_BARC": {
+      "n_fy": 41,
+      "delta_median": 0.03744423458832591,
+      "delta_ci": [
+        0.024462285241596438,
+        0.05986331194190464
+      ]
+    },
+    "M2_minus_M1_BARC": {
+      "n_fy": 41,
+      "delta_median": -0.0008927757201788733,
+      "delta_ci": [
+        -0.008603939727152787,
+        0.02761616927307531
+      ]
+    },
+    "M1_minus_KRAUM_BARC": {
+      "n_fy": 41,
+      "delta_median": 0.5540641428383023,
+      "delta_ci": [
+        0.3976561180668774,
+        0.6873603155569052
+      ]
+    }
+  },
+  "b0_old_reproduction": {
+    "n_fy": 41,
+    "rho_median": 0.6759681285104542,
+    "target": 0.676
+  },
+  "label_shuffle": {
+    "E_BARC_median_rho": {
+      "mean": 0.03147219152578827,
+      "sd": 0.20256019715798032,
+      "max_abs": 0.45043630324232015,
+      "frac_positive": 0.65,
+      "values": [
+        0.3447842908871529,
+        -0.05147369300316724,
+        -0.1577225386378191,
+        -0.29219178171290955,
+        0.25430568549491156,
+        0.07278313865630572,
+        0.08827176034643257,
+        0.13359863792674276,
+        0.39920361023302847,
+        -0.45043630324232015,
+        0.07410145405590533,
+        -0.08307578881481936,
+        0.10027985253110956,
+        0.018637089023368962,
+        0.20231031458792825,
+        0.1751901454865024,
+        0.049148810751451964,
+        -0.062117434738179586,
+        -0.22106309065160365,
+        0.03490967133574359
+      ]
+    },
+    "T_BARC_to_KAYAD_median_rho": {
+      "mean": -0.025208066543476258,
+      "sd": 0.2655040460108753,
+      "max_abs": 0.5166387940327036,
+      "frac_positive": 0.5,
+      "values": [
+        0.11018473137003469,
+        -0.255990187803084,
+        -0.15010367220232973,
+        -0.17137924791978518,
+        0.5034515476003267,
+        -0.10677061576075408,
+        0.00035415170256893416,
+        -0.0960019876643195,
+        -0.21253441193409345,
+        -0.5166387940327036,
+        -0.3220103630730668,
+        -0.4172478492903575,
+        -0.2666383292833305,
+        0.2475886323794314,
+        0.19414184976273532,
+        0.0838520819929646,
+        0.23294864190189954,
+        0.3495489099582777,
+        0.014776869348751033,
+        0.2743067120773092
+      ]
+    },
+    "limit_abs": 0.1
+  },
+  "sensitivities": {
+    "interior_ge_20m": {
+      "untrained": {
+        "BARC": {
+          "B0": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.683567033851664,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.5041771094402674,
+            "pr_minus_prev_median": 0.4470756715879509,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.12299961529190488,
+            "rho_max": 0.9459163272861901,
+            "rho_ci": [
+              0.6314658813819454,
+              0.7474628178952494
+            ]
+          },
+          "B1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6911536584523055,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.5923900660742767,
+            "pr_minus_prev_median": 0.4314057251603656,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": 0.1566980836584185,
+            "rho_max": 0.9292923309572123,
+            "rho_ci": [
+              0.5654073946294061,
+              0.7347005994648357
+            ]
+          },
+          "B2": {
+            "n_fy": 8,
+            "n_clusters": 4,
+            "descriptive": true,
+            "rho_median": 0.7496558670036146,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.4065656565656566,
+            "pr_minus_prev_median": 0.4637912540455641,
+            "sd_rel_median": 0.27835771665069114,
+            "rho_min": 0.5257727411140287,
+            "rho_max": 0.8374505055164726
+          }
+        },
+        "KAYAD": {
+          "B0": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5884148942636392,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.711409395973154,
+            "pr_minus_prev_median": 0.28472563075503227,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.39345261912145485,
+            "rho_max": 0.714891950575165
+          },
+          "B1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.46605333745915467,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.7416436290525257,
+            "pr_minus_prev_median": 0.1856292711192239,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.08218593403423925,
+            "rho_max": 0.7075857699264997
+          },
+          "B2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.2823450150333611,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9132906894100925,
+            "pr_minus_prev_median": 0.1970041590114773,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.24686358364438787,
+            "rho_max": 0.2846205630217027
+          }
+        },
+        "COLORADO": {
+          "B0": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6310935441370225,
+            "frac_rho_pos": 0.8333333333333334,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.55,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.08241758241758242,
+            "rho_max": 0.8616541353383457
+          },
+          "B1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6670948616600791,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.5,
+            "pr_minus_prev_median": 0.5040421965887802,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.37912087912087916,
+            "rho_max": 0.8541353383458646
+          },
+          "B2": {
+            "n_fy": 0,
+            "n_clusters": 0,
+            "descriptive": true
+          }
+        }
+      },
+      "E": {
+        "BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.7302935458254135,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.6567460317460316,
+            "pr_minus_prev_median": 0.46146949254033326,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": 0.17812641846871355,
+            "rho_max": 0.894852564544381,
+            "rho_ci": [
+              0.6645062084342445,
+              0.7745624001571856
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.7265837628871591,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.760456885456885,
+            "pr_minus_prev_median": 0.46027651359848804,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": 0.20019911639446616,
+            "rho_max": 0.894069939793651,
+            "rho_ci": [
+              0.7010510155880963,
+              0.7658984456975225
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.11901105473879169,
+            "frac_rho_pos": 0.7073170731707317,
+            "lift_median": 1.292136862771842,
+            "pr_minus_prev_median": 0.093342355237931,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.7193200261966457,
+            "rho_max": 0.6794073926728932,
+            "rho_ci": [
+              0.012131934952287274,
+              0.23163063037120318
+            ]
+          }
+        },
+        "KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5597664020754356,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9738627795928627,
+            "pr_minus_prev_median": 0.20410004781734004,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.23067425882777773,
+            "rho_max": 0.736507458418615
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5620036480610888,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9738627795928627,
+            "pr_minus_prev_median": 0.1983865089479182,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.23493737197898593,
+            "rho_max": 0.7386458359572239
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.2880550702488335,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.857753204322694,
+            "pr_minus_prev_median": 0.033989547243979415,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.26493197159342136,
+            "rho_max": 0.3964171924602596
+          }
+        },
+        "COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7811029550159985,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.4966725820763087,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.6160361377752683,
+            "rho_max": 0.8932330827067668
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7772227772227772,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.5,
+            "pr_minus_prev_median": 0.4643596569062407,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.65330321852061,
+            "rho_max": 0.8520609824957651
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.15625678669156928,
+            "frac_rho_pos": 0.6666666666666666,
+            "lift_median": 1.0952380952380951,
+            "pr_minus_prev_median": 0.06600364783594598,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.193984962406015,
+            "rho_max": 0.33333333333333326
+          }
+        }
+      },
+      "T": {
+        "KAYAD->BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6558573452999527,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.508044407810005,
+            "pr_minus_prev_median": 0.4354795296173355,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.3602736242640953,
+            "rho_max": 0.9047216510948297,
+            "rho_ci": [
+              0.523830183727216,
+              0.7010672898757241
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.659710035648552,
+            "frac_rho_pos": 0.9512195121951219,
+            "lift_median": 2.4412366912366914,
+            "pr_minus_prev_median": 0.4275647683462195,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.36625711859314797,
+            "rho_max": 0.9088587299985579,
+            "rho_ci": [
+              0.4892495679324879,
+              0.702635270957714
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": -0.06622225477986961,
+            "frac_rho_pos": 0.36585365853658536,
+            "lift_median": 0.7520833333333333,
+            "pr_minus_prev_median": -0.014113529597309785,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.6814861312544672,
+            "rho_max": 0.5307029674371645,
+            "rho_ci": [
+              -0.40508255443496816,
+              0.04754645136873692
+            ]
+          }
+        },
+        "COLORADO->BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6345221225003936,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.4670934006491168,
+            "pr_minus_prev_median": 0.43070171490371467,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.31743484887952006,
+            "rho_max": 0.8984330475062543,
+            "rho_ci": [
+              0.5181604288699949,
+              0.7008892594025826
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5807383812008938,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.4785714285714286,
+            "pr_minus_prev_median": 0.42425241099394206,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.29683463265703114,
+            "rho_max": 0.8893211574655371,
+            "rho_ci": [
+              0.4971642367230061,
+              0.6498041197046249
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.056329711856400566,
+            "frac_rho_pos": 0.6097560975609756,
+            "lift_median": 1.2651042392225247,
+            "pr_minus_prev_median": 0.08066872055363375,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.5418668478621648,
+            "rho_max": 0.667032258064516,
+            "rho_ci": [
+              -0.06010030882923782,
+              0.13637714377857893
+            ]
+          }
+        },
+        "BARC->KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5221208266973394,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.857753204322694,
+            "pr_minus_prev_median": 0.22994337064815873,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.21611719870084875,
+            "rho_max": 0.7075798860376038
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5123654412064358,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9738627795928627,
+            "pr_minus_prev_median": 0.21925395503438405,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.20027598487122994,
+            "rho_max": 0.6867762284744151
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.2848576885449647,
+            "frac_rho_pos": 0.0,
+            "lift_median": 0.16107382550335572,
+            "pr_minus_prev_median": -0.01754950106127473,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": -0.45363053943264353,
+            "rho_max": -0.12341462794200114
+          }
+        },
+        "COLORADO->KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5708172221662496,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9158079919577782,
+            "pr_minus_prev_median": 0.19651581586367906,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.219581429263011,
+            "rho_max": 0.7344431128106482
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5380363952834001,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.857753204322694,
+            "pr_minus_prev_median": 0.18982036318181655,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.20322679318778,
+            "rho_max": 0.6939706527550409
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.09492279164143066,
+            "frac_rho_pos": 0.0,
+            "lift_median": 0.638602663985926,
+            "pr_minus_prev_median": 0.0019149832540886064,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": -0.3435786557920785,
+            "rho_max": -0.00585006193634427
+          }
+        },
+        "BARC->COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6100367024280069,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5855004209041474,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2692307692307692,
+            "rho_max": 0.7999999999999999
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6013551665725579,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5766045548654244,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2857142857142857,
+            "rho_max": 0.825098814229249
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.11687225817660599,
+            "frac_rho_pos": 0.6666666666666666,
+            "lift_median": 1.6428571428571428,
+            "pr_minus_prev_median": 0.03825757575757574,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.09022556390977443,
+            "rho_max": 0.5247035573122529
+          }
+        },
+        "KAYAD->COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7934876717485413,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.580005915409642,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.6363636363636365,
+            "rho_max": 0.8646616541353382
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.8010304912478826,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5855004209041474,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.6318464144551101,
+            "rho_max": 0.8616541353383457
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": -0.03546539273083896,
+            "frac_rho_pos": 0.5,
+            "lift_median": 1.3333333333333335,
+            "pr_minus_prev_median": 0.13575303943407707,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.2704686617730096,
+            "rho_max": 0.25691699604743085
+          }
+        }
+      },
+      "L": {
+        "BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6404183550725361,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.408333333333333,
+            "pr_minus_prev_median": 0.43167814699179335,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.3610911920880197,
+            "rho_max": 0.9015209069001606,
+            "rho_ci": [
+              0.5108321712869879,
+              0.6972078997355463
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6178280689669315,
+            "frac_rho_pos": 0.9512195121951219,
+            "lift_median": 2.463265306122449,
+            "pr_minus_prev_median": 0.428331328821273,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.3560679171727113,
+            "rho_max": 0.9008379732960973,
+            "rho_ci": [
+              0.4818241950633608,
+              0.6614813293082353
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": -0.02319671396964295,
+            "frac_rho_pos": 0.4634146341463415,
+            "lift_median": 1.1203527576489534,
+            "pr_minus_prev_median": 0.046250795786478,
+            "sd_rel_median": 0.2434568293209376,
+            "rho_min": -0.6789334750958135,
+            "rho_max": 0.5859322493033898,
+            "rho_ci": [
+              -0.19138160664078932,
+              0.1626043805846835
+            ]
+          }
+        },
+        "KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.536031911434791,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9158079919577782,
+            "pr_minus_prev_median": 0.22953933300169377,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.2205866360535578,
+            "rho_max": 0.7238449008316022
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5237293571096614,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9738627795928627,
+            "pr_minus_prev_median": 0.21447006071371733,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": 0.20406569582803505,
+            "rho_max": 0.7002035108984324
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.3463739856361717,
+            "frac_rho_pos": 0.0,
+            "lift_median": 0.266193853427896,
+            "pr_minus_prev_median": -0.0171933558703131,
+            "sd_rel_median": 0.136552201926813,
+            "rho_min": -0.3914881662711689,
+            "rho_max": -0.05812810259187247
+          }
+        },
+        "COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6359119141727837,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5919106773144038,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2967032967032967,
+            "rho_max": 0.7999999999999999
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6288349331827593,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5919106773144038,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2967032967032967,
+            "rho_max": 0.83399209486166
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.17468401164053338,
+            "frac_rho_pos": 0.6666666666666666,
+            "lift_median": 0.0,
+            "pr_minus_prev_median": 0.04718614718614719,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.10225563909774435,
+            "rho_max": 0.6166007905138341
+          }
+        }
+      }
+    },
+    "kayad_without_2016": {
+      "untrained": {
+        "BARC": {
+          "B0": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6744923161256585,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2586363876716042,
+            "pr_minus_prev_median": 0.3604385682668842,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.06371097535685319,
+            "rho_max": 0.8769568215066486,
+            "rho_ci": [
+              0.5914882914693053,
+              0.7353165387545552
+            ]
+          },
+          "B1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6322359399112849,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2652635314511116,
+            "pr_minus_prev_median": 0.3720157570690227,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.062209534028782716,
+            "rho_max": 0.8820431549509672,
+            "rho_ci": [
+              0.5316104795218596,
+              0.719566041601848
+            ]
+          },
+          "B2": {
+            "n_fy": 8,
+            "n_clusters": 4,
+            "descriptive": true,
+            "rho_median": 0.7076794108434337,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.321099190664408,
+            "pr_minus_prev_median": 0.4612034950673276,
+            "sd_rel_median": 0.28148738304325244,
+            "rho_min": 0.5807534516600242,
+            "rho_max": 0.8471335644427699
+          }
+        },
+        "KAYAD": {
+          "B0": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5263937541950637,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.446801993627055,
+            "pr_minus_prev_median": 0.2967899627368551,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.4317871423062887,
+            "rho_max": 0.6210003660838388
+          },
+          "B1": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.31048518236508515,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.6528180992391328,
+            "pr_minus_prev_median": 0.19869828304877873,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.10512821947464442,
+            "rho_max": 0.5158421452555259
+          },
+          "B2": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.251864127662801,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.7272809136367488,
+            "pr_minus_prev_median": 0.1571309315104631,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.22576008391793562,
+            "rho_max": 0.2779681714076664
+          }
+        },
+        "COLORADO": {
+          "B0": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6310935441370225,
+            "frac_rho_pos": 0.8333333333333334,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.55,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.08241758241758242,
+            "rho_max": 0.8616541353383457
+          },
+          "B1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6670948616600791,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.5,
+            "pr_minus_prev_median": 0.5040421965887802,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.37912087912087916,
+            "rho_max": 0.8541353383458646
+          },
+          "B2": {
+            "n_fy": 0,
+            "n_clusters": 0,
+            "descriptive": true
+          }
+        }
+      },
+      "E": {
+        "BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.7021002334309188,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.314898065501064,
+            "pr_minus_prev_median": 0.42319367311444667,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.10661046005536134,
+            "rho_max": 0.8730018908752724,
+            "rho_ci": [
+              0.6436088252966767,
+              0.7481014194318478
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.7102160432941804,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.3552344305883235,
+            "pr_minus_prev_median": 0.4288132154696989,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.10500564213164824,
+            "rho_max": 0.8844890719650444,
+            "rho_ci": [
+              0.6361793337364234,
+              0.757789514795878
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.02753534409419352,
+            "frac_rho_pos": 0.5853658536585366,
+            "lift_median": 1.2431839263234612,
+            "pr_minus_prev_median": 0.08129851022109824,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.36215653964404304,
+            "rho_max": 0.6455105711213927,
+            "rho_ci": [
+              -0.03548689145578562,
+              0.2890392266845783
+            ]
+          }
+        },
+        "KAYAD": {
+          "M1": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.40807255164408807,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.8122144594435494,
+            "pr_minus_prev_median": 0.22493760018175674,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.23736038262775386,
+            "rho_max": 0.5787847206604223
+          },
+          "M2": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.4050124677172455,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.7640957607188081,
+            "pr_minus_prev_median": 0.22165940512341215,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.23774303948354078,
+            "rho_max": 0.5722818959509501
+          },
+          "KRAUM": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.1948901483011096,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.3276902431156787,
+            "pr_minus_prev_median": 0.066285491299579,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.1920734723871989,
+            "rho_max": 0.19770682421502028
+          }
+        },
+        "COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7811029550159985,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.4966725820763087,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.6160361377752683,
+            "rho_max": 0.8932330827067668
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7772227772227772,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.5,
+            "pr_minus_prev_median": 0.4643596569062407,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.65330321852061,
+            "rho_max": 0.8520609824957651
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.15625678669156928,
+            "frac_rho_pos": 0.6666666666666666,
+            "lift_median": 1.0952380952380951,
+            "pr_minus_prev_median": 0.06600364783594598,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.193984962406015,
+            "rho_max": 0.33333333333333326
+          }
+        }
+      },
+      "T": {
+        "KAYAD->BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5840584607586381,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.2209929078014183,
+            "pr_minus_prev_median": 0.35930097311465753,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.27380634580313795,
+            "rho_max": 0.8603606096374724,
+            "rho_ci": [
+              0.5302106230638235,
+              0.6457854274554644
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5768782176807102,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.205226269694267,
+            "pr_minus_prev_median": 0.3553227730041349,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.2911232803914905,
+            "rho_max": 0.8556153005293914,
+            "rho_ci": [
+              0.48742957480333277,
+              0.6342867259123778
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": -0.0978478639906749,
+            "frac_rho_pos": 0.36585365853658536,
+            "lift_median": 0.9099922142428942,
+            "pr_minus_prev_median": -0.022725081857025695,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.5669836827674448,
+            "rho_max": 0.595139121322025,
+            "rho_ci": [
+              -0.2827594117239483,
+              0.0674197629576262
+            ]
+          }
+        },
+        "COLORADO->BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5750681836235735,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.197678606284038,
+            "pr_minus_prev_median": 0.36438443543620824,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.25217853441910704,
+            "rho_max": 0.8755913461152625,
+            "rho_ci": [
+              0.501700824604918,
+              0.6369852181067156
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5365688664054906,
+            "frac_rho_pos": 0.9512195121951219,
+            "lift_median": 2.186442721791559,
+            "pr_minus_prev_median": 0.3231082660595823,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.25493800756251556,
+            "rho_max": 0.8644513933513356,
+            "rho_ci": [
+              0.48439499979321166,
+              0.5954887750161532
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.1321564786779869,
+            "frac_rho_pos": 0.7073170731707317,
+            "lift_median": 1.4273467711923369,
+            "pr_minus_prev_median": 0.11187344611408463,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.38716104299625176,
+            "rho_max": 0.6516220225665942,
+            "rho_ci": [
+              0.03288784960523084,
+              0.27484106000446673
+            ]
+          }
+        },
+        "BARC->KAYAD": {
+          "M1": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.3864639949493684,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.7519572061271391,
+            "pr_minus_prev_median": 0.22155061054873787,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.2194658531737054,
+            "rho_max": 0.5534621367250314
+          },
+          "M2": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.37776451767249186,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.7529244426066475,
+            "pr_minus_prev_median": 0.21458591064342541,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.20406871721232506,
+            "rho_max": 0.5514603181326587
+          },
+          "KRAUM": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.16771107573820943,
+            "frac_rho_pos": 0.5,
+            "lift_median": 0.689137565818504,
+            "pr_minus_prev_median": 0.011012647746385613,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": -0.33642791577245296,
+            "rho_max": 0.0010057642960341318
+          }
+        },
+        "COLORADO->KAYAD": {
+          "M1": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.43264194235138126,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9958879288313045,
+            "pr_minus_prev_median": 0.24350897595927123,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.2589005014147103,
+            "rho_max": 0.6063833832880522
+          },
+          "M2": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.4061210841504941,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9570060752597085,
+            "pr_minus_prev_median": 0.231734714766545,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.24172946167638093,
+            "rho_max": 0.5705127066246073
+          },
+          "KRAUM": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.08729531222563552,
+            "frac_rho_pos": 0.5,
+            "lift_median": 0.7771053545943494,
+            "pr_minus_prev_median": 0.03393954040304353,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": -0.2636790080805949,
+            "rho_max": 0.08908838362932388
+          }
+        },
+        "BARC->COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6418690005646528,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5855004209041474,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2692307692307692,
+            "rho_max": 0.8165413533834586
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6109542631281761,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5813664596273291,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2967032967032967,
+            "rho_max": 0.8586956521739131
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.3294205794205794,
+            "frac_rho_pos": 0.8333333333333334,
+            "lift_median": 2.1904761904761902,
+            "pr_minus_prev_median": 0.17575757575757575,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.02089215132693394,
+            "rho_max": 0.4787878787878787
+          }
+        },
+        "KAYAD->COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7654432523997742,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.580005915409642,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.6341050254093734,
+            "rho_max": 0.8390977443609022
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7982872200263504,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.580005915409642,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.6465273856578204,
+            "rho_max": 0.8421052631578947
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.03351139706974947,
+            "frac_rho_pos": 0.6666666666666666,
+            "lift_median": 1.6428571428571428,
+            "pr_minus_prev_median": 0.0867224880382775,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.29192546583850937,
+            "rho_max": 0.2399774138904574
+          }
+        }
+      },
+      "L": {
+        "BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5658011370872258,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.1742682096664394,
+            "pr_minus_prev_median": 0.3577571979220968,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.2968362327284741,
+            "rho_max": 0.8688381892129817,
+            "rho_ci": [
+              0.4912430159195563,
+              0.6541294426141826
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5638222318000286,
+            "frac_rho_pos": 0.9512195121951219,
+            "lift_median": 2.189500621310966,
+            "pr_minus_prev_median": 0.3260999474543287,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.31061553490208227,
+            "rho_max": 0.8618636742529746,
+            "rho_ci": [
+              0.4732618652958535,
+              0.58274508932873
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.11690664319527619,
+            "frac_rho_pos": 0.6829268292682927,
+            "lift_median": 1.4009941013694536,
+            "pr_minus_prev_median": 0.09163221316911055,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.4951048233208809,
+            "rho_max": 0.6257374282387783,
+            "rho_ci": [
+              -0.007724325067237942,
+              0.24702913034008672
+            ]
+          }
+        },
+        "KAYAD": {
+          "M1": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.3989447668049345,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.7723653693924453,
+            "pr_minus_prev_median": 0.22865374588472365,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.23136337162173531,
+            "rho_max": 0.5665261619881337
+          },
+          "M2": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.38708027506397624,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.7927735326577514,
+            "pr_minus_prev_median": 0.22153284977130133,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": 0.21331353737618478,
+            "rho_max": 0.5608470127517677
+          },
+          "KRAUM": {
+            "n_fy": 2,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.14572225449676515,
+            "frac_rho_pos": 0.5,
+            "lift_median": 0.668729402553198,
+            "pr_minus_prev_median": 0.011764903314691294,
+            "sd_rel_median": 0.14271902867339195,
+            "rho_min": -0.32354133424594106,
+            "rho_max": 0.032096825252410754
+          }
+        },
+        "COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6403162055335969,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5919106773144038,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2692307692307692,
+            "rho_max": 0.8165413533834586
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6047430830039526,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.6043823326432021,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2967032967032967,
+            "rho_max": 0.8685770750988143
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.34865424430641817,
+            "frac_rho_pos": 0.8333333333333334,
+            "lift_median": 1.8333333333333333,
+            "pr_minus_prev_median": 0.15194805194805194,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.02428006775832863,
+            "rho_max": 0.5054945054945055
+          }
+        }
+      }
+    },
+    "kayad_without_capped_cells": {
+      "untrained": {
+        "BARC": {
+          "B0": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6744923161256585,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2586363876716042,
+            "pr_minus_prev_median": 0.3604385682668842,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.06371097535685319,
+            "rho_max": 0.8769568215066486,
+            "rho_ci": [
+              0.5914882914693053,
+              0.7353165387545552
+            ]
+          },
+          "B1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6322359399112849,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2652635314511116,
+            "pr_minus_prev_median": 0.3720157570690227,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.062209534028782716,
+            "rho_max": 0.8820431549509672,
+            "rho_ci": [
+              0.5316104795218596,
+              0.719566041601848
+            ]
+          },
+          "B2": {
+            "n_fy": 8,
+            "n_clusters": 4,
+            "descriptive": true,
+            "rho_median": 0.7076794108434337,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.321099190664408,
+            "pr_minus_prev_median": 0.4612034950673276,
+            "sd_rel_median": 0.28148738304325244,
+            "rho_min": 0.5807534516600242,
+            "rho_max": 0.8471335644427699
+          }
+        },
+        "KAYAD": {
+          "B0": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.6071633390241281,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.543552176063304,
+            "pr_minus_prev_median": 0.2804144430082438,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.4240578310600648,
+            "rho_max": 0.6183238416737917
+          },
+          "B1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5071759933329207,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.9805825242718447,
+            "pr_minus_prev_median": 0.25285692611411914,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.10772687523329234,
+            "rho_max": 0.5939316526748555
+          },
+          "B2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.24415644538961825,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.6651647672055834,
+            "pr_minus_prev_median": 0.12220465670225783,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.22052585266838695,
+            "rho_max": 0.2652715635663318
+          }
+        },
+        "COLORADO": {
+          "B0": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6310935441370225,
+            "frac_rho_pos": 0.8333333333333334,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.55,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.08241758241758242,
+            "rho_max": 0.8616541353383457
+          },
+          "B1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6670948616600791,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.5,
+            "pr_minus_prev_median": 0.5040421965887802,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.37912087912087916,
+            "rho_max": 0.8541353383458646
+          },
+          "B2": {
+            "n_fy": 0,
+            "n_clusters": 0,
+            "descriptive": true
+          }
+        }
+      },
+      "E": {
+        "BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.7021002334309188,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.314898065501064,
+            "pr_minus_prev_median": 0.42319367311444667,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.10661046005536134,
+            "rho_max": 0.8730018908752724,
+            "rho_ci": [
+              0.6436088252966767,
+              0.7481014194318478
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.7102160432941804,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.3552344305883235,
+            "pr_minus_prev_median": 0.4288132154696989,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.10500564213164824,
+            "rho_max": 0.8844890719650444,
+            "rho_ci": [
+              0.6361793337364234,
+              0.757789514795878
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.02753534409419352,
+            "frac_rho_pos": 0.5853658536585366,
+            "lift_median": 1.2431839263234612,
+            "pr_minus_prev_median": 0.08129851022109824,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.36215653964404304,
+            "rho_max": 0.6455105711213927,
+            "rho_ci": [
+              -0.03548689145578562,
+              0.2890392266845783
+            ]
+          }
+        },
+        "KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5936121457838678,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1359223300970873,
+            "pr_minus_prev_median": 0.2738763937241314,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.2641349416026597,
+            "rho_max": 0.6173749894464571
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5923942954324938,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1359223300970873,
+            "pr_minus_prev_median": 0.2724515232010787,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.2695418900299645,
+            "rho_max": 0.6256265744527185
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.25902811635207973,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.5845079129574677,
+            "pr_minus_prev_median": 0.02111160721140462,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.2458442733547161,
+            "rho_max": 0.39900934689025463
+          }
+        },
+        "COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7811029550159985,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.4966725820763087,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.6160361377752683,
+            "rho_max": 0.8932330827067668
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7772227772227772,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.5,
+            "pr_minus_prev_median": 0.4643596569062407,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.65330321852061,
+            "rho_max": 0.8520609824957651
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.15625678669156928,
+            "frac_rho_pos": 0.6666666666666666,
+            "lift_median": 1.0952380952380951,
+            "pr_minus_prev_median": 0.06600364783594598,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.193984962406015,
+            "rho_max": 0.33333333333333326
+          }
+        }
+      },
+      "T": {
+        "KAYAD->BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5774513966928554,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.1651861634912484,
+            "pr_minus_prev_median": 0.3583249068188626,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.31247338461332685,
+            "rho_max": 0.8602356246955614,
+            "rho_ci": [
+              0.5021208892321561,
+              0.6415842733540797
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5667241220609801,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.146024505938299,
+            "pr_minus_prev_median": 0.35923876742765104,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.329640462607876,
+            "rho_max": 0.8585563244492997,
+            "rho_ci": [
+              0.4521438824734879,
+              0.6266484125048459
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": -0.0921257570514604,
+            "frac_rho_pos": 0.3902439024390244,
+            "lift_median": 0.8615184039034613,
+            "pr_minus_prev_median": -0.01849513267185933,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.6190818580336147,
+            "rho_max": 0.5725976426958524,
+            "rho_ci": [
+              -0.28297935471041197,
+              0.0318418937149406
+            ]
+          }
+        },
+        "COLORADO->BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5750681836235735,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.197678606284038,
+            "pr_minus_prev_median": 0.36438443543620824,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.25217853441910704,
+            "rho_max": 0.8755913461152625,
+            "rho_ci": [
+              0.501700824604918,
+              0.6369852181067156
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5365688664054906,
+            "frac_rho_pos": 0.9512195121951219,
+            "lift_median": 2.186442721791559,
+            "pr_minus_prev_median": 0.3231082660595823,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.25493800756251556,
+            "rho_max": 0.8644513933513356,
+            "rho_ci": [
+              0.48439499979321166,
+              0.5954887750161532
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.1321564786779869,
+            "frac_rho_pos": 0.7073170731707317,
+            "lift_median": 1.4273467711923369,
+            "pr_minus_prev_median": 0.11187344611408463,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.38716104299625176,
+            "rho_max": 0.6516220225665942,
+            "rho_ci": [
+              0.03288784960523084,
+              0.27484106000446673
+            ]
+          }
+        },
+        "BARC->KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5426129789904159,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.0970873786407767,
+            "pr_minus_prev_median": 0.26655694930325324,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.22036862853213218,
+            "rho_max": 0.5787520235526532
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5415682201348855,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.0970873786407767,
+            "pr_minus_prev_median": 0.2559069569411463,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.2055798724705673,
+            "rho_max": 0.554259061411785
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.22040147671781862,
+            "frac_rho_pos": 0.3333333333333333,
+            "lift_median": 0.8339515331355094,
+            "pr_minus_prev_median": 0.02788340044539178,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": -0.3210313295655761,
+            "rho_max": 0.0025653706205963013
+          }
+        },
+        "COLORADO->KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.6017868823983901,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2135922330097086,
+            "pr_minus_prev_median": 0.2805131391624174,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.25705988021145204,
+            "rho_max": 0.6224554034355023
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5647342506040566,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.058252427184466,
+            "pr_minus_prev_median": 0.2618308226252304,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.24174324881235235,
+            "rho_max": 0.5997092530688178
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.07489595497118506,
+            "frac_rho_pos": 0.3333333333333333,
+            "lift_median": 1.1650485436893203,
+            "pr_minus_prev_median": 0.048161006060670225,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": -0.2537086336715022,
+            "rho_max": 0.0916906933722933
+          }
+        },
+        "BARC->COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6418690005646528,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5855004209041474,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2692307692307692,
+            "rho_max": 0.8165413533834586
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6109542631281761,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5813664596273291,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2967032967032967,
+            "rho_max": 0.8586956521739131
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.3294205794205794,
+            "frac_rho_pos": 0.8333333333333334,
+            "lift_median": 2.1904761904761902,
+            "pr_minus_prev_median": 0.17575757575757575,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.02089215132693394,
+            "rho_max": 0.4787878787878787
+          }
+        },
+        "KAYAD->COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7823451910408432,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5212147066184332,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.6363636363636365,
+            "rho_max": 0.8646616541353382
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.7932147562582345,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.580005915409642,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.639751552795031,
+            "rho_max": 0.8601503759398496
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.0322463768115942,
+            "frac_rho_pos": 0.5,
+            "lift_median": 1.6428571428571428,
+            "pr_minus_prev_median": 0.15555555555555556,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.2433653303218521,
+            "rho_max": 0.17108977978543197
+          }
+        }
+      },
+      "L": {
+        "BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5676691729323309,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.1919673247106877,
+            "pr_minus_prev_median": 0.3619051943837167,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.2955570294472172,
+            "rho_max": 0.8758778094840848,
+            "rho_ci": [
+              0.49940429865206154,
+              0.6405045048097814
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5533267313186759,
+            "frac_rho_pos": 0.9512195121951219,
+            "lift_median": 2.202550266701037,
+            "pr_minus_prev_median": 0.3311303382033226,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.30909959244830376,
+            "rho_max": 0.8691967024594167,
+            "rho_ci": [
+              0.47502402633095586,
+              0.5836927082738691
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.11615220178560239,
+            "frac_rho_pos": 0.6585365853658537,
+            "lift_median": 1.3184017350684016,
+            "pr_minus_prev_median": 0.08376760404182572,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.546769792285247,
+            "rho_max": 0.6006216978618145,
+            "rho_ci": [
+              -0.041702590563282134,
+              0.206828744210811
+            ]
+          }
+        },
+        "KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5569349262461895,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.0970873786407767,
+            "pr_minus_prev_median": 0.274281560239495,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.23189745400766093,
+            "rho_max": 0.5960207849168979
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5517554100817695,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.0970873786407767,
+            "pr_minus_prev_median": 0.26295756334598097,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": 0.21455044427390332,
+            "rho_max": 0.5701043727312327
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.18429356333402563,
+            "frac_rho_pos": 0.3333333333333333,
+            "lift_median": 0.9173466864490605,
+            "pr_minus_prev_median": 0.029604990421524063,
+            "sd_rel_median": 0.13892189341185301,
+            "rho_min": -0.3094241932255521,
+            "rho_max": 0.03358020225390348
+          }
+        },
+        "COLORADO": {
+          "M1": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6586674195369848,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.5919106773144038,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2967032967032967,
+            "rho_max": 0.8300751879699247
+          },
+          "M2": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.6058723884810842,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.738095238095238,
+            "pr_minus_prev_median": 0.6043823326432021,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": 0.2967032967032967,
+            "rho_max": 0.8685770750988143
+          },
+          "KRAUM": {
+            "n_fy": 6,
+            "n_clusters": 6,
+            "descriptive": true,
+            "rho_median": 0.33779904306220093,
+            "frac_rho_pos": 0.8333333333333334,
+            "lift_median": 1.8333333333333333,
+            "pr_minus_prev_median": 0.15194805194805194,
+            "sd_rel_median": 0.16389472291622903,
+            "rho_min": -0.04573687182382835,
+            "rho_max": 0.5059288537549407
+          }
+        }
+      }
+    },
+    "colorado_all_10": {
+      "untrained": {
+        "BARC": {
+          "B0": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6744923161256585,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2586363876716042,
+            "pr_minus_prev_median": 0.3604385682668842,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.06371097535685319,
+            "rho_max": 0.8769568215066486,
+            "rho_ci": [
+              0.5914882914693053,
+              0.7353165387545552
+            ]
+          },
+          "B1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.6322359399112849,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2652635314511116,
+            "pr_minus_prev_median": 0.3720157570690227,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.062209534028782716,
+            "rho_max": 0.8820431549509672,
+            "rho_ci": [
+              0.5316104795218596,
+              0.719566041601848
+            ]
+          },
+          "B2": {
+            "n_fy": 8,
+            "n_clusters": 4,
+            "descriptive": true,
+            "rho_median": 0.7076794108434337,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.321099190664408,
+            "pr_minus_prev_median": 0.4612034950673276,
+            "sd_rel_median": 0.28148738304325244,
+            "rho_min": 0.5807534516600242,
+            "rho_max": 0.8471335644427699
+          }
+        },
+        "KAYAD": {
+          "B0": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.6039590716930039,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.5397867357001975,
+            "pr_minus_prev_median": 0.2845391163978702,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.4317871423062887,
+            "rho_max": 0.6210003660838388
+          },
+          "B1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5158421452555259,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.0607382392945923,
+            "pr_minus_prev_median": 0.2565533906856268,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.10512821947464442,
+            "rho_max": 0.5927960815330605
+          },
+          "B2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.24429195787271174,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.6623376623376622,
+            "pr_minus_prev_median": 0.12227081156800138,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.22576008391793562,
+            "rho_max": 0.2779681714076664
+          }
+        },
+        "COLORADO": {
+          "B0": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.5482778091473745,
+            "frac_rho_pos": 0.8,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.4220238095238096,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": -0.08241758241758242,
+            "rho_max": 0.8616541353383457,
+            "rho_ci": [
+              0.231963127917389,
+              0.7404162007718846
+            ]
+          },
+          "B1": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.5684923771880295,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1904761904761902,
+            "pr_minus_prev_median": 0.4839285714285715,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.0015060258043015338,
+            "rho_max": 0.8554609490989901,
+            "rho_ci": [
+              0.43998778998779,
+              0.7560700169395823
+            ]
+          },
+          "B2": {
+            "n_fy": 0,
+            "n_clusters": 0,
+            "descriptive": true
+          }
+        }
+      },
+      "E": {
+        "BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.7021002334309188,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.314898065501064,
+            "pr_minus_prev_median": 0.42319367311444667,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.10661046005536134,
+            "rho_max": 0.8730018908752724,
+            "rho_ci": [
+              0.6436088252966767,
+              0.7481014194318478
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.7102160432941804,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.3552344305883235,
+            "pr_minus_prev_median": 0.4288132154696989,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": 0.10500564213164824,
+            "rho_max": 0.8844890719650444,
+            "rho_ci": [
+              0.6361793337364234,
+              0.757789514795878
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.02753534409419352,
+            "frac_rho_pos": 0.5853658536585366,
+            "lift_median": 1.2431839263234612,
+            "pr_minus_prev_median": 0.08129851022109824,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.36215653964404304,
+            "rho_max": 0.6455105711213927,
+            "rho_ci": [
+              -0.03548689145578562,
+              0.2890392266845783
+            ]
+          }
+        },
+        "KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5956058628556904,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1773838000093804,
+            "pr_minus_prev_median": 0.27802730190170777,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.2642561605340859,
+            "rho_max": 0.6160355113876784
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5943450478301211,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1385019464377844,
+            "pr_minus_prev_median": 0.2763284470366509,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.2693519949208341,
+            "rho_max": 0.6250798286128894
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.26596286958293563,
+            "frac_rho_pos": 1.0,
+            "lift_median": 1.5821622287968444,
+            "pr_minus_prev_median": 0.022724828859127244,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.25589628936784836,
+            "rho_max": 0.39731955336680064
+          }
+        },
+        "COLORADO": {
+          "M1": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.7081121776773951,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.25,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.12951821916993192,
+            "rho_max": 0.8526315789473683,
+            "rho_ci": [
+              0.5084859584859585,
+              0.8063241106719368
+            ]
+          },
+          "M2": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.6909788421297374,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.371067821067821,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.04969885154195062,
+            "rho_max": 0.873160141149314,
+            "rho_ci": [
+              0.5958363858363858,
+              0.8165255034820253
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.011686082795922613,
+            "frac_rho_pos": 0.6,
+            "lift_median": 1.1428571428571428,
+            "pr_minus_prev_median": 0.04583333333333334,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": -0.22303783173348396,
+            "rho_max": 0.1533929977694741,
+            "rho_ci": [
+              -0.1902879728966686,
+              0.049450549450549455
+            ]
+          }
+        }
+      },
+      "T": {
+        "KAYAD->BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5746097155489065,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.1645346645346644,
+            "pr_minus_prev_median": 0.3584306424803054,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.31159802677825726,
+            "rho_max": 0.8621718393921624,
+            "rho_ci": [
+              0.5049956326975186,
+              0.6379220085359232
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5678841578203433,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.1603766603766603,
+            "pr_minus_prev_median": 0.3595982870006211,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.3289318516781416,
+            "rho_max": 0.8624656813629087,
+            "rho_ci": [
+              0.45348732648325624,
+              0.6293979528676406
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": -0.09549334842662409,
+            "frac_rho_pos": 0.3902439024390244,
+            "lift_median": 0.854940727641877,
+            "pr_minus_prev_median": -0.018244173894860327,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.6196490871633555,
+            "rho_max": 0.5665899446492129,
+            "rho_ci": [
+              -0.29350475399840387,
+              0.03085866373833089
+            ]
+          }
+        },
+        "COLORADO->BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.59628612029823,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.1935124207209955,
+            "pr_minus_prev_median": 0.36639717219706947,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.2331890784814615,
+            "rho_max": 0.8775193313945178,
+            "rho_ci": [
+              0.52299632407591,
+              0.6292313378916031
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5042561971845755,
+            "frac_rho_pos": 0.9512195121951219,
+            "lift_median": 2.177418339627642,
+            "pr_minus_prev_median": 0.3270244504265846,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.2718751849524786,
+            "rho_max": 0.8235114375925637,
+            "rho_ci": [
+              0.4405864146525798,
+              0.5772822921645745
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.06333696271684534,
+            "frac_rho_pos": 0.6097560975609756,
+            "lift_median": 1.0863096947076274,
+            "pr_minus_prev_median": 0.060942792187193506,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.6232774491044801,
+            "rho_max": 0.7232908640791119,
+            "rho_ci": [
+              -0.03194920022445591,
+              0.21063702240050047
+            ]
+          }
+        },
+        "BARC->KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5534621367250314,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1773838000093804,
+            "pr_minus_prev_median": 0.2706512507314934,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.2194658531737054,
+            "rho_max": 0.5774214617600955
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5514603181326587,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1385019464377844,
+            "pr_minus_prev_median": 0.2599858170520422,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.20406871721232506,
+            "rho_max": 0.5523521359963922
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.22239203553305326,
+            "frac_rho_pos": 0.3333333333333333,
+            "lift_median": 0.8327169625246549,
+            "pr_minus_prev_median": 0.02770527646691162,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": -0.33642791577245296,
+            "rho_max": 0.0010057642960341318
+          }
+        },
+        "COLORADO->KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.6033615513436927,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1385019464377844,
+            "pr_minus_prev_median": 0.2840264904776218,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.2769400782351683,
+            "rho_max": 0.6203227002602373
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5507484972222082,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.021856385722996,
+            "pr_minus_prev_median": 0.2651428741709618,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.2712887025731256,
+            "rho_max": 0.5771941190195794
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.23180724465727767,
+            "frac_rho_pos": 0.6666666666666666,
+            "lift_median": 1.3739829881656804,
+            "pr_minus_prev_median": 0.045305290801554224,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": -0.08342897974794147,
+            "rho_max": 0.2749796719260708
+          }
+        },
+        "BARC->COLORADO": {
+          "M1": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.595763443717408,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.3833333333333333,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.10993988371401199,
+            "rho_max": 0.8171126996566215,
+            "rho_ci": [
+              0.3388034188034188,
+              0.8147939017504237
+            ]
+          },
+          "M2": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.549331550802139,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.34404761904761905,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.0662651353892675,
+            "rho_max": 0.8586956521739131,
+            "rho_ci": [
+              0.29709401709401706,
+              0.7699248120300751
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.07677196944931497,
+            "frac_rho_pos": 0.5,
+            "lift_median": 0.8666666666666667,
+            "pr_minus_prev_median": -0.0048285048285048315,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": -0.5264705882352941,
+            "rho_max": 0.4787878787878787,
+            "rho_ci": [
+              -0.2625380154131383,
+              0.41208791208791207
+            ]
+          }
+        },
+        "KAYAD->COLORADO": {
+          "M1": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.7122985709942232,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.3,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.21084361260221474,
+            "rho_max": 0.849624060150376,
+            "rho_ci": [
+              0.5676470588235295,
+              0.8085628963963876
+            ]
+          },
+          "M2": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.7369043999478782,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.3,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.20783156099361166,
+            "rho_max": 0.8556390977443609,
+            "rho_ci": [
+              0.5763858363858364,
+              0.81585057549403
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.054910002278423325,
+            "frac_rho_pos": 0.6,
+            "lift_median": 1.6428571428571428,
+            "pr_minus_prev_median": 0.17187055368873538,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": -0.23658949745906271,
+            "rho_max": 0.7168172780381192,
+            "rho_ci": [
+              -0.042490118577075096,
+              0.18360128735288267
+            ]
+          }
+        }
+      },
+      "L": {
+        "BARC": {
+          "M1": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5870096169486267,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.208377581120944,
+            "pr_minus_prev_median": 0.36589636918700946,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.27118644497748756,
+            "rho_max": 0.8775358247399954,
+            "rho_ci": [
+              0.5251686754019024,
+              0.6388383432143898
+            ]
+          },
+          "M2": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.5190937331546716,
+            "frac_rho_pos": 0.975609756097561,
+            "lift_median": 2.100614445261063,
+            "pr_minus_prev_median": 0.3253653674091421,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.29831105921738477,
+            "rho_max": 0.8306465456532742,
+            "rho_ci": [
+              0.4568094783468797,
+              0.5846994021071573
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 41,
+            "n_clusters": 27,
+            "descriptive": false,
+            "rho_median": 0.007759685258745173,
+            "frac_rho_pos": 0.5365853658536586,
+            "lift_median": 0.9090606418730037,
+            "pr_minus_prev_median": 0.005758177199574652,
+            "sd_rel_median": 0.26204338036840863,
+            "rho_min": -0.7165147651250113,
+            "rho_max": 0.6752093340432265,
+            "rho_ci": [
+              -0.22420811513941347,
+              0.13111883086822243
+            ]
+          }
+        },
+        "KAYAD": {
+          "M1": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5673705949551665,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.1773838000093804,
+            "pr_minus_prev_median": 0.27942902128602914,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.23480430805312633,
+            "rho_max": 0.5940538368983146
+          },
+          "M2": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": 0.5644238417394742,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2162656535809764,
+            "pr_minus_prev_median": 0.2725004599449906,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": 0.22155180828008453,
+            "rho_max": 0.5743741463515145
+          },
+          "KRAUM": {
+            "n_fy": 3,
+            "n_clusters": 1,
+            "descriptive": true,
+            "rho_median": -0.13911763696229726,
+            "frac_rho_pos": 0.3333333333333333,
+            "lift_median": 1.049810046433094,
+            "pr_minus_prev_median": 0.03495889991284175,
+            "sd_rel_median": 0.13995177211273221,
+            "rho_min": -0.3091973439880352,
+            "rho_max": 0.07142753708943433
+          }
+        },
+        "COLORADO": {
+          "M1": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.5972340319527021,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.3833333333333333,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.14759052882155033,
+            "rho_max": 0.8300751879699247,
+            "rho_ci": [
+              0.33401709401709395,
+              0.8171126996566215
+            ]
+          },
+          "M2": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.5508021390374331,
+            "frac_rho_pos": 1.0,
+            "lift_median": 2.2857142857142856,
+            "pr_minus_prev_median": 0.34404761904761905,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": 0.0662651353892675,
+            "rho_max": 0.8685770750988143,
+            "rho_ci": [
+              0.30666666666666664,
+              0.7744360902255639
+            ]
+          },
+          "KRAUM": {
+            "n_fy": 10,
+            "n_clusters": 10,
+            "descriptive": false,
+            "rho_median": 0.07227555053642012,
+            "frac_rho_pos": 0.5,
+            "lift_median": 0.8666666666666667,
+            "pr_minus_prev_median": -0.00995670995670997,
+            "sd_rel_median": 0.2843834199965216,
+            "rho_min": -0.4647058823529412,
+            "rho_max": 0.5164835164835164,
+            "rho_ci": [
+              -0.21721844857964864,
+              0.4545454545454545
+            ]
+          }
+        }
+      }
+    }
+  },
+  "site_sd_rel_median": {
+    "BARC": 0.2620433803684082,
+    "COLORADO": 0.16389472291622903,
+    "KAYAD": 0.13995177211273213
+  },
+  "b2_coverage": {
+    "BARC": {
+      "n_fy_with_b2": 8
+    },
+    "KAYAD": {
+      "n_fy_with_b2": 3
+    },
+    "COLORADO": {
+      "n_fy_with_b2": 0
+    }
+  }
+}
