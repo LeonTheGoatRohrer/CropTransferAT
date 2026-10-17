@@ -17,6 +17,36 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: if-i2-merkmale
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, Etappe I2 (Satellitenmerkmale)"
+    title: "Satellitenkurven für alle Standorte gleich aufgebaut"
+    status: eingeschraenkt
+    changed: "Für BARC, Kayad und Colorado wurden Satellitenkurven (Sentinel-2, 10-Tage-Abschnitte) je Messpunkt abgerufen und zu vergleichbaren Merkmalen verarbeitet; Ertragswerte wurden dabei nicht verwendet."
+    plain: >
+      Damit die Feldkarte an mehreren Orten gleich geprüft werden kann, haben alle Standorte jetzt dieselben Satellitenmerkmale.
+      Statt eines festen Kalenderfensters wird das Fenster um das Maximum der Grünkurve gelegt; das passt auch für andere Klimaräume.
+      Ein Fehler beim Abruf (verlorenes Datum) fiel vor jeder Auswertung auf und wurde behoben. Der Vergleich mit dem
+      mitgelieferten Satellitenbild von Kayad zeigt, dass die Messpunkte räumlich richtig getroffen werden.
+    metrics:
+      - label: "Räumliche Ausrichtung (Kayad, Spearman-ρ)"
+        value: "0,91–0,97"
+        n: "3 Jahre, 829–1532 Zellen"
+        plain: "Unser Grünwert stimmt mit dem Satellitenbild der Datenautoren Zelle für Zelle überein; es gibt keinen Versatz."
+      - label: "Feld-Jahre mit Merkmalen"
+        value: "54 von 54"
+        plain: "Alle Standorte (BARC 41, Colorado 10, Kayad 3) haben ein gültiges Grünmaximum und genügend Zellen."
+    found:
+      - "Im Hochsommer gibt es nur 1–3 klare Satellitenaufnahmen je 10 Tage; deshalb werden je drei Abschnitte zusammengefasst."
+      - "In Kayad liegt der Grünwert nahe der Sättigung (0,9–0,95); Unterschiede zwischen Zellen sind klein."
+    limits:
+      - "Kayad 2016 hat nur 9 gültige Abschnitte, weil in Europa damals kaum aufbereitete Satellitendaten vorlagen."
+      - "Kayad und Colorado sind praktisch eben; die Gelände-Kontrolle ist dort nicht aussagekräftig."
+    links:
+      - label: "Datenkritik I2"
+        path: reports/data_review/if_i2_merkmale.md
+      - label: "Plan Innerhalb-Feld"
+        path: reports/plan_innerfeld.md
   - id: if-i1-daten
     date: 2026-10-17
     phase: "Innerhalb-Feld über Standorte, Etappe I1 (Daten)"
