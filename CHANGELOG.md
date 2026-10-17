@@ -3,6 +3,8 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/) – ein Minor-Release pro Phase (siehe AGENTS.md §4.4).
 
 ## [Unreleased]
+### Added (Branch `phase-if-innerfeld`; Plan am 2026-10-17 bestätigt)
+- Innerhalb-Feld über Standorte, Etappe I1: `src/croptransfer/innerfeld.py` (gemeinsame Tabelle `gt_pixels` für BARC, Kayad, Colorado), `tests/test_innerfeld.py`, Datenkritik `reports/data_review/if_i1_daten.md`; Kayad (Zenodo 14216165) geladen, **Gate J1 ⚠️**, CH-TAN unter Embargo bis 2028-01-01.
 ### Added (Branch `phase-fj-feinjustierung`; F0.1 am 2026-10-16 bestätigt)
 - Feinjustierung (`reports/plan_feinjustierung.md`): Vorab-Festlegungen `reports/feinjust_vorab.md`; `extract_s1.py` (Sentinel-1 je Feld-Szene und BARC-Pixel), `extract_lst.py` (Landsat-8/9-Oberflächentemperatur, MOD16A2GF, ERA5-Land-Verdunstung), `fj_features.py` (M1–M4 as-of), `feinjust.py` (Gate H1, Ablation, Kontrollen), `fj_review.py`, `fj_product.py` (Rangliste mit konformer Alarmschwelle, Erklärung nach Monaten, Feldkarte); Tests `test_feinjust.py`, Leakage-Tests je Merkmal.
 - Hauptergebnis der Abgabe festgelegt (DECISIONS 2026-10-16): `reports/doku/hauptergebnis.md` neu geordnet (Karte innerhalb des Feldes, EU-Regionalmodell, Stress-Score mit T4-Grenze), Kapitel 4.6 und 6 ergänzt, Startseite, README und Eintrag `abgabe-hauptergebnis`; `ANFRAGEN.md` Nr. 8–12 versandfertig (Hagel, YIPEEO, DWFI, SwissYield, Booßen).

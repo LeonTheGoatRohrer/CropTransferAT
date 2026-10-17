@@ -17,6 +17,37 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: if-i1-daten
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, Etappe I1 (Daten)"
+    title: "Zweiter Standort für die Feldkarte: Kayad (Italien) geladen, CH-TAN gesperrt"
+    status: eingeschraenkt
+    changed: "Für den Test der Feldkarte an weiteren Orten wurden Kayad (Italien) und Colorado in eine gemeinsame Tabelle mit BARC gebracht und auf Fehler geprüft."
+    plain: >
+      Bisher stammt die Karte innerhalb des Feldes nur von einem Standort (BARC in Maryland). Jetzt gibt es mit Kayad ein
+      Maisfeld in Italien mit sehr feinen Mähdrescher-Messpunkten. Der zweite geplante Datensatz (CH-TAN, Schweiz) steht bis 2028
+      unter Sperrfrist und kann nicht verwendet werden. Es wurde noch nichts trainiert oder getestet; dieser Schritt prüft nur die Daten.
+    metrics:
+      - label: "BARC-Referenz neu berechnet (Median-ρ)"
+        value: "0,676"
+        n: "41 Feld-Jahre"
+        plain: "Gleicher Wert wie bisher; die neue gemeinsame Tabelle verändert nichts am Bekannten."
+      - label: "Kayad: Feld-Jahre"
+        value: "3 (1 Feld)"
+        n: "829–1351 Zellen je Jahr"
+        plain: "Sehr detailliert, aber nur ein Feld in drei Jahren, daher kein Beweis für 'gilt überall'."
+    found:
+      - "Der Ertragsmonitor in Kayad deckelt bei 18 t/ha (bis 7 % der Punkte); die obersten Werte sind abgeschnitten."
+      - "In Kayad schwankt der relative Ertrag viel weniger als bei BARC (SD 0,10–0,15 gegenüber 0,26)."
+      - "Bei Colorado sind 4 von 10 Teilflächen-Jahren fast Totalausfälle; sie werden getrennt berichtet."
+    limits:
+      - "Mit den heutigen Daten kann nicht geprüft werden, ob die Karte außerhalb von BARC hält (kein Fremdstandort mit mindestens 10 Feld-Jahren)."
+      - "Die Datenanfragen DWFI und SwissYield sind der Engpass."
+    links:
+      - label: "Datenkritik I1"
+        path: reports/data_review/if_i1_daten.md
+      - label: "Plan Innerhalb-Feld"
+        path: reports/plan_innerfeld.md
   - id: abgabe-hauptergebnis
     date: 2026-10-16
     phase: "Entscheidung des Projektinhabers (Abgabe)"

@@ -471,3 +471,16 @@ Abruf 2026-10-16 mit `python -m croptransfer.extract_s1` und `python -m croptran
 
 **CY-Bench für M5 (F1.4):** Die lokale Kopie `data/raw/cybench/cybench-data/maize` enthält 23 EU-Länder (AT … SK) und **0 US-Region-Jahre**; M5 entfällt. Saattermine: in keiner lokalen Quelle (Feld `sowing_date` leer).
 **Status: ✅ verfügbar** (Einschränkungen: `reports/data_review/f2_merkmale.md`).
+
+## 18. Innerhalb-Feld über Standorte (Plan `reports/plan_innerfeld.md`, Etappe I1)
+Abruf 2026-10-17. Gemeinsame Tabelle: `data/processed/gt_pixels.parquet` (`python -m croptransfer.innerfeld`), Zusammenfassung `gt_pixels_summary.json`. Datenkritik: `reports/data_review/if_i1_daten.md`.
+
+| Datei | Quelle | Inhalt | Größe |
+|---|---|---|---|
+| `data/raw/kayad/FIELD_YIELD.zip` (entpackt in `FIELD_YIELD/`) | Zenodo 14216165, Kayad, Sozzi, Gatto, Marinello, Pirotti (2019, *Remote Sensing* 11:2873), **CC BY 4.0** | Körnermais, ein Feld 22 ha (Po-Ebene), 2016–2018: Mähdrescher-Punkte (18 444–22 616 je Jahr, kg/ha, Feuchte %), Kriging-Raster 2,2 m, ein Sentinel-2-Tag je Jahr (4.8.), Publikation als PDF | 11,0 MB |
+| `data/raw/colorado/Modeling_data.csv` | Ag Data Commons 10.15482/USDA.ADC/28914434.v1, CC0 (siehe §5) | für diesen Plan nur Körnermais-Punkte | schon vorhanden |
+| `data/raw/barc/` | siehe §4 | 41 Feld-Jahre, unverändert | schon vorhanden |
+
+**Nicht erhalten:** ETH Research Collection, CH-TAN Winterweizen 2023/24 (doi:10.3929/ethz-c-000807633): Datensatz unter **Embargo bis 2028-01-01**; Skriptzugriff durch Bot-Schutz blockiert (nicht umgangen). Außerdem 1 Feld, 1 Jahr, 2 Düngevarianten.
+**Status: ⚠️ verfügbar mit Einschränkungen** (Kayad: Ertragsmonitor bei 18 000 kg/ha gedeckelt, Feuchtebasis unbekannt, variable N-Düngung; 2018-Koordinaten in Gauss-Boaga, deshalb die mitgelieferte EPSG:32632-Datei verwendet).
+
