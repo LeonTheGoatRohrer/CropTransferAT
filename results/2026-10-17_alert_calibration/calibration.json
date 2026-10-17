@@ -1,0 +1,852 @@
+{
+  "date": "2026-10-17",
+  "commit": "139bdabe2634e15431718879193fe237434097f3",
+  "decision": "DECISIONS.md 2026-10-17 Warnlogik",
+  "n_field_years": 123,
+  "n_site_years": 11,
+  "rules": {
+    "max_fpr": 0.2,
+    "min_alerts": 10,
+    "min_site_years": 3,
+    "min_events": 5,
+    "healthy_ry": 0.95,
+    "first_dekad": 6,
+    "min_observed_dekads": 4
+  },
+  "table": [
+    {
+      "cutoff": "06-01",
+      "x_pct": 10,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-01",
+      "x_pct": 15,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-01",
+      "x_pct": 20,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-01",
+      "x_pct": 25,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-01",
+      "x_pct": 30,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-15",
+      "x_pct": 10,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-15",
+      "x_pct": 15,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-15",
+      "x_pct": 20,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-15",
+      "x_pct": 25,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "06-15",
+      "x_pct": 30,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "07-01",
+      "x_pct": 10,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "07-01",
+      "x_pct": 15,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "07-01",
+      "x_pct": 20,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "07-01",
+      "x_pct": 25,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "07-01",
+      "x_pct": 30,
+      "n_valid": 0,
+      "n_site_years": 0,
+      "n_event": 0,
+      "prevalence": null,
+      "n_alert": 0,
+      "k_hit": 0,
+      "precision": null,
+      "precision_ci": [
+        NaN,
+        NaN
+      ],
+      "recall": null,
+      "fpr": null,
+      "alert_site_years": 0,
+      "statement": "no_statement",
+      "reasons": [
+        "no valid score before this cutoff",
+        "fewer than 10 alerts",
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "07-15",
+      "x_pct": 10,
+      "n_valid": 28,
+      "n_site_years": 2,
+      "n_event": 10,
+      "prevalence": 0.35714285714285715,
+      "n_alert": 23,
+      "k_hit": 10,
+      "precision": 0.43478260869565216,
+      "precision_ci": [
+        0.43478260869565216,
+        0.43478260869565216
+      ],
+      "recall": 1.0,
+      "fpr": 0.7222222222222222,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years"
+      ]
+    },
+    {
+      "cutoff": "07-15",
+      "x_pct": 15,
+      "n_valid": 28,
+      "n_site_years": 2,
+      "n_event": 7,
+      "prevalence": 0.25,
+      "n_alert": 23,
+      "k_hit": 7,
+      "precision": 0.30434782608695654,
+      "precision_ci": [
+        0.30434782608695654,
+        0.30434782608695654
+      ],
+      "recall": 1.0,
+      "fpr": 0.7619047619047619,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years"
+      ]
+    },
+    {
+      "cutoff": "07-15",
+      "x_pct": 20,
+      "n_valid": 28,
+      "n_site_years": 2,
+      "n_event": 6,
+      "prevalence": 0.21428571428571427,
+      "n_alert": 23,
+      "k_hit": 6,
+      "precision": 0.2608695652173913,
+      "precision_ci": [
+        0.2608695652173913,
+        0.2608695652173913
+      ],
+      "recall": 1.0,
+      "fpr": 0.7727272727272727,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years"
+      ]
+    },
+    {
+      "cutoff": "07-15",
+      "x_pct": 25,
+      "n_valid": 28,
+      "n_site_years": 2,
+      "n_event": 3,
+      "prevalence": 0.10714285714285714,
+      "n_alert": 23,
+      "k_hit": 3,
+      "precision": 0.13043478260869565,
+      "precision_ci": [
+        0.13043478260869565,
+        0.13043478260869565
+      ],
+      "recall": 1.0,
+      "fpr": 0.8,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "07-15",
+      "x_pct": 30,
+      "n_valid": 28,
+      "n_site_years": 2,
+      "n_event": 3,
+      "prevalence": 0.10714285714285714,
+      "n_alert": 23,
+      "k_hit": 3,
+      "precision": 0.13043478260869565,
+      "precision_ci": [
+        0.13043478260869565,
+        0.13043478260869565
+      ],
+      "recall": 1.0,
+      "fpr": 0.8,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years",
+        "fewer than 5 events"
+      ]
+    },
+    {
+      "cutoff": "08-01",
+      "x_pct": 10,
+      "n_valid": 40,
+      "n_site_years": 7,
+      "n_event": 15,
+      "prevalence": 0.375,
+      "n_alert": 19,
+      "k_hit": 9,
+      "precision": 0.47368421052631576,
+      "precision_ci": [
+        0.47368421052631576,
+        0.47368421052631576
+      ],
+      "recall": 0.6,
+      "fpr": 0.4,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years"
+      ]
+    },
+    {
+      "cutoff": "08-01",
+      "x_pct": 15,
+      "n_valid": 40,
+      "n_site_years": 7,
+      "n_event": 9,
+      "prevalence": 0.225,
+      "n_alert": 11,
+      "k_hit": 5,
+      "precision": 0.45454545454545453,
+      "precision_ci": [
+        0.45454545454545453,
+        0.45454545454545453
+      ],
+      "recall": 0.5555555555555556,
+      "fpr": 0.1935483870967742,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years"
+      ]
+    },
+    {
+      "cutoff": "08-01",
+      "x_pct": 20,
+      "n_valid": 40,
+      "n_site_years": 7,
+      "n_event": 8,
+      "prevalence": 0.2,
+      "n_alert": 11,
+      "k_hit": 5,
+      "precision": 0.45454545454545453,
+      "precision_ci": [
+        0.45454545454545453,
+        0.45454545454545453
+      ],
+      "recall": 0.625,
+      "fpr": 0.1875,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years"
+      ]
+    },
+    {
+      "cutoff": "08-01",
+      "x_pct": 25,
+      "n_valid": 40,
+      "n_site_years": 7,
+      "n_event": 5,
+      "prevalence": 0.125,
+      "n_alert": 11,
+      "k_hit": 3,
+      "precision": 0.2727272727272727,
+      "precision_ci": [
+        0.2727272727272727,
+        0.2727272727272727
+      ],
+      "recall": 0.6,
+      "fpr": 0.22857142857142856,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years"
+      ]
+    },
+    {
+      "cutoff": "08-01",
+      "x_pct": 30,
+      "n_valid": 40,
+      "n_site_years": 7,
+      "n_event": 5,
+      "prevalence": 0.125,
+      "n_alert": 11,
+      "k_hit": 3,
+      "precision": 0.2727272727272727,
+      "precision_ci": [
+        0.2727272727272727,
+        0.2727272727272727
+      ],
+      "recall": 0.6,
+      "fpr": 0.22857142857142856,
+      "alert_site_years": 1,
+      "statement": "no_statement",
+      "reasons": [
+        "alerts from fewer than 3 site-years"
+      ]
+    },
+    {
+      "cutoff": "08-15",
+      "x_pct": 10,
+      "n_valid": 65,
+      "n_site_years": 7,
+      "n_event": 22,
+      "prevalence": 0.3384615384615385,
+      "n_alert": 29,
+      "k_hit": 18,
+      "precision": 0.6206896551724138,
+      "precision_ci": [
+        0.48333333333333334,
+        1.0
+      ],
+      "recall": 0.8181818181818182,
+      "fpr": 0.2558139534883721,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "08-15",
+      "x_pct": 15,
+      "n_valid": 65,
+      "n_site_years": 7,
+      "n_event": 16,
+      "prevalence": 0.24615384615384617,
+      "n_alert": 26,
+      "k_hit": 13,
+      "precision": 0.5,
+      "precision_ci": [
+        0.14285714285714285,
+        1.0
+      ],
+      "recall": 0.8125,
+      "fpr": 0.2653061224489796,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "08-15",
+      "x_pct": 20,
+      "n_valid": 65,
+      "n_site_years": 7,
+      "n_event": 14,
+      "prevalence": 0.2153846153846154,
+      "n_alert": 26,
+      "k_hit": 12,
+      "precision": 0.46153846153846156,
+      "precision_ci": [
+        0.14285714285714285,
+        1.0
+      ],
+      "recall": 0.8571428571428571,
+      "fpr": 0.27450980392156865,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "08-15",
+      "x_pct": 25,
+      "n_valid": 65,
+      "n_site_years": 7,
+      "n_event": 11,
+      "prevalence": 0.16923076923076924,
+      "n_alert": 28,
+      "k_hit": 10,
+      "precision": 0.35714285714285715,
+      "precision_ci": [
+        0.13636363636363635,
+        0.75
+      ],
+      "recall": 0.9090909090909091,
+      "fpr": 0.3333333333333333,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "08-15",
+      "x_pct": 30,
+      "n_valid": 65,
+      "n_site_years": 7,
+      "n_event": 11,
+      "prevalence": 0.16923076923076924,
+      "n_alert": 28,
+      "k_hit": 10,
+      "precision": 0.35714285714285715,
+      "precision_ci": [
+        0.14285714285714285,
+        0.7159090909090909
+      ],
+      "recall": 0.9090909090909091,
+      "fpr": 0.3333333333333333,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "09-01",
+      "x_pct": 10,
+      "n_valid": 67,
+      "n_site_years": 8,
+      "n_event": 23,
+      "prevalence": 0.34328358208955223,
+      "n_alert": 33,
+      "k_hit": 19,
+      "precision": 0.5757575757575758,
+      "precision_ci": [
+        0.44285714285714284,
+        1.0
+      ],
+      "recall": 0.8260869565217391,
+      "fpr": 0.3181818181818182,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "09-01",
+      "x_pct": 15,
+      "n_valid": 67,
+      "n_site_years": 8,
+      "n_event": 17,
+      "prevalence": 0.2537313432835821,
+      "n_alert": 26,
+      "k_hit": 13,
+      "precision": 0.5,
+      "precision_ci": [
+        0.1,
+        1.0
+      ],
+      "recall": 0.7647058823529411,
+      "fpr": 0.26,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "09-01",
+      "x_pct": 20,
+      "n_valid": 67,
+      "n_site_years": 8,
+      "n_event": 14,
+      "prevalence": 0.208955223880597,
+      "n_alert": 39,
+      "k_hit": 12,
+      "precision": 0.3076923076923077,
+      "precision_ci": [
+        0.14285714285714285,
+        0.502631578947369
+      ],
+      "recall": 0.8571428571428571,
+      "fpr": 0.5094339622641509,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "09-01",
+      "x_pct": 25,
+      "n_valid": 67,
+      "n_site_years": 8,
+      "n_event": 11,
+      "prevalence": 0.16417910447761194,
+      "n_alert": 29,
+      "k_hit": 10,
+      "precision": 0.3448275862068966,
+      "precision_ci": [
+        0.13562252964426877,
+        0.9
+      ],
+      "recall": 0.9090909090909091,
+      "fpr": 0.3392857142857143,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    },
+    {
+      "cutoff": "09-01",
+      "x_pct": 30,
+      "n_valid": 67,
+      "n_site_years": 8,
+      "n_event": 11,
+      "prevalence": 0.16417910447761194,
+      "n_alert": 29,
+      "k_hit": 10,
+      "precision": 0.3448275862068966,
+      "precision_ci": [
+        0.13636363636363635,
+        0.8888888888888888
+      ],
+      "recall": 0.9090909090909091,
+      "fpr": 0.3392857142857143,
+      "alert_site_years": 4,
+      "statement": "ok",
+      "reasons": []
+    }
+  ],
+  "frozen_thresholds": {
+    "06-01|10": null,
+    "06-01|15": null,
+    "06-01|20": null,
+    "06-01|25": null,
+    "06-01|30": null,
+    "06-15|10": null,
+    "06-15|15": null,
+    "06-15|20": null,
+    "06-15|25": null,
+    "06-15|30": null,
+    "07-01|10": null,
+    "07-01|15": null,
+    "07-01|20": null,
+    "07-01|25": null,
+    "07-01|30": null,
+    "07-15|10": -0.119433,
+    "07-15|15": -0.113488,
+    "07-15|20": -0.113488,
+    "07-15|25": -0.113318,
+    "07-15|30": -0.113318,
+    "08-01|10": -0.107501,
+    "08-01|15": -0.107274,
+    "08-01|20": -0.107274,
+    "08-01|25": -0.081431,
+    "08-01|30": -0.081431,
+    "08-15|10": -0.047282,
+    "08-15|15": -0.060664,
+    "08-15|20": -0.054352,
+    "08-15|25": -0.061851,
+    "08-15|30": -0.061851,
+    "09-01|10": -0.037826,
+    "09-01|15": -0.042848,
+    "09-01|20": -0.043088,
+    "09-01|25": -0.044818,
+    "09-01|30": -0.044818
+  }
+}
