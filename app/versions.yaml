@@ -17,6 +17,38 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: if-obergrenze
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, explorative Einordnung"
+    title: "Wie viel ist mit den vorhandenen Daten noch drin?"
+    status: zwischenstand
+    changed: "Es wurde geschätzt, wie hoch die Übereinstimmung zwischen Satellitenkarte und Ertragskarte überhaupt werden kann, weil die Ertragskarte selbst verrauscht ist."
+    plain: >
+      Auch eine perfekte Satellitenkarte würde die gemessene Ertragskarte nicht ganz treffen, denn der Mähdrescher misst ungenau.
+      Beim italienischen Feld (Kayad) liegt diese Grenze je nach Schätzung zwischen 0,72 und 0,94; unsere Karte erreicht dort 0,60.
+      Das heißt: Es gibt noch etwas Luft, aber vermutlich nur einige Hundertstel. Mittelwerte über 20 bis 30 Meter erhöhen den Wert etwas,
+      sind aber auch eine einfachere Aufgabe. Für BARC lässt sich die Grenze nicht bestimmen, weil die Karten dort interpoliert sind.
+    metrics:
+      - label: "Kayad: Obergrenze der Ertragskarte (Korrelation)"
+        value: "0,72 bis 0,94"
+        n: "3 Feld-Jahre"
+        plain: "Je nach Annahme über die Messfehler; die Wahrheit liegt dazwischen."
+      - label: "Kayad: unsere Karte (rohes NDVI-Fenster)"
+        value: "0,60"
+        n: "3 Feld-Jahre"
+        plain: "Etwa 84 % der vorsichtigen und 64 % der optimistischen Obergrenze."
+    found:
+      - "Mittelwerte über 20–30 m heben die Korrelation auf BARC von 0,70 auf 0,76 (Modell M1) und auf Kayad von 0,60 auf 0,66."
+      - "Wer die Erträge der Nachbarzellen kennt, erreicht auf Kayad 0,71; der Satellit erreicht rund 85 % davon."
+    limits:
+      - "Nur Kayad hat Rohpunkte; BARC ist interpoliert und die Obergrenze dort nicht bestimmbar."
+      - "Explorativ: keine Methodenwahl daraus; jede Verbesserung wäre eine neue, vorab festgelegte Runde."
+    figures:
+      - file: if_obergrenze.png
+        caption: "Korrelation nach Blockgröße und geschätzte Obergrenze der Ertragskarte (Kayad)."
+    links:
+      - label: "Bericht Obergrenze"
+        path: reports/innerfeld_obergrenze.md
   - id: if-innerfeld-ergebnis
     date: 2026-10-17
     phase: "Innerhalb-Feld über Standorte, Etappen I3–I5 (Ergebnis)"

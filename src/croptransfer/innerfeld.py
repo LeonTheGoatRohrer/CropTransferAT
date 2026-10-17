@@ -94,7 +94,8 @@ def load_kayad_points(raw: Path) -> pd.DataFrame:
     for yr, f in files.items():
         g = gpd.read_file(f)
         assert g.crs.to_epsg() == 32632, (yr, g.crs)
-        parts.append(pd.DataFrame({"year": yr, "x": g.geometry.x.to_numpy(), "y": g.geometry.y.to_numpy(),
+        parts.append(pd.DataFrame({"year": yr, "number": g["NUMBER"].to_numpy(), "x": g.geometry.x.to_numpy(),
+                                   "y": g.geometry.y.to_numpy(),
                                    "yield_t_ha": g["YIELD"].to_numpy(float) / 1000.0,
                                    "moisture_pct": g["HUMID"].to_numpy(float)}))
     return pd.concat(parts, ignore_index=True)
