@@ -1,5 +1,5 @@
 # Data & results (never commit, see DATA_SOURCES.md)
-data/
+/data/
 results/**/models/
 *.gpkg
 *.tif
