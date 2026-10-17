@@ -201,6 +201,28 @@ def leave_one_year_out(df: pd.DataFrame, pred: str, target: str) -> dict:
             for y in sorted(d.year.unique()) if (d.year != y).sum() >= 5}
 
 
+def qc_summary(fields: pd.DataFrame, sy: pd.DataFrame, cfg) -> dict:
+    """Data-critique numbers (protocol section 5): validity, maize-likeness, early harvest, clouds, exclusions."""
+    atc = cfg["at_test"]
+    c = atc["primary_cutoff"]
+    f = fields.copy()
+    f["valid"] = f[f"score_{c}"].notna()
+    by_year = f.groupby("year").agg(fields=("fy_key", "size"), valid_share=("valid", "mean"),
+                                    median_dekads_obs=("n_dekads_obs", "median"),
+                                    peak_lt_06=("ndvi_peak", lambda s: float((s < 0.6).mean())),
+                                    abrupt_drop=("abrupt_drop", "mean"))
+    low = sy[sy[f"score_{c}"].isna()][["site", "year", f"n_valid_{c}"]]
+    mem = pd.read_csv(repo_path("data/interim/at/membership.csv"))
+    sd_within = f.merge(mem, on="fy_key").groupby(["site", "year"])[f"score_{c}"].std().mean()
+    return {"by_year": by_year.round(3).to_dict("index"),
+            "share_not_maize_like_peak_lt_0.6": float((f.ndvi_peak < 0.6).mean()),
+            "share_abrupt_drop": float(f.abrupt_drop.mean()),
+            "share_valid_fields": float(f.valid.mean()),
+            "site_years_total": int(len(sy)), "site_years_excluded_lt_min_fields": low.to_dict("records"),
+            "score_sd_within_site_year": float(sd_within),
+            "score_sd_between_site_year_means": float(sy[f"score_{c}"].std())}
+
+
 def main() -> None:
     cfg = load_config()
     atc = cfg["at_test"]
@@ -209,6 +231,7 @@ def main() -> None:
     fields = field_table(cfg)
     fields.to_parquet(out / "field_scores.parquet")
     sy = site_year_scores(fields, cfg)
+    (out / "qc.json").write_text(json.dumps(qc_summary(fields, sy, cfg), indent=2, default=float), encoding="utf-8")
 
     # yields only now
     y = yas_site(trial_yields(cfg))
