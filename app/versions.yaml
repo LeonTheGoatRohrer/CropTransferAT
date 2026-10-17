@@ -17,6 +17,61 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: at-test-1
+    date: 2026-10-17
+    phase: "Österreich-Test (erster, explorativ, Tag freeze-at-1)"
+    title: "Österreich-Test: Jahre werden erkannt, Standorte nicht; kein Vorteil gegenüber einfachem NDVI"
+    status: eingeschraenkt
+    changed: "Die eingefrorenen Modelle (Stress-Score und EU-Regionalmodell) wurden einmal auf österreichischen Standorten und Bundesländern getestet, ohne Anpassung und ohne Sieger-Wahl."
+    plain: >
+      Wir haben zwei fertige Modelle auf Österreich losgelassen, ohne sie zu ändern. In Oberösterreich ordnet der Stress-Score aus Satellitenbildern
+      Jahre mit mehr und weniger Stress grob so, wie die Versuchserträge ausfallen. Das liegt aber vor allem am Unterschied zwischen den Jahren,
+      und ein einfaches Grünheitsmaß (NDVI) schafft dasselbe. Das EU-Regionalmodell erkennt grob gute und schlechte Jahre pro Bundesland,
+      rechnet aber im Durchschnitt zu hoch und ist nicht genauer als die Annahme eines normalen Jahres. Die Steiermark konnte nicht getestet werden.
+    metrics:
+      - label: "Stress-Score gegen Standorterträge (Oberösterreich), Stichtag 1.9. (ρ)"
+        value: "0,50"
+        ci: "[0,19; 0,68]"
+        n: "34 Standort-Jahre, 7 Jahre"
+        plain: "Positiver Zusammenhang der Rangfolge, nach Protokoll bestanden; vor allem ein Jahreseffekt."
+      - label: "Vergleich: einfaches mittleres NDVI Juni–August (ρ)"
+        value: "0,50"
+        ci: "[0,09; 0,65]"
+        n: "34 Standort-Jahre"
+        plain: "Ohne Lernen genauso gut wie der Stress-Score."
+      - label: "Regionalmodell gegen Statistik Austria, 1.9. (ρ)"
+        value: "0,52"
+        ci: "[0,13; 0,75]"
+        n: "30 Region-Jahre, 6 Jahre"
+        plain: "Schwaches Rangsignal zwischen Jahren und Bundesländern; nach Protokoll bestanden, aber nicht stark."
+      - label: "Regionalmodell: Fehler (RMSE) minus Fehler von „normales Jahr“"
+        value: "+0,019"
+        ci: "[-0,016; 0,043]"
+        n: "30 Region-Jahre"
+        plain: "Nicht besser als die Annahme eines normalen Jahres; das Modell liegt im Mittel um 0,09 zu hoch."
+      - label: "Regionalmodell gegen einzelne Standorte (ρ)"
+        value: "0,03"
+        ci: "[-0,69; 0,70]"
+        n: "24 Standort-Jahre, 5 Jahre"
+        plain: "Nicht belegt."
+    found:
+      - "Nach Abzug der Jahresmittel bleibt beim Stress-Score ρ = 0,31, zwischen Standorten innerhalb eines Jahres im Median −0,1."
+      - "Nur 2023 passt klar (niedrigster Ertrag, zweitniedrigster Score); 2018 hat den niedrigsten Score, aber nur durchschnittliche Erträge."
+      - "10 159 Feld-Jahre mit maistypischen Kurven (Spitzen-NDVI um 0,88); 32 % der Felder liegen beim Score bei null (gesättigt)."
+    limits:
+      - "Alle auswertbaren Standort-Jahre liegen in Oberösterreich; die Steiermark hat nur Düngungs- und Bodenbearbeitungsversuche und fiel aus der vorab festgelegten Auswahl (Sortenversuche)."
+      - "Nur 5 bis 7 Jahre als Cluster; die Konfidenzintervalle sind grob. Keine Feld-Ertragsdaten, daher keine Aussage auf Feldebene."
+      - "Erster, explorativer Test: Das Phase-4-Kriterium „stark genug“ war von keinem Feldmodell erfüllt, der Test läuft auf Entscheidung des Projektinhabers."
+    figures:
+      - file: at_test_scatter.png
+        caption: "Links: Stress-Score gegen relativen Standortertrag (Farbe = Jahr). Rechts: Regionalmodell gegen Statistik Austria."
+    links:
+      - label: "Ergebnis"
+        path: reports/at_test_ergebnis.md
+      - label: "Datenkritik"
+        path: reports/data_review/at_test.md
+      - label: "Freeze-Protokoll"
+        path: reports/freeze_protocol_at.md
   - id: if-runde2
     date: 2026-10-17
     phase: "Innerhalb-Feld über Standorte, Runde 2 (Glättung, Aufbereitung)"

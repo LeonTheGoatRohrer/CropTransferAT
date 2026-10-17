@@ -1,0 +1,354 @@
+{
+  "protocol": "reports/freeze_protocol_at.md",
+  "tag": "freeze-at-1",
+  "cutoffs": {
+    "07-15": {
+      "V2-A_stress_score": {
+        "n": 30,
+        "clusters": 7,
+        "rho": 0.46285711231993926,
+        "lo": 0.11058009482118297,
+        "hi": 0.6518702268630406,
+        "verdict": "bestanden"
+      },
+      "V2-A_within_site": {
+        "per_group": {
+          "linden": 0.09,
+          "mauthausen": 0.273,
+          "walding": 0.464,
+          "wimsbach": 0.408
+        },
+        "median": 0.340458328743559,
+        "n_groups": 4
+      },
+      "V2-A_within_year": {
+        "per_group": {
+          "2023": -0.6,
+          "2024": 0.707,
+          "2025": 0.3
+        },
+        "median": 0.3,
+        "n_groups": 3
+      },
+      "V2-A_leave_one_year_out": {
+        "2018": 0.524,
+        "2020": 0.508,
+        "2021": 0.419,
+        "2022": 0.43,
+        "2023": 0.297,
+        "2024": 0.537,
+        "2025": 0.456
+      },
+      "V2-B_regional_model": {
+        "n": 24,
+        "clusters": 5,
+        "rho": 0.43911183229229767,
+        "lo": -0.35788127720696217,
+        "hi": 0.8240594097661579,
+        "verdict": "nicht belegt"
+      },
+      "V2-baseline_NDVI": null,
+      "V1_regional_model": {
+        "n": 30,
+        "clusters": 6,
+        "rho": -0.14349276974416017,
+        "lo": -0.6433432645243667,
+        "hi": 0.4664093959731543,
+        "rmse_model": 0.1435932149180065,
+        "rmse_yas1": 0.10146202577060674,
+        "rmse_diff": 0.04213118914739976,
+        "rmse_diff_lo": -0.012525208633515222,
+        "rmse_diff_hi": 0.08965444087020161,
+        "verdict": "nicht belegt",
+        "strong": false
+      },
+      "V1-A_stress_score_region": {
+        "n": 11,
+        "clusters": 6,
+        "rho": 0.17272727272727276,
+        "lo": -0.5794736842105258,
+        "hi": 0.6666666666666666,
+        "verdict": "nicht belegt"
+      },
+      "V1_within_year_regional_model": {
+        "per_group": {
+          "2018": 0.7,
+          "2019": 0.3,
+          "2020": -0.9,
+          "2021": -0.2,
+          "2022": -0.1,
+          "2023": 0.8
+        },
+        "median": 0.1,
+        "n_groups": 6
+      }
+    },
+    "08-01": {
+      "V2-A_stress_score": {
+        "n": 34,
+        "clusters": 7,
+        "rho": 0.5498854087089381,
+        "lo": 0.2104860198594533,
+        "hi": 0.6735981338989119,
+        "verdict": "bestanden"
+      },
+      "V2-A_within_site": {
+        "per_group": {
+          "innviertel": 1.0,
+          "linden": -0.286,
+          "mauthausen": 0.429,
+          "walding": 0.714,
+          "wimsbach": 0.393
+        },
+        "median": 0.42857142857142866,
+        "n_groups": 5
+      },
+      "V2-A_within_year": {
+        "per_group": {
+          "2018": 0.4,
+          "2020": 0.1,
+          "2021": 0.2,
+          "2023": -0.7,
+          "2024": -0.2,
+          "2025": 0.3
+        },
+        "median": 0.15,
+        "n_groups": 6
+      },
+      "V2-A_leave_one_year_out": {
+        "2018": 0.546,
+        "2020": 0.567,
+        "2021": 0.533,
+        "2022": 0.498,
+        "2023": 0.454,
+        "2024": 0.646,
+        "2025": 0.529
+      },
+      "V2-B_regional_model": {
+        "n": 24,
+        "clusters": 5,
+        "rho": 0.14814479998548225,
+        "lo": -0.6457528356532128,
+        "hi": 0.7034557227231494,
+        "verdict": "nicht belegt"
+      },
+      "V2-baseline_NDVI": null,
+      "V1_regional_model": {
+        "n": 30,
+        "clusters": 6,
+        "rho": 0.4126807563959955,
+        "lo": 0.059955257270693514,
+        "hi": 0.702129319955407,
+        "rmse_model": 0.12203981905022109,
+        "rmse_yas1": 0.10146202577060674,
+        "rmse_diff": 0.020577793279614343,
+        "rmse_diff_lo": -0.018560278901204957,
+        "rmse_diff_hi": 0.04744962878158479,
+        "verdict": "bestanden",
+        "strong": false
+      },
+      "V1-A_stress_score_region": {
+        "n": 12,
+        "clusters": 6,
+        "rho": 0.1258741258741259,
+        "lo": -0.6978417266187051,
+        "hi": 0.5886524822695036,
+        "verdict": "nicht belegt"
+      },
+      "V1_within_year_regional_model": {
+        "per_group": {
+          "2018": 0.7,
+          "2019": -0.3,
+          "2020": -0.6,
+          "2021": 0.3,
+          "2022": 0.2,
+          "2023": 0.9
+        },
+        "median": 0.25,
+        "n_groups": 6
+      }
+    },
+    "08-15": {
+      "V2-A_stress_score": {
+        "n": 34,
+        "clusters": 7,
+        "rho": 0.6510313216195569,
+        "lo": 0.4019682133560321,
+        "hi": 0.7007531380753138,
+        "verdict": "bestanden"
+      },
+      "V2-A_within_site": {
+        "per_group": {
+          "innviertel": 0.943,
+          "linden": -0.25,
+          "mauthausen": 0.75,
+          "walding": 0.929,
+          "wimsbach": 0.536
+        },
+        "median": 0.7500000000000002,
+        "n_groups": 5
+      },
+      "V2-A_within_year": {
+        "per_group": {
+          "2018": 0.5,
+          "2020": 0.0,
+          "2021": 0.2,
+          "2023": -0.7,
+          "2024": 0.6,
+          "2025": 0.3
+        },
+        "median": 0.25,
+        "n_groups": 6
+      },
+      "V2-A_leave_one_year_out": {
+        "2018": 0.641,
+        "2020": 0.646,
+        "2021": 0.646,
+        "2022": 0.614,
+        "2023": 0.596,
+        "2024": 0.691,
+        "2025": 0.639
+      },
+      "V2-B_regional_model": {
+        "n": 24,
+        "clusters": 5,
+        "rho": 0.14814479998548225,
+        "lo": -0.6457528356532128,
+        "hi": 0.7034557227231494,
+        "verdict": "nicht belegt"
+      },
+      "V2-baseline_NDVI": null,
+      "V1_regional_model": {
+        "n": 30,
+        "clusters": 6,
+        "rho": 0.5105672969966629,
+        "lo": 0.17849797298827583,
+        "hi": 0.747603121516165,
+        "rmse_model": 0.11733632610492012,
+        "rmse_yas1": 0.10146202577060674,
+        "rmse_diff": 0.015874300334313377,
+        "rmse_diff_lo": -0.018716467782979515,
+        "rmse_diff_hi": 0.039462462950107614,
+        "verdict": "bestanden",
+        "strong": false
+      },
+      "V1-A_stress_score_region": {
+        "n": 12,
+        "clusters": 6,
+        "rho": 0.16783216783216784,
+        "lo": -0.6808510638297873,
+        "hi": 0.7446808510638298,
+        "verdict": "nicht belegt"
+      },
+      "V1_within_year_regional_model": {
+        "per_group": {
+          "2018": 0.7,
+          "2019": 0.1,
+          "2020": 0.1,
+          "2021": -0.1,
+          "2022": 0.2,
+          "2023": 1.0
+        },
+        "median": 0.15,
+        "n_groups": 6
+      }
+    },
+    "09-01": {
+      "V2-A_stress_score": {
+        "n": 34,
+        "clusters": 7,
+        "rho": 0.496103896103896,
+        "lo": 0.18968264594473228,
+        "hi": 0.6776448942042319,
+        "verdict": "bestanden"
+      },
+      "V2-A_within_site": {
+        "per_group": {
+          "innviertel": 0.6,
+          "linden": -0.5,
+          "mauthausen": 0.536,
+          "walding": 0.821,
+          "wimsbach": 0.714
+        },
+        "median": 0.6,
+        "n_groups": 5
+      },
+      "V2-A_within_year": {
+        "per_group": {
+          "2018": 0.3,
+          "2020": -0.1,
+          "2021": -0.1,
+          "2023": -0.1,
+          "2024": 0.5,
+          "2025": -0.1
+        },
+        "median": -0.09999999999999999,
+        "n_groups": 6
+      },
+      "V2-A_leave_one_year_out": {
+        "2018": 0.547,
+        "2020": 0.491,
+        "2021": 0.516,
+        "2022": 0.446,
+        "2023": 0.408,
+        "2024": 0.524,
+        "2025": 0.48
+      },
+      "V2-B_regional_model": {
+        "n": 24,
+        "clusters": 5,
+        "rho": 0.03282250059558589,
+        "lo": -0.694796989877516,
+        "hi": 0.7034557227231494,
+        "verdict": "nicht belegt"
+      },
+      "V2-baseline_NDVI": {
+        "n": 34,
+        "clusters": 7,
+        "rho": 0.5034377387318563,
+        "lo": 0.09295693981174491,
+        "hi": 0.6494081642682005
+      },
+      "V1_regional_model": {
+        "n": 30,
+        "clusters": 6,
+        "rho": 0.5203559510567297,
+        "lo": 0.13206703910614526,
+        "hi": 0.7454399178363573,
+        "rmse_model": 0.1205648613277307,
+        "rmse_yas1": 0.10146202577060674,
+        "rmse_diff": 0.019102835557123957,
+        "rmse_diff_lo": -0.015846772968647733,
+        "rmse_diff_hi": 0.04296426281026357,
+        "verdict": "bestanden",
+        "strong": false
+      },
+      "V1-A_stress_score_region": {
+        "n": 12,
+        "clusters": 6,
+        "rho": 0.37762237762237766,
+        "lo": -0.3687849944008955,
+        "hi": 0.7237402015677489,
+        "verdict": "nicht belegt"
+      },
+      "V1_within_year_regional_model": {
+        "per_group": {
+          "2018": 0.9,
+          "2019": -0.6,
+          "2020": 0.2,
+          "2021": -0.1,
+          "2022": 0.2,
+          "2023": 1.0
+        },
+        "median": 0.19999999999999998,
+        "n_groups": 6
+      }
+    }
+  },
+  "counts": {
+    "site_years_with_yas": 34,
+    "site_years_with_score": 104,
+    "region_years": 30,
+    "sites_with_ge6_years": 5
+  }
+}

@@ -4,6 +4,10 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Added (Branch `phase-7-austria-test`, Tag `freeze-at-1`, Ergebnis-Tag `at-test-1`)
+- **Österreich-Test (erster, explorativ):** Freeze-Protokoll `reports/freeze_protocol_at.md` (vor der Auswertung; Stress-Score-Referenz + EU-Regionalmodell, kein Sieger), `austria_freeze.py`, `at_fields.py` (INVEKOS-Körnermais im 5-km-Umkreis der Versuchsstandorte), `at_extract.py` (HLS je Standort-Jahr, 10 159 Feld-Jahre), `at_test.py`, `at_review.py`, Tests `test_austria_freeze.py`, `test_at_test.py`.
+- Ergebnis `reports/at_test_ergebnis.md`, Datenkritik `reports/data_review/at_test.md` (⚠️): V2-A (Stress-Score) bestanden, aber Jahreseffekt und nicht besser als NDVI; V1 (Regionalmodell) bestanden, nicht stark; V2-B und V1-A nicht belegt; **Steiermark nicht getestet** (nur Düngungs-/Bodenbearbeitungsversuche).
+
 ## [innerfeld-1] – 2026-10-17 – Sammel-Release: Mehr-Kulturen, Feinjustierung, Innerhalb-Feld über Standorte (kein Freeze, kein Österreich-Test)
 > ⛔ **Dieser Stand enthält überwiegend vorab festgelegte negative Ergebnisse.** Jahresvorhersage pro Feld nicht stark genug (Phase 4, Mehr-Kulturen G3 ✗), Feinjustierung H2 ✗, **Glättung der Vorhersage bringt nichts (Runde 2: R2-BARC ✗, R2-Kayad ✗)**. Belastbar sind nur die Feldkarte auf BARC (K1 ✓, J3a ✓ mit Vorbehalt) und das EU-Regionalmodell; Übertragbarkeit auf andere Standorte ist nicht prüfbar (J2/J3b).
 
