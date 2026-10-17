@@ -1,0 +1,655 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CropTransfer Intro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<style>
+/* Same palette as web/src/index.css */
+:root {
+  --soil-950: #0b0f0c; --soil-900: #0f140f; --soil-850: #141a14; --soil-800: #19211a; --soil-700: #232d24; --soil-600: #314033;
+  --ink: #eceee6; --ink-2: #b3baae; --ink-3: #7c8679; --ink-4: #566053;
+  --maize: #e6b450; --maize-soft: #f1cf86; --rust: #e4694a; --water: #72aad9; --sage: #8fb59a;
+  --line: rgb(236 238 230 / 0.08); --line-strong: rgb(236 238 230 / 0.16);
+  --display: "Bricolage Grotesque", ui-sans-serif, system-ui, sans-serif;
+  --sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; background: #000; color: var(--ink); font-family: var(--sans); overflow: hidden; -webkit-font-smoothing: antialiased; }
+body.idle { cursor: none; }
+
+#stage {
+  position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; overflow: hidden;
+  transform-origin: 50% 50%; background: radial-gradient(120% 90% at 50% 30%, #141b15 0%, var(--soil-950) 70%);
+}
+.scene { position: absolute; inset: 0; visibility: hidden; opacity: 0; }
+.vignette { position: absolute; inset: 0; pointer-events: none; z-index: 50; background: radial-gradient(130% 100% at 50% 50%, transparent 55%, rgb(0 0 0 / 0.55) 100%); }
+.grain { position: absolute; inset: -50%; z-index: 51; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>"); }
+
+/* ---------- captions ---------- */
+.cap { position: absolute; width: 760px; }
+.cap .num { font-family: var(--mono); font-size: 22px; letter-spacing: 0.14em; color: var(--maize); display: flex; align-items: center; gap: 14px; }
+.cap .num::after { content: ""; height: 1px; width: 80px; background: rgb(230 180 80 / 0.5); }
+.cap h2 { font-family: var(--display); font-weight: 600; font-size: 92px; line-height: 0.98; letter-spacing: -0.035em; margin: 22px 0 22px; }
+.cap p { font-size: 30px; line-height: 1.4; color: var(--ink-2); margin: 0; max-width: 680px; }
+
+/* ---------- S0 hook ---------- */
+#s0 .sky { position: absolute; inset: 0; background: linear-gradient(180deg, #0b0f0c 0%, #121a12 46%, #2a2a17 58%, #0b0f0c 100%); }
+/* Ground plane: hinged at the horizon, tilted towards the viewer (height × sin(80°) stays below the perspective distance) */
+#s0 .floorWrap { position: absolute; inset: 0; perspective: 700px; perspective-origin: 50% 47%; overflow: hidden; }
+#s0 .floor { position: absolute; left: -200%; right: -200%; top: 47%; height: 690px; transform-origin: 50% 0; transform: rotateX(80deg); }
+#s0 .rows, #s0 .patches { position: absolute; inset: 0; }
+#s0 .patches {
+  background:
+    radial-gradient(70px 50px at 20% 30%, #7a5a2e 0 60%, transparent 100%),
+    radial-gradient(110px 70px at 63% 72%, #8a6a36 0 55%, transparent 100%),
+    radial-gradient(60px 40px at 82% 20%, #6e5432 0 60%, transparent 100%),
+    radial-gradient(90px 60px at 40% 88%, #7d5f33 0 55%, transparent 100%),
+    radial-gradient(260px 200px at 50% 50%, #3f6b2c 0 40%, transparent 100%),
+    linear-gradient(#2f5a24, #3a6a2b);
+  background-size: 640px 640px;
+}
+#s0 .rows { background: repeating-linear-gradient(90deg, rgb(10 14 8 / 0.55) 0 4px, transparent 4px 14px); }
+#s0 .haze { position: absolute; left: 0; right: 0; top: 30%; height: 40%; background: linear-gradient(180deg, #0b0f0c 0%, rgb(24 28 18 / 0.95) 40%, rgb(24 28 18 / 0.5) 62%, transparent 100%); }
+#s0 .hook { position: absolute; left: 0; right: 0; top: 150px; text-align: center; }
+#s0 .kicker { font-family: var(--mono); font-size: 22px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--maize); margin: 0 0 28px; }
+#s0 h1 { font-family: var(--display); font-weight: 600; font-size: 104px; line-height: 1.02; letter-spacing: -0.04em; margin: 0; text-shadow: 0 6px 40px rgb(0 0 0 / 0.6); }
+#s0 h1.l2 { color: var(--ink-2); font-weight: 400; margin-top: 14px; }
+#s0 h1 em { font-style: normal; color: var(--ink); }
+
+/* ---------- S1 phone ---------- */
+#phone { position: absolute; left: 330px; top: 120px; width: 420px; height: 850px; border-radius: 62px; padding: 13px;
+  background: linear-gradient(145deg, #2b312b, #0e110e); box-shadow: 0 0 0 1.5px #3a423a inset, 0 60px 120px -40px rgb(0 0 0 / 0.9), 0 0 140px -20px rgb(230 180 80 / 0.12); }
+#screen { position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: var(--soil-900); }
+.notch { position: absolute; top: 12px; left: 50%; width: 118px; height: 32px; margin-left: -59px; border-radius: 20px; background: #000; z-index: 20; }
+.status { position: absolute; top: 0; left: 0; right: 0; height: 52px; display: flex; justify-content: space-between; align-items: center; padding: 6px 34px 0; font-size: 15px; font-weight: 600; z-index: 19; }
+.appbar { position: absolute; top: 52px; left: 0; right: 0; height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-bottom: 1px solid var(--line); z-index: 18; background: var(--soil-900); }
+.logo-mark { width: 22px; height: 22px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.logo-mark i { border-radius: 2px; }
+.appbar b { font-family: var(--display); font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
+.appbar span { margin-left: auto; font-size: 13px; color: var(--ink-3); }
+.pane { position: absolute; top: 104px; left: 0; width: 394px; bottom: 0; }
+#mapsvg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.search { position: absolute; top: 14px; left: 14px; right: 14px; height: 44px; border-radius: 12px; background: rgb(15 20 15 / 0.88); border: 1px solid var(--line-strong);
+  display: flex; align-items: center; gap: 10px; padding: 0 14px; font-size: 15px; color: var(--ink-3); backdrop-filter: blur(6px); }
+.sheet { position: absolute; left: 10px; right: 10px; bottom: 10px; border-radius: 22px; padding: 18px 20px 20px; background: rgb(20 26 20 / 0.94); border: 1px solid var(--line-strong); }
+.sheet .step { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; color: var(--maize); }
+.sheet h3 { font-family: var(--display); font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 6px 0 4px; }
+.sheet p { margin: 0; font-size: 14px; color: var(--ink-3); }
+.sheet .done { position: absolute; inset: 0; padding: 18px 20px; display: flex; flex-direction: column; justify-content: center; opacity: 0; }
+.chip { display: inline-flex; align-items: center; gap: 8px; font-family: var(--mono); font-size: 14px; color: var(--soil-950); background: var(--maize); border-radius: 999px; padding: 6px 12px; width: max-content; margin-top: 8px; }
+#finger { position: absolute; left: -24px; top: -24px; width: 48px; height: 48px; border-radius: 50%; z-index: 30;
+  background: rgb(255 255 255 / 0.28); border: 2px solid rgb(255 255 255 / 0.85); box-shadow: 0 6px 18px rgb(0 0 0 / 0.5); }
+#finger::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; border: 2px solid #fff; opacity: var(--ripple, 0); transform: scale(var(--ripple-s, 1)); }
+
+#form { padding: 24px 22px; transform: translateX(394px); }
+#form .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; color: var(--maize); }
+#form h3 { font-family: var(--display); font-size: 30px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 600; margin: 8px 0 6px; }
+#form .sub { font-size: 14px; color: var(--ink-3); margin: 0 0 20px; }
+.tabs { display: inline-flex; padding: 3px; border-radius: 10px; background: var(--soil-800); border: 1px solid var(--line); margin-bottom: 16px; }
+.tabs span { font-size: 13px; padding: 5px 12px; border-radius: 7px; color: var(--ink-3); }
+.tabs span.on { background: var(--soil-600); color: var(--ink); }
+.yrow { display: grid; grid-template-columns: 1fr 160px; align-items: center; gap: 12px; margin-bottom: 10px; }
+.yrow label { font-size: 15px; color: var(--ink-2); }
+.yin { position: relative; height: 44px; border-radius: 10px; border: 1px solid var(--line-strong); background: var(--soil-850); font-family: var(--mono); font-size: 16px;
+  display: flex; align-items: center; justify-content: flex-end; padding-right: 62px; }
+.yin.active { border-color: var(--maize); box-shadow: 0 0 0 3px rgb(230 180 80 / 0.15); }
+.yin .val::after { content: ""; display: inline-block; width: 2px; height: 18px; margin-left: 2px; vertical-align: -3px; background: var(--maize); opacity: 0; }
+.yin.active .val::after { opacity: 1; }
+.yin small { position: absolute; right: 12px; font-size: 12px; color: var(--ink-4); }
+.btn { margin-top: 18px; height: 52px; border-radius: 12px; background: var(--maize); color: var(--soil-950); font-weight: 600; font-size: 17px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.spin { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgb(11 15 12 / 0.25); border-top-color: var(--soil-950); display: none; }
+
+/* ---------- S2 space ---------- */
+#spaceWrap { position: absolute; inset: 0; transform-origin: 960px 712px; }
+/* Higgsfield clips (pitch/intro/clips/). Missing file → the drawn fallback stays visible. */
+.clip { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+#s0 .clipShade { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(11 15 12 / 0.82) 0%, rgb(11 15 12 / 0.45) 45%, rgb(11 15 12 / 0.15) 75%, rgb(11 15 12 / 0.5) 100%); display: none; }
+#s0.has-clip .clipShade { display: block; }
+#s0.has-clip .floorWrap, #s0.has-clip .haze { display: none; }
+#vSat { transform-origin: 50% 70%; }
+#s2.has-clip #spaceWrap { display: none; }
+#s2 .capShade { position: absolute; inset: 0; background: linear-gradient(100deg, rgb(11 15 12 / 0.75) 0%, rgb(11 15 12 / 0.2) 50%, transparent 70%); display: none; }
+#s2.has-clip .capShade { display: block; }
+#space { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ---------- S3 years / S4 analysis ---------- */
+#fieldBox { position: absolute; left: 170px; top: 170px; width: 900px; height: 600px; border-radius: 14px; overflow: hidden;
+  box-shadow: 0 0 0 1px var(--line-strong), 0 0 0 10px rgb(60 72 40 / 0.35), 0 50px 120px -40px rgb(0 0 0 / 0.9); background: #2a3320; }
+#fieldBox canvas { position: absolute; inset: 0; width: 900px; height: 600px; }
+#fieldBox .yr { clip-path: inset(0 0 100% 0); }
+#scan { position: absolute; left: -20px; right: -20px; height: 3px; top: 0; opacity: 0; background: var(--maize-soft); box-shadow: 0 0 24px 6px rgb(241 207 134 / 0.55); z-index: 4; }
+#ndvi { opacity: 1; z-index: 5; }
+#marks { position: absolute; inset: 0; z-index: 6; overflow: visible; }
+.tag { position: absolute; z-index: 7; font-family: var(--mono); font-size: 17px; padding: 8px 12px; border-radius: 10px; background: rgb(15 20 15 / 0.92); border: 1px solid rgb(228 105 74 / 0.6); color: var(--ink); white-space: nowrap; }
+.tag b { color: var(--rust); font-weight: 600; }
+#thumbs { position: absolute; left: 170px; top: 812px; display: flex; gap: 14px; }
+.thumb { width: 116px; }
+.thumb canvas { width: 116px; height: 77px; border-radius: 6px; display: block; box-shadow: 0 0 0 1px var(--line-strong); }
+.thumb span { display: block; margin-top: 8px; font-family: var(--mono); font-size: 15px; color: var(--ink-3); text-align: center; }
+#yearBig { position: absolute; left: 1170px; top: 560px; height: 170px; width: 600px; }
+#yearBig span { position: absolute; left: 0; top: 0; font-family: var(--mono); font-weight: 500; font-size: 150px; letter-spacing: -0.04em; color: var(--maize); visibility: hidden; }
+.legend { position: absolute; left: 1170px; top: 640px; width: 520px; }
+.legend .bar { height: 16px; border-radius: 8px; background: linear-gradient(90deg, #4b3725, #8a6a36, #c4a44b, #9dbb5c, #55a05a, #23704a); }
+.legend .lbl { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 16px; color: var(--ink-3); margin-top: 10px; }
+.legend .src { font-family: var(--mono); font-size: 14px; color: var(--ink-4); margin-top: 18px; }
+.note { position: absolute; left: 170px; top: 128px; font-family: var(--mono); font-size: 14px; letter-spacing: 0.08em; color: var(--ink-4); text-transform: uppercase; }
+
+/* ---------- S5 end card ---------- */
+#s5 .inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+#s5 .bigmark { width: 96px; height: 96px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 40px; }
+#s5 .bigmark i { border-radius: 6px; }
+#s5 h1 { font-family: var(--display); font-weight: 700; font-size: 150px; letter-spacing: -0.05em; line-height: 1; margin: 0; }
+#s5 h1 span { color: var(--maize); }
+#s5 p { font-size: 38px; color: var(--ink-2); margin: 34px 0 0; letter-spacing: -0.01em; }
+#s5 .foot { font-family: var(--mono); font-size: 20px; letter-spacing: 0.12em; color: var(--ink-4); margin-top: 48px; text-transform: uppercase; }
+
+/* ---------- controls (not part of the recording) ---------- */
+#ctrl { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(720px, calc(100% - 32px)); z-index: 100;
+  display: flex; align-items: center; gap: 14px; padding: 10px 16px; border-radius: 14px; background: rgb(15 20 15 / 0.9); border: 1px solid var(--line-strong);
+  font-family: var(--mono); font-size: 13px; color: var(--ink-2); transition: opacity 0.3s; }
+#ctrl.hide { opacity: 0; pointer-events: none; }
+#ctrl button { all: unset; cursor: pointer; color: var(--maize); font-weight: 600; min-width: 48px; }
+#track { flex: 1; height: 6px; border-radius: 3px; background: var(--soil-700); cursor: pointer; position: relative; }
+#fill { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 3px; background: var(--maize); }
+#hint { position: fixed; left: 50%; top: 24px; transform: translateX(-50%); z-index: 100; font-family: var(--mono); font-size: 13px; color: var(--ink-3);
+  background: rgb(15 20 15 / 0.9); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; transition: opacity 0.3s; }
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- S0: hook -->
+  <section class="scene" id="s0">
+    <div class="sky"></div>
+    <div class="floorWrap"><div class="floor"><div class="patches"></div><div class="rows"></div></div></div>
+    <div class="haze"></div>
+    <video class="clip" id="vDrone" src="clips/drone.mp4" muted playsinline preload="auto"></video>
+    <div class="clipShade"></div>
+    <div class="hook">
+      <p class="kicker">Steiermark · Körnermais</p>
+      <h1 class="l1">Trockenstress kostet Ertrag.</h1>
+      <h1 class="l2">Aber <em>wo</em> im Feld – und <em>wann</em>?</h1>
+    </div>
+  </section>
+
+  <!-- S1: phone -->
+  <section class="scene" id="s1">
+    <div id="phone">
+      <div id="screen">
+        <div class="notch"></div>
+        <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+        <div class="appbar"><div class="logo-mark" data-mark></div><b>CropTransfer</b><span>Contribute</span></div>
+
+        <div class="pane" id="mapPane">
+          <svg id="mapsvg" viewBox="0 0 394 746" preserveAspectRatio="xMidYMid slice">
+            <defs>
+              <pattern id="rowsPat" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(-8)">
+                <line x1="0" y1="0" x2="0" y2="7" stroke="#000" stroke-opacity="0.22" stroke-width="2.5"/>
+              </pattern>
+            </defs>
+            <g class="patches"></g>
+            <path d="M-20 520 C 90 470, 160 520, 250 455 S 380 420, 420 380" fill="none" stroke="#9a9a88" stroke-width="5" stroke-linecap="round" opacity="0.8"/>
+            <path d="M210 -20 C 205 120, 330 170, 320 300 S 340 640, 300 780" fill="none" stroke="#9a9a88" stroke-width="3.5" opacity="0.6"/>
+            <polygon id="fillPoly" points="" fill="#e6b450" fill-opacity="0" />
+            <g id="edges" stroke="#e6b450" stroke-width="3.5" stroke-linecap="round"></g>
+            <g id="verts"></g>
+          </svg>
+          <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Search a place…</div>
+          <div class="sheet">
+            <div class="ask"><div class="step">STEP 1 / 3</div><h3>Where is your field?</h3><p>Tap the corners of your field on the map.</p></div>
+            <div class="done"><div class="step">STEP 1 / 3 · DONE</div><h3>Field outlined</h3><span class="chip">✓ 4.2 ha · Your field</span></div>
+          </div>
+        </div>
+
+        <div class="pane" id="form">
+          <div class="eyebrow">STEP 2 / 3</div>
+          <h3>What did it yield?</h3>
+          <p class="sub">Past harvests of this field, as far back as you know.</p>
+          <div class="tabs"><span class="on">dt/ha</span><span>t/ha</span></div>
+          <div id="yrows"></div>
+          <div class="btn" id="btn"><span class="spin" id="spin"></span><span id="btnTxt">Start analysis</span></div>
+        </div>
+
+        <div id="finger"></div>
+      </div>
+    </div>
+    <div class="cap" id="cap1" style="left:900px;top:330px">
+      <div class="num">01</div><h2>Feld auswählen</h2><p>Auf der Karte antippen und umranden – mehr braucht es nicht.</p>
+    </div>
+    <div class="cap" id="cap2" style="left:900px;top:330px">
+      <div class="num">02</div><h2>Alte Erträge eintragen</h2><p>Was hat das Feld in den letzten Jahren gebracht? Das ist der Maßstab.</p>
+    </div>
+  </section>
+
+  <!-- S2: space -->
+  <section class="scene" id="s2">
+    <video class="clip" id="vSat" src="clips/satellite.mp4" muted playsinline preload="auto"></video>
+    <div class="capShade"></div>
+    <div id="spaceWrap">
+      <svg id="space" viewBox="0 0 1920 1080">
+        <defs>
+          <radialGradient id="earthG" cx="50%" cy="0%" r="70%">
+            <stop offset="0" stop-color="#22483a"/><stop offset="0.35" stop-color="#173530"/><stop offset="1" stop-color="#08141a"/>
+          </radialGradient>
+          <filter id="glow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="14"/></filter>
+          <filter id="soft"><feGaussianBlur stdDeviation="2"/></filter>
+          <linearGradient id="beamG" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#f1cf86" stop-opacity="0.75"/><stop offset="1" stop-color="#e6b450" stop-opacity="0.05"/>
+          </linearGradient>
+          <pattern id="panelPat" width="16" height="14" patternUnits="userSpaceOnUse">
+            <rect width="16" height="14" fill="#1f3f66"/><path d="M0 0H16M0 0V14" stroke="#72aad9" stroke-opacity="0.55" stroke-width="1.2"/>
+          </pattern>
+          <clipPath id="earthClip"><circle cx="960" cy="2700" r="1990"/></clipPath>
+        </defs>
+        <g id="stars"></g>
+        <circle cx="960" cy="2700" r="1990" fill="none" stroke="#72aad9" stroke-width="34" opacity="0.5" filter="url(#glow)"/>
+        <circle cx="960" cy="2700" r="1990" fill="url(#earthG)"/>
+        <g clip-path="url(#earthClip)" id="land" opacity="0.4"></g>
+        <circle cx="960" cy="2700" r="1990" fill="none" stroke="#9cc8ee" stroke-width="3" opacity="0.6"/>
+        <g id="target">
+          <rect x="948" y="705" width="24" height="15" rx="1.5" fill="#e6b450" opacity="0.9" transform="rotate(-6 960 712)"/>
+          <circle id="tRing" cx="960" cy="712" r="26" fill="none" stroke="#e6b450" stroke-width="2.5"/>
+        </g>
+        <polygon id="beam" points="" fill="url(#beamG)" opacity="0"/>
+        <g id="sat">
+          <g id="satBody">
+            <rect x="-180" y="-26" width="140" height="52" rx="3" fill="url(#panelPat)" stroke="#9cc8ee" stroke-opacity="0.4"/>
+            <rect x="-40" y="-4" width="22" height="8" fill="#8a8f86"/>
+            <rect x="-18" y="-34" width="56" height="70" rx="5" fill="#c9a24a"/>
+            <path d="M-18 -16H38M-18 4H38M-18 22H38M2 -34V36M20 -34V36" stroke="#8e6d26" stroke-width="1.5" opacity="0.7"/>
+            <rect x="-6" y="36" width="32" height="12" rx="2" fill="#2a2f2b"/>
+            <circle cx="10" cy="52" r="7" fill="#111" stroke="#72aad9" stroke-width="2"/>
+            <rect x="38" y="-10" width="14" height="20" rx="2" fill="#d9dccf"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <div class="cap" id="cap3" style="left:140px;top:100px;width:1500px">
+      <div class="num">03</div><h2>Der Satellit schaut zu</h2><p>Sentinel-2 fotografiert jedes Feld in Europa alle paar Tage – kostenlos.</p>
+    </div>
+  </section>
+
+  <!-- S3/S4: years + analysis -->
+  <section class="scene" id="s3">
+    <div class="note">Schematische Darstellung</div>
+    <div id="fieldBox">
+      <div id="scan"></div>
+      <canvas id="ndvi" width="900" height="600"></canvas>
+      <svg id="marks" viewBox="0 0 900 600"></svg>
+    </div>
+    <div id="thumbs"></div>
+    <div class="cap" id="cap3b" style="left:1170px;top:200px">
+      <div class="num">03</div><h2>Jahr für Jahr ein neues Bild</h2><p>Nasse Jahre, trockene Jahre – wie hat sich dieses Feld jeweils entwickelt?</p>
+    </div>
+    <div id="yearBig"></div>
+    <div class="cap" id="cap4" style="left:1170px;top:200px">
+      <div class="num">04</div><h2>Schwache Stellen markiert</h2><p>Das Modell liest jedes 10-m-Pixel und zeigt, wo das Feld immer wieder zurückbleibt.</p>
+    </div>
+    <div class="legend" id="legend">
+      <div class="bar"></div>
+      <div class="lbl"><span>gestresst</span><span>gesund</span></div>
+      <div class="src">Pixel = 10 × 10 m · Sentinel-2</div>
+    </div>
+  </section>
+
+  <!-- S5: end card -->
+  <section class="scene" id="s5">
+    <div class="inner">
+      <div class="bigmark" data-mark></div>
+      <h1>CropTransfer <span>AT</span></h1>
+      <p>Satellitendaten + KI: Stress im Maisfeld sichtbar machen.</p>
+      <div class="foot">Gelernt an US-Daten · getestet in Österreich</div>
+    </div>
+  </section>
+
+  <div class="vignette"></div>
+  <div class="grain"></div>
+</div>
+
+<div id="hint">Leertaste = Start/Pause · R = neu · ←/→ = ±1 s · H = Steuerung ausblenden · F11 = Vollbild</div>
+<div id="ctrl"><button id="play">PLAY</button><div id="track"><div id="fill"></div></div><span id="time">0.0 / 0.0 s</span></div>
+
+<script>
+// ------------------------------------------------------------------
+// Stage scaling: the stage is always 1920×1080 and is scaled to fit.
+// ------------------------------------------------------------------
+const stage = document.getElementById('stage');
+function fit() {
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  stage.style.transform = `translate(-50%, -50%) scale(${s})`;
+}
+addEventListener('resize', fit); fit();
+
+// ------------------------------------------------------------------
+// Helpers: deterministic noise and colour ramps
+// ------------------------------------------------------------------
+const NS = 'http://www.w3.org/2000/svg';
+const el = (tag, attrs = {}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+function hash(x, y, s) {
+  let h = Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263) ^ Math.imul(s | 0, 982451653);
+  h = Math.imul(h ^ (h >>> 13), 1274126177); h ^= h >>> 16;
+  return (h >>> 0) / 4294967296;
+}
+function vnoise(x, y, s) {
+  const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+  const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+  const a = hash(xi, yi, s), b = hash(xi + 1, yi, s), c = hash(xi, yi + 1, s), d = hash(xi + 1, yi + 1, s);
+  return a + (b - a) * u + (c - a) * v + (a - b - c + d) * u * v;
+}
+const fbm = (x, y, s) => 0.6 * vnoise(x, y, s) + 0.3 * vnoise(2 * x, 2 * y, s + 7) + 0.1 * vnoise(4 * x, 4 * y, s + 13);
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
+function ramp(stops, v) {
+  v = clamp(v, 0, 1);
+  const t = v * (stops.length - 1), i = Math.min(stops.length - 2, Math.floor(t)), f = t - i, a = stops[i], b = stops[i + 1];
+  return `rgb(${(a[0] + (b[0] - a[0]) * f) | 0},${(a[1] + (b[1] - a[1]) * f) | 0},${(a[2] + (b[2] - a[2]) * f) | 0})`;
+}
+const NDVI = ['#4b3725', '#8a6a36', '#c4a44b', '#9dbb5c', '#55a05a', '#23704a'].map(hex);
+const TRUEC = ['#7a6443', '#857246', '#6f7a3d', '#4f6b2e', '#365b27', '#294b21'].map(hex);
+
+// Logo marks (3×3 NDVI pixels)
+document.querySelectorAll('[data-mark]').forEach((m) => {
+  ['#23704a', '#55a05a', '#9dbb5c', '#55a05a', '#c4a44b', '#55a05a', '#8a6a36', '#e4694a', '#9dbb5c'].forEach((c) => {
+    const i = document.createElement('i'); i.style.background = c; m.appendChild(i);
+  });
+});
+
+// ------------------------------------------------------------------
+// Synthetic field: 36 × 24 cells (one cell = one Sentinel-2 pixel).
+// Two recurring weak zones; dry years make everything weaker.
+// ------------------------------------------------------------------
+const COLS = 36, ROWS = 24, CELL = 25;
+const YEARS = [2019, 2020, 2021, 2022, 2023, 2024, 2025];
+const DRY = { 2019: 0.3, 2020: 0.12, 2021: 0.2, 2022: 0.75, 2023: 0.25, 2024: 0.5, 2025: 0.3 };
+const ZONES = [{ x: 26, y: 7, r: 4.4, w: 1 }, { x: 9, y: 17, r: 3.4, w: 0.75 }];
+function zone(x, y) { let z = 0; for (const q of ZONES) z = Math.max(z, q.w * Math.exp(-((x - q.x) ** 2 + (y - q.y) ** 2) / (q.r * q.r))); return z; }
+function ndvi(x, y, year) {
+  const d = DRY[year], e = Math.min(x, y, COLS - x, ROWS - y);
+  const edge = e < 1 ? 0.12 : e < 2 ? 0.05 : 0;
+  return clamp(0.8 + 0.24 * (fbm(x / 7, y / 7, year) - 0.5) - 0.28 * d - zone(x, y) * (0.2 + 0.35 * d) - edge, 0.03, 0.98);
+}
+// "Satellite photo" look of one year
+function drawTrue(cv, year) {
+  const ctx = cv.getContext('2d'), W = cv.width, H = cv.height, B = Math.max(2, Math.round(W / 180)), k = COLS / W;
+  for (let by = 0; by < H; by += B) for (let bx = 0; bx < W; bx += B) {
+    const v = ndvi(bx * k, by * k, year) - 0.22 * DRY[year] + (hash(bx, by, year) - 0.5) * 0.07;
+    ctx.fillStyle = ramp(TRUEC, v); ctx.fillRect(bx, by, B, B);
+  }
+  ctx.save(); ctx.globalAlpha = 0.16; ctx.strokeStyle = '#0a0d07'; ctx.lineWidth = Math.max(1, W / 450);
+  const step = Math.max(3, W / 130);
+  for (let x = -H; x < W + H; x += step) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x + H * 0.12, H); ctx.stroke(); }
+  ctx.globalAlpha = 0.22; ctx.strokeStyle = '#d8c79a'; ctx.lineWidth = Math.max(1, W / 300);
+  for (const fx of [0.33, 0.66]) { ctx.beginPath(); ctx.moveTo(W * fx, 0); ctx.lineTo(W * fx + H * 0.12, H); ctx.stroke(); }
+  ctx.restore();
+}
+// Multi-year mean as pixel grid, revealed progressively (p = 0…1)
+const MEAN = [];
+{ let lo = 1, hi = 0;
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+    const m = YEARS.reduce((s, yr) => s + ndvi(x + 0.5, y + 0.5, yr), 0) / YEARS.length; MEAN.push(m); lo = Math.min(lo, m); hi = Math.max(hi, m);
+  }
+  for (let i = 0; i < MEAN.length; i++) MEAN[i] = 0.06 + 0.9 * (MEAN[i] - lo) / (hi - lo);
+}
+const ndviCtx = document.getElementById('ndvi').getContext('2d');
+function drawNdvi(p) {
+  ndviCtx.clearRect(0, 0, 900, 600);
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+    const order = (x / COLS) * 0.65 + (y / ROWS) * 0.35, a = clamp((p * 1.25 - order) / 0.25, 0, 1);
+    if (a <= 0) continue;
+    ndviCtx.globalAlpha = a; ndviCtx.fillStyle = ramp(NDVI, MEAN[y * COLS + x]);
+    const inset = (1 - a) * 8;
+    ndviCtx.fillRect(x * CELL + 1 + inset, y * CELL + 1 + inset, CELL - 2 - 2 * inset, CELL - 2 - 2 * inset);
+  }
+  ndviCtx.globalAlpha = 1;
+}
+
+// Year canvases + thumbnails + big year labels
+const box = document.getElementById('fieldBox'), thumbs = document.getElementById('thumbs'), yearBig = document.getElementById('yearBig');
+YEARS.forEach((yr) => {
+  const cv = document.createElement('canvas'); cv.width = 900; cv.height = 600; cv.className = 'yr'; cv.id = 'yr' + yr; drawTrue(cv, yr);
+  box.insertBefore(cv, document.getElementById('ndvi'));
+  const t = document.createElement('div'); t.className = 'thumb'; t.id = 'th' + yr;
+  const tc = document.createElement('canvas'); tc.width = 232; tc.height = 154; drawTrue(tc, yr);
+  const lab = document.createElement('span'); lab.textContent = yr; t.append(tc, lab); thumbs.appendChild(t);
+  const big = document.createElement('span'); big.textContent = yr; big.id = 'yb' + yr; yearBig.appendChild(big);
+});
+
+// Markers on the weak zones
+const marks = document.getElementById('marks');
+const MARKS = ZONES.map((z) => ({ x: (z.x + 0.5) * CELL, y: (z.y + 0.5) * CELL, r: z.r * CELL * 0.9 }));
+MARKS.forEach((m, i) => {
+  el('circle', { cx: m.x, cy: m.y, r: m.r, fill: 'rgb(228 105 74 / 0.14)', stroke: '#e4694a', 'stroke-width': 3, 'stroke-dasharray': '10 8', class: 'mzone', id: 'mz' + i }, marks);
+  el('circle', { cx: m.x, cy: m.y, r: m.r, fill: 'none', stroke: '#e4694a', 'stroke-width': 2, class: 'mring', id: 'mr' + i }, marks);
+  el('circle', { cx: m.x, cy: m.y, r: 9, fill: '#e4694a', stroke: '#0b0f0c', 'stroke-width': 3, class: 'mdot', id: 'md' + i }, marks);
+});
+[{ i: 0, dx: -250, dy: -36 }, { i: 1, dx: 60, dy: -110 }].forEach(({ i, dx, dy }) => {
+  const t = document.createElement('div'); t.className = 'tag'; t.id = 'tag' + i;
+  t.innerHTML = '<b>●</b> Schwache Zone'; t.style.left = MARKS[i].x + dx + 'px'; t.style.top = MARKS[i].y + dy + 'px'; box.appendChild(t);
+});
+
+// ------------------------------------------------------------------
+// Phone map: patchwork of fields around the selected one
+// ------------------------------------------------------------------
+const patches = document.querySelector('#mapsvg .patches');
+const PAL = ['#3c4a2b', '#4f5d2f', '#5f6a38', '#74703f', '#857a4c', '#2f3b25', '#6a7d3e', '#8d8455', '#46552c'];
+{ const g = el('g', { transform: 'rotate(-9 197 373)' }, patches);
+  for (let r = -4; r < 16; r++) { let x = -260;
+    while (x < 640) { const w = 55 + hash(x, r, 3) * 95;
+      el('rect', { x, y: r * 66, width: w - 3, height: 63, fill: PAL[(hash(x, r, 5) * PAL.length) | 0] }, g); x += w; } }
+  el('rect', { x: -400, y: -400, width: 1200, height: 1600, fill: 'url(#rowsPat)' }, g);
+}
+const P = [{ x: 104, y: 262 }, { x: 266, y: 236 }, { x: 288, y: 392 }, { x: 122, y: 420 }];
+el('polygon', { points: P.map((p) => `${p.x},${p.y}`).join(' '), fill: '#5b6c31' }, patches);
+el('polygon', { points: P.map((p) => `${p.x},${p.y}`).join(' '), fill: 'url(#rowsPat)' }, patches);
+document.getElementById('fillPoly').setAttribute('points', P.map((p) => `${p.x},${p.y}`).join(' '));
+const edges = document.getElementById('edges'), verts = document.getElementById('verts');
+P.forEach((a, i) => {
+  const b = P[(i + 1) % 4], len = Math.hypot(b.x - a.x, b.y - a.y);
+  el('line', { x1: a.x, y1: a.y, x2: b.x, y2: b.y, id: 'e' + i, 'stroke-dasharray': len, 'stroke-dashoffset': len }, edges);
+  el('circle', { cx: a.x, cy: a.y, r: 7.5, fill: '#0b0f0c', stroke: '#e6b450', 'stroke-width': 3.5, id: 'v' + i, style: 'transform-box:fill-box;transform-origin:center' }, verts);
+});
+// Pane top is 104px below screen top; the map svg is 394 px wide like the pane.
+const FP = P.map((p) => ({ x: p.x, y: p.y + 104 }));
+
+// Yield form rows
+const YIELDS = [['2021', '112'], ['2022', '86'], ['2023', '118'], ['2024', '94'], ['2025', '109']];
+const yrows = document.getElementById('yrows');
+YIELDS.forEach(([y], i) => {
+  yrows.insertAdjacentHTML('beforeend', `<div class="yrow"><label>Yield ${y}</label><div class="yin" id="yin${i}"><span class="val" id="yv${i}"></span><small>dt/ha</small></div></div>`);
+});
+
+// ------------------------------------------------------------------
+// Space: stars, land masses, satellite + beam
+// ------------------------------------------------------------------
+{ const st = document.getElementById('stars');
+  for (let i = 0; i < 220; i++) el('circle', { cx: hash(i, 1, 9) * 1920, cy: hash(i, 2, 9) * 760, r: 0.6 + hash(i, 3, 9) * 1.6, fill: '#fff', opacity: 0.25 + hash(i, 4, 9) * 0.6 }, st);
+  const land = document.getElementById('land');
+  for (let i = 0; i < 70; i++) {
+    const cx = hash(i, 5, 2) * 2400 - 240, cy = 690 + hash(i, 6, 2) * 420;
+    el('ellipse', { cx, cy, rx: 40 + hash(i, 7, 2) * 160, ry: 6 + hash(i, 8, 2) * 26, fill: hash(i, 9, 2) > 0.5 ? '#3f6b3a' : '#5d6b3a', filter: 'url(#soft)' }, land);
+  }
+  for (let i = 0; i < 26; i++) el('ellipse', { cx: hash(i, 1, 4) * 2200 - 140, cy: 700 + hash(i, 2, 4) * 300, rx: 60 + hash(i, 3, 4) * 140, ry: 5 + hash(i, 4, 4) * 12, fill: '#e8eef0', opacity: 0.35, filter: 'url(#soft)' }, land);
+}
+const sat = document.getElementById('sat'), beam = document.getElementById('beam');
+const satPos = { x: -320, y: 440, rot: -8 };
+const TGT = { x: 960, y: 712 };
+function placeSat() {
+  sat.setAttribute('transform', `translate(${satPos.x} ${satPos.y}) rotate(${satPos.rot})`);
+  const sx = satPos.x + 10, sy = satPos.y + 56;
+  beam.setAttribute('points', `${sx - 7},${sy} ${sx + 7},${sy} ${TGT.x + 34},${TGT.y} ${TGT.x - 34},${TGT.y}`);
+}
+placeSat();
+
+// ------------------------------------------------------------------
+// Timeline (seconds). Everything is on one scrubbable GSAP timeline.
+// ------------------------------------------------------------------
+const tl = gsap.timeline({ paused: true });
+const E3 = 'power3.out', IO = 'power2.inOut';
+
+// S0 hook 0 – 4.7
+tl.set('#s0', { autoAlpha: 1 }, 0)
+  .fromTo('#s0 .patches', { backgroundPosition: '0px 0px' }, { backgroundPosition: '0px 2600px', duration: 4.9, ease: 'none' }, 0)
+  .from('#s0 .kicker', { y: 20, autoAlpha: 0, duration: 0.6, ease: E3 }, 0.2)
+  .from('#s0 .l1', { y: 50, autoAlpha: 0, duration: 0.9, ease: E3 }, 0.45)
+  .from('#s0 .l2', { y: 50, autoAlpha: 0, duration: 0.9, ease: E3 }, 1.7)
+  .to('#s0 .l2 em', { color: '#e6b450', duration: 0.35, stagger: 0.35 }, 2.5)
+  .to('#s0 .hook', { y: -40, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 4.2)
+  .to('#s0', { autoAlpha: 0, duration: 0.5 }, 4.4);
+
+// S1 phone: draw field 4.5 – 9.6
+tl.set('#s1', { autoAlpha: 1 }, 4.5)
+  .from('#phone', { y: 160, rotation: -5, autoAlpha: 0, duration: 1.0, ease: E3 }, 4.5)
+  .from('#cap1', { x: -40, autoAlpha: 0, duration: 0.8, ease: E3 }, 5.0)
+  .from('#mapsvg .patches', { scale: 1.25, transformOrigin: '50% 45%', duration: 1.8, ease: 'power2.out' }, 4.5)
+  .fromTo('#finger', { autoAlpha: 0, x: 330, y: 700, scale: 1.3 }, { autoAlpha: 1, x: FP[0].x, y: FP[0].y, scale: 1, duration: 0.7, ease: IO }, 5.8);
+const tap = (t) => tl.to('#finger', { scale: 0.82, duration: 0.09, yoyo: true, repeat: 1, ease: 'power1.inOut' }, t)
+  .fromTo('#finger', { '--ripple': 0.9, '--ripple-s': 1 }, { '--ripple': 0, '--ripple-s': 2.1, duration: 0.45, ease: 'power2.out' }, t);
+for (let i = 0; i < 4; i++) {
+  const t = 6.55 + i * 0.6, n = FP[(i + 1) % 4];
+  tap(t);
+  tl.from('#v' + i, { scale: 0, duration: 0.3, ease: 'back.out(3)' }, t + 0.05)
+    .to('#finger', { x: n.x, y: n.y, duration: 0.42, ease: IO }, t + 0.15)
+    .to('#e' + i, { attr: { 'stroke-dashoffset': 0 }, duration: 0.42, ease: IO }, t + 0.15);
+}
+tap(8.95);
+tl.to('#fillPoly', { attr: { 'fill-opacity': 0.28 }, duration: 0.4 }, 9.0)
+  .to('#v0,#v1,#v2,#v3', { scale: 1.35, duration: 0.15, yoyo: true, repeat: 1, stagger: 0.04 }, 9.0)
+  .to('.sheet .ask', { autoAlpha: 0, duration: 0.25 }, 9.05)
+  .to('.sheet .done', { opacity: 1, duration: 0.3 }, 9.15)
+  .from('.sheet .chip', { scale: 0.6, duration: 0.4, ease: 'back.out(2.5)' }, 9.2)
+  .to('#finger', { x: 300, y: 720, autoAlpha: 0, duration: 0.5, ease: 'power2.in' }, 9.3);
+
+// S1 phone: yields 9.8 – 13.8
+tl.to('#mapPane', { x: -394, duration: 0.6, ease: 'power3.inOut' }, 9.8)
+  .to('#form', { x: 0, duration: 0.6, ease: 'power3.inOut' }, 9.8)
+  .to('#cap1', { x: 40, autoAlpha: 0, duration: 0.4, ease: 'power2.in' }, 9.8)
+  .from('#cap2', { x: -40, autoAlpha: 0, duration: 0.7, ease: E3 }, 10.15);
+YIELDS.forEach(([, v], i) => {
+  const t = 10.5 + i * 0.48, o = { n: 0 }, vEl = document.getElementById('yv' + i);
+  tl.set('#yin' + i, { className: 'yin active' }, t)
+    .to(o, { n: v.length, duration: 0.3, ease: 'none', onUpdate: () => { vEl.textContent = v.slice(0, Math.round(o.n)); } }, t)
+    .set('#yin' + i, { className: 'yin' }, t + 0.46);
+});
+tl.set('#finger', { x: 197, y: 700, scale: 1 }, 12.7)
+  .to('#finger', { autoAlpha: 1, duration: 0.2 }, 12.75);
+tap(12.95);
+tl.to('#btn', { scale: 0.96, duration: 0.1, yoyo: true, repeat: 1 }, 12.95)
+  .set('#btnTxt', { textContent: 'Analysing…' }, 13.05)
+  .set('#spin', { display: 'inline-block' }, 13.05)
+  .to('#spin', { rotation: 720, duration: 1, ease: 'none' }, 13.05)
+  .to('#finger', { autoAlpha: 0, duration: 0.2 }, 13.2)
+  .to('#cap2', { autoAlpha: 0, x: 40, duration: 0.4, ease: 'power2.in' }, 13.4)
+  .to('#phone', { scale: 0.7, y: -260, autoAlpha: 0, duration: 0.7, ease: 'power3.in' }, 13.45)
+  .set('#s1', { autoAlpha: 0 }, 14.2);
+
+// S2 space 13.9 – 20.3
+tl.set('#s2', { autoAlpha: 0 }, 0)
+  .to('#s2', { autoAlpha: 1, duration: 0.8 }, 13.9)
+  .from('#spaceWrap', { y: 160, scale: 1.08, duration: 2.2, ease: 'power2.out' }, 13.9)
+  .to(satPos, { x: 2240, y: 480, rot: 6, duration: 6.4, ease: 'none', onUpdate: placeSat }, 13.9)
+  .from('#cap3', { y: 30, autoAlpha: 0, duration: 0.8, ease: E3 }, 14.5)
+  .to('#beam', { opacity: 1, duration: 0.4 }, 16.2)
+  .to('#beam', { opacity: 0.55, duration: 0.25, yoyo: true, repeat: 5, ease: 'sine.inOut' }, 16.6)
+  .fromTo('#tRing', { attr: { r: 18 }, opacity: 1 }, { attr: { r: 60 }, opacity: 0, duration: 0.9, repeat: 2, ease: 'power2.out' }, 16.4)
+  .to('#beam', { opacity: 0, duration: 0.4 }, 18.6)
+  .to('#cap3', { autoAlpha: 0, duration: 0.4 }, 18.4)
+  .to('#spaceWrap', { scale: 22, duration: 1.5, ease: 'power3.in' }, 18.8)
+  .to('#vSat', { scale: 2.4, filter: 'blur(10px)', duration: 1.3, ease: 'power3.in' }, 18.9)
+  .to('#s2', { autoAlpha: 0, duration: 0.45 }, 19.9);
+
+// S3 years 19.9 – 25
+tl.set('#s3', { autoAlpha: 1 }, 19.9)
+  .from('#fieldBox', { scale: 1.6, autoAlpha: 0, filter: 'blur(12px)', duration: 0.9, ease: E3 }, 19.9)
+  .set('#ndvi', { autoAlpha: 0 }, 0)
+  .set('#legend,#cap4,#marks,.tag', { autoAlpha: 0 }, 0)
+  .from('#cap3b', { x: -40, autoAlpha: 0, duration: 0.7, ease: E3 }, 20.4)
+  .from('.note', { autoAlpha: 0, duration: 0.5 }, 20.4);
+YEARS.forEach((yr, i) => {
+  const t = 20.2 + i * 0.68, prev = YEARS[i - 1];
+  tl.to('#yr' + yr, { clipPath: 'inset(0 0 0% 0)', duration: 0.42, ease: 'power2.inOut' }, t)
+    .fromTo('#scan', { top: 0, opacity: 1 }, { top: 600, duration: 0.42, ease: 'power2.inOut' }, t)
+    .set('#scan', { opacity: 0 }, t + 0.42)
+    .from('#th' + yr, { y: 24, autoAlpha: 0, duration: 0.4, ease: E3 }, t + 0.1)
+    .set('#yb' + yr, { visibility: 'visible' }, t + 0.05);
+  if (prev) tl.set('#yb' + prev, { visibility: 'hidden' }, t + 0.05);
+});
+
+// S4 analysis 25 – 29.5
+const prog = { p: 0 };
+tl.to('#cap3b', { autoAlpha: 0, x: 40, duration: 0.4, ease: 'power2.in' }, 25.0)
+  .to('#yearBig', { autoAlpha: 0, duration: 0.3 }, 25.0)
+  .to('#thumbs .thumb', { autoAlpha: 0.35, duration: 0.4 }, 25.0)
+  .set('#ndvi', { autoAlpha: 1 }, 25.1)
+  .to(prog, { p: 1, duration: 1.3, ease: 'power1.inOut', onUpdate: () => drawNdvi(prog.p) }, 25.1)
+  .fromTo('#cap4', { x: -40, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.7, ease: E3, immediateRender: false }, 25.35)
+  .to('#legend', { autoAlpha: 1, duration: 0.6 }, 26.0)
+  .set('#marks', { autoAlpha: 1 }, 26.4)
+  .from('.mdot', { scale: 0, transformOrigin: 'center', duration: 0.4, ease: 'back.out(3)', stagger: 0.25 }, 26.4)
+  .from('.mzone', { scale: 0.2, opacity: 0, transformOrigin: 'center', duration: 0.6, ease: E3, stagger: 0.25 }, 26.5)
+  .fromTo('.mring', { scale: 0.4, opacity: 1, transformOrigin: 'center' }, { scale: 1.5, opacity: 0, duration: 1.0, ease: 'power2.out', stagger: 0.25, repeat: 2 }, 26.6)
+  .to('#tag0', { autoAlpha: 1, duration: 0.01 }, 26.9).from('#tag0', { y: 14, duration: 0.4, ease: E3 }, 26.9)
+  .to('#tag1', { autoAlpha: 1, duration: 0.01 }, 27.15).from('#tag1', { y: 14, duration: 0.4, ease: E3 }, 27.15)
+  .to('#s3', { autoAlpha: 0, duration: 0.5 }, 29.4);
+
+// S5 end card 29.7 – 35
+tl.set('#s5', { autoAlpha: 1 }, 29.7)
+  .from('#s5 .bigmark i', { scale: 0, autoAlpha: 0, duration: 0.35, stagger: 0.04, ease: 'back.out(2.5)' }, 29.7)
+  .from('#s5 h1', { y: 40, autoAlpha: 0, duration: 0.8, ease: E3 }, 30.0)
+  .from('#s5 p', { y: 30, autoAlpha: 0, duration: 0.8, ease: E3 }, 30.5)
+  .from('#s5 .foot', { autoAlpha: 0, duration: 0.8 }, 31.1)
+  .to({}, { duration: 0.1 }, 34.9);
+
+// ------------------------------------------------------------------
+// Controls
+// ------------------------------------------------------------------
+const DUR = tl.duration(), fillEl = document.getElementById('fill'), timeEl = document.getElementById('time'), playBtn = document.getElementById('play');
+const ctrl = document.getElementById('ctrl'), hint = document.getElementById('hint');
+let forceHide = false, idleT;
+function sync() { fillEl.style.width = (tl.time() / DUR) * 100 + '%'; timeEl.textContent = `${tl.time().toFixed(1)} / ${DUR.toFixed(1)} s`; playBtn.textContent = tl.paused() || tl.progress() === 1 ? 'PLAY' : 'PAUSE'; }
+// Keep each clip in step with the timeline (also while scrubbing).
+const CLIPS = [{ v: document.getElementById('vDrone'), scene: '#s0', start: 0 }, { v: document.getElementById('vSat'), scene: '#s2', start: 13.9 }];
+CLIPS.forEach((c) => {
+  c.v.addEventListener('loadeddata', () => { c.ok = true; document.querySelector(c.scene).classList.add('has-clip'); syncClips(); });
+  c.v.addEventListener('error', () => c.v.remove());
+});
+function syncClips() {
+  for (const c of CLIPS) {
+    if (!c.ok) continue;
+    const want = clamp(tl.time() - c.start, 0, c.v.duration - 0.05);
+    const live = !tl.paused() && tl.progress() < 1 && tl.time() >= c.start && tl.time() - c.start < c.v.duration;
+    if (Math.abs(c.v.currentTime - want) > 0.2) c.v.currentTime = want;
+    if (live && c.v.paused) c.v.play().catch(() => {});
+    if (!live && !c.v.paused) c.v.pause();
+  }
+}
+tl.eventCallback('onUpdate', () => { sync(); syncClips(); }); tl.eventCallback('onComplete', () => { sync(); syncClips(); });
+function toggle() { if (tl.progress() === 1) tl.restart(); else tl.paused(!tl.paused()); hint.style.opacity = 0; sync(); }
+function seek(t) { tl.seek(clamp(t, 0, DUR), false); sync(); }
+playBtn.onclick = toggle;
+document.getElementById('track').onclick = (e) => { const r = e.currentTarget.getBoundingClientRect(); seek(((e.clientX - r.left) / r.width) * DUR); };
+addEventListener('keydown', (e) => {
+  if (e.code === 'Space') { e.preventDefault(); toggle(); }
+  else if (e.key === 'r' || e.key === 'R') { tl.restart(); hint.style.opacity = 0; sync(); }
+  else if (e.key === 'ArrowRight') seek(tl.time() + 1);
+  else if (e.key === 'ArrowLeft') seek(tl.time() - 1);
+  else if (e.key === 'h' || e.key === 'H') { forceHide = !forceHide; showUi(); }
+});
+function showUi() {
+  document.body.classList.remove('idle'); ctrl.classList.toggle('hide', forceHide); if (forceHide) hint.style.opacity = 0;
+  clearTimeout(idleT); idleT = setTimeout(() => { ctrl.classList.add('hide'); document.body.classList.add('idle'); }, 1800);
+}
+addEventListener('mousemove', showUi); showUi();
+
+const q = new URLSearchParams(location.search);
+seek(parseFloat(q.get('t') || '0'));
+if (q.has('autoplay')) document.fonts.ready.then(() => setTimeout(toggle, 400));
+</script>
+</body>
+</html>

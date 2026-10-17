@@ -24,6 +24,8 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 | 2026-10-15 | Claude (Anthropic), Claude Code | Diskussion und Verfeinerung der Projektidee, Recherche zu Datenquellen (u. a. Feld-Ertragsdatensätze KBS, BARC, Colorado, Mead), Entwurf und Überarbeitung von PLAN.md und AGENTS.md, Repository-Grundgerüst |
 
 - 2026-10-16: Claude Code (Sonnet 5.5) setzt Etappe 1–2 des Mehr-Kulturen-Plans um (Download-Modul, Schema-Loader, Tests, Datenkritik); Plan und Entscheidungen durch den Projektinhaber.
+- 2026-10-17: Claude Code (Opus 5.5) erstellt das animierte Pitch-Intro `pitch/intro/` (Storyboard, HTML/GSAP-Animation, schematische Felddaten); Idee und Ablauf vom Projektinhaber.
+- 2026-10-17: Zwei KI-generierte Videoclips für das Pitch-Intro (Drohnenflug über Maisfeld, Satellit im Orbit) mit Higgsfield „Cinema Studio Video 3.0“ (720p, je 5 s), gestartet von Claude Code; Dateien `pitch/intro/clips/`. Die Clips sind Illustration, keine Daten.
 
 ## Datensätze
 Details, Lizenzen und Zitate in `DATA_SOURCES.md`.
