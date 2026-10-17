@@ -17,6 +17,43 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: if-runde2
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, Runde 2 (Glättung, Aufbereitung)"
+    title: "Glätten bringt nichts: der Gewinn kam aus der Messung, nicht aus der Vorhersage"
+    status: nicht_bestanden
+    changed: "Es wurde getestet, ob eine Glättung der Satellitenvorhersage über Nachbarzellen die Karte verbessert, und ob bereinigte Mähdrescher-Rohpunkte das Bild ändern; alle Regeln standen vorher fest."
+    plain: >
+      Die Vermutung war, dass sich die Karte verbessert, wenn man die Vorhersage über 30 Meter glättet. Das hat sich nicht bestätigt:
+      An beiden Standorten (USA und Italien) wird die Rangordnung dadurch gleich oder etwas schlechter.
+      Der frühere Gewinn beim Mitteln über größere Blöcke kam daher, dass dabei auch die gemessene Ertragskarte gemittelt wurde,
+      und diese verliert dabei Rauschen. Bereinigt man die Rohpunkte in Italien (Start-, Stopp- und Spurenden), steigt der Wert nur leicht.
+    metrics:
+      - label: "BARC: Glättung (30 m) minus keine Glättung, rohes NDVI-Fenster (Δρ)"
+        value: "-0,013"
+        ci: "[-0,017; 0,001]"
+        n: "41 Feld-Jahre"
+        plain: "Kein Gewinn; der Wert hätte mindestens +0,02 sein müssen."
+      - label: "BARC: Glättung, Modell M1 (Δρ)"
+        value: "+0,004"
+        ci: "[-0,007; 0,012]"
+        n: "41 Feld-Jahre"
+        plain: "Praktisch kein Unterschied."
+      - label: "Kayad: bereinigte Ertragspunkte, rohes NDVI-Fenster (ρ)"
+        value: "0,623 statt 0,604"
+        n: "3 Feld-Jahre"
+        plain: "Kleiner Gewinn, weil die Messkarte sauberer ist; das Verfahren selbst ist nicht besser."
+    found:
+      - "Zufallsvorhersage bleibt nach der Glättung bei ρ ≈ 0; die Glättung erzeugt keinen Scheinzusammenhang."
+      - "Die Karte bleibt im Produkt auf 10-m-Zellen; eine gröbere 30-m-Karte wäre ein anderes, leichteres Produkt."
+    limits:
+      - "Kayad sind nur drei Feld-Jahre eines Feldes; der Kayad-Teil des Tests ist beschreibend."
+      - "Fahrspur-Unterschiede und der 18-t/ha-Deckel der Italien-Daten wurden nicht behandelt."
+    links:
+      - label: "Ergebnis Runde 2"
+        path: reports/innerfeld_ergebnis_runde2.md
+      - label: "Vorab-Festlegungen Runde 2"
+        path: reports/innerfeld_vorab_runde2.md
   - id: if-obergrenze
     date: 2026-10-17
     phase: "Innerhalb-Feld über Standorte, explorative Einordnung"
