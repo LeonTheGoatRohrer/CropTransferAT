@@ -5,10 +5,9 @@ import { Link, NavLink, useLocation } from 'react-router'
 import { ButtonLink } from '../ui/Button'
 
 export const NAV_LINKS = [
+  { to: '/model', label: 'Models' },
   { to: '/evidence', label: 'Evidence' },
-  { to: '/model', label: 'Model card' },
   { to: '/data', label: 'Data' },
-  { to: '/method', label: 'Method' },
   { to: '/about', label: 'About' },
 ]
 
@@ -69,8 +68,8 @@ export function Nav() {
         </nav>
         <div className="flex items-center gap-2">
           <span className="hidden sm:block">
-            <ButtonLink to="/analyse" size="sm" icon={<ArrowRight className="size-3.5" />}>
-              Analyse a field
+            <ButtonLink to="/contribute" size="sm" icon={<ArrowRight className="size-3.5" />}>
+              Add your field
             </ButtonLink>
           </span>
           <button
@@ -94,7 +93,7 @@ export function Nav() {
             className="overflow-hidden border-t border-[var(--line)] lg:hidden"
           >
             <div className="flex flex-col gap-1 px-4 py-4">
-              {[{ to: '/', label: 'Overview' }, { to: '/analyse', label: 'Analyse a field' }, ...NAV_LINKS].map((l) => (
+              {[{ to: '/', label: 'Overview' }, { to: '/contribute', label: 'Add your field' }, { to: '/analyse', label: 'Analyse a field' }, ...NAV_LINKS].map((l) => (
                 <NavLink key={l.to} to={l.to} end className={({ isActive }) => `rounded-lg px-3 py-3 font-display text-xl ${isActive ? 'text-maize' : 'text-ink'}`}>
                   {l.label}
                 </NavLink>

@@ -6,6 +6,7 @@ const COLUMNS = [
     title: 'Product',
     links: [
       { to: '/', label: 'Overview' },
+      { to: '/contribute', label: 'Add your field' },
       { to: '/analyse', label: 'Analyse a field' },
       { to: '/evidence', label: 'Evidence' },
     ],
@@ -13,7 +14,7 @@ const COLUMNS = [
   {
     title: 'Science',
     links: [
-      { to: '/model', label: 'Model card' },
+      { to: '/model', label: 'The three models' },
       { to: '/method', label: 'Method and experiments' },
       { to: '/data', label: 'Data sources and explorer' },
     ],

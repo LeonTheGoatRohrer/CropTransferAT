@@ -26,6 +26,10 @@ type Props = {
   onSelectField: (id: string) => void
   onPolygon: (p: Polygon | null) => void
   flyTo: { center: [number, number]; zoom?: number; bbox?: [number, number, number, number]; key: number } | null
+  /** Restrict the map to this [west, south, east, north] box and start with it in view. */
+  bounds?: [number, number, number, number]
+  /** Labelled markers with a small popup, e.g. sites that already have data. */
+  points?: { id: string; title: string; text: string; lngLat: [number, number] }[]
   className?: string
 }
 
@@ -55,7 +59,7 @@ function boundsOf(p: FieldGeometry): LngLatBoundsLike {
 }
 
 /** MapLibre map with satellite basemaps, prepared fields, a 10-m cell overlay and polygon drawing. */
-export function FieldMap({ fields, selectedId, selectedGeometry, overlay, basemap, drawing, onSelectField, onPolygon, flyTo, className = '' }: Props) {
+export function FieldMap({ fields, selectedId, selectedGeometry, overlay, basemap, drawing, onSelectField, onPolygon, flyTo, bounds, points, className = '' }: Props) {
   const el = useRef<HTMLDivElement>(null)
   const map = useRef<MlMap | null>(null)
   const draw = useRef<TerraDraw | null>(null)
@@ -63,6 +67,7 @@ export function FieldMap({ fields, selectedId, selectedGeometry, overlay, basema
   const silent = useRef(false) // true while the map clears drawings itself
   const cb = useRef({ onSelectField, onPolygon })
   cb.current = { onSelectField, onPolygon }
+  const startBounds = useRef(bounds)
 
   // Mount once.
   useEffect(() => {
@@ -85,8 +90,9 @@ export function FieldMap({ fields, selectedId, selectedGeometry, overlay, basema
           })),
         ],
       },
-      center: [-76.9, 39.02],
-      zoom: 12.4,
+      ...(startBounds.current
+        ? { bounds: [[startBounds.current[0], startBounds.current[1]], [startBounds.current[2], startBounds.current[3]]] as LngLatBoundsLike, fitBoundsOptions: { padding: 24 }, maxBounds: [[startBounds.current[0] - 1, startBounds.current[1] - 0.7], [startBounds.current[2] + 1, startBounds.current[3] + 0.7]] as LngLatBoundsLike, minZoom: 5.5 }
+        : { center: [-76.9, 39.02] as [number, number], zoom: 12.4 }),
       attributionControl: { compact: true },
       maxPitch: 0,
       dragRotate: false,
@@ -230,6 +236,23 @@ export function FieldMap({ fields, selectedId, selectedGeometry, overlay, basema
       silent.current = false
     }
   }, [selectedId, ready])
+
+  // Labelled points with popups.
+  useEffect(() => {
+    const m = map.current
+    if (!m || !points?.length) return
+    const marks = points.map((p) => {
+      const dot = document.createElement('button')
+      dot.type = 'button'
+      dot.setAttribute('aria-label', p.title)
+      dot.style.cssText = 'width:16px;height:16px;border-radius:9999px;background:#e6b450;border:2px solid #0b0f0c;box-shadow:0 0 0 5px rgba(230,180,80,.25);cursor:pointer'
+      const pop = new maplibregl.Popup({ offset: 14, closeButton: false, maxWidth: '240px' }).setHTML(
+        `<div style="color:#0b0f0c;font:13px/1.4 system-ui"><b>${p.title}</b><br>${p.text}</div>`,
+      )
+      return new maplibregl.Marker({ element: dot }).setLngLat(p.lngLat).setPopup(pop).addTo(m)
+    })
+    return () => marks.forEach((x) => x.remove())
+  }, [points])
 
   // Search result fly-to.
   useEffect(() => {

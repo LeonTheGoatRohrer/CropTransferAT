@@ -5,6 +5,7 @@ import { Footer } from './components/layout/Footer'
 import { Nav } from './components/layout/Nav'
 
 const Home = lazy(() => import('./pages/Home'))
+const Contribute = lazy(() => import('./pages/Contribute'))
 const Analyse = lazy(() => import('./pages/Analyse'))
 const Evidence = lazy(() => import('./pages/Evidence'))
 const ModelCard = lazy(() => import('./pages/ModelCard'))
@@ -26,7 +27,8 @@ function ScrollManager() {
 }
 
 const TITLES: Record<string, string> = {
-  '/': 'CropTransfer AT · Find the weak zones before harvest',
+  '/': 'CropTransfer AT · Share your yields, get a better forecast',
+  '/contribute': 'Add your field · CropTransfer AT',
   '/analyse': 'Analyse a field · CropTransfer AT',
   '/evidence': 'Evidence · CropTransfer AT',
   '/model': 'Model card · CropTransfer AT',
@@ -60,6 +62,7 @@ export default function App() {
             >
               <Routes location={location}>
                 <Route path="/" element={<Home />} />
+                <Route path="/contribute" element={<Contribute />} />
                 <Route path="/analyse" element={<Analyse />} />
                 <Route path="/evidence" element={<Evidence />} />
                 <Route path="/model" element={<ModelCard />} />
@@ -72,7 +75,7 @@ export default function App() {
           </AnimatePresence>
         </Suspense>
       </main>
-      {location.pathname !== '/analyse' && <Footer />}
+      {location.pathname !== '/analyse' && location.pathname !== '/contribute' && <Footer />}
     </div>
   )
 }

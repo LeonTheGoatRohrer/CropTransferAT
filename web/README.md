@@ -47,3 +47,13 @@ scripts/        export_web_data.py
 1. `VITE_API_BASE` auf den Server setzen; er liefert `fields.json`, `evidence.json`, `explorer.json` im gleichen Format (`src/api/types.ts`).
 2. In `services/fieldService.ts` → `runAnalysis` den Simulationszweig durch einen Job-Aufruf ersetzen (POST Polygon, Fortschritt als Ereignisse) und die Ereignisse auf `onStage` / `onStageDone` abbilden. Die Zustandsmaschine und alle Komponenten bleiben unverändert.
 3. Der Server liefert für ein Polygon ein `FieldAnalysis`-Objekt (Sentinel-2-Dekaden, ERA5-Land, SoilGrids, Stress-Score, optional 10-m-Zellen).
+
+## Contribution backend (local)
+
+The "Add your field" page posts to `/api/contributions`. Run the backend next to the dev server:
+
+    python -m croptransfer.contrib_server        # http://127.0.0.1:8787, SQLite in data/contributions/
+
+Vite proxies `/api` to it. Without the backend the entry is kept in the visitor's browser instead.
+For a domain: `npm run build`, then run the same server with `--host 0.0.0.0` and `CT_ADMIN_TOKEN=<secret>`; it also serves `web/dist`.
+Listing entries (`GET /api/contributions`) works from localhost, or with header `X-Admin-Token`.

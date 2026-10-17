@@ -6,10 +6,10 @@ export type Place = { id: string; name: string; detail: string; center: [number,
 
 type NominatimHit = { place_id: number; display_name: string; lat: string; lon: string; boundingbox?: [string, string, string, string] }
 
-export async function searchPlaces(query: string, signal?: AbortSignal): Promise<Place[]> {
+export async function searchPlaces(query: string, signal?: AbortSignal, countryCode?: string): Promise<Place[]> {
   const q = query.trim()
   if (q.length < 2) return []
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=6&q=${encodeURIComponent(q)}`
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=6${countryCode ? `&countrycodes=${countryCode}` : ''}&q=${encodeURIComponent(q)}`
   const res = await fetch(url, { signal, headers: { Accept: 'application/json' } })
   if (!res.ok) throw new Error(`Place search failed (HTTP ${res.status}).`)
   const hits = (await res.json()) as NominatimHit[]
