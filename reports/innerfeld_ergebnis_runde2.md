@@ -1,5 +1,7 @@
 # Innerhalb-Feld Runde 2 – Glättung und Aufbereitung: Ergebnis
 
+> ⛔ **NEGATIVES ERGEBNIS: Die Glättung der Vorhersage bringt nichts.** Beide vorab festgelegten Gates sind nicht erfüllt (BARC Δρ −0,013 bzw. +0,004, Kayad −0,015 bzw. −0,009; verlangt waren mindestens +0,02). Das Produkt bleibt ungeglättet. Der frühere Gewinn beim Mitteln über 20–30 m kam von der Messseite (gemittelte Ertragskarte), nicht von der Vorhersage. Die Aufbereitung der Kayad-Rohpunkte bringt nur einen kleinen Gewinn für die Messkarte (ρ 0,604 → 0,623), nicht für das Verfahren.
+
 Stand 2026-10-17. Vorab-Festlegungen: `reports/innerfeld_vorab_runde2.md` (Commit `de9a35f`, **vor** dem Lauf); Code `src/croptransfer/innerfeld_runde2.py` (Commit nach den Vorab-Festlegungen, siehe `git.txt`); Lauf `results/2026-10-17_innerfeld_runde2/` (`metrics.json`, `per_fy.csv`). Eine Rechnung, keine Parameter geändert, Österreich nicht berührt.
 
 ## Kurzfassung

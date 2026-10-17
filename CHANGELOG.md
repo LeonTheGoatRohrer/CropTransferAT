@@ -3,6 +3,10 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/) – ein Minor-Release pro Phase (siehe AGENTS.md §4.4).
 
 ## [Unreleased]
+
+## [innerfeld-1] – 2026-10-17 – Sammel-Release: Mehr-Kulturen, Feinjustierung, Innerhalb-Feld über Standorte (kein Freeze, kein Österreich-Test)
+> ⛔ **Dieser Stand enthält überwiegend vorab festgelegte negative Ergebnisse.** Jahresvorhersage pro Feld nicht stark genug (Phase 4, Mehr-Kulturen G3 ✗), Feinjustierung H2 ✗, **Glättung der Vorhersage bringt nichts (Runde 2: R2-BARC ✗, R2-Kayad ✗)**. Belastbar sind nur die Feldkarte auf BARC (K1 ✓, J3a ✓ mit Vorbehalt) und das EU-Regionalmodell; Übertragbarkeit auf andere Standorte ist nicht prüfbar (J2/J3b).
+
 ### Added (Branch `phase-if-innerfeld`; Plan am 2026-10-17 bestätigt)
 - Innerhalb-Feld über Standorte, Etappe I1: `src/croptransfer/innerfeld.py` (gemeinsame Tabelle `gt_pixels` für BARC, Kayad, Colorado), `tests/test_innerfeld.py`, Datenkritik `reports/data_review/if_i1_daten.md`; Kayad (Zenodo 14216165) geladen, **Gate J1 ⚠️**, CH-TAN unter Embargo bis 2028-01-01.
 - Innerhalb-Feld Etappe I2: `innerfeld_extract.py` (Sentinel-2-Dekaden-Komposite je Zelle, 54 Feld-Jahre), `innerfeld_features.py` (Spitzenfenster B1, Dreifenster M1, z-Werte je Feld-Jahr), `tests/test_innerfeld_features.py`, Datenkritik `reports/data_review/if_i2_merkmale.md`; räumliche Ausrichtung gegen das Kayad-Satellitenbild ρ 0,91–0,97.
