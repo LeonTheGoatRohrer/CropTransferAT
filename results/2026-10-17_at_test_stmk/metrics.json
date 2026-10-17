@@ -1,0 +1,404 @@
+{
+  "protocol": "reports/freeze_protocol_at2.md",
+  "tag": "freeze-at-2",
+  "primary": {
+    "n_site_years": 12,
+    "per_site": {
+      "kalsdorf": 5,
+      "wagna": 7
+    },
+    "per_year": {
+      "2018": 2,
+      "2019": 2,
+      "2020": 1,
+      "2021": 2,
+      "2022": 2,
+      "2023": 1,
+      "2024": 2
+    },
+    "baseline_kind": {
+      "prior5": 9,
+      "baseline_short": 3
+    },
+    "cutoffs": {
+      "07-15": {
+        "S-A_stress_score": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.06748974310538336,
+          "lo": -0.7961783439490446,
+          "hi": 0.5669744867221335,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.13497948621076672,
+          "lo": -0.7359800721939873,
+          "hi": 0.524062439354106,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.1,
+            "wagna": -0.154
+          },
+          "median": -0.026948376406386566,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": -0.595,
+          "2019": 0.024,
+          "2021": 0.024,
+          "2022": 0.132,
+          "2023": -0.034,
+          "2024": -0.034
+        }
+      },
+      "08-01": {
+        "S-A_stress_score": {
+          "n": 12,
+          "clusters": 7,
+          "rho": 0.06993006993006995,
+          "lo": -0.6315836975109252,
+          "hi": 0.7508896797153025,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.23314638527314255,
+          "lo": -0.7384568896872782,
+          "hi": 0.5598941698941698,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.1,
+            "wagna": 0.143
+          },
+          "median": 0.12142857142857144,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": -0.055,
+          "2019": 0.115,
+          "2020": -0.182,
+          "2021": -0.03,
+          "2022": 0.321,
+          "2023": 0.218,
+          "2024": 0.139
+        }
+      },
+      "08-15": {
+        "S-A_stress_score": {
+          "n": 12,
+          "clusters": 7,
+          "rho": 0.32867132867132864,
+          "lo": -0.32201257861635096,
+          "hi": 0.8060046189376443,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.11043776144517278,
+          "lo": -0.6033213162812503,
+          "hi": 0.5338622896470002,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.1,
+            "wagna": 0.571
+          },
+          "median": 0.33571428571428574,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.261,
+          "2019": 0.309,
+          "2020": 0.218,
+          "2021": 0.321,
+          "2022": 0.248,
+          "2023": 0.545,
+          "2024": 0.394
+        }
+      },
+      "09-01": {
+        "S-A_stress_score": {
+          "n": 12,
+          "clusters": 7,
+          "rho": 0.4685314685314686,
+          "lo": -0.32090892597968057,
+          "hi": 0.9491869796969516,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.13497948621076672,
+          "lo": -0.5946655405232094,
+          "hi": 0.5598941698941698,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.5,
+            "wagna": 0.429
+          },
+          "median": 0.4642857142857143,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.576,
+          "2019": 0.467,
+          "2020": 0.427,
+          "2021": 0.382,
+          "2022": 0.261,
+          "2023": 0.745,
+          "2024": 0.406
+        },
+        "S-baseline_NDVI": {
+          "n": 12,
+          "clusters": 7,
+          "rho": 0.3916083916083916,
+          "lo": -0.15727384940927525,
+          "hi": 0.8788147833474933
+        },
+        "pooled_Austria_stress_score_descriptive": {
+          "n": 46,
+          "clusters": 8,
+          "rho": 0.4291705211224175,
+          "lo": 0.1482722783959306,
+          "hi": 0.6273512451345357
+        }
+      }
+    },
+    "trial_types": [
+      "duengung",
+      "bodenbearbeitung"
+    ]
+  },
+  "sensitivity_all_types": {
+    "n_site_years": 12,
+    "per_site": {
+      "kalsdorf": 5,
+      "wagna": 7
+    },
+    "per_year": {
+      "2018": 2,
+      "2019": 2,
+      "2020": 1,
+      "2021": 2,
+      "2022": 2,
+      "2023": 1,
+      "2024": 2
+    },
+    "baseline_kind": {
+      "prior5": 9,
+      "baseline_short": 3
+    },
+    "cutoffs": {
+      "07-15": {
+        "S-A_stress_score": {
+          "n": 10,
+          "clusters": 6,
+          "rho": 0.06748974310538336,
+          "lo": -0.9230769230769231,
+          "hi": 0.7839888879427688,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": 0.15952121097636068,
+          "lo": -0.3960819951164391,
+          "hi": 0.8681657231531469,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.1,
+            "wagna": 0.103
+          },
+          "median": 0.10129891760425772,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": -0.619,
+          "2019": 0.073,
+          "2021": 0.098,
+          "2022": 0.347,
+          "2023": 0.153,
+          "2024": 0.203
+        }
+      },
+      "08-01": {
+        "S-A_stress_score": {
+          "n": 12,
+          "clusters": 7,
+          "rho": -0.034965034965034975,
+          "lo": -0.5944444444444444,
+          "hi": 0.7021133803558267,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.31904242195272137,
+          "lo": -0.8006720609063053,
+          "hi": 0.29704426289300234,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.1,
+            "wagna": 0.0
+          },
+          "median": 0.049999999999999996,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": -0.273,
+          "2019": -0.018,
+          "2020": -0.055,
+          "2021": -0.139,
+          "2022": 0.273,
+          "2023": 0.055,
+          "2024": -0.042
+        }
+      },
+      "08-15": {
+        "S-A_stress_score": {
+          "n": 12,
+          "clusters": 7,
+          "rho": 0.20979020979020982,
+          "lo": -0.23163841807909605,
+          "hi": 0.6613995485327313,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": 0.036812587148390925,
+          "lo": -0.49246827570675583,
+          "hi": 0.8273287946596168,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.1,
+            "wagna": 0.464
+          },
+          "median": 0.2821428571428572,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.2,
+          "2019": 0.152,
+          "2020": 0.255,
+          "2021": 0.2,
+          "2022": 0.139,
+          "2023": 0.309,
+          "2024": 0.236
+        }
+      },
+      "09-01": {
+        "S-A_stress_score": {
+          "n": 12,
+          "clusters": 7,
+          "rho": 0.41958041958041964,
+          "lo": -0.46619217081850534,
+          "hi": 0.9280898876404494,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.26995897242153344,
+          "lo": -0.7392284758051434,
+          "hi": 0.31298431857438064,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.5,
+            "wagna": 0.286
+          },
+          "median": 0.39285714285714285,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.709,
+          "2019": 0.491,
+          "2020": 0.491,
+          "2021": 0.358,
+          "2022": 0.248,
+          "2023": 0.518,
+          "2024": 0.103
+        },
+        "S-baseline_NDVI": {
+          "n": 12,
+          "clusters": 7,
+          "rho": 0.3356643356643357,
+          "lo": -0.271889400921659,
+          "hi": 0.8422595281306713
+        },
+        "pooled_Austria_stress_score_descriptive": {
+          "n": 46,
+          "clusters": 8,
+          "rho": 0.40425531914893614,
+          "lo": 0.1503259619100557,
+          "hi": 0.6075343342373337
+        }
+      }
+    },
+    "trial_types": [
+      "duengung",
+      "bodenbearbeitung",
+      "duengung_alternativen",
+      "fruchtfolge_begruenung"
+    ]
+  }
+}

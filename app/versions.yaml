@@ -17,6 +17,46 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: at-test-2
+    date: 2026-10-17
+    phase: "Österreich-Test II: Steiermark (explorativ, Tag freeze-at-2)"
+    title: "Steiermark: zu wenige Daten für einen Test, Richtung wie in Oberösterreich"
+    status: eingeschraenkt
+    changed: "Der Test wurde auf die Steiermark ausgeweitet (Düngungs- und Bodenbearbeitungsversuche), mit unveränderten Modellen und vorab festgeschriebenem Protokoll."
+    plain: >
+      In der Steiermark gibt es nur Düngungs- und Bodenbearbeitungsversuche an zwei Standorten, und davon nur 12 Jahre mit brauchbarem Vergleichswert.
+      Das ist weniger als die 15, die wir für einen echten Test vorab verlangt haben. Der Stress-Score zeigt dieselbe Richtung wie in Oberösterreich,
+      aber die Unsicherheit ist so groß, dass man nichts behaupten kann. Das EU-Regionalmodell zeigt für die Steiermark kein Signal.
+    metrics:
+      - label: "Stress-Score gegen Standorterträge (Steiermark), 1.9. (ρ)"
+        value: "0,47"
+        ci: "[-0,32; 0,95]"
+        n: "12 Standort-Jahre, 7 Jahre"
+        plain: "Nicht auswertbar (unter 15 Standort-Jahren); nur beschreibend."
+      - label: "Regionalmodell (Steiermark) gegen Standorterträge (ρ)"
+        value: "-0,13"
+        ci: "[-0,59; 0,56]"
+        n: "10 Standort-Jahre, 6 Jahre"
+        plain: "Kein Signal."
+      - label: "Vergleich: einfaches NDVI (ρ)"
+        value: "0,39"
+        ci: "[-0,16; 0,88]"
+        n: "12 Standort-Jahre"
+        plain: "Ähnlich wie der Score."
+    found:
+      - "Hatzendorf hat kein auswertbares Vergleichsjahr-Mittel (nur 3 Versuchsjahre); ausgewertet wurden Wagna (7) und Kalsdorf (5)."
+      - "Bei Wagna fällt das Ertragsmittel ab 2021 von etwa 10 auf 6–7 t/ha; das kann auch am Versuchsdesign liegen."
+    limits:
+      - "Zwei Standorte, 12 Standort-Jahre: Aussage nur beschreibend."
+      - "Düngungs-/Bodenbearbeitungsversuche sind keine reinen Wettereffekt-Messungen; Gemeindemitte statt Parzelle; keine Feld-Ertragsdaten."
+      - "Der Verbund Oberösterreich + Steiermark (ρ 0,43, n = 46) ist nicht unabhängig, weil Oberösterreich im ersten Test schon ausgewertet wurde."
+    links:
+      - label: "Ergebnis"
+        path: reports/at_test_stmk_ergebnis.md
+      - label: "Datenkritik"
+        path: reports/data_review/at_test_stmk.md
+      - label: "Freeze-Protokoll"
+        path: reports/freeze_protocol_at2.md
   - id: at-test-1
     date: 2026-10-17
     phase: "Phase 7: Test in Österreich (erster, explorativ)"

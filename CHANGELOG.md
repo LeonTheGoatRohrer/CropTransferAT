@@ -4,6 +4,9 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Added (Branch `phase-7-austria-test`, Tag `freeze-at-2`)
+- **Österreich-Test II (Steiermark, explorativ):** Freeze-Protokoll `reports/freeze_protocol_at2.md` (vor der Auswertung), `at_test_stmk.py`, `tests/test_at_test_stmk.py`; Ergebnis `reports/at_test_stmk_ergebnis.md`, Datenkritik `reports/data_review/at_test_stmk.md` (⚠️): nur 12 Standort-Jahre (Wagna, Kalsdorf; Hatzendorf ohne `YAS_site`) → **nicht auswertbar, nur beschreibend** (Stress-Score ρ 0,47 [−0,32; 0,95], Regionalmodell −0,13). Branches `phase-7-austria-test` und `phase-9-frontend` zusammengeführt.
+
 ## [at-test-1] – 2026-10-17 – Österreich-Test (erster, explorativ; Tag `freeze-at-1` für das Protokoll)
 > ⚠️ **Explorativ:** Das Phase-4-Kriterium „stark genug“ war von keinem Feldmodell erfüllt; der Test läuft auf ausdrückliche Entscheidung des Projektinhabers. Der lokale Test enthält **nur Oberösterreich** (n = 34 Standort-Jahre, 7 Jahre); der Stress-Score ist nicht besser als reines NDVI.
 
