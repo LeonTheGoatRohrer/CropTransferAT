@@ -1,0 +1,24 @@
+{
+  "base_freeze": "freeze-at-1",
+  "first_test_results": "results/2026-10-17_at_test/site_year.csv",
+  "min_site_years": 15,
+  "min_years_within_site": 5,
+  "region": "AT22",
+  "results_dir": "results/2026-10-17_at_test_stmk",
+  "sites": [
+    "wagna",
+    "kalsdorf",
+    "hatzendorf"
+  ],
+  "trial_types_primary": [
+    "duengung",
+    "bodenbearbeitung"
+  ],
+  "trial_types_sensitivity": [
+    "duengung",
+    "bodenbearbeitung",
+    "duengung_alternativen",
+    "fruchtfolge_begruenung"
+  ],
+  "version": 1
+}

@@ -297,3 +297,17 @@ at_test:
   freeze:
     dir: results/models/at_freeze
     protocol: reports/freeze_protocol_at.md
+
+# Steiermark test (second Austria test, PLAN Phase 7), pre-registered in reports/freeze_protocol_at2.md BEFORE any
+# Styrian trial yield is evaluated. Scores/regional predictions are the frozen ones of freeze-at-1 (unchanged).
+at_test_stmk:
+  version: 1
+  base_freeze: freeze-at-1
+  sites: [wagna, kalsdorf, hatzendorf]
+  trial_types_primary: [duengung, bodenbearbeitung]        # site mean ("Versuchsmittel") per trial type, then mean over types
+  trial_types_sensitivity: [duengung, bodenbearbeitung, duengung_alternativen, fruchtfolge_begruenung]
+  min_site_years: 15                  # fewer site-years with YAS_site -> only descriptive
+  min_years_within_site: 5
+  region: AT22
+  first_test_results: results/2026-10-17_at_test/site_year.csv
+  results_dir: results/2026-10-17_at_test_stmk
