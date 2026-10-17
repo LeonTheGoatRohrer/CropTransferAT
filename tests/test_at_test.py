@@ -13,10 +13,7 @@ def _ref():
 
 
 def test_vectorised_score_matches_reference_implementation():
-    path = repo_path("data/processed/gt_dekads.parquet")
-    if not path.exists():
-        pytest.skip("US training dekads not available (data/ is not in the repository)")
-    dek = pd.read_parquet(path)
+    dek = pd.read_parquet(repo_path("data/processed/gt_dekads.parquet"))
     d = dek[(dek.basis == "HLS") & (dek["index"] == "ndvi")]
     keys = sorted(d.fy_key.unique())[:60]
     obs = d[d.fy_key.isin(keys) & d.is_observed]

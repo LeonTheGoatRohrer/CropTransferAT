@@ -1,41 +1,39 @@
-# Datenkritik – Österreich-Test (erster, explorativ)
+# Datenkritik – Österreich-Test (erster Test, explorativ)
 
-Zu: `reports/at_test_ergebnis.md`, Protokoll `reports/freeze_protocol_at.md` (`freeze-at-1`). Zahlen: `results/2026-10-17_at_test/{qc.json,review.json,metrics.json}`.
-Entscheidung: ⚠️ **weiter mit Einschränkung** (Ergebnisse berichten, als explorativ kennzeichnen, Grenzen offenlegen).
+Stand 2026-10-17. Protokoll §5 (`reports/freeze_protocol_at.md`). Zahlen: `results/2026-10-17_at_test/qc.json`, `review.json`, `site_year.csv`. **Entscheidung: ⚠️ weiter mit Einschränkung** (die Ergebnisse dürfen berichtet werden, mit den Grenzen unten).
 
-## 3.1 Repräsentativität (Auswahl-Bias)
-- **Steiermark fehlt vollständig (⚠️ wesentlich).** Die vorab festgelegten Versuchsarten (Sorten-/Praxisversuche) gibt es nur in Oberösterreich; Wagna, Kalsdorf, Hatzendorf haben Düngungs-/Bodenbearbeitungsversuche (siehe Metadaten von `at_trials.csv`). Folge: V2 ist ein Oberösterreich-Test (5 Standorte: Walding, Mauthausen, Linden, Bad Wimsbach, Innviertel; 34 Standort-Jahre, 7 Jahre; 2019 hat kein `YAS_site`).
-- **Ausgeschlossene Standort-Jahre:** Standorte mit weniger als 3 anderen Jahren (Aistersheim, Pasching, Enns, Dietach, Eberstalzell: Bio-Sortenversuche, je 1–2 Jahre) haben keinen `YAS_site` und fallen aus V2 heraus (alle 104 Standort-Jahre haben einen Score).
-- **Baseline `YAS_site`:** nur 6 von 34 Werten nutzen 5 komplette Vorjahre; 28 nutzen den Mittelwert aller anderen Jahre (`baseline_short`, enthält auch spätere Jahre, im Protokoll so festgelegt). Das macht `YAS_site` weniger streng als die Regionalversion.
-- Wolken: Felder mit ≥ 4 beobachteten HLS-Dekaden in 6…k: 99,9–100 % in jedem Jahr; Mediane 16–20 beobachtete Dekaden. Kein Wolken-Bias erkennbar (2018 mit 20 Dekaden das klarste Jahr, wie ein Trockenjahr es erwarten lässt).
-- Zielverteilung: `YAS_site` 0,86–1,26; Jahresmittel 0,95 (2023) bis 1,19 (2022). Wenige schwere Stressfälle (vor allem 2023 trägt den Kontrast).
+## 3.1 Repräsentativität / Auswahl
+- **Steiermark fehlt im lokalen Test.** Die steirischen Standorte haben in den Berichten nur Düngungs-, Bodenbearbeitungs- und Begrünungsversuche; der registrierte Filter (`sorten`, `praxisversuch_sorten`) hat sie ausgeschlossen. V2 ist damit Oberösterreich (5 Standorte, 34 Standort-Jahre). Ich hatte in der Planungsphase ca. 15 steirische Standort-Jahre erwartet – das war ein Irrtum bei der Zählung der Standort-Jahre ohne Prüfung der Versuchsart. Konsequenz: keine Aussage für die Steiermark.
+- **2019 fehlt** (keine oberösterreichischen Sortenversuche in den digitalisierten Berichten), 7 statt 8 Jahre als Cluster; 2022 hat nur 4 Standorte.
+- **Fast alle Felder gültig:** 99,99 % der 10 160 Feld-Jahre haben ≥ 4 beobachtete HLS-Dekaden; in jedem der 104 Standort-Jahre waren ≥ 96 von 100 Feldern gültig, kein Standort-Jahr musste ausgeschlossen werden. Bewölkung verzerrt die Abdeckung damit kaum (mediane Zahl beobachteter Dekaden 16–20 je Jahr; am niedrigsten 2021 und 2022 mit 16, am höchsten 2018 mit 20, einem trockenen Jahr).
 
 ## 3.2 Sind die Daten korrekt?
-- **Kurvenform:** Median der Spitzen-NDVI je Jahr 0,86–0,90, Anteil mit Spitze < 0,6 ≤ 0,1 %: Die INVEKOS-Körnermaisfelder haben maistypische Kurven (Stichprobe aus 10 159 Feld-Jahren; keine visuelle Einzelprüfung von 20 Feldern, nur die Kennzahl).
-- **Frühernte/Abfall (⚠️):** Anteil Felder mit abruptem Abfall im Juli/August: 2018 43 %, 2024 49 %, 2022 18 %, übrige Jahre ≤ 5 %. 2018 und 2022 passen zu Trockenstress/vorzeitiger Abreife (der Ertrag fiel 2018 in Oberösterreich trotzdem durchschnittlich aus); **2024 ist nicht erklärt** (möglich: Witterung, Frühernte/Silomais-Verwechslung, Szenenartefakt). Die Regel ist die vorab festgelegte aus `stress.py`; es wurde nichts herausgefiltert.
-- **Sättigung (⚠️):** 32 % der Felder haben einen Score ≈ 0 (> −0,001), je nach Jahr 5 % (2018) bis 59 % (2020). Österreichischer Mais liegt in vielen Dekaden über der US-Referenzkurve; der Score kann gesunde Felder dann nicht unterscheiden. Er unterscheidet nur Stress nach unten.
-- **Auflösung:** HLS 30 m mit −10-m-Innenpuffer; Feld-Mittel; ERA5/CY-Bench-Prädiktoren sind Regionsmittel (NUTS 2) und beschreiben kein einzelnes Feld.
-- **Standortposition:** Gemeindemitte (Hatzendorf → Fehring, Kalsdorf → Ilz, Katzenberg → Kirchdorf am Inn + Geinberg: Zuordnung aus dem Namen). Die gezogenen 100 Felder liegen irgendwo im 5-km-Umkreis, nicht neben der Versuchsparzelle.
-- **Erträge:** Versuchsmittel aus Sortenversuchen (Parzellen, gut geführt, wechselnde Sortensätze), keine Praxisfelder; Feuchtebasis 14 % laut Berichten (30 Zeilen ohne Angabe), im Quotienten unkritisch.
+- **Maisähnlichkeit:** Nur 0,01 % der Felder haben einen NDVI-Höchstwert unter 0,6; mediane Höchstwerte 0,86–0,90. INVEKOS-Körnermais (Code 105) sieht in den Kurven also wie Mais aus.
+- **Frühe Reife / Ernte:** Der Anteil der Felder mit abruptem Abfall in Juli/August ist in 2018 (43 %), 2024 (49 %) und 2022 (18 %) hoch, sonst unter 5 %. Das sind heiße, trockene bzw. frühe Jahre. Der Stress-Score kann dort Abreife statt Stress messen (offen, siehe Ergebnisbericht).
+- **Ties:** In manchen Jahren liegt ein großer Teil der Felder genau auf der Referenz (Score ≈ 0; 2020: 59 %, 2021: 38 %, 2022: 42 %, 2018: 5 %). Der Mittelwert über 100 Felder ist trotzdem stetig; die Auflösung ist aber gering.
+- **Streuung:** Standardabweichung des Scores innerhalb eines Standort-Jahrs (0,017) ≈ Streuung der Standort-Jahr-Mittel (0,019): Unterschiede zwischen Feldern sind so groß wie zwischen Standort-Jahren. Das Mittel über 100 Felder dämpft das.
+- **Standortposition:** nur Gemeindemitte; Katzenberg → Kirchdorf am Inn/Geinberg ist aus dem Namen abgeleitet. Unsicherheit bleibt.
+- **Zielgröße:** `YAS_site` hat bei 28 von 34 Standort-Jahren die Basis „Mittel aller anderen Jahre“ (`baseline_short`), nur 6 haben fünf Vorjahre. Damit steckt ein Trend und zukünftige Jahre in der Basis; Versuchsmittel sind Sortenmittel verschiedener Sortensätze.
+- **Statistik Austria:** Quotient aus Erträgen mit 14 % Feuchte, unverändert.
 
 ## 3.3 Scheinzusammenhänge
-- **Jahres-Proxy (⚠️ Hauptbefund):** ρ über die 7 Jahresmittel 0,79; nach Abzug der Jahresmittel 0,31; nach Abzug der Standortmittel 0,46; zwischen Standorten innerhalb eines Jahres ρ im Median −0,1 (6 Jahre). Der Test misst überwiegend den Jahreseffekt.
-- **Baseline NDVI:** Das ohne Lernen berechnete mittlere NDVI (Dekaden 9–14) erreicht ρ = 0,50 [0,09; 0,65] gegen 0,50 [0,19; 0,68] beim Score; Korrelation Score ↔ NDVI auf Feldebene 0,88, auf Standort-Jahr-Ebene 0,83. Der Score ist hier praktisch ein NDVI-Maß.
-- **Einfluss einzelner Jahre:** Leave-one-year-out 0,41–0,55; ohne 2018 **und** 2023 ρ = 0,37; ohne zwei beliebige Jahre 0,35–0,60. Richtung stabil, Stärke abhängig von den belasteten Jahren.
-- **Einzelne Standorte:** Linden −0,50 (7 Jahre), Walding 0,82 – Standorte streuen stark; Median 0,60 aus nur 5.
-- **KBS-T4-Effekt (Frage aus Protokoll §5):** Streuung innerhalb eines Standort-Jahres vs. zwischen Standort-Jahren siehe `qc.json` (`score_sd_within_site_year`, `score_sd_between_site_year_means`); ein Hinweis auf „immer dieselbe Gegend markiert“ wurde nicht gezielt geprüft (kein Feld-Ertrag).
-- Konfundierung: Sorte, Aussaattermin, Düngung, Bodenart, Hagel sind unbekannt und können Standortunterschiede erklären.
+- **Jahres-Proxy:** Ja, großenteils. Jahresmittel ρ = 0,79; nach Abzug der Jahresmittel ρ = 0,31; innerhalb eines Jahres Median −0,10. Der Score unterscheidet Jahre, nicht Standorte im selben Jahr.
+- **Gegenprobe NDVI:** B-NDVI (ohne Lernen) erreicht dasselbe ρ (0,50). Score und NDVI hängen stark zusammen (0,83 / 0,88). Der Score bringt hier keinen Zusatz.
+- **Leave-one-year-out:** 0,41–0,55 – kein einzelnes Jahr trägt das Ergebnis (2018 mit dem extremsten Score eingeschlossen).
+- Kein Modell wurde auf Österreich gefittet; Label-Shuffle entfällt für A. Für das Nachtrainieren gilt Leave-one-year-out.
+- **Mehrfachvergleiche:** Zwei gleichrangige Haupttests (A und B) und vier Stichtage; keiner wurde als Sieger gewählt. Die Aussage stützt sich auf den vorab festgelegten Haupt-Stichtag 1.9.
 
 ## 3.4 Leakage
-- Österreich-Regel: Modelle (Stress-Referenz, Regionalmodell) wurden ohne österreichische Daten gebaut und vor der Auswertung festgeschrieben (Prüfsummen, Tag `freeze-at-1`); nach dem Lauf wurde nichts am Modell, an Schwellen oder an der Auswahl geändert. Die Hilfsanalysen in `review.json` (Jahre weglassen, Baselines) sind beschreibend.
-- **Offengelegt:** 15 Notizzeilen mit Versuchsmitteln wurden vor dem Freeze versehentlich gesehen (Protokoll §6), ohne Einfluss auf Festlegungen. Während des Laufs hat eine parallele Sitzung nur Auswertungs-/QC-Ausgaben (`qc_summary`, Jahres-Parameter) an `at_test.py` ergänzt; die Metrik-Logik ist gegenüber dem vorher committeten Stand unverändert (Vergleich der Datei).
-- Die Statistik-Austria-Erträge sind gleichzeitig Ziel des Regionaltests und Quelle des `YAS` (Vorjahre); es gibt keine Trainingsüberlappung, da das EU-Modell nie österreichische Daten sah.
-- Ein nachfolgender Versuch „regionales Nachtrainieren mit Bundesland-Erträgen“ (`reports/plan_at_nachtraining.md`) ist ein **eigener**, nicht unabhängiger Schritt auf denselben Daten und verändert dieses Ergebnis nicht.
+- Österreich-Regel eingehalten: Freeze vor der Auswertung (`freeze-at-1`), danach kein Modell, keine Schwelle und kein Kriterium geändert. Der Auswertungscode wurde nach dem Tag um (a) Datenkritik-Kennzahlen und (b) die Option einer Jahresspanne für die Regionalmerkmale ergänzt – beides ändert die Testmetriken nicht (Test `tests/test_at_test.py`).
+- **Programmfehler im ersten Lauf:** Der erste Aufruf brach in der Datenkritik-Funktion ab (doppelte Spalte `year`), bevor eine Ertragsdatei geöffnet wurde; Behebung ohne Einsicht in Ergebnisse. Der Test lief danach einmal vollständig. (Eine zweite Sitzung desselben Projekts hat danach nur eine beschreibende Zerlegung auf dem fertigen Ergebnis erzeugt: `src/croptransfer/at_review.py`, `review.json`.)
+- Zwei der 104 Satelliten-Abfragen scheiterten am Anfrage-Limit von Google Earth Engine und wurden unverändert wiederholt.
+- Die Notizspalte von `at_trials.csv` wurde versehentlich vor dem Freeze teilweise angesehen (siehe Protokoll §6); keine Auswirkung auf Festlegungen.
+- **Nachtrainieren:** Leave-one-year-out verwendet auch spätere Jahre als Training; die Ziele (Statistik Austria) sind dieselben wie im V1-Test, es ist daher kein unabhängiger Test.
 
 ## 3.5 Ergebnis-Plausibilität
-- Das Regionalmodell liegt im Mittel um +0,09 zu hoch und ist nach RMSE nicht besser als „normales Jahr“ (0,121 vs. 0,101); passt zu den EU-Ergebnissen (Skill vs. YAS = 1 nur 0,07).
-- ρ-Werte von 0,5 aus 6–7 Jahren sind keine starken Belege; Cluster-Bootstrap mit so wenigen Clustern ist grob (obere KI-Grenzen liegen teils unter dem Punktwert, z. B. 0,65 [0,40; 0,70]).
-- Fallstudien (Jahresmittel, `review.json`): 2023 passt (Score −0,024, YAS_site 0,95, niedrigster Ertrag); **2018 passt nicht** (niedrigster Score −0,052, aber YAS_site 1,04); 2022 und 2025 haben die höchsten Erträge (1,19 / 1,15) bei Score ≈ 0. Bei Score ≈ 0 streut YAS_site von 0,86 bis 1,26, gesunde Standort-Jahre werden also nicht unterschieden (Abbildung `at_test_scatter.png`).
+- Ergebnisse sind **nicht zu gut**: ρ ≈ 0,5 mit breiten Intervallen, V1 RMSE schlechter als „normales Jahr“.
+- 3 beste / schlechteste Fälle: nicht ausgewertet (Zeit); die Jahresmittel-Tabelle in `review.json` zeigt 2018 mit dem niedrigsten Score bei durchschnittlichem Ertrag (1,04) und 2022/2025 mit höchsten Erträgen (1,19 / 1,15) bei fast neutralem Score; 2023 (niedrigster Ertrag 0,95) hat den zweitniedrigsten Score.
+- Wenige Cluster: 7 Jahre (V2), 6 Jahre (V1), 9 Jahre (Nachtrainieren) – Konfidenzintervalle sind entsprechend breit, ein Verfehlen hieße „nicht belegt“.
 
 ## 3.6 Entscheidung
-⚠️ **Weiter mit Einschränkung.** Berichten: V2-A bestanden, aber Jahreseffekt und kein Vorteil gegenüber NDVI; Regionalmodell V1 bestanden, nicht stark; Steiermark nicht getestet; kein Feldbefund.
+⚠️ **Weiter mit Einschränkung.** Berichten dürfen: „In Oberösterreich lässt sich die Rangfolge der Jahre erkennen; der Score ist nicht besser als NDVI; Standorte im selben Jahr werden nicht unterschieden; die Steiermark ist nicht getestet.“
