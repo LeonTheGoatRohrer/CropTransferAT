@@ -15,9 +15,17 @@ from datetime import date
 import numpy as np
 import pandas as pd
 
-from croptransfer import timeseries as ts
+from functools import lru_cache
 
-GDD_BASE, GDD_CAP = 10.0, 30.0
+from croptransfer import timeseries as ts
+from croptransfer.crops import CropSpec, get_crop
+
+GDD_BASE, GDD_CAP = 10.0, 30.0   # maize values; other crops via config `crops:` (crops.py)
+
+
+@lru_cache(maxsize=None)
+def _maize() -> CropSpec:
+    return get_crop("maize")
 FLOWER_WINDOW = ("07-10", "08-20")     # silking window for heat/drought around flowering
 AUG_DEKADS = (12, 13, 14)               # dekads covering 1.8.-31.8. (start 1.4.)
 MIN_RECENT_OBS = 2                      # clear dates needed since 1.6. (1.5.) for curve features
@@ -80,8 +88,9 @@ def _ra_mm(lat_deg: float, doy: np.ndarray) -> np.ndarray:
     return ra * 0.408
 
 
-def daily_weather(w: pd.DataFrame, lat: float) -> pd.DataFrame:
-    """ERA5-Land daily -> degC, mm, Hargreaves ET0, VPD, GDD."""
+def daily_weather(w: pd.DataFrame, lat: float, crop: CropSpec | None = None) -> pd.DataFrame:
+    """ERA5-Land daily -> degC, mm, Hargreaves ET0, VPD, GDD (thermal time of ``crop``, default maize)."""
+    crop = crop or _maize()
     d = w.copy()
     d["date"] = pd.to_datetime(d["date"])
     d = d.sort_values("date")
@@ -93,21 +102,21 @@ def daily_weather(w: pd.DataFrame, lat: float) -> pd.DataFrame:
     d["vpd"] = (es - ea).clip(lower=0)
     doy = d.date.dt.dayofyear.to_numpy()
     d["et0"] = 0.0023 * _ra_mm(lat, doy) * (d.tmean + 17.8) * np.sqrt((d.tmax - d.tmin).clip(lower=0))
-    tx = d.tmax.clip(upper=GDD_CAP)
-    tn = d.tmin.clip(lower=GDD_BASE).clip(upper=GDD_CAP)
-    d["gdd"] = ((tx + tn) / 2 - GDD_BASE).clip(lower=0)
+    tx = d.tmax.clip(upper=crop.gdd_cap)
+    tn = d.tmin.clip(lower=crop.gdd_base).clip(upper=crop.gdd_cap)
+    d["gdd"] = ((tx + tn) / 2 - crop.gdd_base).clip(lower=0)
     return d
 
 
-def crop_coefficient(gdd_cum: np.ndarray) -> np.ndarray:
-    """Simple maize Kc by thermal time (FAO-56 stages mapped to GDD, base 10 degC)."""
-    return np.interp(gdd_cum, [0, 200, 900, 1700, 2600], [0.3, 0.3, 1.2, 1.2, 0.6])
+def crop_coefficient(gdd_cum: np.ndarray, crop: CropSpec | None = None) -> np.ndarray:
+    """Kc by thermal time (FAO-56 stages mapped to GDD; default maize, base 10 degC)."""
+    return (crop or _maize()).kc(gdd_cum)
 
 
-def rzwsi_series(d: pd.DataFrame, taw_mm: float, p: float = 0.55) -> np.ndarray:
+def rzwsi_series(d: pd.DataFrame, taw_mm: float, p: float = 0.55, crop: CropSpec | None = None) -> np.ndarray:
     """Daily root-zone water stress 1-Ks from a FAO-56 single bucket (starts full on 1.4.)."""
     dr, out = 0.0, []
-    kc = crop_coefficient(d.gdd.cumsum().to_numpy())
+    kc = crop_coefficient(d.gdd.cumsum().to_numpy(), crop)
     raw = p * taw_mm
     for prec, et0, k in zip(d.prec.to_numpy(), d.et0.to_numpy(), kc):
         ks = 1.0 if dr <= raw else max(0.0, (taw_mm - dr) / ((1 - p) * taw_mm))
@@ -116,24 +125,30 @@ def rzwsi_series(d: pd.DataFrame, taw_mm: float, p: float = 0.55) -> np.ndarray:
     return np.asarray(out)
 
 
-def weather_features(daily: pd.DataFrame, cutoff: date, taw_mm: float) -> dict:
-    """Weather features for one field-year from daily data (1.4. .. cutoff)."""
+def weather_features(daily: pd.DataFrame, cutoff: date, taw_mm: float, crop: CropSpec | None = None) -> dict:
+    """Weather features for one field-year from daily data (crop season start .. cutoff; default maize 1.4.).
+
+    Names are kept from the maize version: ``heat32*`` = days above the crop heat threshold (32 degC maize),
+    ``jun`` = window from the crop's mid-season start, ``flower`` = crop flowering window.
+    """
+    crop = crop or _maize()
     year = cutoff.year
-    d = daily[(daily.date >= pd.Timestamp(f"{year}-04-01")) & (daily.date <= pd.Timestamp(cutoff))].copy()
+    start = pd.Timestamp(crop.season_start(year))
+    d = daily[(daily.date >= start) & (daily.date <= pd.Timestamp(cutoff))].copy()
     assert (d.date.dt.date <= cutoff).all()
     if d.empty:
         return {}
-    d["rzwsi"] = rzwsi_series(d, taw_mm)
+    d["rzwsi"] = rzwsi_series(d, taw_mm, crop=crop)
     last30 = d[d.date > pd.Timestamp(cutoff) - pd.Timedelta(days=30)]
-    jun = d[d.date >= pd.Timestamp(f"{year}-06-01")]
-    fl = d[(d.date >= pd.Timestamp(f"{year}-{FLOWER_WINDOW[0]}")) & (d.date <= pd.Timestamp(f"{year}-{FLOWER_WINDOW[1]}"))]
-    spring = d[d.date < pd.Timestamp(f"{year}-06-01")]
+    jun = d[d.date >= pd.Timestamp(f"{year}-{crop.mid_start_mmdd}")]
+    fl = d[(d.date >= pd.Timestamp(f"{year}-{crop.flower_window[0]}")) & (d.date <= pd.Timestamp(f"{year}-{crop.flower_window[1]}"))]
+    spring = d[d.date < pd.Timestamp(f"{year}-{crop.mid_start_mmdd}")]
     nan = np.nan
     return {
         "gdd": d.gdd.sum(), "prec": d.prec.sum(), "cwb": (d.prec - d.et0).sum(),
         "prec_30d": last30.prec.sum(), "cwb_30d": (last30.prec - last30.et0).sum(),
         "heat30": int((d.tmax > 30).sum()), "heat32": int((d.tmax > 32).sum()),
-        "heat32_flower": int((fl.tmax > 32).sum()) if len(fl) else 0,
+        "heat32_flower": int((fl.tmax > crop.heat_threshold).sum()) if len(fl) else 0,
         "tmax_jun": jun.tmax.mean() if len(jun) else nan,
         "vpd_jun": jun.vpd.mean() if len(jun) else nan,
         "swvl1_30d": last30.swvl1.mean(), "swvl2_30d": last30.swvl2.mean(), "swvl3_30d": last30.swvl3.mean(),

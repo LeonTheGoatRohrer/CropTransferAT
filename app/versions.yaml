@@ -17,6 +17,421 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: if-runde2
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, Runde 2 (Glättung, Aufbereitung)"
+    title: "Glätten bringt nichts: der Gewinn kam aus der Messung, nicht aus der Vorhersage"
+    status: nicht_bestanden
+    changed: "Es wurde getestet, ob eine Glättung der Satellitenvorhersage über Nachbarzellen die Karte verbessert, und ob bereinigte Mähdrescher-Rohpunkte das Bild ändern; alle Regeln standen vorher fest."
+    plain: >
+      Die Vermutung war, dass sich die Karte verbessert, wenn man die Vorhersage über 30 Meter glättet. Das hat sich nicht bestätigt:
+      An beiden Standorten (USA und Italien) wird die Rangordnung dadurch gleich oder etwas schlechter.
+      Der frühere Gewinn beim Mitteln über größere Blöcke kam daher, dass dabei auch die gemessene Ertragskarte gemittelt wurde,
+      und diese verliert dabei Rauschen. Bereinigt man die Rohpunkte in Italien (Start-, Stopp- und Spurenden), steigt der Wert nur leicht.
+    metrics:
+      - label: "BARC: Glättung (30 m) minus keine Glättung, rohes NDVI-Fenster (Δρ)"
+        value: "-0,013"
+        ci: "[-0,017; 0,001]"
+        n: "41 Feld-Jahre"
+        plain: "Kein Gewinn; der Wert hätte mindestens +0,02 sein müssen."
+      - label: "BARC: Glättung, Modell M1 (Δρ)"
+        value: "+0,004"
+        ci: "[-0,007; 0,012]"
+        n: "41 Feld-Jahre"
+        plain: "Praktisch kein Unterschied."
+      - label: "Kayad: bereinigte Ertragspunkte, rohes NDVI-Fenster (ρ)"
+        value: "0,623 statt 0,604"
+        n: "3 Feld-Jahre"
+        plain: "Kleiner Gewinn, weil die Messkarte sauberer ist; das Verfahren selbst ist nicht besser."
+    found:
+      - "Zufallsvorhersage bleibt nach der Glättung bei ρ ≈ 0; die Glättung erzeugt keinen Scheinzusammenhang."
+      - "Die Karte bleibt im Produkt auf 10-m-Zellen; eine gröbere 30-m-Karte wäre ein anderes, leichteres Produkt."
+    limits:
+      - "Kayad sind nur drei Feld-Jahre eines Feldes; der Kayad-Teil des Tests ist beschreibend."
+      - "Fahrspur-Unterschiede und der 18-t/ha-Deckel der Italien-Daten wurden nicht behandelt."
+    links:
+      - label: "Ergebnis Runde 2"
+        path: reports/innerfeld_ergebnis_runde2.md
+      - label: "Vorab-Festlegungen Runde 2"
+        path: reports/innerfeld_vorab_runde2.md
+  - id: if-obergrenze
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, explorative Einordnung"
+    title: "Wie viel ist mit den vorhandenen Daten noch drin?"
+    status: zwischenstand
+    changed: "Es wurde geschätzt, wie hoch die Übereinstimmung zwischen Satellitenkarte und Ertragskarte überhaupt werden kann, weil die Ertragskarte selbst verrauscht ist."
+    plain: >
+      Auch eine perfekte Satellitenkarte würde die gemessene Ertragskarte nicht ganz treffen, denn der Mähdrescher misst ungenau.
+      Beim italienischen Feld (Kayad) liegt diese Grenze je nach Schätzung zwischen 0,72 und 0,94; unsere Karte erreicht dort 0,60.
+      Das heißt: Es gibt noch etwas Luft, aber vermutlich nur einige Hundertstel. Mittelwerte über 20 bis 30 Meter erhöhen den Wert etwas,
+      sind aber auch eine einfachere Aufgabe. Für BARC lässt sich die Grenze nicht bestimmen, weil die Karten dort interpoliert sind.
+    metrics:
+      - label: "Kayad: Obergrenze der Ertragskarte (Korrelation)"
+        value: "0,72 bis 0,94"
+        n: "3 Feld-Jahre"
+        plain: "Je nach Annahme über die Messfehler; die Wahrheit liegt dazwischen."
+      - label: "Kayad: unsere Karte (rohes NDVI-Fenster)"
+        value: "0,60"
+        n: "3 Feld-Jahre"
+        plain: "Etwa 84 % der vorsichtigen und 64 % der optimistischen Obergrenze."
+    found:
+      - "Mittelwerte über 20–30 m heben die Korrelation auf BARC von 0,70 auf 0,76 (Modell M1) und auf Kayad von 0,60 auf 0,66."
+      - "Wer die Erträge der Nachbarzellen kennt, erreicht auf Kayad 0,71; der Satellit erreicht rund 85 % davon."
+    limits:
+      - "Nur Kayad hat Rohpunkte; BARC ist interpoliert und die Obergrenze dort nicht bestimmbar."
+      - "Explorativ: keine Methodenwahl daraus; jede Verbesserung wäre eine neue, vorab festgelegte Runde."
+    figures:
+      - file: if_obergrenze.png
+        caption: "Korrelation nach Blockgröße und geschätzte Obergrenze der Ertragskarte (Kayad)."
+    links:
+      - label: "Bericht Obergrenze"
+        path: reports/innerfeld_obergrenze.md
+  - id: if-innerfeld-ergebnis
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, Etappen I3–I5 (Ergebnis)"
+    title: "Feldkarte: gleiche Richtung an drei Standorten, belastbar nur für BARC"
+    status: eingeschraenkt
+    changed: "Die Feldkarte (NDVI-Warnzonen innerhalb eines Feldes) wurde zum ersten Mal an zwei weiteren Standorten (Italien, Colorado) geprüft und mit trainierten Modellen verglichen; alle Regeln standen vorher fest."
+    plain: >
+      An allen drei Orten zeigt ein niedriger Grünwert im Hochsommer meist auch niedrigen Ertrag innerhalb des Feldes: in 49 von 50 Feld-Jahren.
+      Belegt ist das aber nur für BARC (41 Feld-Jahre); Italien (ein Feld, drei Jahre) und Colorado (sechs Teilflächen) sind zu klein für ein Urteil.
+      Ein trainiertes Modell ist auf BARC etwas besser als der rohe Grünwert (Korrelation 0,70 statt 0,67), überträgt aber nicht besser auf andere Orte.
+      Das Fenster muss nicht mehr an den Kalender gebunden sein: ein Fenster um das Maximum der Kurve ist gleich gut.
+    metrics:
+      - label: "BARC: rohe NDVI-Regel (Median-ρ)"
+        value: "0,67"
+        ci: "[0,59; 0,74]"
+        n: "41 Feld-Jahre"
+        plain: "Je höher der Grünwert einer Zelle, desto höher meist ihr Ertrag im selben Feld."
+      - label: "BARC: Modell M1 minus rohe Regel (Differenz im ρ)"
+        value: "+0,04"
+        ci: "[0,02; 0,06]"
+        n: "41 Feld-Jahre"
+        plain: "Training bringt einen kleinen, aber sicher von 0 verschiedenen Gewinn."
+      - label: "Kayad (Italien) und Colorado, rohe Regel"
+        value: "0,60 und 0,63"
+        n: "3 und 6 Feld-Jahre"
+        plain: "Gleiche Richtung wie bei BARC; zu wenige Feld-Jahre für ein Urteil."
+    found:
+      - "Spitzenfenster und Kalenderfenster sind auf BARC gleich gut (Unterschied -0,002); damit sind andere Klimaräume ohne neues Fenster abgedeckt."
+      - "Ein auf Kayad oder Colorado trainiertes Modell ist auf BARC schlechter als der rohe Grünwert (0,58 statt 0,67)."
+      - "Geländemerkmale und reine Position erklären praktisch nichts."
+    limits:
+      - "Gate 'überträgt auf Fremdstandort' ist nach der vorab festgelegten Regel nicht prüfbar, weil kein Fremdstandort mindestens 10 Feld-Jahre hat."
+      - "Der Label-Shuffle-Test ist nach Vorab-Wortlaut nur unter einer von zwei Lesarten bestanden; beide sind offengelegt."
+      - "Kayad hatte variable Düngung und Fahrstreifen, BARC-Zonen können Boden sein; ein Alarm heißt 'auffällige Kurve', nicht 'Stress'."
+    figures:
+      - file: if_perfy_rho.png
+        caption: "Je Feld-Jahr: Rangzusammenhang zwischen Satellitenmerkmal und relativem Ertrag, drei Standorte."
+      - file: if_transfer_matrix.png
+        caption: "Training auf einem Standort, Test auf einem anderen (Median-ρ, nur BARC belastbar)."
+      - file: if_kayad_maps.png
+        caption: "Kayad: gemessene Ertragskarte und NDVI-Warnzonen für drei Jahre."
+    links:
+      - label: "Ergebnisbericht"
+        path: reports/innerfeld_ergebnis.md
+      - label: "Vorab-Festlegungen"
+        path: reports/innerfeld_vorab.md
+      - label: "Datenkritik I4"
+        path: reports/data_review/if_i4_ergebnis.md
+  - id: if-i2-merkmale
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, Etappe I2 (Satellitenmerkmale)"
+    title: "Satellitenkurven für alle Standorte gleich aufgebaut"
+    status: eingeschraenkt
+    changed: "Für BARC, Kayad und Colorado wurden Satellitenkurven (Sentinel-2, 10-Tage-Abschnitte) je Messpunkt abgerufen und zu vergleichbaren Merkmalen verarbeitet; Ertragswerte wurden dabei nicht verwendet."
+    plain: >
+      Damit die Feldkarte an mehreren Orten gleich geprüft werden kann, haben alle Standorte jetzt dieselben Satellitenmerkmale.
+      Statt eines festen Kalenderfensters wird das Fenster um das Maximum der Grünkurve gelegt; das passt auch für andere Klimaräume.
+      Ein Fehler beim Abruf (verlorenes Datum) fiel vor jeder Auswertung auf und wurde behoben. Der Vergleich mit dem
+      mitgelieferten Satellitenbild von Kayad zeigt, dass die Messpunkte räumlich richtig getroffen werden.
+    metrics:
+      - label: "Räumliche Ausrichtung (Kayad, Spearman-ρ)"
+        value: "0,91–0,97"
+        n: "3 Jahre, 829–1532 Zellen"
+        plain: "Unser Grünwert stimmt mit dem Satellitenbild der Datenautoren Zelle für Zelle überein; es gibt keinen Versatz."
+      - label: "Feld-Jahre mit Merkmalen"
+        value: "54 von 54"
+        plain: "Alle Standorte (BARC 41, Colorado 10, Kayad 3) haben ein gültiges Grünmaximum und genügend Zellen."
+    found:
+      - "Im Hochsommer gibt es nur 1–3 klare Satellitenaufnahmen je 10 Tage; deshalb werden je drei Abschnitte zusammengefasst."
+      - "In Kayad liegt der Grünwert nahe der Sättigung (0,9–0,95); Unterschiede zwischen Zellen sind klein."
+    limits:
+      - "Kayad 2016 hat nur 9 gültige Abschnitte, weil in Europa damals kaum aufbereitete Satellitendaten vorlagen."
+      - "Kayad und Colorado sind praktisch eben; die Gelände-Kontrolle ist dort nicht aussagekräftig."
+    links:
+      - label: "Datenkritik I2"
+        path: reports/data_review/if_i2_merkmale.md
+      - label: "Plan Innerhalb-Feld"
+        path: reports/plan_innerfeld.md
+  - id: if-i1-daten
+    date: 2026-10-17
+    phase: "Innerhalb-Feld über Standorte, Etappe I1 (Daten)"
+    title: "Zweiter Standort für die Feldkarte: Kayad (Italien) geladen, CH-TAN gesperrt"
+    status: eingeschraenkt
+    changed: "Für den Test der Feldkarte an weiteren Orten wurden Kayad (Italien) und Colorado in eine gemeinsame Tabelle mit BARC gebracht und auf Fehler geprüft."
+    plain: >
+      Bisher stammt die Karte innerhalb des Feldes nur von einem Standort (BARC in Maryland). Jetzt gibt es mit Kayad ein
+      Maisfeld in Italien mit sehr feinen Mähdrescher-Messpunkten. Der zweite geplante Datensatz (CH-TAN, Schweiz) steht bis 2028
+      unter Sperrfrist und kann nicht verwendet werden. Es wurde noch nichts trainiert oder getestet; dieser Schritt prüft nur die Daten.
+    metrics:
+      - label: "BARC-Referenz neu berechnet (Median-ρ)"
+        value: "0,676"
+        n: "41 Feld-Jahre"
+        plain: "Gleicher Wert wie bisher; die neue gemeinsame Tabelle verändert nichts am Bekannten."
+      - label: "Kayad: Feld-Jahre"
+        value: "3 (1 Feld)"
+        n: "829–1351 Zellen je Jahr"
+        plain: "Sehr detailliert, aber nur ein Feld in drei Jahren, daher kein Beweis für 'gilt überall'."
+    found:
+      - "Der Ertragsmonitor in Kayad deckelt bei 18 t/ha (bis 7 % der Punkte); die obersten Werte sind abgeschnitten."
+      - "In Kayad schwankt der relative Ertrag viel weniger als bei BARC (SD 0,10–0,15 gegenüber 0,26)."
+      - "Bei Colorado sind 4 von 10 Teilflächen-Jahren fast Totalausfälle; sie werden getrennt berichtet."
+    limits:
+      - "Mit den heutigen Daten kann nicht geprüft werden, ob die Karte außerhalb von BARC hält (kein Fremdstandort mit mindestens 10 Feld-Jahren)."
+      - "Die Datenanfragen DWFI und SwissYield sind der Engpass."
+    links:
+      - label: "Datenkritik I1"
+        path: reports/data_review/if_i1_daten.md
+      - label: "Plan Innerhalb-Feld"
+        path: reports/plan_innerfeld.md
+  - id: abgabe-hauptergebnis
+    date: 2026-10-16
+    phase: "Entscheidung des Projektinhabers (Abgabe)"
+    title: "Hauptergebnis: die Karte innerhalb des Feldes und das EU-Regionalmodell"
+    status: abgeschlossen
+    changed: "Der Projektinhaber hat festgelegt, dass die Abgabe die belastbarsten Ergebnisse in den Vordergrund stellt: wo im Feld Ertrag fehlt, und welche Jahre in EU-Regionen schlechter werden."
+    plain: >
+      Nach der Feinjustierung ist klar, welche Aussagen halten: Innerhalb eines Feldes zeigt der Grünwert im Hochsommer
+      zuverlässig, wo Ertrag fehlt. Auf Regionalebene erkennt das EU-Modell schwach, aber gesichert, welche Jahre schlechter werden.
+      Die Rangliste ganzer Felder bleibt Teil des Projekts, aber mit der Grenze, dass ein auffälliges Feld auch spät gesät sein kann.
+      Es wurde dafür nichts neu gerechnet.
+    metrics:
+      - label: "Innerhalb des Feldes (Median-ρ)"
+        value: "0,68"
+        ci: "[0,54; 0,72]"
+        n: "41 Feld-Jahre"
+        plain: "Je höher der Grünwert eines Pixels, desto höher meist sein Ertrag; 1 wäre eine perfekte Rangfolge."
+      - label: "EU-Regionalmodell am 1.9. (Spearman-ρ)"
+        value: "0,38"
+        ci: "[0,36; 0,40]"
+        n: "8371 Region-Jahre"
+        plain: "Schwacher, aber sicher von 0 verschiedener Zusammenhang zwischen Vorhersage und tatsächlicher Jahresabweichung."
+    found:
+      - "Die Karte braucht kein Training und hängt nicht an wenigen Wetter-Jahren; das macht sie zum robustesten Ergebnis."
+      - "Negative Ergebnisse (Phase 4, Mehr-Kulturen, Feinjustierung) werden vollständig berichtet, weil ihre Kriterien vorab feststanden."
+    limits:
+      - "Die Karte ist nur an einem Standort (BARC, Maryland) mit Ertragskarten geprüft."
+      - "Weder Feld- noch Regionalmodell sind bisher in Österreich getestet."
+    figures:
+      - file: fj_field_map.png
+        caption: "Auffällige Zonen (unterstes NDVI-Viertel) und gemessene Problemzonen."
+    links:
+      - label: "Hauptergebnis (Doku-Entwurf)"
+        path: reports/doku/hauptergebnis.md
+      - label: "Entscheidungen"
+        path: DECISIONS.md
+
+  - id: feinjustierung-f3
+    date: 2026-10-16
+    phase: "Feinjustierung (Plan reports/plan_feinjustierung.md, Etappen F0–F3)"
+    title: "Radar, Temperatur, Temperatursumme und Begrünungsdatum: keines hilft"
+    status: nicht_bestanden
+    changed: "Vier neue Datenquellen wurden einzeln nach einer vorher festgelegten Regel zum Stress-Score hinzugefügt; keine verbesserte die Erkennung gefährdeter Felder, deshalb bleibt der Stress-Score ohne Zusatz das Hauptmodell."
+    plain: >
+      Ziel war, die Erkennung auffälliger Felder mit zusätzlichen Satellitendaten zu verbessern: Radar (sieht durch Wolken),
+      Oberflächentemperatur und Verdunstung (Trockenstress), eine Zeitachse nach Temperatursumme und das Datum, an dem das Feld grün wird.
+      Jede Quelle machte die Erkennung schlechter statt besser. Außerdem zeigte die Fallprüfung, dass der Stress-Score bei den
+      US-Versuchsfeldern vor allem spät gesäte Bio-Parzellen markiert. Die Karte innerhalb eines Feldes bleibt das robusteste Ergebnis.
+    metrics:
+      - label: "Stress-Score allein (PR-AUC, 1.9.)"
+        value: "0,69"
+        ci: "[0,42; 0,89]"
+        n: "89 Feld-Jahre / 8 Standort-Jahre"
+        plain: "Zufall wäre 0,33. Der Wert ist die Messlatte, die neue Merkmale schlagen mussten."
+      - label: "Änderung mit Radar"
+        value: "−0,14"
+        ci: "[−0,32; +0,17]"
+        n: "89"
+        plain: "Negativ heißt schlechter; gebraucht wäre mindestens +0,02 mit Intervall über 0."
+      - label: "Änderung mit Temperatur + Verdunstung"
+        value: "−0,22"
+        ci: "[−0,28; −0,01]"
+        n: "89"
+        plain: "Sicher schlechter: diese Daten messen vor allem das Wetterjahr, nicht das einzelne Feld."
+      - label: "Ohne die Bio-Parzellen (KBS T4)"
+        value: "0,60"
+        ci: "[0,18; 0,95]"
+        n: "71"
+        plain: "Zufall wäre hier 0,24; das Intervall schließt den Zufall ein, ohne T4 ist der Nachweis also nicht gesichert."
+      - label: "Innerhalb des Feldes (NDVI 16.7.–15.8., Median-ρ)"
+        value: "0,68"
+        ci: "[0,54; 0,72]"
+        n: "41 Feld-Jahre"
+        plain: "Hoher Zusammenhang zwischen Grünwert und Pixel-Ertrag; Radar dazu ändert ihn um −0,01."
+    found:
+      - "Gate H1 bestanden: die alten Werte (0,71 und 0,68) wurden exakt nachgerechnet, bevor Neues getestet wurde."
+      - "Alle vier Merkmale verschlechtern das Hauptziel; die Regel wurde vorher festgelegt und nicht geändert."
+      - "Der Stress-Score markiert die Bio-Parzellen der Kellogg Biological Station jedes Jahr, auch 2020, als sie normal geerntet haben (sechs Fehlalarme an der Spitze)."
+      - "Kontrollen ohne Auffälligkeit: kein Ortseffekt, Übertragung zwischen den Standorten ohne Verlust."
+    limits:
+      - "Nur 8 Standort-Jahre; die Oberflächentemperatur fehlt bei 47 % der Feld-Jahre (Wolken), KBS-Parzellen sind für Temperatur und MODIS zu klein."
+      - "Die Regel für das Begrünungsdatum wurde nach der Kurvenprüfung einmal korrigiert (Zwischenfrucht), bevor Erträge verglichen wurden; offengelegt in DECISIONS.md."
+      - "Gate H2 verfehlt: laut Plan keine Prüfrunde H3, kein Freeze, kein Österreich-Test mit diesem Ansatz. Wie es weitergeht, entscheidet der Projektinhaber."
+    figures:
+      - file: fj_ranking.png
+        caption: "Rangliste je Standort-Jahr: rot = tatsächlich gefährdet, Linie = Alarmschwelle (höchstens 20 % Fehlalarme)."
+      - file: fj_field_map.png
+        caption: "Feldkarte: unterstes NDVI-Viertel (links) und gemessene Problemzonen (rechts), zwei BARC-Felder 2021."
+      - file: fj_score_phases.png
+        caption: "Gefährdete Felder liegen vor allem im Juli unter der Referenzkurve."
+    links:
+      - label: "Bericht Feinjustierung"
+        path: reports/feinjustierung_ergebnis.md
+      - label: "Vorab-Festlegungen"
+        path: reports/feinjust_vorab.md
+      - label: "Datenkritik Merkmale"
+        path: reports/data_review/f2_merkmale.md
+      - label: "Datenkritik Ablation"
+        path: reports/data_review/f3_ablation.md
+      - label: "Hauptergebnis (Doku-Entwurf)"
+        path: reports/doku/hauptergebnis.md
+
+  - id: mehrkultur-etappe4
+    date: 2026-10-16
+    phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 3–4)"
+    title: "Training auf Mais, Weizen und Erbsen: kein Signal über den Mittelwert hinaus"
+    status: nicht_bestanden
+    changed: "Wetter- und Satellitenmerkmale für Mais, Winterweizen und Erbse berechnet und Modelle auf allen drei Kulturen gemeinsam und einzeln getestet; das Kriterium „stark genug“ wurde verfehlt."
+    plain: >
+      Das Modell sollte aus mehreren Kulturen lernen, welche Jahre schlechter sind als üblich, und das auf Mais übertragen.
+      Mit den 210 verfügbaren Wetterzellen-Jahren konnte keines der Modelle besser vorhersagen als der einfache
+      Durchschnitt, und das Wissen aus Weizen und Erbse half bei Mais nicht. Deshalb geht dieser Ansatz nicht weiter nach Österreich.
+    metrics:
+      - label: "Kultur-Transfer auf Mais (Spearman)"
+        value: "0,01"
+        ci: "[−0,26; 0,32]"
+        n: "85"
+        plain: "0 heißt kein Zusammenhang; das Intervall enthält 0, ein Transfer ist also nicht nachweisbar."
+      - label: "Mais, Fehler gegenüber dem Durchschnitt (RMSE)"
+        value: "+0,002"
+        ci: "[0,000; 0,006]"
+        n: "85"
+        plain: "Ein Wert über 0 heißt, das Modell ist nicht besser als der Durchschnitt."
+    found:
+      - "Alle Modelle liegen beim Fehler praktisch gleichauf mit dem Durchschnitt; mehr Zeilen (Stufen S3/S4) helfen nicht."
+      - "Das gepoolte Spearman-ρ ist wegen des Trainingsmittel-Effekts auch für den Durchschnitt negativ und damit als Kriterium kaum erreichbar; das Kriterium wird trotzdem nicht geändert."
+      - "Die Regel für Gate G2 (Satellitenkurve passt) ist formal bestanden, die Zusammenhänge sind aber mit |ρ| ≤ 0,08 sehr schwach."
+    limits:
+      - "Nur Versuchsparzellen-Mittel mit wechselnden Sorten, keine Felder ab 1 ha; nur eine Maisquelle; ein 30-m-Kreis liefert wenige Satellitenpixel."
+      - "Es gab nur eine erlaubte Modellrunde; eine weitere braucht eine neue Entscheidung. Österreich wurde nicht berührt."
+    links:
+      - label: "Bericht Etappe 4"
+        path: reports/phase4_mehrkultur.md
+      - label: "Kurvenprüfung (G2)"
+        path: reports/data_review/w33_kurvenpruefung.md
+      - label: "Kriterien"
+        path: results/2026-10-16_mehrkultur_h030/criteria.json
+
+  - id: mehrkultur-w31
+    date: 2026-10-16
+    phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 3 – W3.1)"
+    title: "Kulturparameter festgelegt, Merkmalsrechnung nicht mehr nur für Mais"
+    status: abgeschlossen
+    changed: "Wetter- und Wachstumsparameter (Temperatursumme, Wasserbedarf, Blütezeit, Hitzeschwelle) stehen jetzt je Kultur in der Konfiguration, und die Merkmalsrechnung kann sie verwenden."
+    plain: >
+      Bisher waren die Mais-Werte fest im Code. Jetzt gibt es für Mais, Winterweizen, Gerste, Erbse, Raps und Soja
+      je einen Satz Werte, festgelegt aus Fachliteratur und bevor ein Experiment läuft. Für Mais kommt exakt dasselbe
+      heraus wie vorher, das prüft ein Test. Der Projektinhaber hat die zwölf Festlegungen D1–D12 des Plans bestätigt.
+    metrics:
+      - label: "Tests"
+        value: "alle grün"
+        plain: "Die bestehenden Leckage-Tests und neue Mais-Regressionstests bestehen; Mais-Ergebnisse bleiben unverändert."
+    found:
+      - "Winterkulturen brauchen Wetter ab Herbst des Vorjahres; das Saisonfenster ist je Kultur einstellbar."
+    limits:
+      - "Die Werte sind Literaturwerte für Mitteleuropa und noch nicht an den Daten geprüft (das wäre Leckage). Satellitenmerkmale je Kultur (W3.2–W3.4) fehlen noch."
+    links:
+      - label: "Entscheidungen"
+        path: DECISIONS.md
+      - label: "Plan"
+        path: reports/plan_mehrkultur.md
+
+  - id: mehrkultur-etappe1
+    date: 2026-10-16
+    phase: "Datenerweiterung (Mehr-Kulturen-Plan, Etappe 1–2)"
+    title: "Vier offene Datenpakete geladen, vereinheitlicht und gezählt"
+    status: eingeschraenkt
+    changed: "Winterweizen-, Erbsen- und Gerstendaten aus vier offenen Quellen heruntergeladen, in eine gemeinsame Tabelle gebracht und nach unabhängigen Wetterzellen-Jahren gezählt."
+    plain: >
+      Aus vier offenen Quellen (INVITE, BRIWECS, französische Erbsen, nordische Gerste) liegen jetzt Erträge je
+      Standort und Jahr in einer gemeinsamen Tabelle. Gezählt wird nicht nach Feldern, sondern nach Wetterzelle und
+      Jahr, weil nur das neue Witterung bedeutet. Für Winterweizen und Erbsen reicht die Menge für einen Test, für
+      Mais gibt es noch keine Daten, weil der Download von Genomes to Fields vom Projektinhaber freigeschaltet werden muss.
+    metrics:
+      - label: "Winterweizen, Versuchsmittel mit genauem Ort"
+        value: "202 Wetterzellen-Jahre"
+        n: "202"
+        plain: "So viele voneinander unabhängige Wetter-Jahre stehen für Winterweizen bereit (Stufe S2)."
+      - label: "Körnererbse, Frankreich"
+        value: "257 Wetterzellen-Jahre"
+        n: "257"
+        plain: "Ebenfalls genug für einen eigenen Test."
+      - label: "Körnermais"
+        value: "0 Wetterzellen-Jahre"
+        plain: "Noch keine Maisdaten in dieser Tabelle; Genomes to Fields fehlt."
+    found:
+      - "In Frankreich gibt es pro Standort und Jahr oft zwei verschiedene Versuchstypen. Sie werden getrennt geführt, sonst würde die relative Ertragsgröße verfälscht."
+      - "Die Zahlen aus dem Plan waren Schätzungen und weichen von den echten Zählungen ab; die Zählung aus dem Code gilt."
+    limits:
+      - "Alles sind Versuchsparzellen-Mittel, keine Felder ab 1 ha."
+      - "Die Einheit der nordischen Gerste ist aus dem Wertebereich abgeleitet und muss noch gegen die Dokumentation geprüft werden."
+      - "Die Festlegungen D1–D12 des Plans gelten bis zur Bestätigung durch den Projektinhaber nur vorläufig. Es wurde noch kein Modell trainiert und nichts aus Österreich angesehen."
+    links:
+      - label: "Datenkritik"
+        path: reports/data_review/phase1b_mehrkultur.md
+      - label: "Zahlen"
+        path: reports/data_review/phase1b_mehrkultur_zahlen.md
+      - label: "Plan"
+        path: reports/plan_mehrkultur.md
+
+  - id: datensuche-mehrkultur
+    date: 2026-10-16
+    phase: "Datenerweiterung (nach Phase 4, Plan)"
+    title: "Weitere Ertragsdaten gesucht – Plan für Training auf mehreren Kulturen"
+    status: zwischenstand
+    changed: "Weltweit nach offenen Ertragsdaten gesucht (zwei unabhängige KI-Recherchen abgeglichen) und daraus einen Plan für das Training auf Mais, Getreide und Soja gemacht."
+    plain: >
+      Weil Phase 4 an zu wenigen unabhängigen Standort-Jahren scheiterte, wurde nach weiteren Datensätzen mit
+      gemessenem Ertrag gesucht, auch für Weizen, Gerste, Raps und Soja. Zwei getrennte KI-Recherchen wurden
+      verglichen und an den Originalquellen nachgeprüft; dabei wurde ein Fehler im ersten Bericht gefunden und
+      korrigiert. Der Plan legt fest, wie das Modell auf mehreren Kulturen lernt und wann es nach Österreich darf.
+    metrics:
+      - label: "Offen ladbar, gezählt: Körnermais"
+        value: "112 Standort-Jahre"
+        plain: "Fast alle aus Genomes to Fields (USA), Versuchsparzellen und keine ganzen Felder. Bisher hatten wir 8–11 unabhängige Standort-Jahre."
+      - label: "Offen ladbar, gezählt: Winterweizen Europa"
+        value: "464 Standort-Jahre"
+        plain: "Aus Sortenprüfungen in Tschechien, Ungarn, Schweiz, Frankreich und Deutschland. Noch nicht auf gleiche Wetterzellen zusammengeführt."
+      - label: "Soja offen"
+        value: "ca. 30–40 Standort-Jahre"
+        plain: "Schätzung aus Beschreibungen. Soja reicht frühestens mit Anfragen für ein eigenes Modell."
+    found:
+      - "Die größte Quelle für Felder ab 1 ha (YIPEEO, Tschechien) hat die Ertragswerte nur in einer geschützten Sammlung. Sie muss angefragt werden."
+      - "Die nordischen Gerstenwerte sind modellierte Sortenwerte und keine gewogenen Rohmittel."
+      - "Mehr Kulturen am selben Ort bringen keine neue Witterung. Gezählt wird deshalb pro Wetterzelle und Jahr."
+    limits:
+      - "Fast alle neuen Daten sind Versuchsparzellen-Mittel. Als Satellitenlabel sind sie verrauscht."
+      - "Die meisten Zahlen sind Schätzungen aus Beschreibungen und noch nicht aus den Dateien gezählt."
+      - "Die Festlegungen im Plan gelten erst nach Bestätigung durch den Projektinhaber."
+    links:
+      - label: "Recherchebericht"
+        path: reports/data_search.md
+      - label: "Plan Mehr-Kulturen"
+        path: reports/plan_mehrkultur.md
+      - label: "Codex-Katalog (zweite Recherche)"
+        path: reports/extern/codex_2026-10-16/Ertragsdaten_Katalog.csv
+
   - id: nachtlauf-extras
     date: 2026-10-16
     phase: "Zusatzanalysen (Phase 2.4 / 3.4a)"

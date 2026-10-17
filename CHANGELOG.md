@@ -3,7 +3,28 @@
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen nach [SemVer](https://semver.org/lang/de/) – ein Minor-Release pro Phase (siehe AGENTS.md §4.4).
 
 ## [Unreleased]
+
+## [innerfeld-1] – 2026-10-17 – Sammel-Release: Mehr-Kulturen, Feinjustierung, Innerhalb-Feld über Standorte (kein Freeze, kein Österreich-Test)
+> ⛔ **Dieser Stand enthält überwiegend vorab festgelegte negative Ergebnisse.** Jahresvorhersage pro Feld nicht stark genug (Phase 4, Mehr-Kulturen G3 ✗), Feinjustierung H2 ✗, **Glättung der Vorhersage bringt nichts (Runde 2: R2-BARC ✗, R2-Kayad ✗)**. Belastbar sind nur die Feldkarte auf BARC (K1 ✓, J3a ✓ mit Vorbehalt) und das EU-Regionalmodell; Übertragbarkeit auf andere Standorte ist nicht prüfbar (J2/J3b).
+
+### Added (Branch `phase-if-innerfeld`; Plan am 2026-10-17 bestätigt)
+- Innerhalb-Feld über Standorte, Etappe I1: `src/croptransfer/innerfeld.py` (gemeinsame Tabelle `gt_pixels` für BARC, Kayad, Colorado), `tests/test_innerfeld.py`, Datenkritik `reports/data_review/if_i1_daten.md`; Kayad (Zenodo 14216165) geladen, **Gate J1 ⚠️**, CH-TAN unter Embargo bis 2028-01-01.
+- Innerhalb-Feld Etappe I2: `innerfeld_extract.py` (Sentinel-2-Dekaden-Komposite je Zelle, 54 Feld-Jahre), `innerfeld_features.py` (Spitzenfenster B1, Dreifenster M1, z-Werte je Feld-Jahr), `tests/test_innerfeld_features.py`, Datenkritik `reports/data_review/if_i2_merkmale.md`; räumliche Ausrichtung gegen das Kayad-Satellitenbild ρ 0,91–0,97.
+- Innerhalb-Feld I3–I5: `reports/innerfeld_vorab.md` (vor dem Lauf), `innerfeld_run.py` (Modelle B0/B1/B2/M1/M2/K-Raum, Schemata E/T/L, Gates), `innerfeld_report.py` (Abbildungen), `tests/test_innerfeld_run.py`, Bericht `reports/innerfeld_ergebnis.md`, Datenkritik `reports/data_review/if_i4_ergebnis.md`; **K1 ✓, J3a ✓ mit Vorbehalt, J2/J3b nicht prüfbar** (kein Fremdstandort mit ≥ 10 Feld-Jahren).
+- Innerhalb-Feld, explorativ: `innerfeld_ceiling.py` (Obergrenze durch Rauschen der Ertragskarte, Nachbarn-Benchmark, ρ nach Blockmittelung), `tests/test_innerfeld_ceiling.py`, Bericht `reports/innerfeld_obergrenze.md`, Abbildung `if_obergrenze.png`; `load_kayad_points` liefert zusätzlich `number` (Punktreihenfolge).
+- Innerhalb-Feld Runde 2: `reports/innerfeld_vorab_runde2.md` (vor dem Lauf), `innerfeld_runde2.py`, `tests/test_innerfeld_runde2.py`, Bericht `reports/innerfeld_ergebnis_runde2.md`; **R2-BARC ✗, R2-Kayad ✗: Glättung der Vorhersage hilft nicht**; Aufbereitung der Kayad-Rohpunkte hebt ρ (B0) nur von 0,604 auf 0,623.
+### Added (Branch `phase-fj-feinjustierung`; F0.1 am 2026-10-16 bestätigt)
+- Feinjustierung (`reports/plan_feinjustierung.md`): Vorab-Festlegungen `reports/feinjust_vorab.md`; `extract_s1.py` (Sentinel-1 je Feld-Szene und BARC-Pixel), `extract_lst.py` (Landsat-8/9-Oberflächentemperatur, MOD16A2GF, ERA5-Land-Verdunstung), `fj_features.py` (M1–M4 as-of), `feinjust.py` (Gate H1, Ablation, Kontrollen), `fj_review.py`, `fj_product.py` (Rangliste mit konformer Alarmschwelle, Erklärung nach Monaten, Feldkarte); Tests `test_feinjust.py`, Leakage-Tests je Merkmal.
+- Hauptergebnis der Abgabe festgelegt (DECISIONS 2026-10-16): `reports/doku/hauptergebnis.md` neu geordnet (Karte innerhalb des Feldes, EU-Regionalmodell, Stress-Score mit T4-Grenze), Kapitel 4.6 und 6 ergänzt, Startseite, README und Eintrag `abgabe-hauptergebnis`; `ANFRAGEN.md` Nr. 8–12 versandfertig (Hagel, YIPEEO, DWFI, SwissYield, Booßen).
+- Ergebnis: **H1 ✓, H2 ✗** – kein neues Merkmal hilft; Bericht `reports/feinjustierung_ergebnis.md`, Datenkritik `reports/data_review/f2_merkmale.md`, `f3_ablation.md`, Doku `reports/doku/hauptergebnis.md`, Abbildungen `fj_*.png`.
+### Added (Branch `phase-mk-mehrkultur`; D1–D12 am 2026-10-16 bestätigt)
+- W3.2–W3.4 und Etappe 4: `extract_multi.py`, `weather_multi.py`, `features_multi.py`, `curve_check.py`, `experiments_multi.py`; G2 ✓ (formal), **G3 ✗** (`reports/phase4_mehrkultur.md`): kein Signal über den Mittelwert hinaus; G2F-Mais (104 S2-Zellen-Jahre) über figshare.
+- W3.1: `config.yaml` Block `crops:` (Mais, Winterweizen, Sommergerste, Erbse, Winterraps, Soja), `crops.py`, `features.py` kulturabhängig (Standard Mais, per Regressionstest `tests/test_crops.py` unverändert).
+- `fetch_open_sets.py`: Download mit Manifest und sicherem Entpacken (INVITE, BRIWECS, Erbsen FR, Nordic Gerste; NVT optional).
+- `groundtruth_multi.py`: Schema `gt_site_years` (Stufen S1–S4, RY, RY_nb, 0,1°-Zelle); `review_multi.py`: Zahlen zur Datenkritik.
+- Datenkritik `reports/data_review/phase1b_mehrkultur.md`; Zählung: Winterweizen S2 202, Erbse S2 257 Zellen-Jahre, Mais 0 (G2F fehlt).
 ### Added
+- **Datensuche und Mehr-Kulturen-Plan:** `reports/data_search.md` (118 Quellen, Top 10, Zählung je Kultur, Anfragetexte; Korrekturblock zu YIPEEO und Nordic), `reports/plan_mehrkultur.md` (25 Schritte, 4 Gates, Entwurf D1–D12), Kopie des Codex-Katalogs unter `reports/extern/codex_2026-10-16/`; Eintrag `datensuche-mehrkultur` in `app/versions.yaml`.
 - **Website (Phase 9, vorgezogen):** `app/streamlit_app.py` als mehrseitige Streamlit-Site (Ziel · Vorgehen & Quellen · Ergebnisse · Vergleich · Felder ansehen · Eigenes Modell · Projektlog), Seiten unter `app/ui/`, Versionsregister `app/versions.yaml` (je Version: was geändert wurde, Kennzahlen in einfacher Sprache, Befunde, Grenzen, Abbildungen, Pfade), Glossar „Was heißt das?“, Theme `.streamlit/config.toml`.
 - `app/precompute.py` schreibt zusätzlich `benchmarks.csv` (alle Läufe aus `versions.yaml`) und `stages.json` (gewähltes Modell + Kriterien je Stufe) für den interaktiven Vergleich.
 - Seite „Eigenes Modell“: speichert Trainingsaufträge (Kultur, Datensätze, Merkmale) als JSON unter `data/app/train_requests/`; das Training selbst läuft weiterhin über die Module.

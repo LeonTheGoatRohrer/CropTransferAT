@@ -1,0 +1,5 @@
+d9c5e912b3d3c1132ba4792585488262b2978b50
+uncommitted:
+ M src/croptransfer/innerfeld_run.py
+?? results/2026-10-16_phase2_quick0901/
+?? results/2026-10-17_innerfeld/

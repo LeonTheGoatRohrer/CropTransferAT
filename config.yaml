@@ -133,3 +133,126 @@ cybench:
   freeze:
     dir: results/models/cybench_freeze
     protocol: reports/freeze_protocol_cybench.md
+
+# Crop parameters for multi-crop training (plan_mehrkultur.md D6; fixed BEFORE any experiment).
+# Sources: FAO-56 (Allen et al. 1998) Kc stages mapped to thermal time; GDD base/cap and flowering windows
+# from standard agronomic literature for Central Europe. Maize values equal the former hard-coded
+# constants in features.py (regression-tested). `season_start_offset_year` = -1: season starts in the
+# autumn before the harvest year. `gdd_nodes`/`kc_nodes` form a piecewise-linear Kc(thermal time) curve.
+crops:
+  maize:
+    winter: false
+    season_start_mmdd: "04-01"
+    season_start_offset_year: 0
+    gdd_base: 10.0
+    gdd_cap: 30.0
+    flower_window: ["07-10", "08-20"]
+    heat_threshold: 32.0
+    mid_start_mmdd: "06-01"
+    gdd_nodes: [0, 200, 900, 1700, 2600]
+    kc_nodes: [0.3, 0.3, 1.2, 1.2, 0.6]
+  winter_wheat:
+    winter: true
+    season_start_mmdd: "10-01"
+    season_start_offset_year: -1
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["05-10", "06-05"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "04-01"
+    gdd_nodes: [0, 150, 1000, 1500, 1900, 2300]
+    kc_nodes: [0.3, 0.4, 0.4, 1.15, 1.15, 0.3]
+  spring_barley:
+    winter: false
+    season_start_mmdd: "03-15"
+    season_start_offset_year: 0
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["06-01", "06-25"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "05-01"
+    gdd_nodes: [0, 100, 500, 1000, 1400]
+    kc_nodes: [0.3, 0.3, 1.15, 1.15, 0.25]
+  field_pea:
+    winter: false
+    season_start_mmdd: "03-01"
+    season_start_offset_year: 0
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["05-15", "06-15"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "04-15"
+    gdd_nodes: [0, 150, 600, 1100, 1400]
+    kc_nodes: [0.4, 0.4, 1.15, 1.15, 0.3]
+  winter_rapeseed:
+    winter: true
+    season_start_mmdd: "08-20"
+    season_start_offset_year: -1
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["04-10", "05-10"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "03-15"
+    gdd_nodes: [0, 200, 1000, 1700, 2400]
+    kc_nodes: [0.35, 0.4, 1.15, 1.15, 0.35]
+  soybean:
+    winter: false
+    season_start_mmdd: "04-15"
+    season_start_offset_year: 0
+    gdd_base: 10.0
+    gdd_cap: 30.0
+    flower_window: ["07-10", "08-10"]
+    heat_threshold: 32.0
+    mid_start_mmdd: "06-15"
+    gdd_nodes: [0, 200, 700, 1300, 1900]
+    kc_nodes: [0.4, 0.4, 1.15, 1.15, 0.5]
+
+# Feinjustierung (reports/plan_feinjustierung.md, pre-registered in reports/feinjust_vorab.md BEFORE any run)
+s1:                                # M1 Sentinel-1 radar
+  collection: COPERNICUS/S1_GRD
+  instrument_mode: IW
+  scale_m: 10
+  min_pixels: 5                    # per field x scene
+  vv_range_db: [-30.0, 5.0]
+  vh_range_db: [-40.0, 0.0]
+  window_start_mmdd: "07-01"       # field features: scenes from here to the cutoff
+  min_scenes: 3
+  speckle_radius_m: 15             # pixel level: focal mean per scene before the temporal median
+  min_neighbours: 3                # neighbour anomaly needs >= 3 other fields in the same scene/year
+lst:                               # M2 Landsat 8/9 surface temperature
+  collections: [LANDSAT/LC08/C02/T1_L2, LANDSAT/LC09/C02/T1_L2]
+  scale: 0.00341802
+  offset_k: 149.0
+  window_start_mmdd: "06-15"
+  min_scenes: 3
+  clear_frac_min: 0.7
+et:                                # M2 evapotranspiration
+  modis: MODIS/061/MOD16A2GF
+  modis_scale: 0.1
+  modis_fill_min: 3270.0           # kg/m2 per 8 days after scaling; above = fill value
+  modis_scale_m: 500
+  composite_days: 8
+  window_start_mmdd: "06-01"
+gdd_score:                         # M3 stress score on the thermal-time axis
+  bin_cdd: 100.0
+  first_cdd: 300.0
+emerge:                            # M4 green-up date from the S2 NDVI dekad curve
+  amplitude_frac: 0.2
+  min_amplitude: 0.2
+  min_obs_dekads_before_peak: 2
+  peak_from_mmdd: "06-01"          # = crops.maize.mid_start_mmdd; correction after the curve check (DECISIONS)
+feinjust:                          # decision rule (Plan section 3) and H3 criteria (confirmed F0.1)
+  cutoff: "09-01"
+  basis: S2
+  logreg_C: 1.0
+  ridge_alpha: 1.0
+  within_window: w2
+  keep_delta_min: 0.02
+  other_loss_max: 0.02
+  shuffle_repeats: 20
+  h3_recall_min: 0.5
+  h3_rho_min: 0.5
+  h3_rho_lo_min: 0.3
+  h3_shuffle_margin: 0.10
+  h3_lodo_loss_max: 0.15
+  alarm_fpr: 0.2

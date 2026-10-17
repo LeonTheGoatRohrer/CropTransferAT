@@ -6,6 +6,11 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) | Vorschlag und Ausformulierung des Hauptergebnisses der Abgabe (Doku-Entwurf, Website-Texte); Entwürfe der Anfragetexte Hagelversicherung, YIPEEO, DWFI, SwissYield, Booßen (Versand durch den Projektinhaber) |
+| 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) | Umsetzung des Plans Feinjustierung nach Bestätigung F0.1 durch den Projektinhaber: Vorab-Festlegungen, GEE-Extraktion (Sentinel-1, Landsat-Temperatur, MODIS/ERA5-Verdunstung), Merkmale M1–M4, Ablation und Kontrollen, Datenkritik, Bericht, Hauptergebnis-Text und Abbildungen, Tests, Website-Eintrag |
+| 2026-10-16 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Abgleich des Codex-Katalogs mit der eigenen Recherche, Nachprüfung an Originalquellen (u. a. YIPEEO, Nordic), Korrekturblock in `reports/data_search.md`, Plan `reports/plan_mehrkultur.md` |
+| 2026-10-16 | Codex (OpenAI), Deep-Research-Lauf | Zweite, unabhängige Quellenrecherche zu offenen Ertragsdaten: `reports/extern/codex_2026-10-16/Ertragsdaten_Katalog.csv` und `Ertragsdaten_Recherche_2026-10-16.md` (Zählung Ort × Erntejahr, Quelleneignung) |
+| 2026-10-16 | Claude (Anthropic), Claude Code (Fable 5.1) – KI-Recherche mit Unteragenten | Weltweite Recherche offener Ertragsdatensätze auf Feld-/Standortebene (Repositorien-APIs, Browser, Download-Verifikation von 12 Datensätzen); Bericht `reports/data_search.md` (Tabelle, Top 10, Standort-Jahre je Kultur, Anfragetexte) |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5 / Fable 5.1) | Zusammenfassung des Nachtlaufs für den Projektinhaber; Sentinel-2-Galerien der Trainingsfelder (`gallery.py`); mehrseitige Website (`app/ui/`, `app/versions.yaml`, Vergleich, Trainingsaufträge), Tests und Doku; Entwurf eines Recherche-Prompts für weitere Ertragsdatensätze |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) – autonomer Nachtlauf | Phase 1–4 nach PLAN.md: Ertrags-Datensatz, GEE-Extraktion, Merkmale, Modellfamilie, Kontrolltests, Datenkritik; Notebooks 01–03, Streamlit-App, Innerhalb-Feld-Analyse, One-Acre-Fund-Tabellenanalyse, Phase-5-Regionalmodell und Doku-Entwürfe durch KI-Unteragenten (Claude Sonnet); private Fortschrittsseite (Claude-Artifact) |
 | 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Phase 0: Download und Sichtung One Acre Fund (`one_acre_fund.py`), SSURGO-Abfrage über Soil Data Access (`soil_ssurgo.py`), Suche, Download und Abschreiben der Versuchsberichte Hatzendorf/LK OÖ durch KI-Unteragenten (`at_trials.py`, nur Sammeln); Tests, Datenkritik-Nachtrag |
@@ -15,6 +20,8 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 | 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Phase 5 bis EU-Freeze: Modul `regional_cybench.py` (CY-Bench-Mais EU, YAS, LOCO, LightGBM, Freeze), Tests, Datenkritik, Freeze-Protokoll mit vorab registriertem AT-Testprotokoll (ohne Österreich-Daten) |
 | 2026-10-15 | Claude (Anthropic), Claude Code (Opus 5.5) | Phase 0: Python-Umgebung, Paketgerüst, `config.yaml`, Tests, GitHub Actions; GEE-Zugangstest inkl. Fehlerdiagnose (HLS-Footprints, TLS); Recherche, Download und Sichtung der Datenquellen durch KI-Unteragenten; Entwurf von `DATA_SOURCES.md`, Datenkritik-Bericht und Notebook 00 |
 | 2026-10-15 | Claude (Anthropic), Claude Code | Diskussion und Verfeinerung der Projektidee, Recherche zu Datenquellen (u. a. Feld-Ertragsdatensätze KBS, BARC, Colorado, Mead), Entwurf und Überarbeitung von PLAN.md und AGENTS.md, Repository-Grundgerüst |
+
+- 2026-10-16: Claude Code (Sonnet 5.5) setzt Etappe 1–2 des Mehr-Kulturen-Plans um (Download-Modul, Schema-Loader, Tests, Datenkritik); Plan und Entscheidungen durch den Projektinhaber.
 
 ## Datensätze
 Details, Lizenzen und Zitate in `DATA_SOURCES.md`.

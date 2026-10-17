@@ -60,3 +60,16 @@ Die drei Verbesserungsrunden waren **vorab** mit Reihenfolge und Abbruchregel fe
 ## 4.5 Entscheidung
 
 Nach dem Plan („Nicht stark genug? Nicht nach Österreich gehen“) wird **nicht eingefroren** und **kein Österreich-Test** vorbereitet; weitere Runden sind nach der Vorab-Festlegung nicht erlaubt. Jede weitere Änderung braucht eine neue Entscheidung des Projektinhabers (z. B. mehr Daten wie Mead, die offene Landsat-Frage, YieldSAT, siehe Kapitel 6). Das ist ein **gültiges, ehrliches Ergebnis**: Das Kriterium hat genau das getan, wofür es gedacht war, und ein schwaches Modell nicht als Beweis nach Österreich gelassen.
+
+## 4.6 Feinjustierung: neue Datenquellen und was der Score wirklich erkennt
+
+Nach Phase 4 wurde das Ziel von der Jahresvorhersage auf die Stress-Erkennung verlegt (`reports/plan_feinjustierung.md`, Entscheidung F0.1). Vier neue Datenquellen wurden einzeln zum Stress-Score hinzugefügt: Sentinel-1-Radar, Landsat-Oberflächentemperatur mit MODIS- und ERA5-Verdunstung, eine Temperatursummen-Achse und das Begrünungsdatum. Die Behalte-Regel war vorab festgelegt (`reports/feinjust_vorab.md`): mindestens +0,02 PR-AUC mit Intervall über 0.
+
+| Merkmal | Änderung PR-AUC [KI] (89 Feld-Jahre) |
+|---|---|
+| Radar | −0,14 [−0,32; +0,17] |
+| Temperatur + Verdunstung | −0,22 [−0,28; −0,01] |
+| Temperatursummen-Achse | −0,03 [−0,13; +0,06] |
+| Begrünungsdatum | −0,07 [−0,13; −0,02] |
+
+Keines wurde behalten (Gate H2 ✗); laut Plan gab es danach keine weitere Runde. Die Fallprüfung zeigte außerdem: Der Score stuft die KBS-Bio-Parzellen (T4) **jedes Jahr** als auffällig ein, auch 2020 bei normalem Ertrag. Ohne T4 fällt die PR-AUC auf 0,60 [0,18; 0,95] (Zufall 0,24). Damit bestätigt und verschärft sich der Befund aus 4.3: Der Score misst bei den US-Versuchen vor allem Bewirtschaftung und Jahr. Details: `reports/feinjustierung_ergebnis.md`, Datenkritik `reports/data_review/f2_merkmale.md`, `f3_ablation.md`.

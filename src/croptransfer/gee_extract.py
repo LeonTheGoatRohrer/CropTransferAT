@@ -162,7 +162,7 @@ def scene_stats(fields, sensor: str, start: str, end: str, cfg: dict[str, Any], 
     feats = [ee.Feature(ee.Geometry(geom.__geo_interface__), {key_col: k})
              for k, geom in zip(fields[key_col], fields.geometry)]
     fc = ee.FeatureCollection(feats)
-    region = fc.geometry().bounds(1)
+    region = fc.geometry()   # exact union (not bounds): scattered fields must not pull in every tile in between
     lon = float(fields.geometry.union_all().centroid.x)
     reducer = ee.Reducer.median().combine(ee.Reducer.count(), sharedInputs=True)
     rows = []

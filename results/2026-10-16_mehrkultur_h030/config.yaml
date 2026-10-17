@@ -1,0 +1,208 @@
+# CropTransfer AT – central configuration (see PLAN.md §2/§3).
+# All paths are relative to the repository root. No magic numbers in code.
+
+seed: 42
+
+paths:
+  raw: data/raw
+  interim: data/interim
+  processed: data/processed
+  results: results
+  figures: reports/figures
+  data_review: reports/data_review
+
+gee:
+  # Google Cloud project registered for Earth Engine. Set here or via env var EE_PROJECT.
+  project: croptransfer
+  collections:
+    hls_l30: NASA/HLS/HLSL30/v002
+    hls_s30: NASA/HLS/HLSS30/v002
+    s2_sr: COPERNICUS/S2_SR_HARMONIZED
+    s2_cloudscore: GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED
+    s1_grd: COPERNICUS/S1_GRD
+    era5_land_daily: ECMWF/ERA5_LAND/DAILY_AGGR
+    dem: COPERNICUS/DEM/GLO30
+  s2_cloudscore_band: cs_cdf
+  s2_cloudscore_min: 0.60
+  # Phase-0 access test: scene counts over two reference points.
+  access_test:
+    start: "2022-07-01"
+    end: "2022-08-01"   # exclusive
+    sites:
+      graz: {lon: 15.4395, lat: 47.0707}
+      hickory_corners_kbs: {lon: -85.3737, lat: 42.4105}
+
+years:
+  groundtruth: [2013, 2025]   # US yield dataset (HLS from 2013)
+  s2: [2017, 2025]
+  austria: [2018, 2025]
+
+season:
+  start_mmdd: "04-01"
+  end_mmdd: "10-31"
+  dekad_days: 10
+
+field:
+  min_area_ha: 1.0
+  inner_buffer_m: -10
+  min_s2_pixels: 50
+  min_hls_pixels: 5
+  iou_match_min: 0.7
+  clear_frac_min: 0.7
+
+groundtruth:
+  moisture_standard: 0.155       # t/ha at 15.5 % grain moisture
+  yield_valid_range_t_ha: [1.0, 25.0]
+  outlier_sd: 3.0
+  ry_min_other_years: 2
+
+one_acre_fund:                   # PLAN.md §3.1 pre-filters (fixed before any satellite data is seen)
+  file: one_acre_fund/One_Acre_Fund_MEL_maize_survey_data_2016-2022.csv
+  min_field_ha: 0.5
+  point_radius_m: 20
+  ry_nb_min_other_fields: 10
+  # Survey-question flags where a country-year rate of exactly 0 means "probably not asked"
+  damage_columns: [pest, disease, striga, water_excess]
+
+ssurgo:
+  sda_url: https://SDMDataAccess.sc.egov.usda.gov/Tabular/post.rest
+  crop_name: Corn                # cocropyld.cropname
+  nccpi_rule: NCCPI - National Commodity Crop Productivity Index (Ver 3.0)
+  nccpi_corn_rule: NCCPI - NCCPI Corn Submodel (I)
+  # soil survey areas of the US sites: KBS (Kalamazoo Co. MI), BARC (Prince George's Co. MD),
+  # Akron (Washington Co. CO), Mead (Saunders Co. NE)
+  survey_areas: [MI077, MD033, CO121, NE155]
+  min_comp_pct_with_value: 50    # field value only if >= 50 % of its soil components have one
+
+at_trials:                       # Austrian test yields - collect only, no analysis before freeze
+  yield_range_t_ha: [1.0, 20.0]  # plausibility (unit check), not a filter for analysis
+
+targets:
+  at_risk_threshold: 0.85        # RY < 0.85 or VAS < 0.85
+  yas_baseline_years: 5          # olympic average of the 5 previous years
+
+cutoffs:
+  yield_model: ["06-01", "06-15", "07-01", "07-15", "08-01", "08-15", "09-01"]
+  self_supervised: ["05-15", "06-01", "06-15", "07-01", "07-15"]
+
+validation:
+  bootstrap_n: 1000
+  ci_level: 0.95
+  spatial_block_km: 10
+
+# Phase 5 - CY-Bench regional model (PLAN.md Phase 5). Austria is never part of training or tuning.
+cybench:
+  raw_dir: data/raw/cybench/cybench-data/maize   # relative to the data root (env CROPTRANSFER_DATA_ROOT, default repo root)
+  cache_file: data/interim/cybench_eu_features.parquet
+  # explicit country list WITHOUT AT; EE/FI/IE/LV carry only zero yields and are excluded
+  countries: [BE, BG, CZ, DE, DK, EL, ES, FR, HR, HU, IT, LT, NL, PL, PT, RO, SE, SK]
+  zero_only_countries: [EE, FI, IE, LV]
+  target_years: [2003, 2021]       # soil moisture starts 2003-02; yields end 2020 (DE 2021)
+  variables:                       # daily/composite predictors per source file
+    meteo: [tmax, tmin, prec, cwb]
+    soil_moisture: [rsm, ssm]
+    fpar: [fpar]
+    ndvi: [ndvi]
+  sum_variables: [prec, cwb]       # monthly sum only where physically meaningful
+  static_features: [awc, bulk_density]
+  # physical plausibility bounds; values outside are set to NaN and counted (none expected)
+  valid_ranges: {tmax: [-50, 60], tmin: [-60, 45], prec: [0, 500], cwb: [-100, 500], rsm: [0, 1000], ssm: [0, 100], fpar: [0, 100], ndvi: [-1, 1]}
+  # composites are labelled with their START date; usable only from the END of the composite window
+  availability_lag_days: {fpar: 9, ndvi: 7}
+  trend_window_years: 10           # linear trend baseline: OLS on the (up to) 10 previous years
+  trend_min_years: 5
+  lightgbm:
+    fixed:
+      learning_rate: 0.05
+      subsample: 0.8
+      subsample_freq: 1
+      colsample_bytree: 0.5
+      reg_lambda: 1.0
+      num_threads: 1
+    grid:                          # tuned only by nested leave-one-country-out; max_depth <= 3
+      max_depth: [2, 3]
+      min_child_samples: [50, 200, 600]
+      n_estimators: [50, 100, 200]
+  max_depth_limit: 3
+  n_jobs: 12                       # parallel outer folds
+  shuffle_repeats: 3               # label-shuffle control
+  robust_yas_range: [0.5, 2.0]     # sensitivity: evaluate only region-years with YAS in this range
+  min_region_years_country_metrics: 30
+  min_regions_within_year: 10
+  min_regions_within_country_year: 5
+  freeze:
+    dir: results/models/cybench_freeze
+    protocol: reports/freeze_protocol_cybench.md
+
+# Crop parameters for multi-crop training (plan_mehrkultur.md D6; fixed BEFORE any experiment).
+# Sources: FAO-56 (Allen et al. 1998) Kc stages mapped to thermal time; GDD base/cap and flowering windows
+# from standard agronomic literature for Central Europe. Maize values equal the former hard-coded
+# constants in features.py (regression-tested). `season_start_offset_year` = -1: season starts in the
+# autumn before the harvest year. `gdd_nodes`/`kc_nodes` form a piecewise-linear Kc(thermal time) curve.
+crops:
+  maize:
+    winter: false
+    season_start_mmdd: "04-01"
+    season_start_offset_year: 0
+    gdd_base: 10.0
+    gdd_cap: 30.0
+    flower_window: ["07-10", "08-20"]
+    heat_threshold: 32.0
+    mid_start_mmdd: "06-01"
+    gdd_nodes: [0, 200, 900, 1700, 2600]
+    kc_nodes: [0.3, 0.3, 1.2, 1.2, 0.6]
+  winter_wheat:
+    winter: true
+    season_start_mmdd: "10-01"
+    season_start_offset_year: -1
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["05-10", "06-05"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "04-01"
+    gdd_nodes: [0, 150, 1000, 1500, 1900, 2300]
+    kc_nodes: [0.3, 0.4, 0.4, 1.15, 1.15, 0.3]
+  spring_barley:
+    winter: false
+    season_start_mmdd: "03-15"
+    season_start_offset_year: 0
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["06-01", "06-25"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "05-01"
+    gdd_nodes: [0, 100, 500, 1000, 1400]
+    kc_nodes: [0.3, 0.3, 1.15, 1.15, 0.25]
+  field_pea:
+    winter: false
+    season_start_mmdd: "03-01"
+    season_start_offset_year: 0
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["05-15", "06-15"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "04-15"
+    gdd_nodes: [0, 150, 600, 1100, 1400]
+    kc_nodes: [0.4, 0.4, 1.15, 1.15, 0.3]
+  winter_rapeseed:
+    winter: true
+    season_start_mmdd: "08-20"
+    season_start_offset_year: -1
+    gdd_base: 0.0
+    gdd_cap: 30.0
+    flower_window: ["04-10", "05-10"]
+    heat_threshold: 30.0
+    mid_start_mmdd: "03-15"
+    gdd_nodes: [0, 200, 1000, 1700, 2400]
+    kc_nodes: [0.35, 0.4, 1.15, 1.15, 0.35]
+  soybean:
+    winter: false
+    season_start_mmdd: "04-15"
+    season_start_offset_year: 0
+    gdd_base: 10.0
+    gdd_cap: 30.0
+    flower_window: ["07-10", "08-10"]
+    heat_threshold: 32.0
+    mid_start_mmdd: "06-15"
+    gdd_nodes: [0, 200, 700, 1300, 1900]
+    kc_nodes: [0.4, 0.4, 1.15, 1.15, 0.5]

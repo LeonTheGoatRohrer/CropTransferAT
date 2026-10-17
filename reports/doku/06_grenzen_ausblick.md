@@ -23,6 +23,7 @@ Dieses Kapitel sammelt, was die Ergebnisse einschränkt. Alle Punkte stammen aus
 - **Die Modelle sind nicht „stark genug“** (Kapitel 4); es gibt kein einsatzreifes Frühwarnsystem. Die Unsicherheitsintervalle sind formal kalibriert, aber praktisch zu breit.
 - **EU-Regionalmodell:** schwach, vor dem 15.7. ohne Skill, Länder- statt Jahres-Hold-out, Hyperparameter-Raster nach Pilotlauf erweitert (offen berichtet, Kapitel 5).
 - **Österreich-Test:** Bundesland-Ebene bedeutet wenige Region-Jahre (n = 75 geplant); INVEKOS-Felder unter 1 ha (rund 63 % der steirischen Körnermais-Schläge) fallen durch den Filter; CCM wird vom Filter (Code 105) nicht mitgezählt, die Statistik Austria zählt es zum Körnermais; die Entscheidung steht aus.
+- **Ein Alarm ist nicht automatisch Stress.** Der Stress-Score markiert bei KBS auch spät gesäte Bio-Parzellen in Jahren mit normalem Ertrag (Kapitel 4.6). Saattermin und Sorte sind in keiner Quelle angegeben.
 - **Versuchsparzellen ≠ Praxisfelder:** Deshalb sollen nur Jahresanomalien je Standort verglichen werden, nicht absolute Erträge.
 
 ## 6.3 Ausblick
@@ -31,7 +32,7 @@ Dieses Kapitel sammelt, was die Ergebnisse einschränkt. Alle Punkte stammen aus
 2. **Landsat-Entscheidung:** Neue Prüfung oder Verzicht auf die KBS-Jahre vor 2013 (Entscheidung des Projektinhabers). Davon hängt ab, ob die KBS-Reihe mit Satellit verdreifacht werden kann.
 3. **Österreichische Felddaten (V3):** Erträge pro Feld von Landwirt:innen, Landwirtschaftskammer oder Maschinenring ab 2018 (schon 20 bis 50 Feld-Jahre wären wertvoll; nur mit Zustimmung, anonymisiert). Sie dürfen erst nach dem Freeze angesehen werden.
 4. **Weitere Daten:** europäische Mähdrescher-Ertragsdaten aus Studien (Autor:innen anfragen), Kalibrierung auf absolute t/ha, österreichische Versuchs- und Bodendaten (Bodenklimazahl, Koordinaten der Hatzendorfer Standorte).
-5. **Methodische Lücken schließen:** räumlicher Block-Split, Wärmesummen-Achse statt Kalender-Dekaden, Leave-One-Year-Out für das EU-Modell, Boden im Pixelmodell, 10-m-Auflösung der Red-Edge-Bänder prüfen.
+5. **Methodische Lücken schließen:** räumlicher Block-Split (Wärmesummen-Achse und Sentinel-1-Radar sind getestet und halfen nicht, Kapitel 4.6), Ausrichtung der Kurven am Begrünungsdatum gegen den Saattermin-Effekt (offen, bräuchte eine neue Runde vor einem Freeze), Leave-One-Year-Out für das EU-Modell, Boden im Pixelmodell, 10-m-Auflösung der Red-Edge-Bänder prüfen.
 6. **Erst nach dem Beweis (getrennt als Zusatz F5):** Anpassung mit österreichischen Daten (Few-Shot, selbstüberwachtes Feldmodell, Sentinel-1-Radar, SPARTACUS 1 km statt ERA5-Land).
 7. **Kooperationen** (Landwirtschaftskammer, Hatzendorf, KBS-Erlaubnis zur Veröffentlichung abgeleiteter Ergebnisse): **[konkrete Zusagen ergänzen]**.
 8. **Diagnose von Krankheiten/Schädlingen** bräuchte eigene Labels und liegt außerhalb dieses Projekts.

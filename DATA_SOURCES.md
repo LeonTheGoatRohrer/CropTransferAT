@@ -443,3 +443,45 @@ data.gv.at: Gemeinden `566c99be-b436-365e-af4f-27be6c536358`, Politische Bezirke
   - Für `Z_normal` je Gemeinde gilt ein fester Stand (2025-01-01). Für ältere Tabellen ist eine GKZ-Zuordnung nötig.
 
 **Status: ✅ verfügbar.**
+
+
+## 16. Mehr-Kulturen-Pakete (Plan `reports/plan_mehrkultur.md`, Pakete A1/A2/A9/A11)
+Abruf 2026-10-16 mit `python -m croptransfer.fetch_open_sets`; je Paket `data/raw/<name>/MANIFEST.json` (URL, SHA-256, Größe, Lizenznotiz). Rohdaten nicht im Repository. Verarbeitung: `python -m croptransfer.groundtruth_multi` → `data/processed/gt_site_years.parquet`.
+
+| Paket | Quelle | Kultur | Lizenz / Hinweis | Größe |
+|---|---|---|---|---|
+| `invite` (A1) | Zenodo 20786880 `Dataset.zip` (Ordner `SiriusQyality/` mit .exe wird nicht entpackt) | Winterweizen, CZ/HU/CH/FR | CC BY laut Zenodo, Datei-Kopf „Confidential" → nur lokal (D12), Anfrage Pierre Martre offen | 49,9 MB |
+| `briwecs` (A2) | figshare 27910269, Datei 50832927 | Winterweizen, 6 DE-Stationen | siehe figshare-Eintrag | 11,3 MB |
+| `peas_fr` (A9) | Recherche Data Gouv 10.57745/FW78RE (Dateien 764683–764685) | Körnererbse FR | siehe Eintrag | 6,0 MB |
+| `nordic_barley` (A11) | DataverseNO 10.18710/IZ3EFE, Datei 268105 | Sommergerste DK/SE/NO/IS/FI, BLUP/bereinigt (Stufe S4) | siehe Eintrag | 17,3 MB |
+
+Nicht geladen: NVT Australien (A10, 423 MB, nur mit `--include-large`), Genomes to Fields (A3, CAPTCHA, Projektinhaber), Rothamsted (Formular).
+Auffälligkeiten: `reports/data_review/phase1b_mehrkultur.md` (zwei Versuchstypen in Frankreich, Nordic-Einheit ungeprüft).
+**Status: ⚠️ verfügbar mit Einschränkungen.**
+
+## 17. Feinjustierung: Radar, Oberflächentemperatur, Verdunstung (über Google Earth Engine)
+Abruf 2026-10-16 mit `python -m croptransfer.extract_s1` und `python -m croptransfer.extract_lst` für die US-Feld-Jahre ab 2017 (HLS-Ära). Nur Zwischendateien unter `data/interim/obs_s1/`, `obs_lst/`, `obs_et/`, nicht im Repository.
+
+| Datensatz | GEE-ID | Verwendung | Lizenz |
+|---|---|---|---|
+| Sentinel-1 GRD (IW, VV/VH, dB) | `COPERNICUS/S1_GRD` | M1: Feld-Median je Szene, BARC-Pixel (Fenster 16.7.–15.8.) | Copernicus, frei |
+| Landsat 8/9 Collection 2 Level 2 (ST_B10, QA_PIXEL) | `LANDSAT/LC08/C02/T1_L2`, `LANDSAT/LC09/C02/T1_L2` | M2: Oberflächentemperatur je Feld-Szene | USGS, gemeinfrei |
+| MODIS MOD16A2GF v061 (ET, PET, 8 Tage, 500 m) | `MODIS/061/MOD16A2GF` | M2: ET/PET am Feldmittelpunkt | NASA LP DAAC, frei |
+| ERA5-Land täglich (total/potential evaporation) | `ECMWF/ERA5_LAND/DAILY_AGGR` | M2: Verdunstungsverhältnis an den Wetterpunkten | Copernicus C3S, frei |
+
+**CY-Bench für M5 (F1.4):** Die lokale Kopie `data/raw/cybench/cybench-data/maize` enthält 23 EU-Länder (AT … SK) und **0 US-Region-Jahre**; M5 entfällt. Saattermine: in keiner lokalen Quelle (Feld `sowing_date` leer).
+**Status: ✅ verfügbar** (Einschränkungen: `reports/data_review/f2_merkmale.md`).
+
+## 18. Innerhalb-Feld über Standorte (Plan `reports/plan_innerfeld.md`, Etappe I1)
+Abruf 2026-10-17. Gemeinsame Tabelle: `data/processed/gt_pixels.parquet` (`python -m croptransfer.innerfeld`), Zusammenfassung `gt_pixels_summary.json`. Datenkritik: `reports/data_review/if_i1_daten.md`.
+
+| Datei | Quelle | Inhalt | Größe |
+|---|---|---|---|
+| `data/raw/kayad/FIELD_YIELD.zip` (entpackt in `FIELD_YIELD/`) | Zenodo 14216165, Kayad, Sozzi, Gatto, Marinello, Pirotti (2019, *Remote Sensing* 11:2873), **CC BY 4.0** | Körnermais, ein Feld 22 ha (Po-Ebene), 2016–2018: Mähdrescher-Punkte (18 444–22 616 je Jahr, kg/ha, Feuchte %), Kriging-Raster 2,2 m, ein Sentinel-2-Tag je Jahr (4.8.), Publikation als PDF | 11,0 MB |
+| `data/raw/colorado/Modeling_data.csv` | Ag Data Commons 10.15482/USDA.ADC/28914434.v1, CC0 (siehe §5) | für diesen Plan nur Körnermais-Punkte | schon vorhanden |
+| `data/raw/barc/` | siehe §4 | 41 Feld-Jahre, unverändert | schon vorhanden |
+
+**Nicht erhalten:** ETH Research Collection, CH-TAN Winterweizen 2023/24 (doi:10.3929/ethz-c-000807633): Datensatz unter **Embargo bis 2028-01-01**; Skriptzugriff durch Bot-Schutz blockiert (nicht umgangen). Außerdem 1 Feld, 1 Jahr, 2 Düngevarianten.
+**Status: ⚠️ verfügbar mit Einschränkungen** (Kayad: Ertragsmonitor bei 18 000 kg/ha gedeckelt, Feuchtebasis unbekannt, variable N-Düngung; 2018-Koordinaten in Gauss-Boaga, deshalb die mitgelieferte EPSG:32632-Datei verwendet).
+
+**I2 (2026-10-17):** Sentinel-2-Dekaden-Komposite über GEE (`COPERNICUS/S2_SR_HARMONIZED` + `GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED`, cs_cdf ≥ 0,60; `COPERNICUS/DEM/GLO30`, als veraltet markiert) in `data/interim/pixels_dekad/` (54 Dateien, neu erzeugbar mit `python -m croptransfer.innerfeld_extract`), Merkmale `data/processed/features_innerfeld.parquet` (`python -m croptransfer.innerfeld_features`). Einschränkungen: `reports/data_review/if_i2_merkmale.md`.
