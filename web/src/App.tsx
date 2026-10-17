@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { Suspense, lazy, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Route, Routes, useLocation } from 'react-router'
 import { Footer } from './components/layout/Footer'
 import { Nav } from './components/layout/Nav'
@@ -10,6 +11,7 @@ const Evidence = lazy(() => import('./pages/Evidence'))
 const ModelCard = lazy(() => import('./pages/ModelCard'))
 const Data = lazy(() => import('./pages/Data'))
 const Method = lazy(() => import('./pages/Method'))
+const Concept = lazy(() => import('./pages/Concept'))
 const About = lazy(() => import('./pages/About'))
 const NotFound = lazy(() => import('./pages/NotFound'))
 
@@ -26,25 +28,28 @@ function ScrollManager() {
 }
 
 const TITLES: Record<string, string> = {
-  '/': 'CropTransfer AT · Find the weak zones before harvest',
-  '/analyse': 'Analyse a field · CropTransfer AT',
-  '/evidence': 'Evidence · CropTransfer AT',
-  '/model': 'Model card · CropTransfer AT',
-  '/data': 'Data · CropTransfer AT',
-  '/method': 'Method · CropTransfer AT',
-  '/about': 'About · CropTransfer AT',
+  '/': 'meta.titleHome',
+  '/analyse': 'meta.titleAnalyse',
+  '/evidence': 'meta.titleEvidence',
+  '/model': 'meta.titleModel',
+  '/data': 'meta.titleData',
+  '/method': 'meta.titleMethod',
+  '/konzept': 'meta.titleConcept',
+  '/about': 'meta.titleAbout',
 }
 
 export default function App() {
   const location = useLocation()
+  const { t, i18n } = useTranslation()
   useEffect(() => {
-    document.title = TITLES[location.pathname] ?? 'CropTransfer AT'
-  }, [location.pathname])
+    const key = TITLES[location.pathname]
+    document.title = key ? t(key) : 'CropTransfer AT'
+  }, [location.pathname, t])
 
   return (
     <div className="flex min-h-dvh flex-col">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-maize focus:px-3 focus:py-2 focus:text-soil-950">
-        Skip to content
+        {t('meta.skip')}
       </a>
       <ScrollManager />
       <Nav />
@@ -52,7 +57,8 @@ export default function App() {
         <Suspense fallback={<div className="h-[70vh]" />}>
           <AnimatePresence mode="wait">
             <motion.div
-              key={location.pathname}
+              // remount on language change so charts and cached labels re-render in the new language
+              key={`${location.pathname}|${i18n.language}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -65,6 +71,7 @@ export default function App() {
                 <Route path="/model" element={<ModelCard />} />
                 <Route path="/data" element={<Data />} />
                 <Route path="/method" element={<Method />} />
+                <Route path="/konzept" element={<Concept />} />
                 <Route path="/about" element={<About />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>

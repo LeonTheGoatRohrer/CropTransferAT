@@ -1,21 +1,26 @@
 import { motion } from 'motion/react'
-import { Eye, Info } from 'lucide-react'
+import { CloudRain, Eye, Info } from 'lucide-react'
 import { useMemo, useState, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { FieldAnalysis, IndexName } from '../../api/types'
 import { ndviColor, relYieldColor, tokens } from '../../lib/color'
-import { cumulative, lastCompleteDekad } from '../../lib/dekads'
-import { fmt, fmtArea, fmtInt, fmtPct, fmtSigned } from '../../lib/format'
+import { cumulative, lastCompleteDekad, monthLong, phaseName } from '../../lib/dekads'
+import { fmt, fmtArea, fmtCutoff, fmtInt, fmtPct, fmtSigned } from '../../lib/format'
 import { SeasonChart } from '../charts/SeasonChart'
 import { Scatter } from '../charts/Stats'
 import { WeatherChart, type WeatherMode } from '../charts/WeatherChart'
 import { Legend } from '../charts/core'
-import { Badge, SimulatedBadge } from '../ui/Badge'
+import { Badge, LiveBadge, SimulatedBadge } from '../ui/Badge'
 import { Reveal } from '../ui/Reveal'
 import { Source } from '../ui/Section'
 import { Tabs } from '../ui/Tabs'
+import { keepGreek } from '../ui/Text'
 import { PixelField, type PixelMode } from './PixelField'
 
-const CUTOFF = lastCompleteDekad(9, 1)
+const cutoffDekad = (f: FieldAnalysis) => {
+  const [m, d] = (f.cutoff ?? '09-01').split('-').map(Number)
+  return lastCompleteDekad(m, d) + 1
+}
 
 function Block({ eyebrow, title, aside, children, id }: { eyebrow: string; title: string; aside?: ReactNode; children: ReactNode; id?: string }) {
   return (
@@ -39,46 +44,103 @@ function Block({ eyebrow, title, aside, children, id }: { eyebrow: string; title
 /* ------------------------------------------------------------------ */
 
 export function Assessment({ f }: { f: FieldAnalysis }) {
+  const { t } = useTranslation()
   const s = f.stress
   const [revealed, setRevealed] = useState(false)
   if (!s) return null
-  const alarm = s.alarm
-  const pct = Math.max(0, Math.min(1, s.risk_p))
   const outcome = f.measured
-  const verdict = outcome.at_risk == null ? null : alarm === outcome.at_risk ? 'correct' : alarm ? 'false-alarm' : 'missed'
   return (
     <div className="grid gap-5 lg:grid-cols-[1.35fr_1fr]">
-      <Reveal className="panel relative overflow-hidden p-7 sm:p-9">
-        <div className={`pointer-events-none absolute -right-24 -top-24 size-72 rounded-full blur-3xl ${alarm ? 'bg-rust/15' : 'bg-sage/10'}`} />
-        <div className="flex flex-wrap items-center gap-2">
-          <p className="eyebrow">Stress assessment · as of 1 September {f.year}</p>
-          {f.simulated && <SimulatedBadge />}
-        </div>
-        <div className="mt-6 flex flex-wrap items-end gap-x-10 gap-y-6">
-          <div>
-            <p className={`font-display text-[clamp(3.2rem,6vw,4.6rem)] font-semibold leading-none tracking-[-0.04em] ${alarm ? 'text-rust' : 'text-sage'}`}>
-              {alarm ? 'Alarm' : 'No alarm'}
-            </p>
-            <p className="mt-3 max-w-[420px] text-[14.5px] leading-relaxed text-ink-2">
-              {alarm
-                ? `The season curve sits clearly below the healthy reference, mostly in ${s.main_phase ?? 'mid-summer'}. An alarm means “unusual curve” — stress, or for example late sowing.`
-                : 'The season curve stays close to the healthy reference. The field is not flagged.'}
-            </p>
+      {f.alert ? <AlertCard f={f} /> : <RiskCard f={f} />}
+      <Reveal delay={0.08} className="panel flex flex-col p-7 sm:p-9">
+        <p className="eyebrow">{t('results.happened')}</p>
+        {f.simulated || outcome.relative_yield == null ? (
+          <div className="mt-6 flex flex-1 flex-col justify-center gap-3 text-[14.5px] leading-relaxed text-ink-2">
+            <p className="text-ink">{t('results.noTruth')}</p>
+            <p>{t('results.noTruthBody')}</p>
           </div>
-          <dl className="grid grid-cols-2 gap-x-8 gap-y-4">
-            <div>
-              <dt className="eyebrow">Stress score</dt>
-              <dd className="mt-1 font-mono text-[22px] tabular">{fmtSigned(s.score, 3)}</dd>
-            </div>
-            <div>
-              <dt className="eyebrow">Main deviation</dt>
-              <dd className="mt-1 font-mono text-[22px]">{s.main_phase ?? '–'}</dd>
-            </div>
-          </dl>
+        ) : !revealed && !f.live ? (
+          <div className="mt-6 flex flex-1 flex-col items-start justify-center gap-4">
+            <p className="text-[14.5px] leading-relaxed text-ink-2">{t('results.heldOut')}</p>
+            <button
+              type="button"
+              onClick={() => setRevealed(true)}
+              className="inline-flex items-center gap-2 rounded-[var(--radius-control)] border border-[var(--line-strong)] px-4 py-2.5 text-[14px] font-medium text-ink transition hover:border-maize hover:text-maize"
+            >
+              <Eye className="size-4" /> {t('results.reveal')}
+            </button>
+          </div>
+        ) : (
+          <Outcome f={f} />
+        )}
+      </Reveal>
+    </div>
+  )
+}
+
+function Outcome({ f }: { f: FieldAnalysis }) {
+  const { t } = useTranslation()
+  const s = f.stress!
+  const outcome = f.measured
+  const alarm = s.alarm
+  const verdict = outcome.at_risk == null ? null : alarm === outcome.at_risk ? 'correct' : alarm ? 'false-alarm' : 'missed'
+  return (
+    <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-6 flex flex-1 flex-col">
+      <p className="font-display text-[clamp(2.8rem,5vw,3.8rem)] font-semibold leading-none tracking-[-0.04em]">
+        {fmt(outcome.yield_t_ha, 1)}
+        <span className="ml-2 text-[0.38em] font-medium tracking-normal text-ink-3">t/ha</span>
+      </p>
+      <p className="mt-3 text-[14.5px] text-ink-2">
+        {t('results.ofNormal', { v: fmtPct(outcome.relative_yield) })} ·{' '}
+        <span className={outcome.at_risk ? 'text-rust' : 'text-sage'}>{outcome.at_risk ? t('results.atRisk') : t('results.notAtRisk')}</span>
+      </p>
+      {!f.live && (
+        <div className="mt-auto pt-6">
+          {verdict === 'correct' && <Badge tone="sage" dot>{alarm ? t('results.correctAlarm') : t('results.correctQuiet')}</Badge>}
+          {verdict === 'false-alarm' && <Badge tone="maize" dot>{t('results.falseAlarm')}</Badge>}
+          {verdict === 'missed' && <Badge tone="water" dot>{t('results.missed')}</Badge>}
         </div>
+      )}
+    </motion.div>
+  )
+}
+
+function RiskCard({ f }: { f: FieldAnalysis }) {
+  const { t } = useTranslation()
+  const s = f.stress!
+  const alarm = s.alarm
+  const pct = Math.max(0, Math.min(1, s.risk_p ?? 0))
+  return (
+    <Reveal className="panel relative overflow-hidden p-7 sm:p-9">
+      <div className={`pointer-events-none absolute -right-24 -top-24 size-72 rounded-full blur-3xl ${alarm ? 'bg-rust/15' : 'bg-sage/10'}`} />
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="eyebrow">{t('results.assessment', { y: f.year })}</p>
+        {f.simulated && <SimulatedBadge />}
+      </div>
+      <div className="mt-6 flex flex-wrap items-end gap-x-10 gap-y-6">
+        <div>
+          <p className={`font-display text-[clamp(3.2rem,6vw,4.6rem)] font-semibold leading-none tracking-[-0.04em] ${alarm ? 'text-rust' : 'text-sage'}`}>
+            {alarm ? t('results.alarm') : t('results.noAlarm')}
+          </p>
+          <p className="mt-3 max-w-[420px] text-[14.5px] leading-relaxed text-ink-2">
+            {alarm ? t('results.alarmBody', { phase: phaseName(s.main_phase ?? 'July') }) : t('results.noAlarmBody')}
+          </p>
+        </div>
+        <dl className="grid grid-cols-2 gap-x-8 gap-y-4">
+          <div>
+            <dt className="eyebrow">{t('results.score')}</dt>
+            <dd className="mt-1 font-mono text-[22px] tabular">{fmtSigned(s.score, 3)}</dd>
+          </div>
+          <div>
+            <dt className="eyebrow">{t('results.mainDev')}</dt>
+            <dd className="mt-1 font-mono text-[22px]">{phaseName(s.main_phase)}</dd>
+          </div>
+        </dl>
+      </div>
+      {s.risk_p != null && s.threshold != null && (
         <div className="mt-9">
           <div className="flex justify-between font-mono text-[11px] text-ink-3">
-            <span>Risk of ≥ 15 % yield loss</span>
+            <span>{t('results.risk')}</span>
             <span className="tabular text-ink">{fmt(s.risk_p, 2)}</span>
           </div>
           <div className="relative mt-2 h-2.5 rounded-full bg-white/[0.06]">
@@ -93,51 +155,42 @@ export function Assessment({ f }: { f: FieldAnalysis }) {
           </div>
           <div className="relative mt-2 h-4 font-mono text-[10.5px] text-ink-3">
             <span className="absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${s.threshold * 100}%` }}>
-              alarm threshold {fmt(s.threshold, 2)} · ≤ 20 % false alarms
+              {t('results.threshold', { t: fmt(s.threshold, 2) })}
             </span>
           </div>
         </div>
-      </Reveal>
+      )}
+    </Reveal>
+  )
+}
 
-      <Reveal delay={0.08} className="panel flex flex-col p-7 sm:p-9">
-        <p className="eyebrow">What actually happened</p>
-        {f.simulated || outcome.relative_yield == null ? (
-          <div className="mt-6 flex flex-1 flex-col justify-center gap-3 text-[14.5px] leading-relaxed text-ink-2">
-            <p className="text-ink">No measured yield for this field.</p>
-            <p>Prepared fields come with the combine’s measurement, so each result can be checked. A drawn field has no ground truth.</p>
-          </div>
-        ) : !revealed ? (
-          <div className="mt-6 flex flex-1 flex-col items-start justify-center gap-4">
-            <p className="text-[14.5px] leading-relaxed text-ink-2">
-              This field-year was held out when the model was fitted. Its measured yield is known — compare it with the assessment.
-            </p>
-            <button
-              type="button"
-              onClick={() => setRevealed(true)}
-              className="inline-flex items-center gap-2 rounded-[var(--radius-control)] border border-[var(--line-strong)] px-4 py-2.5 text-[14px] font-medium text-ink transition hover:border-maize hover:text-maize"
-            >
-              <Eye className="size-4" /> Reveal measured outcome
-            </button>
-          </div>
-        ) : (
-          <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="mt-6 flex flex-1 flex-col">
-            <p className="font-display text-[clamp(2.8rem,5vw,3.8rem)] font-semibold leading-none tracking-[-0.04em]">
-              {fmt(outcome.yield_t_ha, 1)}
-              <span className="ml-2 text-[0.38em] font-medium tracking-normal text-ink-3">t/ha</span>
-            </p>
-            <p className="mt-3 text-[14.5px] text-ink-2">
-              {fmtPct(outcome.relative_yield)} of this field’s normal yield ·{' '}
-              <span className={outcome.at_risk ? 'text-rust' : 'text-sage'}>{outcome.at_risk ? 'at risk (≥ 15 % loss)' : 'not at risk'}</span>
-            </p>
-            <div className="mt-auto pt-6">
-              {verdict === 'correct' && <Badge tone="sage" dot>{alarm ? 'Correct alarm' : 'Correctly quiet'}</Badge>}
-              {verdict === 'false-alarm' && <Badge tone="maize" dot>False alarm</Badge>}
-              {verdict === 'missed' && <Badge tone="water" dot>Missed loss</Badge>}
-            </div>
-          </motion.div>
-        )}
-      </Reveal>
-    </div>
+/** Live result: frozen alert level with the historical hit rate of the US calibration. */
+export function AlertCard({ f }: { f: FieldAnalysis }) {
+  const { t } = useTranslation()
+  const a = f.alert!
+  const tone = { warning: 'text-rust', hint: 'text-maize', none: 'text-sage', no_statement: 'text-ink-2' }[a.state]
+  const label = { warning: t('results.alertWarning'), hint: t('results.alertHint'), none: t('results.alertNone'), no_statement: t('results.alertNoStatement') }[a.state]
+  return (
+    <Reveal className="panel relative overflow-hidden p-7 sm:p-9">
+      <div className={`pointer-events-none absolute -right-24 -top-24 size-72 rounded-full blur-3xl ${a.state === 'warning' ? 'bg-rust/15' : a.state === 'hint' ? 'bg-maize/15' : 'bg-sage/10'}`} />
+      <div className="flex flex-wrap items-center gap-2">
+        <p className="eyebrow">{t('results.assessmentCutoff', { d: `${fmtCutoff(a.cutoff)} ${f.year}` })}</p>
+        <LiveBadge />
+      </div>
+      <p className={`mt-6 font-display text-[clamp(2.6rem,5vw,4rem)] font-semibold leading-none tracking-[-0.04em] ${tone}`}>{label}</p>
+      <p className="mt-3 text-[14px] text-ink-2">{t('results.alertBody', { s: fmtSigned(a.score, 3), d: fmtCutoff(a.cutoff) })}</p>
+      <ul className="mt-6 flex flex-col gap-3">
+        {a.levels.map((lv) => (
+          <li key={lv.level} className="flex gap-3 text-[14px] leading-relaxed">
+            <span className={`mt-1.5 size-2.5 shrink-0 rounded-full ${lv.level === 'warning' ? 'bg-rust' : 'bg-maize'} ${lv.triggered ? '' : 'opacity-30'}`} />
+            <span className="text-ink-2">
+              <span className="text-ink">{t('results.alertLevel', { level: lv.level === 'warning' ? t('results.alertWarning') : t('results.alertHint'), x: lv.x_pct })}</span>
+              {lv.statement === 'ok' && lv.k_hit != null && lv.n_alert != null ? t('results.alertHit', { k: lv.k_hit, n: lv.n_alert }) : t('results.alertNoData')}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </Reveal>
   )
 }
 
@@ -146,25 +199,26 @@ export function Assessment({ f }: { f: FieldAnalysis }) {
 /* ------------------------------------------------------------------ */
 
 export function PhaseContributions({ f, typical }: { f: FieldAnalysis; typical?: { at_risk: Record<string, number>; not_at_risk: Record<string, number> } }) {
+  const { t } = useTranslation()
   const s = f.stress
   if (!s) return null
   const rows = [
-    { key: 'Jun' as const, label: 'June', t: 'Juni' },
-    { key: 'Jul' as const, label: 'July', t: 'Juli' },
-    { key: 'Aug' as const, label: 'August', t: 'August' },
+    { key: 'Jun' as const, m: 5, typ: 'Juni' },
+    { key: 'Jul' as const, m: 6, typ: 'Juli' },
+    { key: 'Aug' as const, m: 7, typ: 'August' },
   ]
   const lo = Math.min(-0.35, ...rows.map((r) => s.phases[r.key] ?? 0))
   const pos = (v: number) => `${(v / lo) * 100}%`
   return (
-    <Block eyebrow="Where the deviation came from" title="Shortfall below the healthy curve, by month">
+    <Block eyebrow={t('results.phasesEyebrow')} title={t('results.phasesTitle')}>
       <div className="flex flex-col gap-5">
         {rows.map((r) => {
           const v = s.phases[r.key] ?? 0
-          const tr = typical?.at_risk[r.t]
-          const tn = typical?.not_at_risk[r.t]
+          const tr = typical?.at_risk[r.typ]
+          const tn = typical?.not_at_risk[r.typ]
           return (
-            <div key={r.key} className="grid grid-cols-[72px_1fr_64px] items-center gap-4">
-              <span className="text-[14px] text-ink">{r.label}</span>
+            <div key={r.key} className="grid grid-cols-[84px_1fr_64px] items-center gap-4">
+              <span className="text-[14px] text-ink">{monthLong(r.m)}</span>
               <div className="relative h-7 rounded-md bg-white/[0.035]">
                 <motion.div
                   className="absolute inset-y-1 left-0 rounded-[4px] bg-rust/80"
@@ -173,8 +227,8 @@ export function PhaseContributions({ f, typical }: { f: FieldAnalysis; typical?:
                   viewport={{ once: true }}
                   transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 />
-                {tn != null && <span className="absolute inset-y-0 w-px bg-sage" style={{ left: pos(tn) }} title="Typical not-at-risk field" />}
-                {tr != null && <span className="absolute inset-y-0 w-px bg-ink" style={{ left: pos(tr) }} title="Typical at-risk field" />}
+                {tn != null && <span className="absolute inset-y-0 w-px bg-sage" style={{ left: pos(tn) }} />}
+                {tr != null && <span className="absolute inset-y-0 w-px bg-ink" style={{ left: pos(tr) }} />}
               </div>
               <span className="text-right font-mono text-[13px] tabular text-ink-2">{fmtSigned(v, 2)}</span>
             </div>
@@ -185,18 +239,17 @@ export function PhaseContributions({ f, typical }: { f: FieldAnalysis; typical?:
         <Legend
           className="mt-6"
           items={[
-            { label: 'This field', color: tokens.rust, kind: 'bar' },
-            { label: 'Mean of at-risk US fields', color: tokens.ink },
-            { label: 'Mean of not-at-risk US fields', color: tokens.sage },
+            { label: t('results.thisField'), color: tokens.rust, kind: 'bar' },
+            { label: t('results.meanRisk'), color: tokens.ink },
+            { label: t('results.meanOk'), color: tokens.sage },
           ]}
         />
       )}
       <p className="mt-5 flex gap-2 text-[13px] leading-relaxed text-ink-3">
         <Info className="mt-0.5 size-3.5 shrink-0" />
-        Summed NDVI shortfall per month (observed dekads only). This explains the alarm; it is not a causal attribution. In the US
-        data, 22 of 31 alarms came mainly from July.
+        {t('results.phasesNote')}
       </p>
-      <Source className="mt-4">results/2026-10-16_feinjust_ablation/ranking.csv · product.json</Source>
+      <Source className="mt-4">{t('results.srcPhases')}</Source>
     </Block>
   )
 }
@@ -205,15 +258,10 @@ export function PhaseContributions({ f, typical }: { f: FieldAnalysis; typical?:
 /* Satellite                                                           */
 /* ------------------------------------------------------------------ */
 
-const INDEX_INFO: Record<IndexName, { label: string; domain: [number, number]; about: string }> = {
-  ndvi: { label: 'NDVI', domain: [0, 1], about: 'Green biomass. The main signal for the stress score and the field map.' },
-  evi: { label: 'EVI', domain: [0, 0.9], about: 'Like NDVI, less saturated over dense canopy.' },
-  ndmi: { label: 'NDMI', domain: [-0.3, 0.6], about: 'Canopy water content (near- vs short-wave infrared).' },
-  ndre: { label: 'NDRE', domain: [0, 0.7], about: 'Red-edge index, sensitive to chlorophyll in dense maize.' },
-  gndvi: { label: 'GNDVI', domain: [0, 0.9], about: 'Green NDVI.' },
-}
+const INDEX_DOMAIN: Record<IndexName, [number, number]> = { ndvi: [0, 1], evi: [0, 0.9], ndmi: [-0.3, 0.6], ndre: [0, 0.7], gndvi: [0, 0.9] }
 
 export function SatellitePanel({ f }: { f: FieldAnalysis }) {
+  const { t } = useTranslation()
   const available = (['ndvi', 'evi', 'ndmi', 'ndre'] as IndexName[]).filter((k) => f.satellite.indices[k])
   const [idx, setIdx] = useState<IndexName>('ndvi')
   const vals = f.satellite.indices[idx] ?? []
@@ -229,42 +277,46 @@ export function SatellitePanel({ f }: { f: FieldAnalysis }) {
     nd.forEach((v, i) => {
       if (v != null && (peak < 0 || v > (nd[peak] as number))) peak = i
     })
-    return { a, b, diff: (a - b) / b, n: win.length, peak: peak >= 0 ? (nd[peak] as number) : null }
+    return { a, diff: (a - b) / b, n: win.length, peak: peak >= 0 ? (nd[peak] as number) : null }
   }, [f])
+  const label = idx.toUpperCase()
+  const hasBand = Boolean(ref?.p25?.some((v) => v != null))
   return (
     <Block
-      eyebrow="Satellite time series"
-      title="The season, dekad by dekad"
-      aside={<Tabs label="Vegetation index" value={idx} onChange={setIdx} items={available.map((k) => ({ value: k, label: INDEX_INFO[k].label }))} />}
+      eyebrow={t('results.satEyebrow')}
+      title={t('results.satTitle')}
+      aside={<Tabs label={t('results.index')} value={idx} onChange={setIdx} items={available.map((k) => ({ value: k, label: k.toUpperCase() }))} />}
     >
       <div className="grid gap-8 lg:grid-cols-[1fr_250px]">
         <div>
-          <SeasonChart values={vals} reference={ref} year={f.year} label={INDEX_INFO[idx].label} yDomain={INDEX_INFO[idx].domain} cutoff={CUTOFF} showShortfall={idx === 'ndvi'} height={320} />
+          <SeasonChart values={vals} reference={ref} year={f.year} label={label} yDomain={INDEX_DOMAIN[idx]} cutoff={cutoffDekad(f) - 1} cutoffLabel={f.cutoff ? `${t('analyse.cutoff')} ${fmtCutoff(f.cutoff)}` : undefined} showShortfall={idx === 'ndvi'} height={320} />
           <Legend
             className="mt-4"
             items={[
-              { label: `${INDEX_INFO[idx].label}, this field`, color: tokens.maize, kind: 'line' },
-              ...(ref ? [{ label: `Healthy reference (median, IQR of ${ref.n_fieldyears} field-years)`, color: tokens.sage, kind: 'band' as const }] : []),
-              ...(idx === 'ndvi' ? [{ label: 'Shortfall from June', color: tokens.rust, kind: 'bar' as const }] : []),
+              { label: t('results.thisFieldIdx', { idx: label }), color: tokens.maize, kind: 'line' },
+              ...(ref ? [{ label: t('results.healthyBand', { n: ref.n_fieldyears }), color: tokens.sage, kind: hasBand ? ('band' as const) : ('dash' as const) }] : []),
+              ...(idx === 'ndvi' ? [{ label: t('results.shortfallJune'), color: tokens.rust, kind: 'bar' as const }] : []),
             ]}
           />
         </div>
         <div className="flex flex-col gap-6 border-[var(--line)] lg:border-l lg:pl-8">
           {health && (
             <div>
-              <p className="eyebrow">Vegetation health · Jul–Aug</p>
+              <p className="eyebrow">{t('results.health')}</p>
               <p className="mt-2 font-display text-[40px] font-semibold leading-none tracking-[-0.03em] tabular">{fmt(health.a, 2)}</p>
-              <p className={`mt-2 font-mono text-[13px] ${health.diff < 0 ? 'text-rust' : 'text-sage'}`}>{fmtSigned(health.diff * 100, 1)} % vs healthy reference</p>
-              <p className="mt-1 text-[12px] text-ink-4">mean NDVI over {health.n} observed dekads</p>
+              <p className={`mt-2 font-mono text-[13px] ${health.diff < 0 ? 'text-rust' : 'text-sage'}`}>{t('results.vsHealthy', { v: fmtSigned(health.diff * 100, 1) })}</p>
+              <p className="mt-1 text-[12px] text-ink-4">{t('results.meanOver', { n: health.n })}</p>
             </div>
           )}
           <dl className="grid grid-cols-2 gap-4 text-[13px]">
-            <div><dt className="eyebrow">Scenes</dt><dd className="mt-1 font-mono tabular">{f.satellite.n_scenes}</dd></div>
-            <div><dt className="eyebrow">Clear</dt><dd className="mt-1 font-mono tabular">{f.satellite.n_clear_scenes}</dd></div>
-            <div><dt className="eyebrow">Dekads</dt><dd className="mt-1 font-mono tabular">{f.satellite.n_observed_dekads} / 21</dd></div>
-            <div><dt className="eyebrow">Peak NDVI</dt><dd className="mt-1 font-mono tabular">{fmt(health?.peak, 2)}</dd></div>
+            <div><dt className="eyebrow">{t('results.scenes')}</dt><dd className="mt-1 font-mono tabular">{f.satellite.n_scenes}</dd></div>
+            <div><dt className="eyebrow">{t('results.clear')}</dt><dd className="mt-1 font-mono tabular">{f.satellite.n_clear_scenes}</dd></div>
+            <div><dt className="eyebrow">{t('results.dekads')}</dt><dd className="mt-1 font-mono tabular">{f.satellite.n_observed_dekads} / 21</dd></div>
+            <div><dt className="eyebrow">{t('results.peak')}</dt><dd className="mt-1 font-mono tabular">{fmt(health?.peak, 2)}</dd></div>
           </dl>
-          <p className="text-[12.5px] leading-relaxed text-ink-3">{INDEX_INFO[idx].about} Dots are observed dekads; gaps had no clear scene.</p>
+          <p className="text-[12.5px] leading-relaxed text-ink-3">
+            {t(`results.indexAbout.${idx}`)} {t('results.dotsNote')}
+          </p>
         </div>
       </div>
     </Block>
@@ -276,6 +328,7 @@ export function SatellitePanel({ f }: { f: FieldAnalysis }) {
 /* ------------------------------------------------------------------ */
 
 export function WithinFieldPanel({ f }: { f: FieldAnalysis }) {
+  const { t } = useTranslation()
   const px = f.pixels
   const [mode, setMode] = useState<PixelMode>('weak')
   const pts = useMemo(
@@ -289,11 +342,8 @@ export function WithinFieldPanel({ f }: { f: FieldAnalysis }) {
   )
   if (!px) {
     return (
-      <Block eyebrow="Within-field map" title="Which part of the field falls behind">
-        <p className="max-w-[640px] text-[14.5px] leading-relaxed text-ink-2">
-          This field is a {fmtArea(f.area_m2)} research plot without a combine yield map, so the 10-m map cannot be checked here. The map
-          was validated on the BARC fields (Field A, B and E).
-        </p>
+      <Block eyebrow={t('results.mapEyebrow')} title={t('results.mapTitle')}>
+        <p className="max-w-[640px] text-[14.5px] leading-relaxed text-ink-2">{f.live ? t('results.mapNoneLive') : t('results.mapNone', { area: fmtArea(f.area_m2) })}</p>
       </Block>
     )
   }
@@ -301,17 +351,17 @@ export function WithinFieldPanel({ f }: { f: FieldAnalysis }) {
   return (
     <Block
       id="within-field"
-      eyebrow="Within-field map"
-      title="Which part of the field falls behind"
+      eyebrow={t('results.mapEyebrow')}
+      title={t('results.mapTitle')}
       aside={
         <Tabs
-          label="Map layer"
+          label={t('analyse.layer')}
           value={mode}
           onChange={setMode}
           items={[
-            { value: 'weak', label: 'Flagged zones' },
-            { value: 'window', label: 'NDVI Jul–Aug' },
-            { value: 'yield', label: sim ? 'Yield (simulated)' : 'Measured yield' },
+            { value: 'weak', label: t('results.layerFlagged') },
+            { value: 'window', label: t('results.layerNdvi') },
+            { value: 'yield', label: sim ? t('results.layerYieldSim') : t('results.layerYield') },
           ]}
         />
       }
@@ -322,10 +372,16 @@ export function WithinFieldPanel({ f }: { f: FieldAnalysis }) {
           <div className="mt-4 flex flex-wrap items-center gap-4 text-[11.5px] text-ink-3">
             {mode === 'yield' ? (
               [0.5, 0.85, 1, 1.2].map((v) => (
-                <span key={v} className="flex items-center gap-1.5"><span className="size-2.5 rounded-[2px]" style={{ background: relYieldColor(v) }} />{Math.round(v * 100)} % of field mean</span>
+                <span key={v} className="flex items-center gap-1.5">
+                  <span className="size-2.5 rounded-[2px]" style={{ background: relYieldColor(v) }} />
+                  {t('results.ofMean', { v: fmt(v * 100, 0) })}
+                </span>
               ))
             ) : mode === 'weak' ? (
-              <span className="flex items-center gap-1.5"><span className="size-2.5 rounded-[2px] bg-rust" />Lowest NDVI quarter (≤ {fmt(px.weak_threshold, 2)})</span>
+              <span className="flex items-center gap-1.5">
+                <span className="size-2.5 rounded-[2px] bg-rust" />
+                {t('results.lowestQuarter', { t: fmt(px.weak_threshold, 2) })}
+              </span>
             ) : (
               <span className="font-mono">{px.window}</span>
             )}
@@ -334,20 +390,20 @@ export function WithinFieldPanel({ f }: { f: FieldAnalysis }) {
         <div className="flex flex-col gap-6">
           {!sim ? (
             <dl className="grid grid-cols-2 gap-x-6 gap-y-5">
-              <div><dt className="eyebrow">Rank correlation <span className="normal-case">ρ</span></dt><dd className="mt-1 font-display text-[32px] font-semibold tabular text-sage">{fmt(px.rho, 2)}</dd></div>
-              <div><dt className="eyebrow">Flagged cells truly low</dt><dd className="mt-1 font-display text-[32px] font-semibold tabular">{fmtPct(px.precision_weak)}</dd></div>
-              <div><dt className="eyebrow">Low-yield share overall</dt><dd className="mt-1 font-mono text-[18px] tabular text-ink-2">{fmtPct(px.prevalence_problem)}</dd></div>
-              <div><dt className="eyebrow">Lift vs random</dt><dd className="mt-1 font-mono text-[18px] tabular text-ink-2">× {fmt(px.lift, 1)}</dd></div>
+              <div><dt className="eyebrow">{t('results.rho')} <span className="normal-case">ρ</span></dt><dd className="mt-1 font-display text-[32px] font-semibold tabular text-sage">{fmt(px.rho, 2)}</dd></div>
+              <div><dt className="eyebrow">{t('results.trulyLow')}</dt><dd className="mt-1 font-display text-[32px] font-semibold tabular">{fmtPct(px.precision_weak)}</dd></div>
+              <div><dt className="eyebrow">{t('results.lowShare')}</dt><dd className="mt-1 font-mono text-[18px] tabular text-ink-2">{fmtPct(px.prevalence_problem)}</dd></div>
+              <div><dt className="eyebrow">{t('results.lift')}</dt><dd className="mt-1 font-mono text-[18px] tabular text-ink-2">× {fmt(px.lift, 1)}</dd></div>
             </dl>
           ) : (
-            <p className="text-[14px] leading-relaxed text-ink-2">The pattern is simulated. For a drawn field the backend would extract real Sentinel-2 cells; there is no yield map to compare against.</p>
+            <p className="text-[14px] leading-relaxed text-ink-2">{t('results.simPattern')}</p>
           )}
           <Scatter
             points={pts}
-            xLabel="NDVI, 10 Jul – 18 Aug"
-            yLabel="Yield / field mean"
+            xLabel={t('results.scatterX')}
+            yLabel={t('results.scatterY')}
             height={230}
-            hLines={[{ v: 0.85, label: 'low-yield zone < 85 %', color: tokens.rust }]}
+            hLines={[{ v: 0.85, label: t('results.lowZone'), color: tokens.rust }]}
             vLines={[{ v: px.weak_threshold, color: tokens.ink3 }]}
             xFmt={(v) => fmt(v, 2)}
             yFmt={(v) => fmt(v, 1)}
@@ -356,11 +412,8 @@ export function WithinFieldPanel({ f }: { f: FieldAnalysis }) {
           />
         </div>
       </div>
-      <p className="mt-6 text-[13px] leading-relaxed text-ink-3">
-        {fmtInt(px.n_cells)} cells of {px.cell_m} m. Rule B0 needs no training: it ranks cells by their own NDVI. Over 41 BARC field-years
-        the median ρ is 0.67.
-      </p>
-      {!sim && <Source className="mt-3">data/processed/features_innerfeld.parquet · data/interim/pixels_dekad · rule B0 as in innerfeld_run.py</Source>}
+      <p className="mt-6 text-[13px] leading-relaxed text-ink-3">{keepGreek(t('results.mapNote', { n: fmtInt(px.n_cells), m: px.cell_m }))}</p>
+      {!sim && <Source className="mt-3">{t('results.srcMap')}</Source>}
     </Block>
   )
 }
@@ -370,29 +423,31 @@ export function WithinFieldPanel({ f }: { f: FieldAnalysis }) {
 /* ------------------------------------------------------------------ */
 
 export function WeatherPanel({ f }: { f: FieldAnalysis }) {
+  const { t } = useTranslation()
   const [mode, setMode] = useState<WeatherMode>('rain')
   const w = f.weather
-  const sum = (xs: (number | null)[]) => xs.reduce<number>((a, b) => a + (b ?? 0), 0)
+  const sum = (xs: (number | null)[] | undefined) => (xs ?? []).reduce<number>((a, b) => a + (b ?? 0), 0)
   const rain = sum(w.dekads.prec)
   const rainN = sum(w.normal.prec)
-  const jul = (xs: (number | null)[]) => sum(xs.slice(9, 15))
-  const gdd = cumulative(w.dekads.gdd).at(-1) ?? 0
-  const gddN = cumulative(w.normal.gdd).at(-1) ?? 0
-  const heat = sum(w.dekads.heat ?? [])
+  const jul = (xs: (number | null)[] | undefined) => sum((xs ?? []).slice(9, 15))
+  const gdd = cumulative(w.dekads.gdd ?? []).at(-1) ?? 0
+  const gddN = cumulative(w.normal.gdd ?? []).at(-1) ?? 0
+  const heat = sum(w.dekads.heat)
+  const hints = f.weatherHints
   return (
     <Block
-      eyebrow="Weather · ERA5-Land"
-      title="This season against the long-term mean"
+      eyebrow={t('results.weatherEyebrow')}
+      title={t('results.weatherTitle')}
       aside={
         <Tabs
-          label="Weather variable"
+          label={t('results.weatherVar')}
           value={mode}
           onChange={setMode}
           items={[
-            { value: 'rain', label: 'Rainfall' },
-            { value: 'temperature', label: 'Temperature' },
-            { value: 'gdd', label: 'Degree days' },
-            { value: 'moisture', label: 'Soil moisture' },
+            { value: 'rain', label: t('results.rain') },
+            { value: 'temperature', label: t('results.temp') },
+            { value: 'gdd', label: t('results.gdd') },
+            { value: 'moisture', label: t('results.moisture') },
           ]}
         />
       }
@@ -404,23 +459,42 @@ export function WeatherPanel({ f }: { f: FieldAnalysis }) {
             className="mt-4"
             items={[
               { label: `${f.year}`, color: mode === 'temperature' ? tokens.rust : mode === 'gdd' ? tokens.maize : tokens.water, kind: 'line' },
-              { label: `Mean ${w.climatology_years?.join('–')} (${w.n_climatology_years} years)`, color: tokens.ink3, kind: 'dash' },
-              ...(mode === 'rain' ? [{ label: 'Rain per dekad (this season / mean)', color: tokens.water, kind: 'bar' as const }] : []),
-              ...(mode === 'temperature' ? [{ label: 'Days above 32 °C', color: tokens.rust, kind: 'dot' as const }] : []),
+              { label: t('results.meanYears', { from: w.climatology_years?.[0] ?? '–', to: w.climatology_years?.[1] ?? '–', n: w.n_climatology_years }), color: tokens.ink3, kind: 'dash' },
+              ...(mode === 'rain' ? [{ label: t('results.rainBars'), color: tokens.water, kind: 'bar' as const }] : []),
+              ...(mode === 'temperature' ? [{ label: t('results.hot'), color: tokens.rust, kind: 'dot' as const }] : []),
             ]}
           />
         </div>
         <dl className="flex flex-col gap-5 border-[var(--line)] lg:border-l lg:pl-8">
-          <div><dt className="eyebrow">Season rain</dt><dd className="mt-1 font-display text-[30px] font-semibold tabular">{fmtInt(rain)} <span className="text-[14px] text-ink-3">mm</span></dd><dd className={`font-mono text-[12px] ${rain < rainN ? 'text-rust' : 'text-water'}`}>{fmtSigned(((rain - rainN) / rainN) * 100, 0)} % vs mean</dd></div>
-          <div><dt className="eyebrow">July–August rain</dt><dd className="mt-1 font-mono text-[18px] tabular">{fmtInt(jul(w.dekads.prec))} mm <span className="text-ink-4">/ {fmtInt(jul(w.normal.prec))}</span></dd></div>
-          <div><dt className="eyebrow">Growing degree days</dt><dd className="mt-1 font-mono text-[18px] tabular">{fmtInt(gdd)} <span className="text-ink-4">/ {fmtInt(gddN)}</span></dd></div>
-          <div><dt className="eyebrow">Days above 32 °C</dt><dd className="mt-1 font-mono text-[18px] tabular">{fmtInt(heat)}</dd></div>
+          <div>
+            <dt className="eyebrow">{t('results.seasonRain')}</dt>
+            <dd className="mt-1 font-display text-[30px] font-semibold tabular">{fmtInt(rain)} <span className="text-[14px] text-ink-3">mm</span></dd>
+            <dd className={`font-mono text-[12px] ${rain < rainN ? 'text-rust' : 'text-water'}`}>{rainN ? t('results.vsMean', { v: fmtSigned(((rain - rainN) / rainN) * 100, 0) }) : '–'}</dd>
+          </div>
+          <div><dt className="eyebrow">{t('results.julAugRain')}</dt><dd className="mt-1 font-mono text-[18px] tabular">{fmtInt(jul(w.dekads.prec))} mm <span className="text-ink-4">/ {fmtInt(jul(w.normal.prec))}</span></dd></div>
+          <div><dt className="eyebrow">{t('results.gddLabel')}</dt><dd className="mt-1 font-mono text-[18px] tabular">{fmtInt(gdd)} <span className="text-ink-4">/ {fmtInt(gddN)}</span></dd></div>
+          <div><dt className="eyebrow">{t('results.hotDays')}</dt><dd className="mt-1 font-mono text-[18px] tabular">{fmtInt(heat)}</dd></div>
         </dl>
       </div>
-      <p className="mt-6 text-[13px] leading-relaxed text-ink-3">
-        ERA5-Land cell {w.era5_cell} (≈ 9 km). Weather describes the surroundings, not the single field — and in this project it
-        mostly identifies the year, not the field.
-      </p>
+      {hints && (
+        <div className="mt-7 rounded-xl border border-[var(--line)] bg-white/[0.02] p-5">
+          <p className="eyebrow mb-3 flex items-center gap-2"><CloudRain className="size-3.5" /> {t('results.hintsTitle')}</p>
+          {hints.length ? (
+            <ul className="flex flex-col gap-1.5 text-[14px] text-ink">
+              {hints.map((h) => (
+                <li key={h.key}>
+                  {t(`results.hint.${h.key}`, { v: h.key === 'drought' ? fmtInt(h.value_cwb_30d_mm) : h.key === 'heat_flowering' ? h.days : fmtInt(h.mm) })}
+                  <span className="ml-2 font-mono text-[11px] text-ink-4">({h.rule})</span>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="text-[14px] text-ink-2">{t('results.hintsNone')}</p>
+          )}
+          <p className="mt-3 text-[12.5px] text-ink-3">{t('results.hintsNote')}</p>
+        </div>
+      )}
+      <p className="mt-6 text-[13px] leading-relaxed text-ink-3">{t('results.weatherNote', { cell: w.era5_cell })}</p>
     </Block>
   )
 }
@@ -430,20 +504,21 @@ export function WeatherPanel({ f }: { f: FieldAnalysis }) {
 /* ------------------------------------------------------------------ */
 
 export function SoilPanel({ f }: { f: FieldAnalysis }) {
+  const { t } = useTranslation()
   if (!f.soil) return null
   const s = f.soil
   const items = [
-    { k: 'Clay', v: `${fmt(s.clay_pct, 0)} %` },
-    { k: 'Sand', v: `${fmt(s.sand_pct, 0)} %` },
-    { k: 'Organic carbon', v: `${fmt(s.soc, 1)} %` },
-    { k: 'Water capacity', v: `${fmt(s.awc, 3)} m³/m³` },
-    { k: 'pH', v: fmt(s.ph, 1) },
-    { k: 'Elevation', v: `${fmt(s.elev_m, 0)} m` },
-    { k: 'Slope', v: `${fmt(s.slope_deg, 1)}°` },
-    { k: 'Wetness index', v: fmt(s.twi, 1) },
+    { k: t('results.clay'), v: `${fmt(s.clay_pct, 0)} %` },
+    { k: t('results.sand'), v: `${fmt(s.sand_pct, 0)} %` },
+    { k: t('results.soc'), v: `${fmt(s.soc, 1)} %` },
+    { k: t('results.awc'), v: `${fmt(s.awc, 3)} m³/m³` },
+    { k: t('results.ph'), v: fmt(s.ph, 1) },
+    { k: t('results.elev'), v: `${fmt(s.elev_m, 0)} m` },
+    { k: t('results.slope'), v: `${fmt(s.slope_deg, 1)}°` },
+    { k: t('results.twi'), v: fmt(s.twi, 1) },
   ]
   return (
-    <Block eyebrow="Soil and terrain" title="Environmental context">
+    <Block eyebrow={t('results.soilEyebrow')} title={t('results.soilTitle')}>
       <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-[var(--line)] bg-[var(--line)] sm:grid-cols-4">
         {items.map((it) => (
           <div key={it.k} className="bg-soil-900 p-4">
@@ -452,10 +527,7 @@ export function SoilPanel({ f }: { f: FieldAnalysis }) {
           </div>
         ))}
       </dl>
-      <p className="mt-5 text-[13px] leading-relaxed text-ink-3">
-        SoilGrids 2.0 (250 m) and Copernicus DEM (30 m). Soil alone explains almost nothing of the yield differences here (ρ ≤ 0.16 for
-        absolute yield), so it is context, not a driver of the score.
-      </p>
+      <p className="mt-5 text-[13px] leading-relaxed text-ink-3">{keepGreek(t('results.soilNote'))}</p>
     </Block>
   )
 }

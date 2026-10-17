@@ -1,5 +1,6 @@
 import { color as d3color } from 'd3-color'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { PixelGrid } from '../../api/types'
 import { ndviColor, relYieldColor } from '../../lib/color'
 import { fmt } from '../../lib/format'
@@ -31,6 +32,7 @@ const toRgb = (c: string, a = 1): Rgb => {
  * Colors ease between states so the season and the reveal read as one motion.
  */
 export function PixelField({ pixels, mode, dekad = 12, className = '', maxHeight = 520, interactive = true, ariaLabel }: Props) {
+  const { t } = useTranslation()
   const wrap = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLCanvasElement>(null)
   const current = useRef<Rgb[] | null>(null)
@@ -131,7 +133,7 @@ export function PixelField({ pixels, mode, dekad = 12, className = '', maxHeight
       <canvas
         ref={canvas}
         role="img"
-        aria-label={ariaLabel ?? 'Field shown as 10-metre satellite cells'}
+        aria-label={ariaLabel ?? t('charts.pixelAria')}
         style={{ width: box.w, height: box.h }}
         onMouseLeave={() => setHover(null)}
         onMouseMove={(e) => {
@@ -147,9 +149,9 @@ export function PixelField({ pixels, mode, dekad = 12, className = '', maxHeight
       />
       {hc && hover && (
         <div className="panel-glass pointer-events-none absolute z-10 px-3 py-2 font-mono text-[11px] leading-relaxed text-ink" style={{ left: Math.min(hover.x + 14, hover.maxX), top: hover.y + 14 }}>
-          {mode === 'season' ? <p>NDVI {fmt(seasonVal, 2)}</p> : <p>NDVI (Jul–Aug) {fmt(hc[4], 2)}</p>}
-          <p>Yield {fmt(hc[5] * 100, 0)} % of field mean</p>
-          {mode === 'weak' && hc[4] != null && hc[4] <= pixels.weak_threshold && <p className="text-rust">Flagged: lowest NDVI quarter</p>}
+          {mode === 'season' ? <p>{t('charts.pixelNdviSeason', { v: fmt(seasonVal, 2) })}</p> : <p>{t('charts.pixelNdviWindow', { v: fmt(hc[4], 2) })}</p>}
+          <p>{t('charts.pixelYield', { v: fmt(hc[5] * 100, 0) })}</p>
+          {mode === 'weak' && hc[4] != null && hc[4] <= pixels.weak_threshold && <p className="text-rust">{t('charts.pixelFlagged')}</p>}
         </div>
       )}
     </div>

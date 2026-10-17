@@ -58,9 +58,10 @@ export type PixelGrid = {
 
 export type FieldStress = {
   score: Nullable<number>
-  risk_p: number
+  /** out-of-fold risk of the A0 model (prepared fields only) */
+  risk_p: Nullable<number>
   alarm: boolean
-  threshold: number
+  threshold: Nullable<number>
   phases: { Jun: Nullable<number>; Jul: Nullable<number>; Aug: Nullable<number> }
   main_phase: Nullable<string>
   rank_in_site_year: Nullable<number>
@@ -114,6 +115,13 @@ export type FieldAnalysis = {
   pixels: Nullable<PixelGrid>
   /** true for results produced by the in-browser simulation (no backend yet) */
   simulated?: boolean
+  /** true for results computed on demand by the local backend */
+  live?: boolean
+  /** cutoff of the assessment (MM-DD); prepared fields use 09-01 */
+  cutoff?: string
+  /** frozen alert evaluation (live results) */
+  alert?: import('../services/backendService').AlertResult
+  weatherHints?: import('../services/backendService').LiveResult['weather_hints']
 }
 
 export type FieldsPayload = { fields: FieldAnalysis[]; dekad_count: number; season_start: string }
@@ -220,6 +228,14 @@ export type Evidence = {
   absolute_yield: (Phase2Row & Record<string, unknown>)[]
   /** Exploratory Austria test after freeze-at-1 (aggregated results only). */
   austria?: AustriaTest
+  /** Frozen alert calibration ("Dein Feld, dein Verlauf"). */
+  alert_calibration?: import('../services/backendService').Calibration
+  /** AT model feasibility test (separate from the proof). */
+  at_feasibility?: {
+    run: boolean
+    counts: { site_years_with_yield_and_score: number; sites: number; years: number; trial_rows?: number; trial_rows_with_coordinates?: number }
+    metrics?: { rho: number; rho_ci: [number, number]; rmse_model: number; rmse_normal: number; rmse_train_mean: number; n: number; n_years: number }
+  }
 }
 
 export type RhoCi = { n: number; clusters: number; rho: number; lo: number; hi: number; verdict?: string }

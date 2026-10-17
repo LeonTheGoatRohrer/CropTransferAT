@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Reveal } from './Reveal'
 
 export function Container({ children, className = '' }: { children: ReactNode; className?: string }) {
@@ -33,5 +34,10 @@ export function SectionHeader({
 
 /** Pointer to the repository file a number comes from. */
 export function Source({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <p className={`font-mono text-[10.5px] leading-relaxed tracking-wide text-ink-4 ${className}`}>Source · {children}</p>
+  const { t } = useTranslation()
+  return (
+    <p className={`font-mono text-[10.5px] leading-relaxed tracking-wide text-ink-4 ${className}`}>
+      {t('common.source')} · {children}
+    </p>
+  )
 }

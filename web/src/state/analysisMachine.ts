@@ -19,7 +19,7 @@ export type AnalysisStatus = 'idle' | 'fieldSelected' | PipelineStage | 'complet
 
 export type FieldSelection =
   | { kind: 'prepared'; id: string; polygon: FieldGeometry; areaM2: number; label: string }
-  | { kind: 'custom'; polygon: Polygon; areaM2: number; label: string }
+  | { kind: 'custom'; polygon: Polygon; areaM2: number; label: string; fieldId?: string }
 
 /** Facts revealed by a finished stage, shown in the pipeline panel. */
 export type StageFacts = { headline: string; items: { label: string; value: string }[] }
@@ -73,11 +73,4 @@ export function analysisReducer(state: AnalysisState, event: AnalysisEvent): Ana
   }
 }
 
-export const STAGE_TITLES: Record<PipelineStage, { title: string; running: string }> = {
-  loadingSatellite: { title: 'Satellite observations', running: 'Loading Sentinel-2 scenes…' },
-  processingSatellite: { title: 'Vegetation indices', running: 'Building 10-day composites…' },
-  loadingWeather: { title: 'Weather history', running: 'Loading ERA5-Land daily weather…' },
-  loadingEnvironment: { title: 'Soil and terrain', running: 'Loading soil and terrain layers…' },
-  featureEngineering: { title: 'Features', running: 'Comparing with the healthy reference…' },
-  runningModel: { title: 'Stress assessment', running: 'Scoring the season…' },
-}
+/** Stage titles live in the locale files under `pipeline.<stage>.title|running`. */

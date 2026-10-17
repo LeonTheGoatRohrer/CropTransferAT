@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'motion/react'
 import { Check, CloudSun, Cpu, Layers, Mountain, Satellite, Sigma } from 'lucide-react'
 import type { ReactNode } from 'react'
-import { PIPELINE, STAGE_TITLES, type AnalysisState, type PipelineStage } from '../../state/analysisMachine'
+import { useTranslation } from 'react-i18next'
+import { PIPELINE, type AnalysisState, type PipelineStage } from '../../state/analysisMachine'
 
 const ICONS: Record<PipelineStage, ReactNode> = {
   loadingSatellite: <Satellite className="size-4" />,
@@ -14,6 +15,7 @@ const ICONS: Record<PipelineStage, ReactNode> = {
 
 /** Pipeline as a vertical sequence of stages that fill with real facts as they finish. */
 export function PipelinePanel({ state }: { state: AnalysisState }) {
+  const { t } = useTranslation()
   const activeIdx = PIPELINE.indexOf(state.status as PipelineStage)
   return (
     <ol className="relative flex flex-col">
@@ -39,13 +41,13 @@ export function PipelinePanel({ state }: { state: AnalysisState }) {
             </span>
             <div className="min-w-0 flex-1">
               <div className="flex items-baseline justify-between gap-3">
-                <p className={`text-[14px] font-medium ${pending ? 'text-ink-4' : 'text-ink'}`}>{STAGE_TITLES[stage].title}</p>
+                <p className={`text-[14px] font-medium ${pending ? 'text-ink-4' : 'text-ink'}`}>{t(`pipeline.${stage}.title`)}</p>
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-4">{String(i + 1).padStart(2, '0')}</span>
               </div>
               <AnimatePresence mode="wait" initial={false}>
                 {active && !done && (
                   <motion.p key="run" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="mt-1 text-[13px] text-ink-3">
-                    {STAGE_TITLES[stage].running}
+                    {t(`pipeline.${stage}.running`)}
                     <span className="ml-2 inline-block h-[3px] w-16 overflow-hidden rounded-full bg-white/10 align-middle">
                       <motion.span className="block h-full w-1/2 rounded-full bg-maize" animate={{ x: ['-100%', '200%'] }} transition={{ repeat: Infinity, duration: 1.1, ease: 'easeInOut' }} />
                     </span>

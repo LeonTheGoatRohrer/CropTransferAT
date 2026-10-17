@@ -17,6 +17,43 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: dein-feld-konzept
+    date: 2026-10-17
+    phase: "Phase 9: Demo – Konzept „Dein Feld, dein Verlauf“"
+    title: "Eigener Schlag, eigene Historie: Warnlogik kalibriert, Aussage erst ab Mitte August"
+    status: eingeschraenkt
+    changed: "Ein lokales Werkzeug vergleicht einen gezeichneten Maisschlag mit seiner eigenen Ertragshistorie (Weg A) und mit dem eingefrorenen US-Stress-Score (Weg B); die Warnschwellen wurden vorab festgelegt, auf US-Daten kalibriert und eingefroren."
+    plain: >
+      Man zeichnet einen Schlag, trägt Jahreserträge ein und wählt Stichtag und Schwelle. Weg A rechnet das Normalniveau aus den eigenen Jahren,
+      Weg B holt Satellit, Wetter und Boden für den Schlag mit demselben Code wie im Training. Die Warnung zeigt immer, wie oft sie in den
+      US-Testdaten richtig lag. Ehrliches Ergebnis: Vor dem 15. August ist keine Aussage möglich, und die Trefferquote liegt nur knapp über
+      der Grundrate. Ein eigenes Österreich-Modell als Machbarkeitstest bringt nichts Brauchbares.
+    metrics:
+      - label: "Warnung 15.8., X = 20 % (Treffer von Warnungen, out-of-fold)"
+        value: "12 von 26"
+        n: "65 gültige Feld-Jahre, 7 Standort-Jahre mit Warnungen"
+        plain: "46 % der Warnungen trafen zu; ohne Warnung wären es 22 % (Grundrate)."
+      - label: "Stichtage mit Aussage"
+        value: "15.8. und 1.9."
+        plain: "Vorher gibt es zu wenige klare Satellitenaufnahmen bzw. zu wenige Testfälle."
+      - label: "AT-Machbarkeitsmodell (Spearman-ρ)"
+        value: "0,01"
+        ci: "[−0,44; 0,41]"
+        n: "34 Standort-Jahre / 7 Jahre"
+        plain: "Kein Zusammenhang; das Modell ist nicht besser als „normales Jahr“."
+    found:
+      - "Die On-demand-Pipeline liefert für ein US-Trainingsfeld exakt dieselben Satellitenwerte wie im Training."
+      - "12 von 26 Warnungen betreffen spät gesäte Bio-Parzellen: Eine Warnung heißt „Kurve auffällig“, nicht „Stress“."
+    limits:
+      - "Fehlalarmrate außerhalb der Trainingsdaten 0,26–0,51 statt höchstens 0,20."
+      - "Kein Demonstrationsschlag mit mehreren Ertragsjahren; spanische und französische Texte noch ungeprüft."
+    links:
+      - label: "Ergebnis Warnlogik"
+        path: reports/warnlogik_ergebnis.md
+      - label: "Datenkritik"
+        path: reports/data_review/phase9_feldverlauf.md
+      - label: "Kalibrierung"
+        path: results/2026-10-17_alert_calibration/calibration.json
   - id: web-frontend
     date: 2026-10-17
     phase: "Phase 9: Demo (Web-Frontend)"

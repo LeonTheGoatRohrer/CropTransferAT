@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 export type Tone = 'neutral' | 'maize' | 'rust' | 'sage' | 'water'
 
@@ -22,29 +23,49 @@ export function Badge({ tone = 'neutral', children, dot = false, className = '' 
 /** How strong the evidence behind a claim is — mirrors the project's status vocabulary. */
 export type Strength = 'robust' | 'certain-small' | 'limited' | 'failed' | 'frozen' | 'pending' | 'done'
 
-const strengthMap: Record<Strength, { tone: Tone; label: string }> = {
-  robust: { tone: 'sage', label: 'Robust' },
-  'certain-small': { tone: 'water', label: 'Small but certain' },
-  limited: { tone: 'maize', label: 'Limited' },
-  failed: { tone: 'rust', label: 'Did not pass' },
-  frozen: { tone: 'neutral', label: 'Frozen' },
-  pending: { tone: 'neutral', label: 'Pending' },
-  done: { tone: 'neutral', label: 'Done' },
+const strengthTone: Record<Strength, Tone> = {
+  robust: 'sage',
+  'certain-small': 'water',
+  limited: 'maize',
+  failed: 'rust',
+  frozen: 'neutral',
+  pending: 'neutral',
+  done: 'neutral',
 }
 
-export function StrengthBadge({ strength }: { strength: Strength }) {
-  const s = strengthMap[strength]
+export function StrengthBadge({ strength }: { strength: Strength | string }) {
+  const { t } = useTranslation()
+  const s = (strength in strengthTone ? strength : 'pending') as Strength
   return (
-    <Badge tone={s.tone} dot>
-      {s.label}
+    <Badge tone={strengthTone[s]} dot>
+      {t(`strength.${s}`)}
     </Badge>
   )
 }
 
 export function SimulatedBadge() {
+  const { t } = useTranslation()
   return (
     <Badge tone="maize" className="border-dashed">
-      Simulated · backend not connected
+      {t('common.simulated')}
+    </Badge>
+  )
+}
+
+export function LiveBadge() {
+  const { t } = useTranslation()
+  return (
+    <Badge tone="sage" dot>
+      {t('common.backendLive')}
+    </Badge>
+  )
+}
+
+export function ConceptBadge({ label }: { label?: string }) {
+  const { t } = useTranslation()
+  return (
+    <Badge tone="water" className="border-dashed">
+      {label ?? t('common.concept')}
     </Badge>
   )
 }

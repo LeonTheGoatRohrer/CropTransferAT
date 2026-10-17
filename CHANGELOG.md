@@ -4,6 +4,18 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Added (Branch `phase-9-feldverlauf`) – Umbau „Dein Feld, dein Verlauf“ (Schulprojekt)
+- Vorab-Festlegungen in `DECISIONS.md` (Weg A/B, Warnlogik, AT-Machbarkeit, nur App-Benachrichtigung, lokales Backend), danach:
+- `alert_calibration.py` + `notebooks/09_alert_calibration.ipynb`: Warnlogik auf US-Daten kalibriert und eingefroren (`results/2026-10-17_alert_calibration/`, `reports/warnlogik_ergebnis.md`): Aussage erst ab 15.8.; z. B. 15.8., X = 20 %: 12 von 26 Warnungen bei Prävalenz 0,22.
+- `field_pipeline.py`: On-demand-Analyse eines beliebigen Polygons mit den Trainingsfunktionen (HLS, ERA5-Land, SoilGrids, eingefrorener Score); Live-Check gegen ein US-Trainingsfeld identisch.
+- `fielddb.py` + `webapi.py`: lokales FastAPI/SQLite-Backend (Felder, Jahreserträge, Weg A, Benachrichtigungseinstellung, Analyse-Jobs, Benachrichtigungen nur in der App), Port 8765.
+- `at_feasibility.py`: AT-Machbarkeitstest, kein brauchbares Ergebnis (ρ 0,01 [−0,44; 0,41]).
+- Website: react-i18next mit Deutsch als Standard, Englisch, Spanisch, Französisch; Zahlen/Daten über `Intl`; neue Seite `/konzept`, Startseiten-Abschnitt (als Konzept markiert), Navigation „Konzept“; Analyse-Seite nutzt das Backend für gezeichnete Felder, sonst gekennzeichnete Simulation; Evidenz-Abschnitt Österreich.
+- Tests: `test_alert_calibration.py`, `test_field_pipeline.py`, `test_fielddb.py`, `test_webapi.py`, `test_at_feasibility.py`.
+
+### Fixed
+- `.gitignore`: `data/` → `/data/`; `web/src/data/` (Inhalte, Simulation) war dadurch nie eingecheckt.
+
 ### Added (Branch `phase-9-frontend`) – Web-Frontend für die Jury
 - `web/`: neue Präsentations- und Demo-Website (React 19, TypeScript, Vite, Tailwind 4, MapLibre, Terra Draw, D3, Motion), nur lokal/privat. Seiten: Überblick, Feldanalyse (Karte, Suche, Polygon zeichnen, Pipeline als Zustandsmaschine), Evidence (alle Benchmarks inkl. Österreich-Test), Model card, Daten + Explorer, Methode + Experimente, Grenzen/Roadmap/Offenlegung.
 - `web/scripts/export_web_data.py`: schreibt `web/public/data/{fields,evidence,explorer}.json` aus `data/` und `results/` (keine österreichischen Roh-/Merkmalsdaten). Fünf vorbereitete US-Feld-Jahre mit echten Kurven, Wetter, Boden, 10-m-Zellen und out-of-fold-Risiko; gezeichnete Felder laufen bis zum Backend als markierte Simulation.

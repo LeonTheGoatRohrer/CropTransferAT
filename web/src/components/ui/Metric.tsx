@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import { fmtCi } from '../../lib/format'
 import { CountUp } from './CountUp'
 import { keepGreek } from './Text'
@@ -21,6 +22,7 @@ const toneCls = { ink: 'text-ink', maize: 'text-maize', rust: 'text-rust', sage:
 
 /** A number with its uncertainty and sample size — never a bare number. */
 export function Metric({ label, value, digits = 2, prefix = '', suffix = '', ci, n, note, size = 'md', tone = 'ink' }: Props) {
+  const { t } = useTranslation()
   const hasCi = ci && ci[0] != null && ci[1] != null
   return (
     <div className="flex flex-col gap-2">
@@ -32,7 +34,7 @@ export function Metric({ label, value, digits = 2, prefix = '', suffix = '', ci,
       </span>
       {(hasCi || n) && (
         <span className="font-mono text-[11.5px] text-ink-3 tabular">
-          {hasCi && <>95 % CI {fmtCi(ci[0], ci[1], digits)}</>}
+          {hasCi && <>{t('common.ci')} {fmtCi(ci[0], ci[1], digits)}</>}
           {hasCi && n && ' · '}
           {n && <>n = {n}</>}
         </span>

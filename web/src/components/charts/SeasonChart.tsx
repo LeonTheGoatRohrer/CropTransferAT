@@ -2,9 +2,10 @@ import { scaleLinear } from 'd3-scale'
 import { area, curveMonotoneX, line } from 'd3-shape'
 import { motion, useReducedMotion } from 'motion/react'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import type { Nullable, ReferenceBand } from '../../api/types'
 import { tokens } from '../../lib/color'
-import { MONTH_TICKS, N_DEKADS, PHASES, dekadLabel } from '../../lib/dekads'
+import { N_DEKADS, PHASES, dekadLabel, monthLong, monthTicks } from '../../lib/dekads'
 import { fmt, fmtSigned } from '../../lib/format'
 import { ChartTooltip, GridY, axisText, useWidth } from './core'
 
@@ -18,6 +19,7 @@ type Props = {
   color?: string
   /** dekad index of a cutoff marker (e.g. 1 Sep) */
   cutoff?: number
+  cutoffLabel?: string
   showPhases?: boolean
   showShortfall?: boolean
   /** highlight one dekad (season scrubber) */
@@ -37,11 +39,13 @@ export function SeasonChart({
   label = 'NDVI',
   color = tokens.maize,
   cutoff,
+  cutoffLabel,
   showPhases = true,
   showShortfall = true,
   activeDekad,
   compact = false,
 }: Props) {
+  const { t } = useTranslation()
   const [ref, width] = useWidth<HTMLDivElement>()
   const [hover, setHover] = useState<number | null>(null)
   const reduce = useReducedMotion()
@@ -72,7 +76,7 @@ export function SeasonChart({
         width={width}
         height={height}
         role="img"
-        aria-label={`${label} season curve against the healthy reference`}
+        aria-label={t('charts.seasonAria', { label })}
         onMouseLeave={() => setHover(null)}
         onMouseMove={(e) => {
           const r = (e.currentTarget as SVGSVGElement).getBoundingClientRect()
@@ -86,15 +90,15 @@ export function SeasonChart({
               <rect x={x(p.from)} y={m.t} width={x(p.to) - x(p.from)} height={height - m.t - m.b} fill="white" opacity={p.key === 'Jul' ? 0.035 : 0.018} />
               {!compact && (
                 <text x={(x(p.from) + x(p.to)) / 2} y={m.t + 12} textAnchor="middle" {...axisText} fill={tokens.ink4}>
-                  {p.label}
+                  {monthLong(p.month)}
                 </text>
               )}
             </g>
           ))}
-        <GridY ticks={ticks} y={y} x0={m.l} x1={width - m.r} fmt={(v) => (Math.abs(v) < 1e-9 ? '0' : v.toFixed(1))} />
-        {MONTH_TICKS.filter((t) => t.pos <= N_DEKADS - 1).map((t) => (
-          <text key={t.label} x={x(t.pos)} y={height - m.b + 18} textAnchor="start" {...axisText}>
-            {t.label}
+        <GridY ticks={ticks} y={y} x0={m.l} x1={width - m.r} fmt={(v) => (Math.abs(v) < 1e-9 ? '0' : fmt(v, 1))} />
+        {monthTicks().filter((mt) => mt.pos <= N_DEKADS - 1).map((mt) => (
+          <text key={mt.label} x={x(mt.pos)} y={height - m.b + 18} textAnchor="start" {...axisText}>
+            {mt.label}
           </text>
         ))}
 
@@ -114,7 +118,7 @@ export function SeasonChart({
             <line x1={x(cutoff)} x2={x(cutoff)} y1={m.t} y2={height - m.b} stroke={tokens.ink3} strokeDasharray="3 3" />
             {!compact && (
               <text x={x(cutoff) + 6} y={height - m.b - 8} {...axisText} fill={tokens.ink2}>
-                1 Sep cutoff
+                {cutoffLabel ?? t('charts.cutoff')}
               </text>
             )}
           </g>
@@ -144,17 +148,17 @@ export function SeasonChart({
           <p className="eyebrow mb-1 !text-[10px]">{dekadLabel(hover, year)}</p>
           <p className="flex justify-between gap-4">
             <span className="text-ink-2">{label}</span>
-            <span className="font-mono tabular">{hv == null ? 'no clear scene' : fmt(hv, 3)}</span>
+            <span className="font-mono tabular">{hv == null ? t('charts.noScene') : fmt(hv, 3)}</span>
           </p>
           {hr != null && (
             <p className="flex justify-between gap-4">
-              <span className="text-ink-2">Healthy median</span>
+              <span className="text-ink-2">{t('charts.healthyMedian')}</span>
               <span className="font-mono tabular">{fmt(hr, 3)}</span>
             </p>
           )}
           {hv != null && hr != null && (
             <p className="flex justify-between gap-4">
-              <span className="text-ink-2">Deviation</span>
+              <span className="text-ink-2">{t('charts.deviation')}</span>
               <span className={`font-mono tabular ${hv < hr ? 'text-rust' : 'text-sage'}`}>{fmtSigned(hv - hr, 3)}</span>
             </p>
           )}

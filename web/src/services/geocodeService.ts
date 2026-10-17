@@ -1,3 +1,4 @@
+import { currentLang } from '../i18n/lang'
 /**
  * Place search via OpenStreetMap Nominatim (public instance, max 1 request/s,
  * attribution required). Swap for a self-hosted geocoder in production.
@@ -9,7 +10,7 @@ type NominatimHit = { place_id: number; display_name: string; lat: string; lon: 
 export async function searchPlaces(query: string, signal?: AbortSignal): Promise<Place[]> {
   const q = query.trim()
   if (q.length < 2) return []
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=6&q=${encodeURIComponent(q)}`
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=6&accept-language=${currentLang()}&q=${encodeURIComponent(q)}`
   const res = await fetch(url, { signal, headers: { Accept: 'application/json' } })
   if (!res.ok) throw new Error(`Place search failed (HTTP ${res.status}).`)
   const hits = (await res.json()) as NominatimHit[]

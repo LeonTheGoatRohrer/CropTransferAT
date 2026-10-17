@@ -3,6 +3,7 @@ import { scaleBand, scaleLinear } from 'd3-scale'
 import { area, curveMonotoneX, line } from 'd3-shape'
 import { motion, useReducedMotion } from 'motion/react'
 import { useState, type ReactNode } from 'react'
+import i18n from '../../i18n'
 import { tokens } from '../../lib/color'
 import { fmt, fmtSigned } from '../../lib/format'
 import { ChartTooltip, GridY, axisText, niceTicks, useWidth } from './core'
@@ -24,7 +25,7 @@ export function CiRows({ rows, domain, reference, referenceLabel, format = (v: n
   const f = signed ? (v: number) => fmtSigned(v, 2) : format
   return (
     <div ref={ref} className="w-full">
-      <svg width={width} height={h} role="img" aria-label="Estimates with 95 % confidence intervals">
+      <svg width={width} height={h} role="img" aria-label={i18n.t('charts.ciAria')}>
         {ticks.map((t) => (
           <g key={t}>
             <line x1={x(t)} x2={x(t)} y1={6} y2={h - 24} stroke={tokens.line} strokeDasharray="2 4" />
@@ -80,7 +81,7 @@ export function Scatter({ points, xLabel, yLabel, xDomain, yDomain, diagonal = f
   const hp = hover != null ? points[hover] : null
   return (
     <div ref={ref} className="relative w-full select-none">
-      <svg width={width} height={height} role="img" aria-label={`${yLabel} against ${xLabel}`} onMouseLeave={() => setHover(null)}>
+      <svg width={width} height={height} role="img" aria-label={i18n.t('charts.scatterAria', { x: xLabel, y: yLabel })} onMouseLeave={() => setHover(null)}>
         <GridY ticks={y.ticks(5)} y={y} x0={m.l} x1={width - m.r} fmt={yFmt} />
         {x.ticks(width < 420 ? 4 : 6).map((t) => (
           <text key={t} x={x(t)} y={height - m.b + 16} textAnchor="middle" {...axisText}>{xFmt(t)}</text>
@@ -136,7 +137,7 @@ export function Histogram({ edges, series, height = 220, xLabel }: { edges: numb
   const lg = line<{ x: number; v: number }>().x((d) => x(d.x)).y((d) => y(d.v)).curve(curveMonotoneX)
   return (
     <div ref={ref} className="w-full">
-      <svg width={width} height={height} role="img" aria-label={`Distribution of ${xLabel}`}>
+      <svg width={width} height={height} role="img" aria-label={i18n.t('charts.distAria', { label: xLabel })}>
         <line x1={x(0)} x2={x(0)} y1={m.t} y2={height - m.b} stroke={tokens.ink3} />
         {series.map((s) => (
           <g key={s.label}>
@@ -176,7 +177,7 @@ export function LineCi({ categories, series, yDomain, height = 280, yFmt = (v: n
         width={width}
         height={height}
         role="img"
-        aria-label="Metric by forecast date with confidence bands"
+        aria-label={i18n.t('charts.lineAria')}
         onMouseLeave={() => setHover(null)}
         onMouseMove={(e) => {
           const r = (e.currentTarget as SVGSVGElement).getBoundingClientRect()
@@ -243,7 +244,7 @@ export function Strip({ groups, domain, height, xLabel, reference }: { groups: {
   const hv = hover ? groups[hover.g].values[hover.i] : null
   return (
     <div ref={ref} className="relative w-full">
-      <svg width={width} height={h} role="img" aria-label={`Distribution of ${xLabel} by group`}>
+      <svg width={width} height={h} role="img" aria-label={i18n.t('charts.groupAria', { label: xLabel })}>
         {niceTicks(domain[0], domain[1], 4).map((t) => (
           <g key={t}>
             <line x1={x(t)} x2={x(t)} y1={4} y2={h - 30} stroke={t === 0 ? tokens.lineStrong : tokens.line} strokeDasharray={t === 0 ? undefined : '2 4'} />
@@ -288,7 +289,7 @@ export function PairedBars({ rows, a, b, format = (v: number) => fmt(v, 2), heig
   const x = scaleLinear().domain([0, vmax * 1.05]).range([labelW, width - 56])
   return (
     <div ref={ref} className="w-full">
-      <svg width={width} height={h} role="img" aria-label={`${a.label} vs ${b.label}`}>
+      <svg width={width} height={h} role="img" aria-label={i18n.t('charts.pairAria', { a: a.label, b: b.label })}>
         {rows.map((r, i) => {
           const y0 = 6 + i * rowH
           return (

@@ -6,6 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-10-17 | Claude (Anthropic), Claude Code (Opus 5.5) | Umbau „Dein Feld, dein Verlauf“ nach Vorgabe des Projektinhabers: Vorab-Festlegungen (DECISIONS), Kalibrierung der Warnlogik, On-demand-Feldpipeline, lokales FastAPI/SQLite-Backend, AT-Machbarkeitstest, Tests, Datenkritik; Website-Umbau mit react-i18next, deutsche und englische Texte, Konzept-Seite. Spanische und französische Texte: KI-Übersetzung durch Unteragenten (Claude), **noch nicht von einer sprachkundigen Person geprüft** |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Opus 5.5) | Web-Frontend `web/`: Analyse des Repositorys, Design und Umsetzung der Website (Seiten, Diagramme, Karte, Feldanalyse-Demo, Simulation für gezeichnete Felder), Exportskript `web/scripts/export_web_data.py`, englische Website-Texte, Datenkritik, Doku-Einträge |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Steiermark-Test (Österreich II): Zusammenführen der Branches, Freeze-Protokoll `freeze-at-2`, Auswertungsmodul, Tests, Ergebnisbericht und Datenkritik (alle Festlegungen vorab, Entscheidung des Projektinhabers im Chat) |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Österreich-Test: Freeze-Protokoll, Feldauswahl (INVEKOS), GEE-Abfrage, Auswertungscode (`at_*.py`), Tests, Nachtrainieren (Vorab-Plan, Code), Ergebnisbericht, Datenkritik, Website-Eintrag; Beratung zur Testlogik (Entscheidungen beim Projektinhaber) |

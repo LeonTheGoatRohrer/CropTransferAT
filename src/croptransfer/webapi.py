@@ -1,6 +1,6 @@
 """Local backend for "Dein Feld, dein Verlauf" (FastAPI + SQLite; local only, never deployed).
 
-Start:  python -m croptransfer.webapi        -> http://127.0.0.1:8000  (docs: /docs)
+Start:  python -m croptransfer.webapi        -> http://127.0.0.1:8765  (docs: /docs)
 DB:     data/app_local/fields.sqlite (not in git; fields are pseudonymous)
 
 Path A = fielddb.baseline (user's own yield history), path B = field_pipeline.analyse (frozen US stress score
@@ -213,7 +213,7 @@ def create_app(db_path: str | None = None, analyse_fn: Callable | None = None) -
 def main() -> None:
     import uvicorn
 
-    uvicorn.run(create_app(os.environ.get("CROPTRANSFER_DB")), host="127.0.0.1", port=int(os.environ.get("PORT", 8000)))
+    uvicorn.run(create_app(os.environ.get("CROPTRANSFER_DB")), host="127.0.0.1", port=int(os.environ.get("PORT", 8765)))
 
 
 if __name__ == "__main__":

@@ -15,6 +15,7 @@
  * src/services/fieldService.ts — the return type stays FieldAnalysis.
  */
 import type { FieldAnalysis, Nullable, PixelGrid, Polygon, ReferenceBand, WeatherSeries } from '../../api/types'
+import i18n from '../../i18n'
 import { N_DEKADS, lastCompleteDekad } from '../../lib/dekads'
 import { areaM2, bbox, centroid, hashPolygon, metresPerDegree, pointInPolygon, rng } from '../../lib/geo'
 
@@ -82,7 +83,7 @@ function simulatePixels(polygon: Polygon, seed: number, windowNdvi: number, curv
   return {
     n_cells: cells.length,
     cell_m: cell,
-    window: 'Simulated window NDVI',
+    window: 'NDVI (simulated)',
     weak_threshold: thr,
     rho: NaN,
     precision_weak: weak.length ? weakProblem.length / weak.length : NaN,
@@ -156,9 +157,9 @@ export function simulateAnalysis(polygon: Polygon, inputs: SimulationInputs): Fi
     id: `custom-${seed.toString(16)}`,
     fy_key: `custom|${seed.toString(16)}|${SIM_YEAR}`,
     role: 'custom',
-    label: 'Your field',
-    title: 'Drawn field',
-    blurb: 'Simulated result — the extraction backend is not connected yet.',
+    label: i18n.t('analyse.fields.custom.label'),
+    title: i18n.t('analyse.fields.custom.title'),
+    blurb: i18n.t('common.simulated'),
     site: 'Custom',
     field_id: seed.toString(16),
     year: SIM_YEAR,
