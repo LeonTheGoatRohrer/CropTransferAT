@@ -19,6 +19,7 @@ Stand 2026-10-17. Protokoll §5 (`reports/freeze_protocol_at.md`). Zahlen: `resu
 ## 3.3 Scheinzusammenhänge
 - **Jahres-Proxy:** Ja, großenteils. Jahresmittel ρ = 0,79; nach Abzug der Jahresmittel ρ = 0,31; innerhalb eines Jahres Median −0,10. Der Score unterscheidet Jahre, nicht Standorte im selben Jahr.
 - **Gegenprobe NDVI:** B-NDVI (ohne Lernen) erreicht dasselbe ρ (0,50). Score und NDVI hängen stark zusammen (0,83 / 0,88). Der Score bringt hier keinen Zusatz.
+- **Ohne die beiden belasteten Jahre:** Ohne 2018 und 2023 zusammen sinkt ρ (V2-A) auf 0,37, ohne zwei beliebige Jahre liegt es bei 0,35–0,60; bei V1 ohne 2018 und 2023 bei 0,35. Das Regionalmodell liegt im Mittel um +0,09 zu hoch (Vorhersage 1,08, Beobachtung 1,00).
 - **Leave-one-year-out:** 0,41–0,55 – kein einzelnes Jahr trägt das Ergebnis (2018 mit dem extremsten Score eingeschlossen).
 - Kein Modell wurde auf Österreich gefittet; Label-Shuffle entfällt für A. Für das Nachtrainieren gilt Leave-one-year-out.
 - **Mehrfachvergleiche:** Zwei gleichrangige Haupttests (A und B) und vier Stichtage; keiner wurde als Sieger gewählt. Die Aussage stützt sich auf den vorab festgelegten Haupt-Stichtag 1.9.
