@@ -256,3 +256,44 @@ feinjust:                          # decision rule (Plan section 3) and H3 crite
   h3_shuffle_margin: 0.10
   h3_lodo_loss_max: 0.15
   alarm_fpr: 0.2
+
+# Austria test (PLAN.md Phase 6/7), pre-registered in reports/freeze_protocol_at.md BEFORE any Austrian
+# satellite or yield value is evaluated. Do not change after the freeze tag `freeze-at-1`.
+at_test:
+  version: 1
+  cutoffs: ["07-15", "08-01", "08-15", "09-01"]
+  primary_cutoff: "09-01"
+  years: [2018, 2025]
+  invekos_code: "105"                 # Koernermais
+  radius_km: 5.0                      # around the centroid of the municipality (union) of the site
+  max_fields_per_site_year: 100       # seeded random sample from the candidates
+  min_fields_per_site_year: 10        # fewer valid fields -> site-year excluded (listed)
+  min_observed_dekads: 4              # observed HLS dekads in first_dekad..cutoff, else field-year dropped
+  stress: {index: ndvi, basis: HLS, first_dekad: 6, healthy_ry_min: 0.95}
+  baseline_ndvi_dekads: [9, 14]       # B-NDVI: mean observed NDVI in these dekads (Jun/Jul-Aug), no US learning
+  trial_types: [sorten, praxisversuch_sorten]    # conventional variety trials; site mean per trial type
+  trial_mean_variants: [Standortmittel, Versuchsmittel]
+  min_site_years_v2: 15
+  min_years_within_site: 6
+  regional:
+    nuts2: {Burgenland: AT11, Niederoesterreich: AT12, Kaernten: AT21, Steiermark: AT22, Oberoesterreich: AT31}
+    years: [2018, 2023]               # CY-Bench AT predictors end 2023
+    site_region: {Steiermark: AT22, Oberoesterreich: AT31}
+  # site clusters: trial-report names (aliases) -> municipality ids (Statistik Austria GEM_20250101)
+  sites:
+    wagna:       {bundesland: Steiermark,      gemeinden: ["61045"], aliases: ["Wagna"]}
+    kalsdorf:    {bundesland: Steiermark,      gemeinden: ["62271"], aliases: ["Kalsdorf bei Ilz"]}      # Ilz
+    hatzendorf:  {bundesland: Steiermark,      gemeinden: ["62378"], aliases: ["Hatzendorf", "Unterhatzendorf (Hatzendorf)"]}  # Fehring
+    mauthausen:  {bundesland: Oberoesterreich, gemeinden: ["41111"], aliases: ["Mauthausen"]}
+    walding:     {bundesland: Oberoesterreich, gemeinden: ["41626"], aliases: ["Walding"]}
+    linden:      {bundesland: Oberoesterreich, gemeinden: ["41821"], aliases: ["Linden", "Linden (Steinerkirchen an der Traun)", "Linden (Steinerkirchen/Tr.)", "Linden (Steinerkirchen/Traun)", "Linden/Steinerkirchen an der Traun", "Steinerkirchen/Linden"]}
+    wimsbach:    {bundesland: Oberoesterreich, gemeinden: ["41803"], aliases: ["Bad Wimsbach", "Bad Wimsbach-Neydharting"]}
+    innviertel:  {bundesland: Oberoesterreich, gemeinden: ["41210", "41207"], aliases: ["Katzenberg", "Katzenberg bei Kirchdorf/I.", "Geinberg/Katzenberg", "Kirchdorf am Inn", "Kirchdorf/Inn", "Geinberg"]}
+    aistersheim: {bundesland: Oberoesterreich, gemeinden: ["40801"], aliases: ["Aistersheim"]}
+    pasching:    {bundesland: Oberoesterreich, gemeinden: ["41017"], aliases: ["Pasching"]}
+    enns:        {bundesland: Oberoesterreich, gemeinden: ["41005"], aliases: ["Enns"]}
+    dietach:     {bundesland: Oberoesterreich, gemeinden: ["41504"], aliases: ["Dietach"]}
+    eberstalzell: {bundesland: Oberoesterreich, gemeinden: ["41805"], aliases: ["Eberstalzell"]}
+  freeze:
+    dir: results/models/at_freeze
+    protocol: reports/freeze_protocol_at.md

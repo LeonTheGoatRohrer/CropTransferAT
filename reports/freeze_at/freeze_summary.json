@@ -1,0 +1,36 @@
+{
+  "stress_reference_field_years": 77,
+  "regional_files_verified": 14,
+  "files": {
+    "stress_reference_hls_ndvi.csv": "f9907c085e0611d496e84fc739ce7048aade902e9a962417e8345e35f074967f",
+    "site_centroids.json": "961eeffe2fc3acb32fb8ae8ff85efffeaed6f39808f5cf164e14a06c38820ae8",
+    "at_test_config.json": "770d807909fa21b5e51e11df20f09c37ad14326fa40802c7a258d7c1cb9db4c0"
+  },
+  "reference_curve": {
+    "0": 0.3456,
+    "1": 0.4326,
+    "2": 0.3033,
+    "3": 0.3468,
+    "4": 0.4041,
+    "5": 0.3538,
+    "6": 0.2873,
+    "7": 0.3189,
+    "8": 0.378,
+    "9": 0.6637,
+    "10": 0.7102,
+    "11": 0.8034,
+    "12": 0.8225,
+    "13": 0.8491,
+    "14": 0.8639,
+    "15": 0.8571,
+    "16": 0.8375,
+    "17": 0.699,
+    "18": 0.4197,
+    "19": 0.4911,
+    "20": 0.3815
+  },
+  "code": {
+    "commit": "668c7cb5cf5f71e9854c33cf5ec2a0225f4d993d",
+    "dirty": true
+  }
+}

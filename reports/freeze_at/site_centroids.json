@@ -1,0 +1,120 @@
+{
+  "aistersheim": {
+    "lat": 48.18431,
+    "lon": 13.74354,
+    "municipalities": [
+      "Aistersheim"
+    ],
+    "x_31287": 430552.7,
+    "y_31287": 476199.1
+  },
+  "dietach": {
+    "lat": 48.09821,
+    "lon": 14.42514,
+    "municipalities": [
+      "Dietach"
+    ],
+    "x_31287": 481354.3,
+    "y_31287": 467117.3
+  },
+  "eberstalzell": {
+    "lat": 48.03263,
+    "lon": 13.99536,
+    "municipalities": [
+      "Eberstalzell"
+    ],
+    "x_31287": 449415.5,
+    "y_31287": 459467.9
+  },
+  "enns": {
+    "lat": 48.21073,
+    "lon": 14.46085,
+    "municipalities": [
+      "Enns"
+    ],
+    "x_31287": 483832.0,
+    "y_31287": 479661.6
+  },
+  "hatzendorf": {
+    "lat": 46.95171,
+    "lon": 16.01133,
+    "municipalities": [
+      "Fehring"
+    ],
+    "x_31287": 603816.1,
+    "y_31287": 342624.6
+  },
+  "innviertel": {
+    "lat": 48.27452,
+    "lon": 13.28836,
+    "municipalities": [
+      "Geinberg",
+      "Kirchdorf am Inn"
+    ],
+    "x_31287": 396721.2,
+    "y_31287": 486149.3
+  },
+  "kalsdorf": {
+    "lat": 47.09068,
+    "lon": 15.90742,
+    "municipalities": [
+      "Ilz"
+    ],
+    "x_31287": 595401.7,
+    "y_31287": 357794.8
+  },
+  "linden": {
+    "lat": 48.06447,
+    "lon": 13.96712,
+    "municipalities": [
+      "Steinerkirchen an der Traun"
+    ],
+    "x_31287": 447281.5,
+    "y_31287": 462989.3
+  },
+  "mauthausen": {
+    "lat": 48.24803,
+    "lon": 14.53456,
+    "municipalities": [
+      "Mauthausen"
+    ],
+    "x_31287": 489244.3,
+    "y_31287": 483889.9
+  },
+  "pasching": {
+    "lat": 48.25265,
+    "lon": 14.21057,
+    "municipalities": [
+      "Pasching"
+    ],
+    "x_31287": 465184.5,
+    "y_31287": 484083.0
+  },
+  "wagna": {
+    "lat": 46.77212,
+    "lon": 15.56146,
+    "municipalities": [
+      "Wagna"
+    ],
+    "x_31287": 570168.4,
+    "y_31287": 321594.5
+  },
+  "walding": {
+    "lat": 48.34903,
+    "lon": 14.14159,
+    "municipalities": [
+      "Walding"
+    ],
+    "x_31287": 459952.9,
+    "y_31287": 494740.6
+  },
+  "wimsbach": {
+    "lat": 48.04891,
+    "lon": 13.89152,
+    "municipalities": [
+      "Bad Wimsbach-Neydharting"
+    ],
+    "x_31287": 441660.9,
+    "y_31287": 461216.8
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "baseline_ndvi_dekads": [
+    9,
+    14
+  ],
+  "cutoffs": [
+    "07-15",
+    "08-01",
+    "08-15",
+    "09-01"
+  ],
+  "freeze": {
+    "dir": "results/models/at_freeze",
+    "protocol": "reports/freeze_protocol_at.md"
+  },
+  "invekos_code": "105",
+  "max_fields_per_site_year": 100,
+  "min_fields_per_site_year": 10,
+  "min_observed_dekads": 4,
+  "min_site_years_v2": 15,
+  "min_years_within_site": 6,
+  "primary_cutoff": "09-01",
+  "radius_km": 5.0,
+  "regional": {
+    "nuts2": {
+      "Burgenland": "AT11",
+      "Kaernten": "AT21",
+      "Niederoesterreich": "AT12",
+      "Oberoesterreich": "AT31",
+      "Steiermark": "AT22"
+    },
+    "site_region": {
+      "Oberoesterreich": "AT31",
+      "Steiermark": "AT22"
+    },
+    "years": [
+      2018,
+      2023
+    ]
+  },
+  "sites": {
+    "aistersheim": {
+      "aliases": [
+        "Aistersheim"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "40801"
+      ]
+    },
+    "dietach": {
+      "aliases": [
+        "Dietach"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41504"
+      ]
+    },
+    "eberstalzell": {
+      "aliases": [
+        "Eberstalzell"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41805"
+      ]
+    },
+    "enns": {
+      "aliases": [
+        "Enns"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41005"
+      ]
+    },
+    "hatzendorf": {
+      "aliases": [
+        "Hatzendorf",
+        "Unterhatzendorf (Hatzendorf)"
+      ],
+      "bundesland": "Steiermark",
+      "gemeinden": [
+        "62378"
+      ]
+    },
+    "innviertel": {
+      "aliases": [
+        "Katzenberg",
+        "Katzenberg bei Kirchdorf/I.",
+        "Geinberg/Katzenberg",
+        "Kirchdorf am Inn",
+        "Kirchdorf/Inn",
+        "Geinberg"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41210",
+        "41207"
+      ]
+    },
+    "kalsdorf": {
+      "aliases": [
+        "Kalsdorf bei Ilz"
+      ],
+      "bundesland": "Steiermark",
+      "gemeinden": [
+        "62271"
+      ]
+    },
+    "linden": {
+      "aliases": [
+        "Linden",
+        "Linden (Steinerkirchen an der Traun)",
+        "Linden (Steinerkirchen/Tr.)",
+        "Linden (Steinerkirchen/Traun)",
+        "Linden/Steinerkirchen an der Traun",
+        "Steinerkirchen/Linden"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41821"
+      ]
+    },
+    "mauthausen": {
+      "aliases": [
+        "Mauthausen"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41111"
+      ]
+    },
+    "pasching": {
+      "aliases": [
+        "Pasching"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41017"
+      ]
+    },
+    "wagna": {
+      "aliases": [
+        "Wagna"
+      ],
+      "bundesland": "Steiermark",
+      "gemeinden": [
+        "61045"
+      ]
+    },
+    "walding": {
+      "aliases": [
+        "Walding"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41626"
+      ]
+    },
+    "wimsbach": {
+      "aliases": [
+        "Bad Wimsbach",
+        "Bad Wimsbach-Neydharting"
+      ],
+      "bundesland": "Oberoesterreich",
+      "gemeinden": [
+        "41803"
+      ]
+    }
+  },
+  "stress": {
+    "basis": "HLS",
+    "first_dekad": 6,
+    "healthy_ry_min": 0.95,
+    "index": "ndvi"
+  },
+  "trial_mean_variants": [
+    "Standortmittel",
+    "Versuchsmittel"
+  ],
+  "trial_types": [
+    "sorten",
+    "praxisversuch_sorten"
+  ],
+  "version": 1,
+  "years": [
+    2018,
+    2025
+  ]
+}
