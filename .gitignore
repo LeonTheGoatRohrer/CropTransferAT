@@ -8,6 +8,12 @@ results/**/models/
 *.parquet
 !tests/fixtures/**
 
+# Web frontend (generated / dependencies)
+web/node_modules/
+web/dist/
+web/public/data/
+.playwright-mcp/
+
 # Secrets
 .env
 *.json.key

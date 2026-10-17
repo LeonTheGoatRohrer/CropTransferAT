@@ -4,6 +4,11 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Added (Branch `phase-9-frontend`) – Web-Frontend für die Jury
+- `web/`: neue Präsentations- und Demo-Website (React 19, TypeScript, Vite, Tailwind 4, MapLibre, Terra Draw, D3, Motion), nur lokal/privat. Seiten: Überblick, Feldanalyse (Karte, Suche, Polygon zeichnen, Pipeline als Zustandsmaschine), Evidence (alle Benchmarks inkl. Österreich-Test), Model card, Daten + Explorer, Methode + Experimente, Grenzen/Roadmap/Offenlegung.
+- `web/scripts/export_web_data.py`: schreibt `web/public/data/{fields,evidence,explorer}.json` aus `data/` und `results/` (keine österreichischen Roh-/Merkmalsdaten). Fünf vorbereitete US-Feld-Jahre mit echten Kurven, Wetter, Boden, 10-m-Zellen und out-of-fold-Risiko; gezeichnete Felder laufen bis zum Backend als markierte Simulation.
+- Datenkritik `reports/data_review/phase9_frontend.md`, Website-Eintrag `web-frontend` in `app/versions.yaml`.
+
 ## [at-test-1] – 2026-10-17 – Österreich-Test (erster, explorativ; Tag `freeze-at-1` für das Protokoll)
 > ⚠️ **Explorativ:** Das Phase-4-Kriterium „stark genug“ war von keinem Feldmodell erfüllt; der Test läuft auf ausdrückliche Entscheidung des Projektinhabers. Der lokale Test enthält **nur Oberösterreich** (n = 34 Standort-Jahre, 7 Jahre); der Stress-Score ist nicht besser als reines NDVI.
 

@@ -17,6 +17,27 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: web-frontend
+    date: 2026-10-17
+    phase: "Phase 9: Demo (Web-Frontend)"
+    title: "Neue Website für die Jury: echte Felder, alle Benchmarks, ehrliche Grenzen"
+    status: abgeschlossen
+    changed: "Eine neue, lokal laufende Website (web/) zeigt das Projekt für die Jury: eine Feldanalyse mit Karte, alle Kennzahlen mit Vertrauensbereich und die Grenzen, ohne neue Rechnung."
+    plain: >
+      Die Website erklärt in wenigen Sekunden, was das Projekt macht, und belegt es Schritt für Schritt. Fünf echte US-Feld-Jahre lassen sich
+      auf der Karte „analysieren“: Satellitenkurve, Wetter, Boden, Alarm und die Feldkarte, danach kann man den gemessenen Ertrag aufdecken.
+      Alle Zahlen kommen aus den Ergebnisdateien des Projekts. Selbst gezeichnete Felder sind nur eine markierte Simulation, bis ein Backend existiert.
+    found:
+      - "Die Pixelkarte der Demo-Felder reproduziert die Werte des Vorab-Laufs exakt (ρ 0,544 / 0,753 / 0,757)."
+      - "Feld E zeigt beide Seiten: kein Alarm für das ganze Feld, aber die Karte findet die schwachen Zonen (95 % Treffer im markierten Viertel)."
+    limits:
+      - "Gezeichnete Felder sind simuliert; für echte Analysen fehlt das Backend (Sentinel-2, ERA5, SoilGrids auf Abruf)."
+      - "Die Seite bleibt privat, weil KBS-Daten nur mit schriftlicher Erlaubnis veröffentlicht werden dürfen."
+    links:
+      - label: "Website-Code und Anleitung"
+        path: web/README.md
+      - label: "Datenkritik"
+        path: reports/data_review/phase9_frontend.md
   - id: at-test-1
     date: 2026-10-17
     phase: "Phase 7: Test in Österreich (erster, explorativ)"
