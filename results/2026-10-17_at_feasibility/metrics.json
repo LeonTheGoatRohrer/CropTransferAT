@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-17",
+  "decision": "DECISIONS.md 2026-10-17 AT-Machbarkeitstest",
+  "commit": "c978aa8a2d4a76192248a82790ba36e77de15c64",
+  "criteria": {
+    "min_site_years": 30,
+    "min_years": 5,
+    "min_sites": 3
+  },
+  "counts": {
+    "site_years_total": 104,
+    "site_years_with_yield_and_score": 34,
+    "sites": 5,
+    "years": 7,
+    "year_range": [
+      2018,
+      2025
+    ],
+    "by_land": {
+      "Ober\u00f6sterreich": 34
+    },
+    "trial_rows": 150,
+    "trial_sites": 31,
+    "trial_rows_with_coordinates": 0,
+    "trial_loc_precision": {
+      "municipality": 150
+    }
+  },
+  "run": true,
+  "model": "linear regression YAS_site ~ stress score (1 Sep), leave-one-year-out",
+  "metrics": {
+    "rho": 0.012681436210847974,
+    "rmse_model": 0.1314835467182476,
+    "rmse_normal": 0.1305066431248838,
+    "rmse_train_mean": 0.12116711775742686,
+    "rho_ci": [
+      -0.4419714051428691,
+      0.4132277186715331
+    ],
+    "rmse_diff_vs_normal": 0.0009769035933638037,
+    "rmse_diff_vs_normal_ci": [
+      -0.04453276242356838,
+      0.05181536007501224
+    ],
+    "rmse_diff_vs_train_mean": 0.010316428960820745,
+    "rmse_diff_vs_train_mean_ci": [
+      -0.016187262737563088,
+      0.047225746093270286
+    ],
+    "n": 34,
+    "n_years": 7
+  }
+}

@@ -367,6 +367,14 @@ def build_evidence() -> dict:
         rt = RES / "2026-10-17_at_retrain" / "metrics.json"
         if rt.exists():
             ev["austria"]["retrain"] = json.loads(rt.read_text(encoding="utf-8")).get("cutoffs")
+    # Frozen alert calibration for "Dein Feld, dein Verlauf" (DECISIONS 2026-10-17).
+    cal = RES / "2026-10-17_alert_calibration" / "calibration.json"
+    if cal.exists():
+        c = json.loads(cal.read_text(encoding="utf-8"))
+        ev["alert_calibration"] = {k: c[k] for k in ("date", "n_field_years", "n_site_years", "rules", "table", "frozen_thresholds")}
+    atf = RES / "2026-10-17_at_feasibility" / "metrics.json"
+    if atf.exists():
+        ev["at_feasibility"] = json.loads(atf.read_text(encoding="utf-8"))
     p1 = json.loads((RES / "2026-10-16_phase1" / "metrics.json").read_text(encoding="utf-8"))
     ev["phase1_raw"] = json.loads(json.dumps(p1, default=float))
     return ev
