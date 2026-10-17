@@ -19,6 +19,8 @@ def test_fit_linear_recovers_line_and_handles_constant():
 
 def test_retrain_predict_uses_frozen_features_and_weight():
     cfg = load_config()
+    if not (repo_path(cfg["cybench"]["raw_dir"]) / "CZ" / "yield_maize_CZ.csv").exists():
+        pytest.skip("CY-Bench data not available (data/ is not in the repository)")
     data, _ = rc.load_dataset(cfg)
     c = "09-01"
     meta = json.loads((repo_path(cfg["cybench"]["freeze"]["dir"]) / "lgbm_0901_meta.json").read_text(encoding="utf-8"))
