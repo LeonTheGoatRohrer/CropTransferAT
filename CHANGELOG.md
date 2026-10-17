@@ -4,6 +4,15 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+## [at-test-1] – 2026-10-17 – Österreich-Test (erster, explorativ; Tag `freeze-at-1` für das Protokoll)
+> ⚠️ **Explorativ:** Das Phase-4-Kriterium „stark genug“ war von keinem Feldmodell erfüllt; der Test läuft auf ausdrückliche Entscheidung des Projektinhabers. Der lokale Test enthält **nur Oberösterreich** (n = 34 Standort-Jahre, 7 Jahre); der Stress-Score ist nicht besser als reines NDVI.
+
+### Added (Branch `phase-7-austria-test`)
+- `reports/freeze_protocol_at.md`, `reports/freeze_at/` (Referenzkurve, Standortpositionen, Testkonfiguration mit Prüfsummen), `src/croptransfer/austria_freeze.py`, `tests/test_austria_freeze.py`.
+- Phase 6/7: `at_fields.py` (INVEKOS-Auswahl, 13 Standorte × 8 Jahre × ≤ 100 Felder), `at_extract.py` (HLS über GEE, 104 Standort-Jahre), `at_test.py` (Stress-Score, YAS_site, V1/V2), `tests/test_at_test.py`.
+- Zusatz Nachtrainieren: `reports/plan_at_nachtraining.md` (vorab), `at_retrain.py`, `tests/test_at_retrain.py`.
+- Ergebnis `reports/at_test_ergebnis.md`, Datenkritik `reports/data_review/at_test.md`, Website-Eintrag `app/versions.yaml`.
+
 ## [innerfeld-1] – 2026-10-17 – Sammel-Release: Mehr-Kulturen, Feinjustierung, Innerhalb-Feld über Standorte (kein Freeze, kein Österreich-Test)
 > ⛔ **Dieser Stand enthält überwiegend vorab festgelegte negative Ergebnisse.** Jahresvorhersage pro Feld nicht stark genug (Phase 4, Mehr-Kulturen G3 ✗), Feinjustierung H2 ✗, **Glättung der Vorhersage bringt nichts (Runde 2: R2-BARC ✗, R2-Kayad ✗)**. Belastbar sind nur die Feldkarte auf BARC (K1 ✓, J3a ✓ mit Vorbehalt) und das EU-Regionalmodell; Übertragbarkeit auf andere Standorte ist nicht prüfbar (J2/J3b).
 

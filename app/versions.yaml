@@ -17,6 +17,63 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: at-test-1
+    date: 2026-10-17
+    phase: "Phase 7: Test in Österreich (erster, explorativ)"
+    title: "Österreich-Test: Jahre werden erkannt, Standorte im selben Jahr nicht"
+    status: eingeschraenkt
+    changed: "Zum ersten Mal wurden die eingefrorenen Modelle (Stress-Score und EU-Regionalmodell) ohne jede Anpassung an österreichischen Daten getestet, mit vorab festgeschriebenem Protokoll; zusätzlich ein kleines Nachtrainieren."
+    plain: >
+      Der Stress-Score (aus US-Feldern abgeleitet) und das EU-Regionalmodell wurden vor dem Test eingefroren und dann auf österreichische Felder
+      und Bundesländer angewendet. In Oberösterreich ordnet der Score gute und schlechte Jahre ordentlich ein (Rangkorrelation etwa 0,5), und das Regionalmodell
+      tut dasselbe für die Bundesländer. Aber: Der Score ist nicht besser als einfaches Grün (NDVI), und er unterscheidet die Standorte im selben Jahr nicht.
+      Die Steiermark konnte nicht getestet werden, weil dort keine passenden Sortenversuche vorliegen. Ein Nachtrainieren mit nur zwei Zahlen verbessert das Regionalmodell deutlich.
+    metrics:
+      - label: "Stress-Score vs. Versuchserträge, 1.9. (ρ, nur Oberösterreich)"
+        value: "0,50"
+        ci: "[0,19; 0,68]"
+        n: "34 Standort-Jahre, 7 Jahre"
+        plain: "Kriterium bestanden: Jahre mit mehr Stress haben meist niedrigeren relativen Ertrag."
+      - label: "Vergleichswert NDVI ohne Lernen (ρ)"
+        value: "0,50"
+        ci: "[0,09; 0,65]"
+        n: "34 Standort-Jahre"
+        plain: "Gleich gut: Der Score bringt keinen Vorteil gegenüber einfachem NDVI."
+      - label: "Stress-Score innerhalb eines Jahres (Median ρ über Standorte)"
+        value: "-0,10"
+        n: "6 Jahre mit je 4–5 Standorten"
+        plain: "Welcher Standort im selben Jahr besser abschneidet, erkennt der Score nicht; die Stärke liegt in den Jahren."
+      - label: "Regionalmodell vs. Statistik Austria, 1.9. (ρ)"
+        value: "0,52"
+        ci: "[0,13; 0,75]"
+        n: "30 Region-Jahre, 6 Jahre"
+        plain: "Bestanden, aber nicht stark: Der Fehler (RMSE 0,121) ist größer als bei „normales Jahr“ (0,101)."
+      - label: "Nachtrainieren R1: RMSE (Leave-one-year-out)"
+        value: "0,095 statt 0,125"
+        ci: "Differenz [-0,047; -0,009]"
+        n: "45 Region-Jahre, 9 Jahre"
+        plain: "Zwei angepasste Zahlen machen das Regionalmodell erstmals knapp besser als „normales Jahr“ (0,119); nur ein Hinweis."
+    found:
+      - "Die Rangfolge der Jahre wird ordentlich erkannt: Jahresmittel von Score und Ertrag haben ρ 0,79; jedes einzelne Jahr weggelassen ändert das Ergebnis kaum (0,41–0,55)."
+      - "Der Score hängt eng mit NDVI zusammen (ρ 0,83 auf Standort-Jahren, 0,88 auf den Feldern)."
+      - "In heißen Jahren mit vielen abrupten Abfällen im Hochsommer (2018, 2024) liegt der Score niedrig, der Ertrag aber im Durchschnitt: Er könnte frühe Reife anzeigen statt Ertragsverlust."
+    limits:
+      - "Der lokale Test ist nur Oberösterreich (5 Standorte, Sortenversuche); die steirischen Versuche (Wagna, Kalsdorf, Hatzendorf) sind Düngungs- und Bodenbearbeitungsversuche und fielen durch den vorab festgelegten Filter."
+      - "Sehr wenige Cluster (7 Jahre lokal, 6 regional): Konfidenzintervalle sind breit; ein Verfehlen hieße „nicht belegt“."
+      - "Keine Feldebene (V3), keine genauen Standortkoordinaten (nur Gemeindemitte), Versuche sind keine Praxisfelder."
+      - "Explorativ: Das Phase-4-Kriterium „stark genug“ war nicht erfüllt, der Test lief auf Entscheidung des Projektinhabers."
+    figures:
+      - file: at_test_scatter.png
+        caption: "Links: Stress-Score gegen Standort-Ertrag (relativ). Rechts: Regionalmodell gegen Statistik Austria. Farbe = Jahr."
+    links:
+      - label: "Ergebnisbericht"
+        path: reports/at_test_ergebnis.md
+      - label: "Datenkritik"
+        path: reports/data_review/at_test.md
+      - label: "Freeze- und Testprotokoll"
+        path: reports/freeze_protocol_at.md
+      - label: "Vorab-Plan Nachtrainieren"
+        path: reports/plan_at_nachtraining.md
   - id: if-runde2
     date: 2026-10-17
     phase: "Innerhalb-Feld über Standorte, Runde 2 (Glättung, Aufbereitung)"

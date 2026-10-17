@@ -1,0 +1,67 @@
+{
+  "by_year": {
+    "2018": {
+      "fields": 1268,
+      "valid_share": 1.0,
+      "median_dekads_obs": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.428
+    },
+    "2019": {
+      "fields": 1263,
+      "valid_share": 1.0,
+      "median_dekads_obs": 17.0,
+      "peak_lt_06": 0.001,
+      "abrupt_drop": 0.026
+    },
+    "2020": {
+      "fields": 1270,
+      "valid_share": 1.0,
+      "median_dekads_obs": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.022
+    },
+    "2021": {
+      "fields": 1273,
+      "valid_share": 0.999,
+      "median_dekads_obs": 16.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.004
+    },
+    "2022": {
+      "fields": 1263,
+      "valid_share": 1.0,
+      "median_dekads_obs": 16.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.18
+    },
+    "2023": {
+      "fields": 1274,
+      "valid_share": 1.0,
+      "median_dekads_obs": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.02
+    },
+    "2024": {
+      "fields": 1278,
+      "valid_share": 1.0,
+      "median_dekads_obs": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.487
+    },
+    "2025": {
+      "fields": 1270,
+      "valid_share": 1.0,
+      "median_dekads_obs": 19.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.043
+    }
+  },
+  "share_not_maize_like_peak_lt_0.6": 9.84348853233586e-05,
+  "share_abrupt_drop": 0.15149128851264887,
+  "share_valid_fields": 0.9999015651146766,
+  "site_years_total": 104,
+  "site_years_excluded_lt_min_fields": [],
+  "score_sd_within_site_year": 0.017397045739270853,
+  "score_sd_between_site_year_means": 0.018551387687640496
+}

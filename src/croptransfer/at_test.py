@@ -213,7 +213,7 @@ def qc_summary(fields: pd.DataFrame, sy: pd.DataFrame, cfg) -> dict:
                                     abrupt_drop=("abrupt_drop", "mean"))
     low = sy[sy[f"score_{c}"].isna()][["site", "year", f"n_valid_{c}"]]
     mem = pd.read_csv(repo_path("data/interim/at/membership.csv"))
-    sd_within = f.merge(mem, on="fy_key").groupby(["site", "year"])[f"score_{c}"].std().mean()
+    sd_within = f.drop(columns="year").merge(mem, on="fy_key").groupby(["site", "year"])[f"score_{c}"].std().mean()
     return {"by_year": by_year.round(3).to_dict("index"),
             "share_not_maize_like_peak_lt_0.6": float((f.ndvi_peak < 0.6).mean()),
             "share_abrupt_drop": float(f.abrupt_drop.mean()),

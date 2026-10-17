@@ -1,0 +1,478 @@
+{
+  "site_years_per_year": {
+    "2018": 5,
+    "2020": 5,
+    "2021": 5,
+    "2022": 4,
+    "2023": 5,
+    "2024": 5,
+    "2025": 5
+  },
+  "site_years_per_site": {
+    "innviertel": 6,
+    "linden": 7,
+    "mauthausen": 7,
+    "walding": 7,
+    "wimsbach": 7
+  },
+  "baseline_kind": {
+    "baseline_short": 28,
+    "prior5": 6
+  },
+  "year_means": [
+    {
+      "year": 2018,
+      "score": -0.052,
+      "yas": 1.035,
+      "n": 5
+    },
+    {
+      "year": 2020,
+      "score": -0.004,
+      "yas": 1.078,
+      "n": 5
+    },
+    {
+      "year": 2021,
+      "score": -0.005,
+      "yas": 1.005,
+      "n": 5
+    },
+    {
+      "year": 2022,
+      "score": -0.003,
+      "yas": 1.193,
+      "n": 4
+    },
+    {
+      "year": 2023,
+      "score": -0.024,
+      "yas": 0.949,
+      "n": 5
+    },
+    {
+      "year": 2024,
+      "score": -0.013,
+      "yas": 1.075,
+      "n": 5
+    },
+    {
+      "year": 2025,
+      "score": -0.002,
+      "yas": 1.151,
+      "n": 5
+    }
+  ],
+  "rho_year_means": 0.7857142857142859,
+  "rho_after_removing_year_means": 0.3130634071810542,
+  "rho_after_removing_site_means": 0.4643239113827348,
+  "rho_ndvi_baseline_vs_score": 0.8291825821237586,
+  "rho_stress_score_to_ndvi_base_in_fields": 0.87746439949463,
+  "bundesland_rho": {
+    "Oberoesterreich": 0.496103896103896
+  },
+  "bundesland_n": {
+    "Oberoesterreich": 34
+  },
+  "yas_site_range": [
+    0.8597355148723244,
+    1.2562877596319215
+  ],
+  "yas_site_by_year": [
+    {
+      "year": 2018,
+      "mean": 1.035,
+      "min": 0.92,
+      "max": 1.188
+    },
+    {
+      "year": 2020,
+      "mean": 1.078,
+      "min": 0.948,
+      "max": 1.175
+    },
+    {
+      "year": 2021,
+      "mean": 1.005,
+      "min": 0.939,
+      "max": 1.138
+    },
+    {
+      "year": 2022,
+      "mean": 1.193,
+      "min": 1.118,
+      "max": 1.256
+    },
+    {
+      "year": 2023,
+      "mean": 0.949,
+      "min": 0.86,
+      "max": 1.038
+    },
+    {
+      "year": 2024,
+      "mean": 1.075,
+      "min": 0.945,
+      "max": 1.23
+    },
+    {
+      "year": 2025,
+      "mean": 1.151,
+      "min": 1.01,
+      "max": 1.242
+    }
+  ],
+  "fields_by_year": [
+    {
+      "year": 2018,
+      "n": 1268,
+      "valid": 1.0,
+      "peak_med": 0.88,
+      "peak_lt_06": 0.0,
+      "abrupt": 0.428,
+      "score_zero": 0.051,
+      "score_med": -0.032,
+      "obs_med": 20.0
+    },
+    {
+      "year": 2019,
+      "n": 1263,
+      "valid": 1.0,
+      "peak_med": 0.864,
+      "peak_lt_06": 0.001,
+      "abrupt": 0.026,
+      "score_zero": 0.188,
+      "score_med": -0.008,
+      "obs_med": 17.0
+    },
+    {
+      "year": 2020,
+      "n": 1270,
+      "valid": 1.0,
+      "peak_med": 0.899,
+      "peak_lt_06": 0.0,
+      "abrupt": 0.022,
+      "score_zero": 0.585,
+      "score_med": -0.0,
+      "obs_med": 17.0
+    },
+    {
+      "year": 2021,
+      "n": 1273,
+      "valid": 0.999,
+      "peak_med": 0.887,
+      "peak_lt_06": 0.0,
+      "abrupt": 0.004,
+      "score_zero": 0.382,
+      "score_med": -0.002,
+      "obs_med": 16.0
+    },
+    {
+      "year": 2022,
+      "n": 1263,
+      "valid": 1.0,
+      "peak_med": 0.899,
+      "peak_lt_06": 0.0,
+      "abrupt": 0.18,
+      "score_zero": 0.415,
+      "score_med": -0.002,
+      "obs_med": 16.0
+    },
+    {
+      "year": 2023,
+      "n": 1274,
+      "valid": 1.0,
+      "peak_med": 0.868,
+      "peak_lt_06": 0.0,
+      "abrupt": 0.02,
+      "score_zero": 0.175,
+      "score_med": -0.009,
+      "obs_med": 17.0
+    },
+    {
+      "year": 2024,
+      "n": 1278,
+      "valid": 1.0,
+      "peak_med": 0.884,
+      "peak_lt_06": 0.0,
+      "abrupt": 0.487,
+      "score_zero": 0.239,
+      "score_med": -0.007,
+      "obs_med": 17.0
+    },
+    {
+      "year": 2025,
+      "n": 1270,
+      "valid": 1.0,
+      "peak_med": 0.893,
+      "peak_lt_06": 0.0,
+      "abrupt": 0.043,
+      "score_zero": 0.506,
+      "score_med": -0.001,
+      "obs_med": 19.0
+    }
+  ],
+  "score_ties_at_zero_share": 0.3176493749384782,
+  "region_year": [
+    {
+      "adm_id": "AT11",
+      "year": 2018,
+      "yas": 1.095,
+      "pred_09-01": 1.168,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT21",
+      "year": 2018,
+      "yas": 0.83,
+      "pred_09-01": 1.057,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT12",
+      "year": 2018,
+      "yas": 1.045,
+      "pred_09-01": 1.105,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT31",
+      "year": 2018,
+      "yas": 1.083,
+      "pred_09-01": 1.122,
+      "score_09-01": -0.055
+    },
+    {
+      "adm_id": "AT22",
+      "year": 2018,
+      "yas": 0.971,
+      "pred_09-01": 1.121,
+      "score_09-01": -0.008
+    },
+    {
+      "adm_id": "AT11",
+      "year": 2019,
+      "yas": 0.981,
+      "pred_09-01": 1.076,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT21",
+      "year": 2019,
+      "yas": 0.907,
+      "pred_09-01": 1.069,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT12",
+      "year": 2019,
+      "yas": 1.033,
+      "pred_09-01": 1.052,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT31",
+      "year": 2019,
+      "yas": 1.038,
+      "pred_09-01": 1.067,
+      "score_09-01": -0.018
+    },
+    {
+      "adm_id": "AT22",
+      "year": 2019,
+      "yas": 1.0,
+      "pred_09-01": 1.07,
+      "score_09-01": -0.003
+    },
+    {
+      "adm_id": "AT11",
+      "year": 2020,
+      "yas": 1.138,
+      "pred_09-01": 1.131,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT21",
+      "year": 2020,
+      "yas": 1.048,
+      "pred_09-01": 1.109,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT12",
+      "year": 2020,
+      "yas": 1.128,
+      "pred_09-01": 1.14,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT31",
+      "year": 2020,
+      "yas": 1.135,
+      "pred_09-01": 1.078,
+      "score_09-01": -0.004
+    },
+    {
+      "adm_id": "AT22",
+      "year": 2020,
+      "yas": 1.085,
+      "pred_09-01": 1.131,
+      "score_09-01": -0.001
+    },
+    {
+      "adm_id": "AT11",
+      "year": 2021,
+      "yas": 0.984,
+      "pred_09-01": 1.092,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT21",
+      "year": 2021,
+      "yas": 0.99,
+      "pred_09-01": 1.071,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT12",
+      "year": 2021,
+      "yas": 1.118,
+      "pred_09-01": 1.153,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT31",
+      "year": 2021,
+      "yas": 1.082,
+      "pred_09-01": 1.082,
+      "score_09-01": -0.007
+    },
+    {
+      "adm_id": "AT22",
+      "year": 2021,
+      "yas": 0.986,
+      "pred_09-01": 1.17,
+      "score_09-01": -0.006
+    },
+    {
+      "adm_id": "AT11",
+      "year": 2022,
+      "yas": 0.784,
+      "pred_09-01": 1.012,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT21",
+      "year": 2022,
+      "yas": 0.77,
+      "pred_09-01": 1.097,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT12",
+      "year": 2022,
+      "yas": 0.87,
+      "pred_09-01": 1.015,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT31",
+      "year": 2022,
+      "yas": 1.062,
+      "pred_09-01": 1.058,
+      "score_09-01": -0.007
+    },
+    {
+      "adm_id": "AT22",
+      "year": 2022,
+      "yas": 0.956,
+      "pred_09-01": 1.154,
+      "score_09-01": -0.01
+    },
+    {
+      "adm_id": "AT11",
+      "year": 2023,
+      "yas": 1.013,
+      "pred_09-01": 1.063,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT21",
+      "year": 2023,
+      "yas": 0.999,
+      "pred_09-01": 1.046,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT12",
+      "year": 2023,
+      "yas": 0.854,
+      "pred_09-01": 0.953,
+      "score_09-01": NaN
+    },
+    {
+      "adm_id": "AT31",
+      "year": 2023,
+      "yas": 0.866,
+      "pred_09-01": 0.984,
+      "score_09-01": -0.028
+    },
+    {
+      "adm_id": "AT22",
+      "year": 2023,
+      "yas": 1.062,
+      "pred_09-01": 1.081,
+      "score_09-01": -0.004
+    }
+  ],
+  "rho_site_years_without_2018_2023": 0.36695652173913035,
+  "rho_site_years_without_pairs_min_max": {
+    "min": 0.3453846153846154,
+    "max": 0.5973913043478261
+  },
+  "rho_v1_without_2018_2023": 0.35037593984962395,
+  "v1_pred_mean_vs_obs_mean": [
+    1.0842222400872095,
+    0.9970387701067592
+  ],
+  "v1_leave_one_year_out": {
+    "2018": 0.45,
+    "2019": 0.5169230769230769,
+    "2020": 0.43153846153846154,
+    "2021": 0.6015384615384615,
+    "2022": 0.6130769230769231,
+    "2023": 0.4669230769230769
+  },
+  "v1_year_means": [
+    {
+      "year": 2018,
+      "yas": 1.005,
+      "pred": 1.115
+    },
+    {
+      "year": 2019,
+      "yas": 0.992,
+      "pred": 1.067
+    },
+    {
+      "year": 2020,
+      "yas": 1.107,
+      "pred": 1.118
+    },
+    {
+      "year": 2021,
+      "yas": 1.032,
+      "pred": 1.114
+    },
+    {
+      "year": 2022,
+      "yas": 0.888,
+      "pred": 1.067
+    },
+    {
+      "year": 2023,
+      "yas": 0.959,
+      "pred": 1.026
+    }
+  ]
+}
