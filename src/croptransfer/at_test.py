@@ -142,14 +142,14 @@ def region_yields(cfg) -> pd.DataFrame:
 
 
 # ------------------------------------------------------------------------------------------ regional model
-def at_regional_features(cfg, cutoff: str) -> pd.DataFrame:
+def at_regional_features(cfg, cutoff: str, years: tuple[int, int] | None = None) -> pd.DataFrame:
     """Predictors of the five maize NUTS-2 regions (CY-Bench AT files) in the frozen feature layout."""
     cy, atc = cfg["cybench"], cfg["at_test"]["regional"]
     raw = repo_path(cy["raw_dir"]) / "AT"
     season_start, last = cfg["season"]["start_mmdd"], cfg["cutoffs"]["yield_model"][-1]
     feats = None
     for source, variables in cy["variables"].items():
-        daily, _ = rc.read_daily_source(raw / f"{source}_maize_AT.csv", variables, tuple(atc["years"]), season_start, last,
+        daily, _ = rc.read_daily_source(raw / f"{source}_maize_AT.csv", variables, tuple(years or atc["years"]), season_start, last,
                                         cy["availability_lag_days"].get(source, 0), cy["valid_ranges"])
         agg = rc.aggregate_asof(daily, variables, cy["sum_variables"], cutoff, season_start)
         feats = agg if feats is None else feats.merge(agg, on=["adm_id", "year"], how="outer")
