@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CropTransfer Intro</title>
+<title>Delta Green Intro</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400..700&display=swap" rel="stylesheet">
@@ -70,8 +70,8 @@ body.idle { cursor: none; }
 .notch { position: absolute; top: 12px; left: 50%; width: 118px; height: 32px; margin-left: -59px; border-radius: 20px; background: #000; z-index: 20; }
 .status { position: absolute; top: 0; left: 0; right: 0; height: 52px; display: flex; justify-content: space-between; align-items: center; padding: 6px 34px 0; font-size: 15px; font-weight: 600; z-index: 19; }
 .appbar { position: absolute; top: 52px; left: 0; right: 0; height: 52px; display: flex; align-items: center; gap: 10px; padding: 0 20px; border-bottom: 1px solid var(--line); z-index: 18; background: var(--soil-900); }
-.logo-mark { width: 22px; height: 22px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
-.logo-mark i { border-radius: 2px; }
+.logo-mark { width: 22px; height: 22px; }
+.logo-mark svg, #s5 .bigmark svg { display: block; width: 100%; height: 100%; overflow: visible; }
 .appbar b { font-family: var(--display); font-size: 18px; font-weight: 600; letter-spacing: -0.02em; }
 .appbar span { margin-left: auto; font-size: 13px; color: var(--ink-3); }
 .pane { position: absolute; top: 104px; left: 0; width: 394px; bottom: 0; }
@@ -144,12 +144,54 @@ body.idle { cursor: none; }
 
 /* ---------- S5 end card ---------- */
 #s5 .inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-#s5 .bigmark { width: 96px; height: 96px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin-bottom: 40px; }
-#s5 .bigmark i { border-radius: 6px; }
+#s5 .bigmark { width: 124px; height: 116px; margin-bottom: 40px; }
 #s5 h1 { font-family: var(--display); font-weight: 700; font-size: 150px; letter-spacing: -0.05em; line-height: 1; margin: 0; }
-#s5 h1 span { color: var(--maize); }
+#s5 h1 span { color: #6fb35f; }
 #s5 p { font-size: 38px; color: var(--ink-2); margin: 34px 0 0; letter-spacing: -0.01em; }
 #s5 .foot { font-family: var(--mono); font-size: 20px; letter-spacing: 0.12em; color: var(--ink-4); margin-top: 48px; text-transform: uppercase; }
+
+/* ---------- added: pixel counter (S3/S4), yield bars (S5), warning (S6), notification (S7) ---------- */
+.pxc { position: absolute; left: 1170px; top: 552px; display: flex; flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 18px; font-family: var(--mono); font-size: 18px; color: var(--ink-3); letter-spacing: 0.04em; }
+.pxc b { display: block; font-family: var(--display); font-weight: 600; font-size: 64px; color: var(--rust); letter-spacing: -0.03em; line-height: 1; }
+#yBox { position: absolute; left: 170px; top: 170px; width: 900px; height: 600px; border-radius: 14px; background: var(--soil-850);
+  box-shadow: 0 0 0 1px var(--line-strong), 0 0 0 10px rgb(60 72 40 / 0.35), 0 50px 120px -40px rgb(0 0 0 / 0.9); }
+.ybar { position: absolute; width: 100px; bottom: 80px; border-radius: 8px 8px 0 0; background: #6f7a3d; }
+.ybar.low { background: var(--rust); }
+.yv, .yl { position: absolute; width: 180px; text-align: center; font-family: var(--mono); white-space: nowrap; }
+.yv { font-size: 22px; color: var(--ink); }
+.yv.low { color: var(--rust); }
+.yl { bottom: 36px; font-size: 18px; color: var(--ink-3); }
+#yAvg { position: absolute; left: 40px; right: 40px; height: 0; border-top: 2px dashed var(--maize); }
+#yAvg span { position: absolute; right: 10px; top: -32px; font-family: var(--mono); font-size: 18px; color: var(--maize); }
+.phoneX { position: absolute; left: 330px; top: 120px; width: 420px; height: 850px; border-radius: 62px; padding: 13px;
+  background: linear-gradient(145deg, #2b312b, #0e110e); box-shadow: 0 0 0 1.5px #3a423a inset, 0 60px 120px -40px rgb(0 0 0 / 0.9), 0 0 140px -20px rgb(230 180 80 / 0.12); }
+.scr { position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: var(--soil-900); }
+.sx-body { position: absolute; top: 104px; left: 0; right: 0; bottom: 0; padding: 26px 24px; }
+.sx-eye { font-family: var(--mono); font-size: 12px; letter-spacing: 0.12em; color: var(--maize); }
+.sx-body h3 { font-family: var(--display); font-size: 28px; line-height: 1.05; letter-spacing: -0.025em; font-weight: 600; margin: 8px 0 6px; }
+.sx-body .sub { font-size: 14px; color: var(--ink-3); margin: 0; }
+.sx-big { margin-top: 30px; font-family: var(--mono); font-size: 72px; color: var(--maize); letter-spacing: -0.04em; line-height: 1; }
+.sx-big small { display: block; font-family: var(--sans); font-size: 16px; color: var(--ink-2); letter-spacing: 0; margin-top: 8px; }
+.slider { position: relative; height: 8px; margin-top: 40px; border-radius: 4px; background: var(--soil-600); }
+.sfill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; border-radius: 4px; background: var(--maize); }
+.knob { position: absolute; top: 50%; left: 0; width: 30px; height: 30px; margin: -15px 0 0 -15px; border-radius: 50%; background: #fff; box-shadow: 0 3px 10px rgb(0 0 0 / 0.5); }
+.sTick { position: absolute; top: -9px; bottom: -9px; left: 20%; width: 2px; background: var(--rust); }
+.sTickLbl { position: absolute; top: 24px; left: 20%; transform: translateX(-50%); font-family: var(--mono); font-size: 13px; color: var(--rust); white-space: nowrap; }
+.sScale { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 12px; color: var(--ink-4); margin-top: 44px; }
+.sx-toggle { margin-top: 36px; padding: 16px 18px; border-radius: 14px; background: var(--soil-800); border: 1px solid var(--line-strong); font-size: 16px; display: flex; justify-content: space-between; color: var(--ink-2); }
+.sx-toggle b { color: var(--maize); font-weight: 600; }
+.lock { position: absolute; inset: 0; padding-top: 64px; text-align: center; }
+.lock .clock { font-family: var(--display); font-size: 84px; font-weight: 600; letter-spacing: -0.04em; line-height: 1; }
+.lock .dt { font-size: 16px; color: var(--ink-2); margin-top: 8px; }
+.banner { position: absolute; left: 12px; right: 12px; top: 214px; padding: 14px 16px; border-radius: 20px; background: rgb(40 48 40 / 0.94); border: 1px solid var(--line-strong);
+  display: flex; gap: 12px; align-items: flex-start; text-align: left; }
+.bIco { width: 38px; height: 38px; border-radius: 9px; background: var(--soil-900); display: grid; place-items: center; flex-shrink: 0; }
+.bIco .logo-mark { width: 22px; height: 22px; }
+.bApp { font-size: 12px; color: var(--ink-3); }
+.bHead { font-size: 16px; font-weight: 600; margin-top: 2px; line-height: 1.25; }
+.bBody { font-size: 14px; color: var(--ink-2); margin-top: 4px; line-height: 1.35; }
+#miniSvg { position: absolute; left: 30px; top: 470px; width: 360px; height: 240px; }
+.miniCap { position: absolute; left: 30px; right: 30px; top: 728px; font-family: var(--mono); font-size: 13px; color: var(--ink-3); }
 
 /* ---------- controls (not part of the recording) ---------- */
 #ctrl { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); width: min(720px, calc(100% - 32px)); z-index: 100;
@@ -186,7 +228,7 @@ body.idle { cursor: none; }
       <div id="screen">
         <div class="notch"></div>
         <div class="status"><span>9:41</span><span>●●● ▮</span></div>
-        <div class="appbar"><div class="logo-mark" data-mark></div><b>CropTransfer</b><span>Contribute</span></div>
+        <div class="appbar"><div class="logo-mark" data-mark></div><b>Delta Green</b><span>Contribute</span></div>
 
         <div class="pane" id="mapPane">
           <svg id="mapsvg" viewBox="0 0 394 746" preserveAspectRatio="xMidYMid slice">
@@ -297,13 +339,74 @@ body.idle { cursor: none; }
       <div class="lbl"><span>gestresst</span><span>gesund</span></div>
       <div class="src">Pixel = 10 × 10 m · Sentinel-2</div>
     </div>
+    <div class="pxc" id="pxCount">Auffällige Pixel erkannt<b><span id="pxVal">0</span> %</b></div>
+  </section>
+
+  <!-- S5 (added): yields as Maßstab -->
+  <section class="scene" id="s6">
+    <div class="note" style="top:128px">Schematische Darstellung · Beispielwerte in dt/ha</div>
+    <div id="yBox">
+      <div id="yBars"></div>
+      <div id="yAvg"><span id="yAvgLbl"></span></div>
+    </div>
+    <div class="cap" id="cap5" style="left:1170px;top:200px">
+      <div class="num">05</div><h2>Dein Maßstab</h2><p>Was hat das Feld in den letzten Jahren gebracht? Abweichungen davon sind auffällig.</p>
+    </div>
+  </section>
+
+  <!-- S6 (added): warning threshold -->
+  <section class="scene" id="s7">
+    <div class="phoneX"><div class="scr">
+      <div class="notch"></div>
+      <div class="status"><span>9:41</span><span>●●● ▮</span></div>
+      <div class="appbar"><div class="logo-mark" data-mark></div><b>Delta Green</b><span>Warnung</span></div>
+      <div class="sx-body">
+        <div class="sx-eye">DEIN FELD · 4,2 ha</div>
+        <h3>Ab wann sollst du gewarnt werden?</h3>
+        <p class="sub">Wenn mehr als dieser Anteil der Fläche auffällig ist.</p>
+        <div class="sx-big"><span id="wVal">0</span> %<small>der Feldfläche auffällig</small></div>
+        <div class="slider"><div class="sfill" id="sFill"></div><div class="knob" id="sKnob"></div><div class="sTick"></div></div>
+        <div class="sTickLbl" id="sTickLbl"></div>
+        <div class="sScale"><span>0 %</span><span>50 %</span></div>
+        <div class="sx-toggle"><span>Push-Nachricht</span><b>an</b></div>
+      </div>
+    </div></div>
+    <div class="cap" style="left:900px;top:330px">
+      <div class="num">06</div><h2>Du entscheidest, ab wann du gewarnt wirst</h2><p>Ab welchem Anteil auffälliger Fläche soll die App dir Bescheid geben?</p>
+    </div>
+    <div class="note" style="left:170px;top:980px">Schematische Darstellung · Beispiel</div>
+  </section>
+
+  <!-- S7 (added): notification -->
+  <section class="scene" id="s8">
+    <div class="phoneX"><div class="scr">
+      <div class="notch"></div>
+      <div class="lock">
+        <div class="clock">9:41</div>
+        <div class="dt">Samstag, 17. Oktober</div>
+      </div>
+      <div class="banner" id="banner">
+        <div class="bIco"><div class="logo-mark" data-mark></div></div>
+        <div>
+          <div class="bApp">Delta Green · jetzt</div>
+          <div class="bHead" id="bHead">Dein Feld: auffällig</div>
+          <div class="bBody">Schwelle überschritten (ab 10 % der Fläche). Stellen auf der Karte markiert.</div>
+        </div>
+      </div>
+      <svg id="miniSvg" viewBox="0 0 360 240"></svg>
+      <div class="miniCap">Rot umrandet = auffällige Pixel</div>
+    </div></div>
+    <div class="cap" style="left:900px;top:330px">
+      <div class="num">07</div><h2>Die App sagt dir, wo es hakt</h2><p>Die App zeigt wo – nicht warum. Die Ursache klärst du vor Ort.</p>
+    </div>
+    <div class="note" style="left:170px;top:980px">Schematische Darstellung · Beispiel</div>
   </section>
 
   <!-- S5: end card -->
   <section class="scene" id="s5">
     <div class="inner">
       <div class="bigmark" data-mark></div>
-      <h1>CropTransfer <span>AT</span></h1>
+      <h1>Delta <span>Green</span></h1>
       <p>Satellitendaten + KI: Stress im Maisfeld sichtbar machen.</p>
       <div class="foot">Gelernt an US-Daten · getestet in Österreich</div>
     </div>
@@ -354,11 +457,12 @@ function ramp(stops, v) {
 const NDVI = ['#4b3725', '#8a6a36', '#c4a44b', '#9dbb5c', '#55a05a', '#23704a'].map(hex);
 const TRUEC = ['#7a6443', '#857246', '#6f7a3d', '#4f6b2e', '#365b27', '#294b21'].map(hex);
 
-// Logo marks (3×3 NDVI pixels)
+// Logo marks (Pixel-Delta: a triangle split into 9 NDVI pixels, one flagged in rust)
+const LOGO_CELLS = [['32,8.31 24,22.18 40,22.18', '#23704a'], ['22,25.64 14,39.51 30,39.51', '#55a05a'], ['24,24.49 40,24.49 32,38.36', '#9dbb5c'],
+  ['42,25.64 34,39.51 50,39.51', '#e4694a'], ['12,42.98 4,56.84 20,56.84', '#9dbb5c'], ['14,41.82 30,41.82 22,55.69', '#55a05a'],
+  ['32,42.98 24,56.84 40,56.84', '#c4a44b'], ['34,41.82 50,41.82 42,55.69', '#55a05a'], ['52,42.98 44,56.84 60,56.84', '#8a6a36']];
 document.querySelectorAll('[data-mark]').forEach((m) => {
-  ['#23704a', '#55a05a', '#9dbb5c', '#55a05a', '#c4a44b', '#55a05a', '#8a6a36', '#e4694a', '#9dbb5c'].forEach((c) => {
-    const i = document.createElement('i'); i.style.background = c; m.appendChild(i);
-  });
+  m.innerHTML = `<svg viewBox="2 4 60 56">${LOGO_CELLS.map(([p, c]) => `<polygon points="${p}" fill="${c}" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/>`).join('')}</svg>`;
 });
 
 // ------------------------------------------------------------------
@@ -491,10 +595,59 @@ function placeSat() {
 placeSat();
 
 // ------------------------------------------------------------------
+// Added scenes (pixel counter, yield bars, warning threshold, notification).
+// AUF_T is a cut-off on the field's own mean (MEAN); AUF_PCT is the share of pixels below it, so the
+// number on screen always matches the pixels marked on the map.
+const AUF_T = 0.55;
+const AUF_PCT = Math.round(100 * MEAN.filter((m) => m < AUF_T).length / MEAN.length);
+const WARN_PCT = 10;   // example setting in the warning scene (10–15 %)
+const pxState = { v: 0 }, sl = { v: 0 };
+document.getElementById('pxVal').textContent = '0';
+document.getElementById('bHead').textContent = `Dein Feld: ${AUF_PCT} % auffällig`;
+document.querySelector('#s8 .bBody').textContent = `Schwelle überschritten (ab ${WARN_PCT} % der Fläche). Stellen auf der Karte markiert.`;
+document.getElementById('sTickLbl').textContent = `Schwelle ${WARN_PCT} %`;
+document.querySelector('#s7 .sTick').style.left = document.getElementById('sTickLbl').style.left = WARN_PCT / 50 * 100 + '%';
+// Yield bars (same numbers as the yield form)
+const YB = YIELDS.map(([y, v]) => [y, Number(v)]);
+const YB_AVG = YB.reduce((s, [, v]) => s + v, 0) / YB.length;
+const YB_S = 380 / 130;   // px per dt/ha
+{ const bars = document.getElementById('yBars');
+  YB.forEach(([yr, v], i) => {
+    const h = v * YB_S, low = v < YB_AVG, cx = 110 + i * 160, pct = Math.round((1 - v / YB_AVG) * 100);
+    const b = document.createElement('div'); b.className = 'ybar' + (low ? ' low' : '');
+    Object.assign(b.style, { left: cx - 50 + 'px', height: h + 'px' }); bars.appendChild(b);
+    const val = document.createElement('div'); val.className = 'yv' + (low ? ' low' : '');
+    Object.assign(val.style, { left: cx - 90 + 'px', bottom: 80 + h + 10 + 'px' });
+    val.textContent = low ? `${v} · −${pct} %` : `${v}`; bars.appendChild(val);
+    const lab = document.createElement('div'); lab.className = 'yl';
+    Object.assign(lab.style, { left: cx - 90 + 'px' }); lab.textContent = yr; bars.appendChild(lab);
+  });
+  const avg = document.getElementById('yAvg');
+  avg.style.bottom = 80 + YB_AVG * YB_S + 'px';
+  document.getElementById('yAvgLbl').textContent = `Ø ${Math.round(YB_AVG)}`;
+}
+// Mini field for the notification scene: same pixel grid, auffällige Pixel outlined
+{ const svg = document.getElementById('miniSvg');
+  for (let y = 0; y < ROWS; y++) for (let x = 0; x < COLS; x++) {
+    const m = MEAN[y * COLS + x], px = x * 10 + 0.5, py = y * 10 + 0.5;
+    el('rect', { x: px, y: py, width: 9, height: 9, rx: 1.5, fill: ramp(NDVI, m), class: 'mc' }, svg);
+    if (m < AUF_T) el('rect', { x: px, y: py, width: 9, height: 9, rx: 1.5, fill: 'none', stroke: '#e4694a', 'stroke-width': 2, class: 'mw' }, svg);
+  }
+}
+function setSlider() {
+  const p = clamp(sl.v / 50, 0, 1) * 100;
+  document.getElementById('sFill').style.width = p + '%';
+  document.getElementById('sKnob').style.left = p + '%';
+  document.getElementById('wVal').textContent = Math.round(sl.v);
+}
+setSlider();
+
 // Timeline (seconds). Everything is on one scrubbable GSAP timeline.
 // ------------------------------------------------------------------
 const tl = gsap.timeline({ paused: true });
 const E3 = 'power3.out', IO = 'power2.inOut';
+// Scene starts after S4, sized so the Helmut narration (voice/lines_v2, tempo 1.1) fits each scene.
+const T4_END = 31.3, T6 = 31.6, T7 = 38.1, T8 = 44.6, T5 = 53.8;
 
 // S0 hook 0 – 4.7
 tl.set('#s0', { autoAlpha: 1 }, 0)
@@ -573,7 +726,7 @@ tl.set('#s2', { autoAlpha: 0 }, 0)
 tl.set('#s3', { autoAlpha: 1 }, 19.9)
   .from('#fieldBox', { scale: 1.6, autoAlpha: 0, filter: 'blur(12px)', duration: 0.9, ease: E3 }, 19.9)
   .set('#ndvi', { autoAlpha: 0 }, 0)
-  .set('#legend,#cap4,#marks,.tag', { autoAlpha: 0 }, 0)
+  .set('#legend,#cap4,#marks,.tag,#pxCount', { autoAlpha: 0 }, 0)
   .from('#cap3b', { x: -40, autoAlpha: 0, duration: 0.7, ease: E3 }, 20.4)
   .from('.note', { autoAlpha: 0, duration: 0.5 }, 20.4);
 YEARS.forEach((yr, i) => {
@@ -601,15 +754,42 @@ tl.to('#cap3b', { autoAlpha: 0, x: 40, duration: 0.4, ease: 'power2.in' }, 25.0)
   .fromTo('.mring', { scale: 0.4, opacity: 1, transformOrigin: 'center' }, { scale: 1.5, opacity: 0, duration: 1.0, ease: 'power2.out', stagger: 0.25, repeat: 2 }, 26.6)
   .to('#tag0', { autoAlpha: 1, duration: 0.01 }, 26.9).from('#tag0', { y: 14, duration: 0.4, ease: E3 }, 26.9)
   .to('#tag1', { autoAlpha: 1, duration: 0.01 }, 27.15).from('#tag1', { y: 14, duration: 0.4, ease: E3 }, 27.15)
-  .to('#s3', { autoAlpha: 0, duration: 0.5 }, 29.4);
+  .fromTo('#pxCount', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5, ease: E3 }, 27.2)
+  .to(pxState, { v: AUF_PCT, duration: 0.9, ease: 'power1.out', onUpdate: () => { document.getElementById('pxVal').textContent = Math.round(pxState.v); } }, 27.2)
+  .to('#s3', { autoAlpha: 0, duration: 0.5 }, T4_END);
 
-// S5 end card 29.7 – 35
-tl.set('#s5', { autoAlpha: 1 }, 29.7)
-  .from('#s5 .bigmark i', { scale: 0, autoAlpha: 0, duration: 0.35, stagger: 0.04, ease: 'back.out(2.5)' }, 29.7)
-  .from('#s5 h1', { y: 40, autoAlpha: 0, duration: 0.8, ease: E3 }, 30.0)
-  .from('#s5 p', { y: 30, autoAlpha: 0, duration: 0.8, ease: E3 }, 30.5)
-  .from('#s5 .foot', { autoAlpha: 0, duration: 0.8 }, 31.1)
-  .to({}, { duration: 0.1 }, 34.9);
+// S5 (added) yield bars
+tl.set('#s6', { autoAlpha: 1 }, T6)
+  .from('#yBox', { scale: 1.6, autoAlpha: 0, filter: 'blur(12px)', duration: 0.9, ease: E3 }, T6)
+  .from('#cap5', { x: -40, autoAlpha: 0, duration: 0.7, ease: E3 }, T6 + 0.3)
+  .from('.ybar', { scaleY: 0, transformOrigin: '50% 100%', duration: 0.7, ease: 'power2.out', stagger: 0.15 }, T6 + 0.6)
+  .from('#yBars .yv, #yBars .yl', { autoAlpha: 0, duration: 0.3, stagger: 0.1 }, T6 + 0.9)
+  .from('#yAvg', { autoAlpha: 0, duration: 0.5 }, T6 + 1.9)
+  .to('#s6', { autoAlpha: 0, duration: 0.5 }, T7 - 0.5);
+
+// S6 (added) warning threshold
+tl.set('#s7', { autoAlpha: 1 }, T7)
+  .from('#s7 .phoneX', { y: 160, rotation: -5, autoAlpha: 0, duration: 1.0, ease: E3 }, T7)
+  .from('#s7 .cap', { x: -40, autoAlpha: 0, duration: 0.8, ease: E3 }, T7 + 0.5)
+  .to(sl, { v: WARN_PCT, duration: 1.6, ease: 'power2.inOut', onUpdate: setSlider }, T7 + 2.4)
+  .to('#s7', { autoAlpha: 0, duration: 0.5 }, T8 - 0.5);
+
+// S7 (added) notification
+tl.set('#s8', { autoAlpha: 1 }, T8)
+  .from('#s8 .phoneX', { y: 160, rotation: -5, autoAlpha: 0, duration: 1.0, ease: E3 }, T8)
+  .from('#s8 .cap', { x: -40, autoAlpha: 0, duration: 0.8, ease: E3 }, T8 + 0.5)
+  .fromTo('#banner', { y: -140, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.6, ease: 'back.out(1.6)' }, T8 + 1.5)
+  .from('#miniSvg .mc', { autoAlpha: 0, duration: 0.6, stagger: { amount: 0.8, from: 'start' } }, T8 + 2.2)
+  .from('#miniSvg .mw', { attr: { 'stroke-width': 0 }, duration: 0.4, stagger: { amount: 0.6, from: 'start' } }, T8 + 3.0)
+  .to('#s8', { autoAlpha: 0, duration: 0.5 }, T5 - 0.5);
+
+// S5 end card (moved back by the added scenes)
+tl.set('#s5', { autoAlpha: 1 }, T5)
+  .from('#s5 .bigmark polygon', { scale: 0, autoAlpha: 0, transformOrigin: '50% 50%', duration: 0.35, stagger: 0.04, ease: 'back.out(2.5)' }, T5)
+  .from('#s5 h1', { y: 40, autoAlpha: 0, duration: 0.8, ease: E3 }, T5 + 0.3)
+  .from('#s5 p', { y: 30, autoAlpha: 0, duration: 0.8, ease: E3 }, T5 + 0.8)
+  .from('#s5 .foot', { autoAlpha: 0, duration: 0.8 }, T5 + 1.4)
+  .to({}, { duration: 0.1 }, T5 + 5.2);
 
 // ------------------------------------------------------------------
 // Controls

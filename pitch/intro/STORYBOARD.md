@@ -1,6 +1,6 @@
-# Pitch-Intro – Storyboard (≈ 35 s)
+# Pitch-Intro – Storyboard (≈ 59 s)
 
-Zweck: In einer halben Minute zeigen, **welches Problem** CropTransfer AT löst und **was die App macht**.
+Zweck: In knapp einer Minute zeigen, **welches Problem** Delta Green löst und **was die App macht**.
 Die Details (Daten, Modell, Österreich-Test, Grenzen) erklärst du danach selbst vor der Kamera.
 
 Datei: `index.html` (im Browser öffnen, Vollbild F11, Leertaste = Start, mit OBS/Xbox Game Bar aufnehmen).
@@ -12,8 +12,13 @@ Datei: `index.html` (im Browser öffnen, Vollbild F11, Leertaste = Start, mit OB
 | 9,6–13,8 s | 02 Erträge | Formular „What did it yield?“, 2021–2025 werden eingetippt, Start | „Alte Erträge eintragen“ |
 | 13,8–20 s | 03 Satellit | Weltall, Erdkrümmung, Satellit zieht vorbei, Strahl aufs Feld, Zoom hinein | „Der Satellit schaut zu“ |
 | 20–24,8 s | Jahre | Dasselbe Feld 2019 → 2025, jedes Jahr ein neues Bild (Scan-Effekt), Mini-Bilder unten | „Jahr für Jahr ein neues Bild“ |
-| 24,8–29,4 s | 04 Punkte | Feld zerfällt in 10-m-Pixel, Farbskala, Markierungen auf schwachen Zonen | „Schwache Stellen markiert“ |
-| 29,6–35 s | Abschluss | Logo + Satz | „CropTransfer AT – Satellitendaten + KI: Stress im Maisfeld sichtbar machen“ |
+| 24,8–31,3 s | 04 Punkte | Feld zerfällt in 10-m-Pixel, Farbskala, Markierungen auf schwachen Zonen. Neu: Zähler „Auffällige Pixel erkannt: 13 %“ (aus dem Pixelraster berechnet) | „Schwache Stellen markiert“ |
+| 31,6–38,1 s | **05 Maßstab** (neu) | Balken Erträge 2021–2025 aus dem Ertragsformular (dt/ha), Durchschnittslinie Ø 104, 2022 rot markiert (−17 %) | „Dein Maßstab“ |
+| 38,1–44,6 s | **06 Warnschwelle** (neu) | Handy-Einstellung: Regler, Schwelle 10 % der Feldfläche auffällig | „Du entscheidest, ab wann du gewarnt wirst“ |
+| 44,6–53,8 s | **07 Benachrichtigung** (neu) | Sperrbildschirm, Banner „Dein Feld: 13 % auffällig“, Mini-Karte mit rot umrandeten auffälligen Pixeln | „Die App sagt dir, wo es hakt“ |
+| 53,8–59 s | Abschluss | Logo (Pixel-Delta) + Satz | „Delta Green – Satellitendaten + KI: Stress im Maisfeld sichtbar machen“ |
+
+**Änderungen (2026-10-18):** Die Szenen 0–4 und das Endbild sind unverändert. Neu sind nur die Zählung der auffälligen Pixel (Szene 04), die Szenen 05–07 und der Zeitversatz des Endbilds. Die Zahlen sind Illustration: Die auffälligen Pixel werden über die Schwelle `AUF_T = 0.55` auf dem Mittelwert des Musterfeldes gezählt (112 von 864 Pixeln, ca. 13 %), die Warnschwelle ist ein Beispielwert (`WARN_PCT = 10`, Bereich 10–15 %). Beides steht in `index.html` und wird dort berechnet, nicht von Hand eingetragen.
 
 ## Wo Higgsfield etwas bringt (optional)
 
@@ -40,6 +45,13 @@ und sind im HTML bewusst als „schematische Darstellung“ gekennzeichnet. Noch
 - Wenn KI-Bilder (Higgsfield) und KI-Code (Claude) verwendet werden, gehört das in `SUPPORT.md`.
 
 ## Sprecher (Version mit Ton)
+
+**Umbenennung in „Delta Green“ (2026-10-18):** Name in App-Leiste, Benachrichtigung und Endbild sowie das Logo (Pixel-Delta statt 3×3-Raster) sind im Bild geändert. Neue Exporte: `export/DeltaGreen_Intro_1080p_stumm.mp4` und `export/DeltaGreen_Intro_1080p_Sprecher.mp4`. Zwei Sprechersätze nennen noch den alten Namen und müssen in ElevenLabs neu erzeugt werden (Helmut, Eleven v4, gleiche Einstellungen): Zeile 02 „Mit Delta Green wählst du dein Feld einfach auf der Karte aus.“ und Zeile 12 „Delta Green. Stress im Maisfeld sichtbar machen.“ (Texte in `voice/lines_v2.tsv`). Bis dahin ist die Sprecher-Fassung eine **Zwischenfassung**: Zeile 02 ist stumm, und von Zeile 12 bleibt nur „Stress im Maisfeld sichtbar machen.“ Die alten Dateien `export/CropTransfer_Intro_*` sind überholt.
+
+
+**Aktuelle Fassung (2026-10-18): Stimme „Helmut – German Epic Trailer Voice“** (ElevenLabs, Eleven v4, Voice-ID `g1jpii0iyvtRs8fqXsd1`), in der ElevenLabs-Weboberfläche erzeugt und über den Verlauf geladen. Texte: `voice/lines_v2.tsv`, Dateien: `voice/lines_v2/NN.mp3` (Zweitvariante `NN_b.mp3`), Takt: `voice/timing_v2.tsv` (alle Zeilen Tempo 1,1). Zeile 07 („Daraus ergibt sich ein Anteil …“) ist erzeugt, aber nicht im Video, weil sie nicht ins Zeitfenster passt; der Zähler zeigt den Anteil ohnehin. Weil Helmut langsamer spricht, sind Szene 04 um 1,9 s und die neuen Szenen 05–07 länger. Ergebnis: `export/CropTransfer_Intro_1080p_v2_Sprecher.mp4` und stumm `export/CropTransfer_Intro_1080p_v2_stumm.mp4`.
+
+Die folgende Tabelle gehört zur alten Fassung mit „Grady“ (36 s).
 
 Stimme „Grady“, ElevenLabs v4 über Higgsfield, jeder Satz einzeln erzeugt (`voice/lines/`) und an den Szenenanfang gesetzt (`voice/timing.tsv`: Start in s, Tempofaktor).
 Mischung: Kompressor + Lautheit −16 LUFS; Endbild um 1 s verlängert. Ergebnis: `export/CropTransfer_Intro_1080p_Sprecher.mp4` (36 s).
