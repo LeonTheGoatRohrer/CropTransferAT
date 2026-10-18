@@ -71,8 +71,8 @@ export default function Data() {
   )
 }
 
-/* Short groups share a column so no panel is left half empty. */
-const COLUMNS: DataSource['group'][][] = [['yield'], ['satellite', 'weather'], ['soil', 'regional']]
+/* One column, most important sources first. Every unit is a horizontal row, so the page scrolls straight down. */
+const ORDER: DataSource['group'][] = ['yield', 'satellite', 'soil', 'weather', 'regional']
 
 function SourceFlow() {
   return (
@@ -88,58 +88,61 @@ function SourceFlow() {
           ))}
         </Reveal>
 
-        <div className="mt-5 grid gap-5 lg:grid-cols-3 lg:items-start">
-          {COLUMNS.map((col, ci) => (
-            <div key={ci} className="flex flex-col gap-5">
-              {col.map((g) => (
-                <GroupPanel key={g} group={g} delay={ci * 0.05} />
-              ))}
-            </div>
+        <div className="mt-5 flex flex-col gap-5">
+          {ORDER.map((g) => (
+            <GroupPanel key={g} group={g} />
           ))}
+          <GroupPanel group="austria" className="border-dashed !bg-none" />
+          <GroupPanel group="extra" />
         </div>
-        <GroupPanel group="austria" columns="md:grid-cols-3" className="mt-5 border-dashed !bg-none" />
-        <GroupPanel group="extra" columns="md:grid-cols-3" className="mt-5" />
         <Source className="mt-6">DATA_SOURCES.md · data/processed/*.parquet · Größe von data/raw/ am 18.10.2026 – Lizenzen, Abrufdaten und Schritte zur Neuerzeugung jeder Datei</Source>
       </Container>
     </section>
   )
 }
 
-function GroupPanel({ group, delay = 0, columns, className = '' }: { group: DataSource['group']; delay?: number; columns?: string; className?: string }) {
+function GroupPanel({ group, className = '' }: { group: DataSource['group']; className?: string }) {
   const meta = GROUP_META[group]
   const items = DATA_SOURCES.filter((d) => d.group === group)
   return (
-    <Reveal delay={delay} className={`panel p-6 ${className}`}>
+    <Reveal className={`panel p-6 ${className}`}>
       <div className="flex items-center gap-2.5 text-maize">
         {meta.icon}
         <p className="eyebrow !text-maize">{meta.label}</p>
       </div>
       <p className="mt-2 text-[13.5px] text-ink-3">{meta.lede}</p>
-      <ul className={columns ? `mt-5 grid gap-x-8 gap-y-6 ${columns}` : 'mt-5 flex flex-col divide-y divide-[var(--line)]'}>
+      <ul className="mt-5 flex flex-col divide-y divide-[var(--line)]">
         {items.map((d) => (
-          <SourceItem key={d.name} d={d} className={columns ? '' : 'py-5 first:pt-0 last:pb-0'} />
+          <SourceItem key={d.name} d={d} />
         ))}
       </ul>
     </Reveal>
   )
 }
 
-function SourceItem({ d, className = '' }: { d: DataSource; className?: string }) {
+/* Horizontal row: name and source | number and volume | role and detail. Stacks on small screens. */
+function SourceItem({ d }: { d: DataSource }) {
   return (
-    <li className={className}>
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-[15px] font-medium text-ink">{d.name}</p>
-        {d.status && <Badge tone={d.status === 'Nebenversuch' ? 'neutral' : 'rust'}>{d.status}</Badge>}
+    <li className="grid gap-4 py-6 first:pt-0 last:pb-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)_minmax(0,1.3fr)] lg:items-start lg:gap-8">
+      <div>
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="text-[15px] font-medium text-ink">{d.name}</p>
+          {d.status && <Badge tone={d.status === 'Nebenversuch' ? 'neutral' : 'rust'}>{d.status}</Badge>}
+        </div>
+        <p className="mt-0.5 text-[12.5px] text-ink-3">{d.provider}</p>
+        <p className="mt-2 font-mono text-[10.5px] text-ink-4">{d.scale} · {d.license}</p>
       </div>
-      <p className="mt-0.5 text-[12.5px] text-ink-3">{d.provider}</p>
-      <p className="mt-3 flex flex-wrap items-baseline gap-x-2">
-        <span className="whitespace-nowrap font-display text-[32px] font-semibold leading-none tracking-[-0.03em] text-maize tabular">{d.count}</span>
-        <span className="text-[14.5px] font-medium text-ink">{d.unit}</span>
-      </p>
-      <p className="mt-1.5 text-[13px] leading-snug text-ink-2 tabular">({d.volume})</p>
-      <p className="mt-3 text-[13.5px] leading-relaxed text-ink-2">{d.role}</p>
-      <p className="mt-1 text-[12.5px] leading-relaxed text-ink-3 tabular">{d.detail}</p>
-      <p className="mt-2 font-mono text-[10.5px] text-ink-4">{d.scale} · {d.license}</p>
+      <div>
+        <p className="flex flex-wrap items-baseline gap-x-2">
+          <span className="whitespace-nowrap font-display text-[32px] font-semibold leading-none tracking-[-0.03em] text-maize tabular">{d.count}</span>
+          <span className="text-[14.5px] font-medium text-ink">{d.unit}</span>
+        </p>
+        <p className="mt-1.5 text-[13px] leading-snug text-ink-2 tabular">({d.volume})</p>
+      </div>
+      <div>
+        <p className="text-[13.5px] leading-relaxed text-ink-2">{d.role}</p>
+        <p className="mt-1 text-[12.5px] leading-relaxed text-ink-3 tabular">{d.detail}</p>
+      </div>
     </li>
   )
 }
