@@ -37,7 +37,7 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
   })
   return (
     <section className="relative isolate overflow-hidden pt-28 pb-20 sm:pt-36 lg:pb-28">
-      <Backdrop name="hero-pixelfelder" />
+      <Backdrop name="hero-abendlicht" />
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-40 right-[-10%] h-[620px] w-[620px] rounded-full bg-[radial-gradient(closest-side,rgba(230,180,80,0.10),transparent)]" />
         <div className="absolute bottom-[-30%] left-[-15%] h-[560px] w-[760px] rounded-full bg-[radial-gradient(closest-side,rgba(85,160,90,0.08),transparent)]" />

@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Check, ChevronDown, X } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import type { Evidence } from '../api/types'
+import { Backdrop } from '../components/ui/Backdrop'
 import { StrengthBadge, type Strength } from '../components/ui/Badge'
 import { Reveal } from '../components/ui/Reveal'
 import { Container } from '../components/ui/Section'
@@ -131,7 +132,8 @@ export default function ModelCard() {
   const list = ev.data ? cards(ev.data) : []
   return (
     <>
-      <section className="pt-36 pb-12">
+      <section className="relative isolate overflow-hidden pt-36 pb-16">
+        <Backdrop name="modelle-pixelfelder" />
         <Container>
           <Reveal>
             <p className="eyebrow mb-5">Die drei Modelle</p>
