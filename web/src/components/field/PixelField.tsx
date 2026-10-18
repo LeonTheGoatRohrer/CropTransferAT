@@ -131,7 +131,7 @@ export function PixelField({ pixels, mode, dekad = 12, className = '', maxHeight
       <canvas
         ref={canvas}
         role="img"
-        aria-label={ariaLabel ?? 'Field shown as 10-metre satellite cells'}
+        aria-label={ariaLabel ?? 'Feld als 10-Meter-Satellitenzellen'}
         style={{ width: box.w, height: box.h }}
         onMouseLeave={() => setHover(null)}
         onMouseMove={(e) => {
@@ -148,8 +148,8 @@ export function PixelField({ pixels, mode, dekad = 12, className = '', maxHeight
       {hc && hover && (
         <div className="panel-glass pointer-events-none absolute z-10 px-3 py-2 font-mono text-[11px] leading-relaxed text-ink" style={{ left: Math.min(hover.x + 14, hover.maxX), top: hover.y + 14 }}>
           {mode === 'season' ? <p>NDVI {fmt(seasonVal, 2)}</p> : <p>NDVI (Jul–Aug) {fmt(hc[4], 2)}</p>}
-          <p>Yield {fmt(hc[5] * 100, 0)} % of field mean</p>
-          {mode === 'weak' && hc[4] != null && hc[4] <= pixels.weak_threshold && <p className="text-rust">Flagged: lowest NDVI quarter</p>}
+          <p>Ertrag {fmt(hc[5] * 100, 0)} % des Feldmittels</p>
+          {mode === 'weak' && hc[4] != null && hc[4] <= pixels.weak_threshold && <p className="text-rust">Markiert: unterstes NDVI-Viertel</p>}
         </div>
       )}
     </div>

@@ -74,10 +74,10 @@ export function analysisReducer(state: AnalysisState, event: AnalysisEvent): Ana
 }
 
 export const STAGE_TITLES: Record<PipelineStage, { title: string; running: string }> = {
-  loadingSatellite: { title: 'Satellite observations', running: 'Loading Sentinel-2 scenes…' },
-  processingSatellite: { title: 'Vegetation indices', running: 'Building 10-day composites…' },
-  loadingWeather: { title: 'Weather history', running: 'Loading ERA5-Land daily weather…' },
-  loadingEnvironment: { title: 'Soil and terrain', running: 'Loading soil and terrain layers…' },
-  featureEngineering: { title: 'Features', running: 'Comparing with the healthy reference…' },
-  runningModel: { title: 'Stress assessment', running: 'Scoring the season…' },
+  loadingSatellite: { title: 'Satellitenbeobachtungen', running: 'Sentinel-2-Szenen werden geladen …' },
+  processingSatellite: { title: 'Vegetationsindizes', running: '10-Tage-Komposite werden erstellt …' },
+  loadingWeather: { title: 'Wetterverlauf', running: 'ERA5-Land-Tageswetter wird geladen …' },
+  loadingEnvironment: { title: 'Boden und Gelände', running: 'Boden- und Geländedaten werden geladen …' },
+  featureEngineering: { title: 'Merkmale', running: 'Vergleich mit der gesunden Referenz …' },
+  runningModel: { title: 'Stress-Bewertung', running: 'Saison wird bewertet …' },
 }

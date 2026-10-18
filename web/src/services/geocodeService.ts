@@ -9,9 +9,9 @@ type NominatimHit = { place_id: number; display_name: string; lat: string; lon: 
 export async function searchPlaces(query: string, signal?: AbortSignal, countryCode?: string): Promise<Place[]> {
   const q = query.trim()
   if (q.length < 2) return []
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=6${countryCode ? `&countrycodes=${countryCode}` : ''}&q=${encodeURIComponent(q)}`
+  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=6&accept-language=de${countryCode ? `&countrycodes=${countryCode}` : ''}&q=${encodeURIComponent(q)}`
   const res = await fetch(url, { signal, headers: { Accept: 'application/json' } })
-  if (!res.ok) throw new Error(`Place search failed (HTTP ${res.status}).`)
+  if (!res.ok) throw new Error(`Ortssuche fehlgeschlagen (HTTP ${res.status}).`)
   const hits = (await res.json()) as NominatimHit[]
   return hits.map((h) => {
     const [name, ...rest] = h.display_name.split(', ')

@@ -6,6 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-10-18 | Claude (Anthropic), Claude Code (Opus 5.5) | Übersetzung der Website `web/` ins Deutsche (alle Seiten, Diagramme, Formular, Fehlermeldungen des Beitrags-Servers, Texte im Exportskript), deutsche Zahlen- und Datumsformate; auf Wunsch des Projektinhabers |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Opus 5.5) | Web-Frontend `web/`: Analyse des Repositorys, Design und Umsetzung der Website (Seiten, Diagramme, Karte, Feldanalyse-Demo, Simulation für gezeichnete Felder), Exportskript `web/scripts/export_web_data.py`, englische Website-Texte, Datenkritik, Doku-Einträge |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Österreich-Test: Freeze-Protokoll, Feldauswahl (INVEKOS), GEE-Abfrage, Auswertungscode (`at_*.py`), Tests, Nachtrainieren (Vorab-Plan, Code), Ergebnisbericht, Datenkritik, Website-Eintrag; Beratung zur Testlogik (Entscheidungen beim Projektinhaber) |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) | Vorschlag und Ausformulierung des Hauptergebnisses der Abgabe (Doku-Entwurf, Website-Texte); Entwürfe der Anfragetexte Hagelversicherung, YIPEEO, DWFI, SwissYield, Booßen (Versand durch den Projektinhaber) |

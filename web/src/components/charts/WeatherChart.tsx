@@ -5,7 +5,7 @@ import { useState } from 'react'
 import type { WeatherSeries } from '../../api/types'
 import { tokens } from '../../lib/color'
 import { MONTH_TICKS, N_DEKADS, cumulative, dekadLabel } from '../../lib/dekads'
-import { fmt } from '../../lib/format'
+import { fmt, fmtNum } from '../../lib/format'
 import { ChartTooltip, GridY, axisText, niceTicks, useWidth } from './core'
 
 export type WeatherMode = 'rain' | 'temperature' | 'gdd' | 'moisture'
@@ -22,13 +22,13 @@ export function WeatherChart({ actual, normal, mode, year, height = 260 }: { act
   const series = (() => {
     switch (mode) {
       case 'rain':
-        return { a: cumulative(actual.prec), n: cumulative(normal.prec), bars: actual.prec, barsN: normal.prec, unit: 'mm', label: 'Cumulative rain' }
+        return { a: cumulative(actual.prec), n: cumulative(normal.prec), bars: actual.prec, barsN: normal.prec, unit: 'mm', label: 'Niederschlag, kumuliert' }
       case 'temperature':
-        return { a: actual.tmax, n: normal.tmax, unit: '°C', label: 'Mean daily max' }
+        return { a: actual.tmax, n: normal.tmax, unit: '°C', label: 'Mittleres Tagesmaximum' }
       case 'gdd':
-        return { a: cumulative(actual.gdd), n: cumulative(normal.gdd), unit: '°C·d', label: 'Growing degree days' }
+        return { a: cumulative(actual.gdd), n: cumulative(normal.gdd), unit: '°C·d', label: 'Wachstumsgradtage' }
       case 'moisture':
-        return { a: actual.swvl, n: normal.swvl, unit: 'm³/m³', label: 'Soil moisture 7–28 cm' }
+        return { a: actual.swvl, n: normal.swvl, unit: 'm³/m³', label: 'Bodenfeuchte 7–28 cm' }
     }
   })()
 
@@ -54,7 +54,7 @@ export function WeatherChart({ actual, normal, mode, year, height = 260 }: { act
         width={width}
         height={height}
         role="img"
-        aria-label={`${series.label}: this season vs long-term mean`}
+        aria-label={`${series.label}: diese Saison ggü. langjährigem Mittel`}
         onMouseLeave={() => setHover(null)}
         onMouseMove={(e) => {
           const r = (e.currentTarget as SVGSVGElement).getBoundingClientRect()
@@ -62,7 +62,7 @@ export function WeatherChart({ actual, normal, mode, year, height = 260 }: { act
           setHover(i >= 0 && i < N_DEKADS ? i : null)
         }}
       >
-        <GridY ticks={niceTicks(d0, d1, 4)} y={y} x0={m.l} x1={width - m.r} fmt={(v) => v.toFixed(digits)} />
+        <GridY ticks={niceTicks(d0, d1, 4)} y={y} x0={m.l} x1={width - m.r} fmt={(v) => fmtNum(v, digits)} />
         {MONTH_TICKS.map((t) => (
           <text key={t.label} x={x(t.pos)} y={height - m.b + 18} {...axisText}>
             {t.label}
@@ -86,10 +86,10 @@ export function WeatherChart({ actual, normal, mode, year, height = 260 }: { act
       {hover != null && (
         <ChartTooltip x={x(hover)} y={m.t + 20} width={width}>
           <p className="eyebrow mb-1 !text-[10px]">{dekadLabel(hover, year)}</p>
-          <p className="flex justify-between gap-4"><span className="text-ink-2">This season</span><span className="font-mono tabular">{fmt(series.a[hover], digits)} {series.unit}</span></p>
-          <p className="flex justify-between gap-4"><span className="text-ink-2">Long-term mean</span><span className="font-mono tabular">{fmt(series.n[hover], digits)} {series.unit}</span></p>
-          {series.bars && <p className="flex justify-between gap-4"><span className="text-ink-2">Rain this dekad</span><span className="font-mono tabular">{fmt(series.bars[hover], 0)} mm</span></p>}
-          {mode === 'temperature' && (actual.heat?.[hover] ?? 0) > 0 && <p className="text-rust">{actual.heat?.[hover]} day(s) above 32 °C</p>}
+          <p className="flex justify-between gap-4"><span className="text-ink-2">Diese Saison</span><span className="font-mono tabular">{fmt(series.a[hover], digits)} {series.unit}</span></p>
+          <p className="flex justify-between gap-4"><span className="text-ink-2">Langjähriges Mittel</span><span className="font-mono tabular">{fmt(series.n[hover], digits)} {series.unit}</span></p>
+          {series.bars && <p className="flex justify-between gap-4"><span className="text-ink-2">Niederschlag dieser Dekade</span><span className="font-mono tabular">{fmt(series.bars[hover], 0)} mm</span></p>}
+          {mode === 'temperature' && (actual.heat?.[hover] ?? 0) > 0 && <p className="text-rust">{actual.heat?.[hover] === 1 ? '1 Tag' : `${actual.heat?.[hover]} Tage`} über 32 °C</p>}
         </ChartTooltip>
       )}
     </div>

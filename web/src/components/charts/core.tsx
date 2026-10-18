@@ -24,7 +24,7 @@ export const axisText = {
   letterSpacing: '0.02em',
 } as const
 
-export function GridY({ ticks, y, x0, x1, fmt = (v: number) => String(v), zero }: { ticks: number[]; y: (v: number) => number; x0: number; x1: number; fmt?: (v: number) => string; zero?: number }) {
+export function GridY({ ticks, y, x0, x1, fmt = (v: number) => String(v).replace('.', ',').replace('-', '−'), zero }: { ticks: number[]; y: (v: number) => number; x0: number; x1: number; fmt?: (v: number) => string; zero?: number }) {
   return (
     <g>
       {ticks.map((t) => (

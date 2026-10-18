@@ -57,7 +57,7 @@ export function HeroField({ field }: { field: FieldAnalysis }) {
             type="button"
             onClick={() => setPlaying((p) => !p)}
             className="inline-flex size-8 items-center justify-center rounded-full border border-[var(--line-strong)] text-ink-2 transition hover:border-ink-3 hover:text-ink"
-            aria-label={playing ? 'Pause season animation' : 'Play season animation'}
+            aria-label={playing ? 'Saison-Animation anhalten' : 'Saison-Animation abspielen'}
           >
             {playing ? <Pause className="size-3.5" /> : <Play className="size-3.5 translate-x-px" />}
           </button>
@@ -67,22 +67,22 @@ export function HeroField({ field }: { field: FieldAnalysis }) {
         </div>
         <Tabs
           size="sm"
-          label="Field view"
+          label="Feldansicht"
           value={stage}
           onChange={(v) => {
             setPlaying(false)
             setStage(v)
           }}
           items={[
-            { value: 'season', label: 'Season' },
-            { value: 'yield', label: 'Measured yield' },
-            { value: 'weak', label: 'Flagged zones' },
+            { value: 'season', label: 'Saison' },
+            { value: 'yield', label: 'Gemessener Ertrag' },
+            { value: 'weak', label: 'Schwache Zonen' },
           ]}
         />
       </div>
 
       <div className="relative rounded-xl bg-black/30 p-3 sm:p-5">
-        <PixelField pixels={px} mode={mode} dekad={dekad} maxHeight={330} ariaLabel={`Field ${field.field_id} as ${px.n_cells} Sentinel-2 cells`} />
+        <PixelField pixels={px} mode={mode} dekad={dekad} maxHeight={330} ariaLabel={`Feld ${field.field_id} als ${px.n_cells} Sentinel-2-Zellen`} />
         <AnimatePresence mode="wait">
           <motion.div
             key={stage}
@@ -96,24 +96,24 @@ export function HeroField({ field }: { field: FieldAnalysis }) {
               <>
                 <p className="eyebrow !text-[10px]">{dekadLabel(dekad, field.year)}</p>
                 <p className="font-mono text-[13px] tabular text-ink">
-                  NDVI {fmt(meanNdvi, 2)} <span className="text-ink-3">· healthy {fmt(ref, 2)}</span>
+                  NDVI {fmt(meanNdvi, 2)} <span className="text-ink-3">· gesund {fmt(ref, 2)}</span>
                 </p>
-                {!observed && <p className="text-[11px] text-ink-3">no clear scene · last observation</p>}
+                {!observed && <p className="text-[11px] text-ink-3">keine wolkenfreie Szene · letzte Beobachtung</p>}
               </>
             )}
             {stage === 'yield' && (
               <>
-                <p className="eyebrow !text-[10px]">Combine yield map · after harvest</p>
+                <p className="eyebrow !text-[10px]">Mähdrescher-Ertragskarte · nach der Ernte</p>
                 <p className="font-mono text-[13px] tabular text-ink">
-                  {fmt(field.measured.yield_t_ha, 1)} t/ha <span className="text-ink-3">· {fmtPct(field.measured.relative_yield)} of normal</span>
+                  {fmt(field.measured.yield_t_ha, 1)} t/ha <span className="text-ink-3">· {fmtPct(field.measured.relative_yield)} des üblichen Ertrags</span>
                 </p>
               </>
             )}
             {stage === 'weak' && (
               <>
-                <p className="eyebrow !text-[10px]">Lowest NDVI quarter · from July–August</p>
+                <p className="eyebrow !text-[10px]">Unterstes NDVI-Viertel · aus Juli–August</p>
                 <p className="font-mono text-[13px] tabular text-ink">
-                  {fmtPct(px.precision_weak)} truly low-yield <span className="text-ink-3">· field share {fmtPct(px.prevalence_problem)}</span>
+                  {fmtPct(px.precision_weak)} tatsächlich ertragsschwach <span className="text-ink-3">· Feldanteil {fmtPct(px.prevalence_problem)}</span>
                 </p>
               </>
             )}
@@ -128,7 +128,7 @@ export function HeroField({ field }: { field: FieldAnalysis }) {
           min={0}
           max={N_DEKADS - 1}
           value={dekad}
-          aria-label="Season date"
+          aria-label="Datum in der Saison"
           onChange={(e) => {
             setPlaying(false)
             setStage('season')
@@ -137,7 +137,7 @@ export function HeroField({ field }: { field: FieldAnalysis }) {
           className="h-1 w-full cursor-pointer appearance-none rounded-full bg-white/10 accent-[var(--color-maize)]"
         />
         <div className="mt-2 flex justify-between font-mono text-[10px] uppercase tracking-[0.1em] text-ink-4">
-          {['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'].map((m) => (
+          {['Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt'].map((m) => (
             <span key={m}>{m}</span>
           ))}
         </div>
@@ -146,18 +146,18 @@ export function HeroField({ field }: { field: FieldAnalysis }) {
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--line)] pt-4">
         {stage === 'yield' ? (
           <div className="flex items-center gap-2 text-[11px] text-ink-3">
-            <span className="font-mono">yield vs field mean</span>
+            <span className="font-mono">Ertrag ggü. Feldmittel</span>
             {[0.5, 0.85, 1, 1.2].map((v) => (
               <span key={v} className="flex items-center gap-1">
                 <span className="size-2.5 rounded-[2px]" style={{ background: relYieldColor(v) }} />
-                {Math.round(v * 100)}%
+                {Math.round(v * 100)} %
               </span>
             ))}
           </div>
         ) : stage === 'weak' ? (
           <div className="flex items-center gap-3 text-[11px] text-ink-3">
-            <span className="flex items-center gap-1.5"><span className="size-2.5 rounded-[2px] bg-rust" />flagged cell</span>
-            <span className="font-mono">ρ with yield {fmt(px.rho, 2)}</span>
+            <span className="flex items-center gap-1.5"><span className="size-2.5 rounded-[2px] bg-rust" />markierte Zelle</span>
+            <span className="font-mono">ρ mit Ertrag {fmt(px.rho, 2)}</span>
           </div>
         ) : (
           <div className="flex items-center gap-1.5 text-[11px] text-ink-3">
@@ -165,10 +165,10 @@ export function HeroField({ field }: { field: FieldAnalysis }) {
             {NDVI_LEGEND.map((s) => (
               <span key={s.v} className="h-2.5 w-5 first:rounded-l-[3px] last:rounded-r-[3px]" style={{ background: s.c }} />
             ))}
-            <span className="font-mono">0.15 → 0.85</span>
+            <span className="font-mono">0,15 → 0,85</span>
           </div>
         )}
-        <span className="font-mono text-[10.5px] text-ink-4">Real data · {px.n_cells} cells × 10 m · Sentinel-2</span>
+        <span className="font-mono text-[10.5px] text-ink-4">Echte Daten · {px.n_cells} Zellen × 10 m · Sentinel-2</span>
       </div>
     </div>
   )

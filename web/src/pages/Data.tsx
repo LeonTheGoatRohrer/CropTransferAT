@@ -12,35 +12,35 @@ import { ErrorNote, Skeleton } from '../components/ui/States'
 import { Tabs } from '../components/ui/Tabs'
 import { DATA_SOURCES, type DataSource } from '../data/content/project'
 import { tokens } from '../lib/color'
-import { fmt } from '../lib/format'
+import { fmt, fmtNum } from '../lib/format'
 import { useResource } from '../lib/useResource'
 import { getExplorer } from '../services/evidenceService'
 
 const GROUP_META: Record<DataSource['group'], { label: string; icon: ReactNode }> = {
-  yield: { label: 'Measured yield', icon: <MapPinned className="size-4" /> },
-  satellite: { label: 'Satellite', icon: <Satellite className="size-4" /> },
-  weather: { label: 'Weather', icon: <CloudSun className="size-4" /> },
-  soil: { label: 'Soil and terrain', icon: <Mountain className="size-4" /> },
-  regional: { label: 'Regional statistics', icon: <Layers className="size-4" /> },
-  austria: { label: 'Austria — test only', icon: <Lock className="size-4" /> },
+  yield: { label: 'Gemessener Ertrag', icon: <MapPinned className="size-4" /> },
+  satellite: { label: 'Satellit', icon: <Satellite className="size-4" /> },
+  weather: { label: 'Wetter', icon: <CloudSun className="size-4" /> },
+  soil: { label: 'Boden und Gelände', icon: <Mountain className="size-4" /> },
+  regional: { label: 'Regionalstatistik', icon: <Layers className="size-4" /> },
+  austria: { label: 'Österreich – nur Test', icon: <Lock className="size-4" /> },
 }
 
 const SITE_COLOR: Record<string, string> = { KBS: tokens.sage, BARC: tokens.water, Colorado: tokens.maize }
 
 type NumKey = 'Y_t_ha' | 'RY_descr' | 'ndvi_peak' | 'ndvi_jul_aug' | 'gdd' | 'prec' | 'heat32' | 'tmax_jun' | 'vpd_jun' | 'clay' | 'soc' | 'awc'
 const NUM: { key: NumKey; label: string; digits: number }[] = [
-  { key: 'Y_t_ha', label: 'Yield (t/ha)', digits: 1 },
-  { key: 'RY_descr', label: 'Relative yield', digits: 2 },
-  { key: 'ndvi_peak', label: 'NDVI peak', digits: 2 },
+  { key: 'Y_t_ha', label: 'Ertrag (t/ha)', digits: 1 },
+  { key: 'RY_descr', label: 'Relativer Ertrag', digits: 2 },
+  { key: 'ndvi_peak', label: 'NDVI-Maximum', digits: 2 },
   { key: 'ndvi_jul_aug', label: 'NDVI Jul–Aug', digits: 2 },
-  { key: 'gdd', label: 'GDD to 1 Sep', digits: 0 },
-  { key: 'prec', label: 'Rain to 1 Sep (mm)', digits: 0 },
-  { key: 'heat32', label: 'Days > 32 °C', digits: 0 },
-  { key: 'tmax_jun', label: 'June max temp (°C)', digits: 1 },
-  { key: 'vpd_jun', label: 'June VPD (kPa)', digits: 2 },
-  { key: 'clay', label: 'Clay (fraction)', digits: 2 },
-  { key: 'soc', label: 'Organic carbon', digits: 1 },
-  { key: 'awc', label: 'Water capacity', digits: 3 },
+  { key: 'gdd', label: 'GDD bis 1. Sep', digits: 0 },
+  { key: 'prec', label: 'Regen bis 1. Sep (mm)', digits: 0 },
+  { key: 'heat32', label: 'Tage > 32 °C', digits: 0 },
+  { key: 'tmax_jun', label: 'Höchsttemp. Juni (°C)', digits: 1 },
+  { key: 'vpd_jun', label: 'VPD Juni (kPa)', digits: 2 },
+  { key: 'clay', label: 'Ton (Anteil)', digits: 2 },
+  { key: 'soc', label: 'Org. Kohlenstoff', digits: 1 },
+  { key: 'awc', label: 'Nutzbare Feldkapazität', digits: 3 },
 ]
 
 export default function Data() {
@@ -49,11 +49,11 @@ export default function Data() {
       <section className="pt-36 pb-10">
         <Container>
           <Reveal>
-            <p className="eyebrow mb-5">Data</p>
-            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Measured where it matters: in the field.</h1>
+            <p className="eyebrow mb-5">Daten</p>
+            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Gemessen, wo es zählt: auf dem Feld.</h1>
             <p className="mt-6 max-w-[680px] text-[17px] leading-relaxed text-ink-2">
-              The models learn from fields whose yield was weighed or mapped by a combine, joined with open satellite, weather and soil data.
-              Austrian data is collected but sealed until the test.
+              Die Modelle lernen von Feldern, deren Ertrag gewogen oder vom Mähdrescher kartiert wurde – verknüpft mit offenen Satelliten-, Wetter- und Bodendaten.
+              Österreichische Daten sind gesammelt, bleiben aber bis zum Test unter Verschluss.
             </p>
           </Reveal>
         </Container>
@@ -92,7 +92,7 @@ function SourceFlow() {
             </Reveal>
           ))}
         </div>
-        <Source className="mt-6">DATA_SOURCES.md · SUPPORT.md — licences, retrieval dates and regeneration steps for every file</Source>
+        <Source className="mt-6">DATA_SOURCES.md · SUPPORT.md – Lizenzen, Abrufdaten und Schritte zur Neuerzeugung jeder Datei</Source>
       </Container>
     </section>
   )
@@ -141,32 +141,32 @@ function Explorer() {
     <section id="explorer" className="scroll-mt-20 py-20">
       <Container>
         <SectionHeader
-          eyebrow="Explore the data"
-          title={`${c.field_years} maize field-years, 1989–2023.`}
-          lede="Every field-year with a measured yield in the project, with its satellite, weather and soil summaries as of 1 September. Filter it, plot any two variables, and look for yourself."
+          eyebrow="Daten erkunden"
+          title={`${c.field_years} Mais-Feld-Jahre, 1989–2023.`}
+          lede="Jedes Feld-Jahr mit gemessenem Ertrag im Projekt, mit seinen Satelliten-, Wetter- und Bodenkennwerten zum Stichtag 1. September. Filtern Sie, stellen Sie zwei beliebige Variablen gegenüber und sehen Sie selbst."
         />
         <Reveal className="mt-10 panel flex flex-wrap items-center gap-x-6 gap-y-4 p-4 sm:p-5">
           <label className="flex items-center gap-3 text-[13px] text-ink-3">
-            Site
-            <Tabs size="sm" label="Site" value={site} onChange={setSite} items={[{ value: 'all', label: 'All' }, { value: 'KBS', label: 'KBS' }, { value: 'BARC', label: 'BARC' }, { value: 'Colorado', label: 'Akron' }]} />
+            Standort
+            <Tabs size="sm" label="Standort" value={site} onChange={setSite} items={[{ value: 'all', label: 'Alle' }, { value: 'KBS', label: 'KBS' }, { value: 'BARC', label: 'BARC' }, { value: 'Colorado', label: 'Akron' }]} />
           </label>
           <label className="flex items-center gap-3 text-[13px] text-ink-3">
-            Sensor era
-            <Tabs size="sm" label="Sensor era" value={era} onChange={setEra} items={[{ value: 'all', label: 'All' }, { value: 'HLS', label: 'HLS / S2' }, { value: 'Landsat', label: 'Before 2013' }]} />
+            Sensorzeitraum
+            <Tabs size="sm" label="Sensorzeitraum" value={era} onChange={setEra} items={[{ value: 'all', label: 'Alle' }, { value: 'HLS', label: 'HLS / S2' }, { value: 'Landsat', label: 'Vor 2013' }]} />
           </label>
           <label className="flex items-center gap-3 text-[13px] text-ink-3">
-            Yield ≥ <span className="w-12 font-mono text-ink">{yMin} t/ha</span>
-            <input type="range" min={0} max={12} step={0.5} value={yMin} onChange={(e) => setYMin(Number(e.target.value))} className="h-1 w-36 cursor-pointer appearance-none rounded-full bg-white/10 accent-[var(--color-maize)]" aria-label="Minimum yield" />
+            Ertrag ≥ <span className="w-12 font-mono text-ink">{fmtNum(yMin, Number.isInteger(yMin) ? 0 : 1)} t/ha</span>
+            <input type="range" min={0} max={12} step={0.5} value={yMin} onChange={(e) => setYMin(Number(e.target.value))} className="h-1 w-36 cursor-pointer appearance-none rounded-full bg-white/10 accent-[var(--color-maize)]" aria-label="Mindestertrag" />
           </label>
-          <span className="ml-auto font-mono text-[12px] text-ink-2">{rows.length} field-years</span>
+          <span className="ml-auto font-mono text-[12px] text-ink-2">{rows.length} Feld-Jahre</span>
         </Reveal>
 
         <div className="mt-5 grid gap-5 lg:grid-cols-[1.25fr_1fr]">
           <Reveal className="panel p-6">
             <div className="mb-5 flex flex-wrap items-center gap-3 text-[13px] text-ink-3">
-              <Select value={yKey} onChange={setYKey} label="Y axis" />
-              <span>against</span>
-              <Select value={xKey} onChange={setXKey} label="X axis" />
+              <Select value={yKey} onChange={setYKey} label="Y-Achse" />
+              <span>gegen</span>
+              <Select value={xKey} onChange={setXKey} label="X-Achse" />
             </div>
             <Scatter points={pts} xLabel={NUM.find((n) => n.key === xKey)!.label} yLabel={NUM.find((n) => n.key === yKey)!.label} xDomain={pad(xd)} yDomain={pad(yd)} height={360} opacity={0.75} xFmt={(v) => fmt(v, NUM.find((n) => n.key === xKey)!.digits > 1 ? 2 : 0)} yFmt={(v) => fmt(v, NUM.find((n) => n.key === yKey)!.digits > 1 ? 2 : 0)} />
             <div className="mt-3 flex flex-wrap items-center gap-4 text-[12px] text-ink-2">
@@ -177,20 +177,20 @@ function Explorer() {
             </div>
           </Reveal>
           <Reveal className="panel p-6" delay={0.06}>
-            <p className="eyebrow mb-5">Yield distribution (t/ha)</p>
+            <p className="eyebrow mb-5">Ertragsverteilung (t/ha)</p>
             <YieldHistogram rows={rows} />
             <p className="mt-4 text-[13px] leading-relaxed text-ink-3">
-              Relative yield exists for {c.with_relative_yield} field-years (a field needs at least two other years to define its normal). Only{' '}
-              8–11 of them are independent site-years — the project’s central limitation.
+              Einen relativen Ertrag gibt es für {c.with_relative_yield} Feld-Jahre (ein Feld braucht mindestens zwei weitere Jahre, um seinen Normalertrag festzulegen). Nur{' '}
+              8–11 davon sind unabhängige Standort-Jahre – die zentrale Grenze des Projekts.
             </p>
           </Reveal>
         </div>
 
         <Reveal className="mt-5 panel p-6">
-          <p className="eyebrow mb-5">Rank correlations between variables (filtered rows)</p>
+          <p className="eyebrow mb-5">Rangkorrelationen zwischen den Variablen (gefilterte Zeilen)</p>
           <CorrMatrix rows={rows} />
         </Reveal>
-        <Source className="mt-5">data/processed/gt_field_years.parquet · features_0901.parquet · gt_dekads.parquet (exported to explorer.json)</Source>
+        <Source className="mt-5">data/processed/gt_field_years.parquet · features_0901.parquet · gt_dekads.parquet (exportiert nach explorer.json)</Source>
       </Container>
     </section>
   )
@@ -253,7 +253,7 @@ function YieldHistogram({ rows }: { rows: ExplorerRow[] }) {
   const y = scaleLinear().domain([0, Math.max(1, ...totals)]).range([h - m.b, m.t])
   return (
     <div ref={ref}>
-      <svg width={width} height={h} role="img" aria-label="Yield distribution by site">
+      <svg width={width} height={h} role="img" aria-label="Ertragsverteilung nach Standort">
         {per[0].map((b, i) => {
           let acc = 0
           return (
@@ -333,9 +333,9 @@ function CorrMatrix({ rows }: { rows: ExplorerRow[] }) {
         </tbody>
       </table>
       <div className="mt-4 flex items-center gap-3 text-[12px] text-ink-3">
-        <Badge tone="sage">positive</Badge>
-        <Badge tone="rust">negative</Badge>
-        <span>Pooled across sites and years: strong values often reflect site or year differences, not field effects.</span>
+        <Badge tone="sage">positiv</Badge>
+        <Badge tone="rust">negativ</Badge>
+        <span>Über Standorte und Jahre zusammengefasst: Starke Werte spiegeln oft Unterschiede zwischen Standorten oder Jahren wider, nicht Feldeffekte.</span>
       </div>
     </div>
   )

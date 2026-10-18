@@ -24,12 +24,12 @@ export type Strength = 'robust' | 'certain-small' | 'limited' | 'failed' | 'froz
 
 const strengthMap: Record<Strength, { tone: Tone; label: string }> = {
   robust: { tone: 'sage', label: 'Robust' },
-  'certain-small': { tone: 'water', label: 'Small but certain' },
-  limited: { tone: 'maize', label: 'Limited' },
-  failed: { tone: 'rust', label: 'Did not pass' },
-  frozen: { tone: 'neutral', label: 'Frozen' },
-  pending: { tone: 'neutral', label: 'Pending' },
-  done: { tone: 'neutral', label: 'Done' },
+  'certain-small': { tone: 'water', label: 'Klein, aber sicher' },
+  limited: { tone: 'maize', label: 'Eingeschränkt' },
+  failed: { tone: 'rust', label: 'Nicht bestanden' },
+  frozen: { tone: 'neutral', label: 'Eingefroren' },
+  pending: { tone: 'neutral', label: 'Ausstehend' },
+  done: { tone: 'neutral', label: 'Erledigt' },
 }
 
 export function StrengthBadge({ strength }: { strength: Strength }) {
@@ -44,7 +44,7 @@ export function StrengthBadge({ strength }: { strength: Strength }) {
 export function SimulatedBadge() {
   return (
     <Badge tone="maize" className="border-dashed">
-      Simulated · backend not connected
+      Simuliert · Backend nicht verbunden
     </Badge>
   )
 }

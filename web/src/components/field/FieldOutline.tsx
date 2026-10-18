@@ -16,7 +16,7 @@ export function FieldOutline({ geometry, className = '', stroke = '#e6b450' }: {
   const vw = w * s
   const vh = h * s
   return (
-    <svg viewBox={`-4 -4 ${vw + 8} ${vh + 8}`} className={className} role="img" aria-label="Field outline">
+    <svg viewBox={`-4 -4 ${vw + 8} ${vh + 8}`} className={className} role="img" aria-label="Feldumriss">
       <motion.path
         d={d}
         fill={stroke}

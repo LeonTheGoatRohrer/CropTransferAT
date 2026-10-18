@@ -3,28 +3,28 @@ import { Logo } from './Nav'
 
 const COLUMNS = [
   {
-    title: 'Product',
+    title: 'Angebot',
     links: [
-      { to: '/', label: 'Overview' },
-      { to: '/contribute', label: 'Add your field' },
-      { to: '/analyse', label: 'Analyse a field' },
-      { to: '/evidence', label: 'Evidence' },
+      { to: '/', label: 'Übersicht' },
+      { to: '/contribute', label: 'Feld eintragen' },
+      { to: '/analyse', label: 'Feld analysieren' },
+      { to: '/evidence', label: 'Belege' },
     ],
   },
   {
-    title: 'Science',
+    title: 'Wissenschaft',
     links: [
-      { to: '/model', label: 'The three models' },
-      { to: '/method', label: 'Method and experiments' },
-      { to: '/data', label: 'Data sources and explorer' },
+      { to: '/model', label: 'Die drei Modelle' },
+      { to: '/method', label: 'Methode und Experimente' },
+      { to: '/data', label: 'Datenquellen und Datenexplorer' },
     ],
   },
   {
-    title: 'Project',
+    title: 'Projekt',
     links: [
-      { to: '/about#limitations', label: 'Limitations' },
-      { to: '/about#roadmap', label: 'Roadmap' },
-      { to: '/about#disclosure', label: 'Support and AI disclosure' },
+      { to: '/about#limitations', label: 'Grenzen' },
+      { to: '/about#roadmap', label: 'Ausblick' },
+      { to: '/about#disclosure', label: 'Unterstützung und KI-Offenlegung' },
     ],
   },
 ]
@@ -39,8 +39,8 @@ export function Footer() {
             <span className="font-display text-[16px] font-semibold">CropTransfer AT</span>
           </div>
           <p className="mt-4 text-[13.5px] leading-relaxed text-ink-3">
-            Early detection of stress and yield loss in maize from Sentinel-2 time series, weather and soil. A solo project for the
-            Bundeswettbewerb Künstliche Intelligenz (BWKI) Austria.
+            Früherkennung von Stress und Ertragsverlust bei Mais aus Sentinel-2-Zeitreihen, Wetter und Boden. Ein Einzelprojekt für den
+            Bundeswettbewerb Künstliche Intelligenz (BWKI) Österreich.
           </p>
         </div>
         {COLUMNS.map((c) => (
@@ -59,8 +59,8 @@ export function Footer() {
         ))}
       </div>
       <div className="mx-auto flex max-w-[1240px] flex-col gap-2 border-t border-[var(--line)] px-4 py-6 text-[12px] text-ink-4 sm:flex-row sm:justify-between sm:px-8">
-        <p>Every model number on this site is read from the project's result files. Demo values are labelled as such.</p>
-        <p className="font-mono">Private preview · not published</p>
+        <p>Jede Modellzahl auf dieser Seite stammt aus den Ergebnisdateien des Projekts. Demowerte sind als solche gekennzeichnet.</p>
+        <p className="font-mono">Private Vorschau · nicht veröffentlicht</p>
       </div>
     </footer>
   )

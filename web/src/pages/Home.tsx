@@ -43,29 +43,30 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
       <Container className="grid items-center gap-14 lg:grid-cols-[1.02fr_1fr] lg:gap-16">
         <div>
           <motion.p {...rise(0)} className="eyebrow mb-6 flex items-center gap-3">
-            <span className="inline-block h-px w-8 bg-maize" /> Maize farmers in Austria
+            <span className="inline-block h-px w-8 bg-maize" /> Für Maisbäuerinnen und -bauern in Österreich
           </motion.p>
           <motion.h1 {...rise(0.08)} className="text-balance text-[clamp(2.9rem,6vw,5.1rem)] font-semibold leading-[0.96] tracking-[-0.045em]">
-            Share your yields. <span className="text-maize">Get a better forecast.</span>
+            Erträge teilen. <span className="text-maize">Bessere Prognose erhalten.</span>
           </motion.h1>
           <motion.p {...rise(0.18)} className="mt-7 max-w-[540px] text-pretty text-[18px] leading-relaxed text-ink-2">
-            Draw your maize field and tell us what it yielded in past years. You see at once how this year compares with your usual
-            harvest. We get the Austrian field data that early warning from satellites needs to work here.
+            Zeichnen Sie Ihr Maisfeld ein und sagen Sie uns, was es in den letzten Jahren gebracht hat. Sie sehen sofort, wie dieses
+            Jahr im Vergleich zu Ihrer üblichen Ernte liegt. Wir bekommen die österreichischen Felddaten, die eine Frühwarnung per
+            Satellit hier braucht.
           </motion.p>
           <motion.div {...rise(0.28)} className="mt-10 flex flex-wrap gap-3">
             <ButtonLink to="/contribute" size="lg" icon={<ArrowRight className="size-4" />}>
-              Add your field
+              Feld eintragen
             </ButtonLink>
             <ButtonLink to="/model" size="lg" variant="secondary">
-              What the models do
+              Was die Modelle tun
             </ButtonLink>
           </motion.div>
           <motion.div {...rise(0.38)} className="mt-12 flex max-w-[560px] flex-col gap-6 border-t border-[var(--line)] pt-6">
             <dl className="grid grid-cols-3 gap-4">
               {[
-                ['365', 'field-years with measured yield', '19 seasons, 1989–2023 · about 19 per season'],
-                ['28,000', 'yield cells (10 × 10 m)', 'about, inside 54 field-years (maps and points)'],
-                ['7,700', 'satellite curves', 'about, 365 field-years × 21 ten-day steps'],
+                ['365', 'Feld-Jahre mit gemessenem Ertrag', '19 Saisonen, 1989–2023 · im Schnitt 19 pro Saison'],
+                ['28 000', 'Ertragszellen (10 × 10 m)', 'ungefähr, in 54 Feld-Jahren (Karten und Punkte)'],
+                ['7 700', 'Satellitenkurven', 'ungefähr, 365 Feld-Jahre × 21 Zehn-Tage-Schritte'],
               ].map(([v, l, d]) => (
                 <div key={l}>
                   <dd className="whitespace-nowrap font-display text-[24px] font-semibold tracking-[-0.03em]">{v}</dd>
@@ -77,8 +78,8 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
                         <div className="flex items-start gap-4 rounded-xl border border-maize/25 bg-maize/[0.05] p-4">
               <p className="font-display text-[34px] font-semibold leading-none tracking-[-0.03em] text-maize">0</p>
               <div>
-              <p className="text-[14px] font-medium leading-snug text-ink">Austrian values in training</p>
-              <p className="mt-1 text-[12px] leading-snug text-ink-3">Austria is only the final test, because there is no field-level yield data yet. Your harvest data can change that.</p>
+              <p className="text-[14px] font-medium leading-snug text-ink">österreichische Werte im Training</p>
+              <p className="mt-1 text-[12px] leading-snug text-ink-3">Österreich ist nur der Schlusstest, weil es noch keine Ertragsdaten auf Feldebene gibt. Ihre Erntedaten können das ändern.</p>
               </div>
             </div>
           </motion.div>
@@ -95,13 +96,13 @@ function GiveGet() {
   const cols = [
     {
       icon: <Gift className="size-5" />,
-      title: 'You give',
-      items: ['The outline of one maize field', 'Its yield in past years, as far as you know it', 'This year’s harvest, or your estimate so far'],
+      title: 'Sie geben',
+      items: ['Den Umriss eines Maisfelds', 'Seinen Ertrag in den letzten Jahren, soweit Sie ihn kennen', 'Die Ernte dieses Jahres oder Ihre bisherige Schätzung'],
     },
     {
       icon: <TrendingUp className="size-5" />,
-      title: 'You get',
-      items: ['How this year compares with your own usual yield', 'A forecast that improves as more fields join', 'Satellite and weather analysis of your field, as it becomes available'],
+      title: 'Sie bekommen',
+      items: ['Wie dieses Jahr im Vergleich zu Ihrem üblichen Ertrag liegt', 'Eine Prognose, die mit jedem weiteren Feld besser wird', 'Satelliten- und Wetteranalyse Ihres Felds, sobald verfügbar'],
     },
   ]
   return (
@@ -130,20 +131,20 @@ function GiveGet() {
 
 function HowItWorks() {
   const steps = [
-    { icon: <PenLine className="size-5" />, t: 'Draw your field', d: 'Find your village on the satellite map and click the corners of the field.' },
-    { icon: <Sprout className="size-5" />, t: 'Enter your yields', d: 'Past years and this year, in dt/ha or t/ha. Unknown years can stay empty.' },
-    { icon: <TrendingUp className="size-5" />, t: 'See your result', d: 'Your field against its own average, right away. The models learn from it for the next season.' },
+    { icon: <PenLine className="size-5" />, t: 'Feld einzeichnen', d: 'Suchen Sie Ihren Ort auf der Satellitenkarte und klicken Sie die Ecken des Felds an.' },
+    { icon: <Sprout className="size-5" />, t: 'Erträge eingeben', d: 'Vergangene Jahre und dieses Jahr, in dt/ha oder t/ha. Unbekannte Jahre bleiben einfach leer.' },
+    { icon: <TrendingUp className="size-5" />, t: 'Ergebnis ansehen', d: 'Ihr Feld im Vergleich zu seinem eigenen Durchschnitt, sofort. Die Modelle lernen daraus für die nächste Saison.' },
   ]
   return (
     <section className="py-16 sm:py-20">
       <Container>
-        <SectionHeader eyebrow="How it works" title="Three steps, no account." />
+        <SectionHeader eyebrow="So funktioniert es" title="Drei Schritte, kein Konto." />
         <ol className="mt-12 grid gap-5 md:grid-cols-3">
           {steps.map((s, i) => (
             <Reveal key={s.t} delay={i * 0.08}>
               <li className="panel h-full p-7">
                 <span className="grid size-10 place-items-center rounded-xl bg-maize/10 text-maize">{s.icon}</span>
-                <p className="mt-6 font-mono text-[11px] text-ink-4">Step {i + 1}</p>
+                <p className="mt-6 font-mono text-[11px] text-ink-4">Schritt {i + 1}</p>
                 <h3 className="mt-1 text-[20px]">{s.t}</h3>
                 <p className="mt-3 text-[14.5px] leading-relaxed text-ink-3">{s.d}</p>
               </li>
@@ -162,18 +163,18 @@ function WhyAustria() {
         <Reveal className="panel grain relative overflow-hidden p-8 sm:p-12">
           <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr] lg:items-center">
             <div>
-              <p className="eyebrow mb-4">Why Austrian fields matter</p>
-              <h2 className="text-balance text-[clamp(1.8rem,3.4vw,2.6rem)]">The models learned abroad. Austria still has to prove it.</h2>
+              <p className="eyebrow mb-4">Warum österreichische Felder zählen</p>
+              <h2 className="text-balance text-[clamp(1.8rem,3.4vw,2.6rem)]">Die Modelle haben im Ausland gelernt. In Österreich müssen sie sich erst beweisen.</h2>
               <p className="mt-5 max-w-[580px] text-pretty text-[16px] leading-relaxed text-ink-2">
-                So far the models only saw fields in the USA and Europe. Tested on Austria, they already tell good years from bad ones. What
-                is missing is the next step: telling single fields and regions apart. For that we need measured yields from Austrian fields,
-                and you have them.
+                Bisher kennen die Modelle nur Felder in den USA und in Europa. Im Test mit Österreich unterscheiden sie schon gute von
+                schlechten Jahren. Was fehlt, ist der nächste Schritt: einzelne Felder und Regionen auseinanderzuhalten. Dafür brauchen
+                wir gemessene Erträge von österreichischen Feldern – und die haben Sie.
               </p>
             </div>
             <div className="flex flex-col gap-3">
-              <ButtonLink to="/contribute" size="lg" icon={<ArrowRight className="size-4" />}>Add your field</ButtonLink>
+              <ButtonLink to="/contribute" size="lg" icon={<ArrowRight className="size-4" />}>Feld eintragen</ButtonLink>
               <Link to="/evidence" className="link-underline inline-flex items-center gap-1.5 text-[14px] text-ink-2 hover:text-ink">
-                See the test results <ArrowRight className="size-3.5" />
+                Testergebnisse ansehen <ArrowRight className="size-3.5" />
               </Link>
             </div>
           </div>
@@ -185,14 +186,14 @@ function WhyAustria() {
 
 function Models() {
   const items = [
-    { t: 'Within-field map', d: 'Shows which part of one field is likely to be weak.' },
-    { t: 'Field stress score', d: 'Flags fields whose season looks unusual compared with healthy ones.' },
-    { t: 'EU regional model', d: 'Estimates whether a region’s maize year will be better or worse than usual.' },
+    { t: 'Teilflächenkarte', d: 'Zeigt, welcher Teil eines Felds wahrscheinlich schwächer ist.' },
+    { t: 'Feld-Stress-Score', d: 'Markiert Felder, deren Saison im Vergleich zu gesunden Feldern ungewöhnlich aussieht.' },
+    { t: 'EU-Regionalmodell', d: 'Schätzt, ob das Maisjahr einer Region besser oder schlechter als üblich ausfällt.' },
   ]
   return (
     <section className="py-16 sm:py-20">
       <Container>
-        <SectionHeader eyebrow="What we build" title="Three models, explained simply." />
+        <SectionHeader eyebrow="Was wir bauen" title="Drei Modelle, einfach erklärt." />
         <div className="mt-12 grid gap-5 md:grid-cols-3">
           {items.map((m, i) => (
             <Reveal key={m.t} delay={i * 0.08}>
@@ -216,10 +217,10 @@ function ClosingCta() {
     <section className="pt-16 sm:pt-20">
       <Container className="text-center">
         <Reveal>
-          <h2 className="mx-auto max-w-[760px] text-balance text-[clamp(2.2rem,5vw,3.8rem)]">One field. Two minutes. A better forecast for everyone.</h2>
-          <div className="mt-9 flex justify-center gap-3">
-            <ButtonLink to="/contribute" size="lg" icon={<ArrowRight className="size-4" />}>Add your field</ButtonLink>
-            <ButtonLink to="/analyse" size="lg" variant="secondary">Try an example field</ButtonLink>
+          <h2 className="mx-auto max-w-[760px] text-balance text-[clamp(2.2rem,5vw,3.8rem)]">Ein Feld. Zwei Minuten. Eine bessere Prognose für alle.</h2>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <ButtonLink to="/contribute" size="lg" icon={<ArrowRight className="size-4" />}>Feld eintragen</ButtonLink>
+            <ButtonLink to="/analyse" size="lg" variant="secondary">Beispielfeld ansehen</ButtonLink>
           </div>
         </Reveal>
       </Container>

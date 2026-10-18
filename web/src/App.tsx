@@ -27,14 +27,14 @@ function ScrollManager() {
 }
 
 const TITLES: Record<string, string> = {
-  '/': 'CropTransfer AT · Share your yields, get a better forecast',
-  '/contribute': 'Add your field · CropTransfer AT',
-  '/analyse': 'Analyse a field · CropTransfer AT',
-  '/evidence': 'Evidence · CropTransfer AT',
-  '/model': 'Model card · CropTransfer AT',
-  '/data': 'Data · CropTransfer AT',
-  '/method': 'Method · CropTransfer AT',
-  '/about': 'About · CropTransfer AT',
+  '/': 'CropTransfer AT · Erträge teilen, bessere Prognose erhalten',
+  '/contribute': 'Feld eintragen · CropTransfer AT',
+  '/analyse': 'Feld analysieren · CropTransfer AT',
+  '/evidence': 'Belege · CropTransfer AT',
+  '/model': 'Modellsteckbrief · CropTransfer AT',
+  '/data': 'Daten · CropTransfer AT',
+  '/method': 'Methode · CropTransfer AT',
+  '/about': 'Über das Projekt · CropTransfer AT',
 }
 
 export default function App() {
@@ -46,7 +46,7 @@ export default function App() {
   return (
     <div className="flex min-h-dvh flex-col">
       <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-maize focus:px-3 focus:py-2 focus:text-soil-950">
-        Skip to content
+        Zum Inhalt springen
       </a>
       <ScrollManager />
       <Nav />

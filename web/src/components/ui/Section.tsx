@@ -33,5 +33,5 @@ export function SectionHeader({
 
 /** Pointer to the repository file a number comes from. */
 export function Source({ children, className = '' }: { children: ReactNode; className?: string }) {
-  return <p className={`font-mono text-[10.5px] leading-relaxed tracking-wide text-ink-4 ${className}`}>Source · {children}</p>
+  return <p className={`font-mono text-[10.5px] leading-relaxed tracking-wide text-ink-4 ${className}`}>Quelle · {children}</p>
 }

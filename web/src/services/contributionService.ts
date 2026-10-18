@@ -43,7 +43,7 @@ export async function submitContribution(c: Omit<Contribution, 'id' | 'createdAt
   }
   if (res && res.status >= 400 && res.status < 500) {
     const { error } = (await res.json().catch(() => ({ error: '' }))) as { error?: string }
-    throw new Error(error || 'The server rejected this entry.')
+    throw new Error(error || 'Der Server hat diesen Eintrag abgelehnt.')
   }
   const full: Contribution = { ...c, id: crypto.randomUUID(), createdAt: new Date().toISOString() }
   try {

@@ -6,7 +6,7 @@ import { StrengthBadge, type Strength } from '../components/ui/Badge'
 import { Reveal } from '../components/ui/Reveal'
 import { Container } from '../components/ui/Section'
 import { ErrorNote, Skeleton } from '../components/ui/States'
-import { fmt, fmtCi, fmtPct } from '../lib/format'
+import { fmt, fmtCi, fmtInt, fmtPct } from '../lib/format'
 import { useResource } from '../lib/useResource'
 import { getEvidence } from '../services/evidenceService'
 
@@ -37,90 +37,90 @@ function cards(ev: Evidence): Card[] {
   return [
     {
       key: 'map',
-      name: 'Within-field map',
-      oneLine: 'Shows which part of a field is likely to yield less.',
+      name: 'Teilflächenkarte',
+      oneLine: 'Zeigt, welcher Teil eines Feldes wahrscheinlich weniger Ertrag bringt.',
       strength: 'robust',
-      good: ['Finding the weak zones inside one field', 'Deciding where to look first, from July'],
-      notGood: ['Exact yield in t/ha', 'Explaining why a zone is weak'],
+      good: ['Schwache Zonen innerhalb eines Feldes finden', 'Entscheiden, wo Sie ab Juli zuerst nachsehen'],
+      notGood: ['Genauer Ertrag in t/ha', 'Erklären, warum eine Zone schwach ist'],
       more: [
-        { k: 'What it does', v: 'Looks at a satellite picture of one maize field in midsummer and colours every 10 × 10 m patch from “probably good” to “probably weak”.' },
-        { k: 'How it works', v: <>Healthy maize is greener in July and August. The simple version ranks patches by greenness, <b>with no training at all</b>.</> },
-        { k: 'Based on', v: 'Free Sentinel-2 satellite images (10 m detail), cleaned of clouds.' },
-        { k: 'Training data', v: <>One public dataset (USDA Maryland, harvester yield maps): <b>41 field-years</b>, about <b>24,000 patches</b>, roughly <b>0.9 GB</b> raw. The simple version uses none of it.</> },
-        { k: 'How good', v: <>Its ranking of patches matches the real yield map with a score of <b>{fmt(b0.rho_median, 2)}</b> {fmtCi(b0.rho_ci?.[0], b0.rho_ci?.[1])} (0 = random, 1 = perfect). Of the flagged weakest quarter, {fmtPct(map.median_precision)} is truly weak, against {fmtPct(map.median_prevalence)} by chance.</> },
+        { k: 'Was es macht', v: 'Betrachtet ein Satellitenbild eines Maisfeldes im Hochsommer und färbt jede 10 × 10 m große Zelle von „wahrscheinlich gut“ bis „wahrscheinlich schwach“ ein.' },
+        { k: 'Wie es funktioniert', v: <>Gesunder Mais ist im Juli und August grüner. Die einfache Version reiht die Zellen nach ihrem Grün, <b>ganz ohne Training</b>.</> },
+        { k: 'Grundlage', v: 'Kostenlose Sentinel-2-Satellitenbilder (10 m Auflösung), von Wolken bereinigt.' },
+        { k: 'Trainingsdaten', v: <>Ein öffentlicher Datensatz (USDA Maryland, Mähdrescher-Ertragskarten): <b>41 Feld-Jahre</b>, etwa <b>{fmtInt(24000)} Zellen</b>, rund <b>0,9 GB</b> Rohdaten. Die einfache Version nutzt davon nichts.</> },
+        { k: 'Wie gut', v: <>Die Reihung der Zellen stimmt mit der echten Ertragskarte mit einem Wert von <b>{fmt(b0.rho_median, 2)}</b> {fmtCi(b0.rho_ci?.[0], b0.rho_ci?.[1])} überein (0 = zufällig, 1 = perfekt). Vom markierten schwächsten Viertel sind {fmtPct(map.median_precision)} wirklich schwach, gegenüber {fmtPct(map.median_prevalence)} bei Zufall.</> },
       ],
       failures: [
-        'Weak zones that return every year can be soil, but also tramlines and field edges.',
-        'Very dense, dark-green crops make patches look alike and the ranking gets noisy.',
-        'Proven at one site so far; other regions are plausible but untested.',
+        'Schwache Zonen, die jedes Jahr wiederkehren, können am Boden liegen, aber auch an Fahrgassen und Feldrändern.',
+        'Sehr dichte, dunkelgrüne Bestände lassen die Zellen ähnlich aussehen; die Reihung wird unruhig.',
+        'Bisher an einem Standort nachgewiesen; andere Regionen sind plausibel, aber ungetestet.',
       ],
       tech: [
-        { k: 'Architecture', v: <>Rule <b>B0</b>: median NDVI of the dekads 10 Jul – 18 Aug per cell, no training. Optional model <b>M1</b>: ridge regression (α = 1) on six z-scored NDVI/NDRE windows around the curve peak.</> },
-        { k: 'Inputs', v: 'Sentinel-2 L2A, 10-day composites, Cloud Score+ masking (cs_cdf ≥ 0.60), 10-m cells; field edge buffer 10 m.' },
-        { k: 'Target', v: 'Cell yield relative to the field mean, from combine yield maps. Low-yield zone: below 85 % of the field mean.' },
-        { k: 'Training data', v: 'B0: none. M1: BARC, 41 field-years on 27 fields (Kayad 3 and Akron 6 field-years descriptive only).' },
-        { k: 'Validation', v: 'Leave-one-field-out, leave-one-site-out and a site-to-site transfer matrix; bootstrap over fields. Rules fixed before the run (innerfeld_vorab.md).' },
-        { k: 'Metrics', v: <>Median ρ B0 <b>{fmt(b0.rho_median, 2)}</b> {fmtCi(b0.rho_ci?.[0], b0.rho_ci?.[1])}; M1 <b>{fmt(m1.rho_median, 2)}</b> {fmtCi(m1.rho_ci?.[0], m1.rho_ci?.[1])}. Flagged quarter: {fmtPct(map.median_precision)} truly low vs {fmtPct(map.median_prevalence)} overall (lift × {fmt(map.median_lift, 1)}).</> },
-        { k: 'Version', v: 'results/2026-10-17_innerfeld · pre-registration commit ca0f987 · seed 42' },
+        { k: 'Architektur', v: <>Regel <b>B0</b>: Median-NDVI der Dekaden 10. Jul – 18. Aug je Zelle, ohne Training. Optionales Modell <b>M1</b>: Ridge-Regression (α = 1) auf sechs z-standardisierten NDVI/NDRE-Fenstern um das Kurvenmaximum.</> },
+        { k: 'Eingaben', v: 'Sentinel-2 L2A, 10-Tage-Komposite, Cloud-Score+-Maskierung (cs_cdf ≥ 0,60), 10-m-Zellen; Randpuffer 10 m.' },
+        { k: 'Zielgröße', v: 'Zellertrag relativ zum Feldmittel, aus Mähdrescher-Ertragskarten. Ertragsschwache Zone: unter 85 % des Feldmittels.' },
+        { k: 'Trainingsdaten', v: 'B0: keine. M1: BARC, 41 Feld-Jahre auf 27 Feldern (Kayad 3 und Akron 6 Feld-Jahre nur beschreibend).' },
+        { k: 'Validierung', v: 'Leave-one-field-out, Leave-one-site-out und eine Transfermatrix von Standort zu Standort; Bootstrap über Felder. Regeln vor dem Lauf festgelegt (innerfeld_vorab.md).' },
+        { k: 'Metriken', v: <>Median-ρ B0 <b>{fmt(b0.rho_median, 2)}</b> {fmtCi(b0.rho_ci?.[0], b0.rho_ci?.[1])}; M1 <b>{fmt(m1.rho_median, 2)}</b> {fmtCi(m1.rho_ci?.[0], m1.rho_ci?.[1])}. Markiertes Viertel: {fmtPct(map.median_precision)} wirklich ertragsschwach ggü. {fmtPct(map.median_prevalence)} insgesamt (Lift × {fmt(map.median_lift, 1)}).</> },
+        { k: 'Version', v: 'results/2026-10-17_innerfeld · Commit der Vorab-Festlegung ca0f987 · Seed 42' },
       ],
     },
     {
       key: 'score',
-      name: 'Field stress score',
-      oneLine: 'Flags fields whose season looks worse than that of a healthy field.',
+      name: 'Feld-Stress-Score',
+      oneLine: 'Markiert Felder, deren Saison schlechter aussieht als die eines gesunden Feldes.',
       strength: 'limited',
-      good: ['A watch-list of fields per region and year', 'Spotting unusual seasons by 1 September'],
-      notGood: ['How large a loss is', 'Why it happened'],
+      good: ['Eine Beobachtungsliste von Feldern je Region und Jahr', 'Auffällige Saisonen bis zum 1. September erkennen'],
+      notGood: ['Wie groß ein Ausfall ist', 'Warum er entstanden ist'],
       more: [
-        { k: 'What it does', v: 'Follows the greenness of a maize field through the season and compares it with a healthy field. The further it falls behind, the higher the stress score.' },
-        { k: 'How it works', v: 'A “healthy reference curve” is built from fields with a normal harvest. A simple statistical model turns the gap to that curve into a risk of a poor harvest.' },
-        { k: 'Based on', v: 'Satellite greenness (Sentinel-2 and the harmonised HLS product) from 1 June until the forecast date.' },
-        { k: 'Training data', v: <>Two public datasets (Michigan KBS, Maryland BARC): <b>{a0.n} field-years</b> from 8 independent site-years, roughly <b>1 GB</b> raw.</> },
-        { k: 'How good', v: <>Clearly better than chance (score <b>{fmt(a0.pr_auc, 2)}</b> {fmtCi(a0.pr_auc_lo, a0.pr_auc_hi)} against {fmt(a0.prevalence, 2)} by chance), but not better than the plain greenness curve ({fmt(raw.pr_auc, 2)}). It finds {fmtPct(al.alarm_recall)} of at-risk fields at a {fmtPct(al.alarm_fpr)} false-alarm rate.</> },
+        { k: 'Was es macht', v: 'Verfolgt das Grün eines Maisfeldes durch die Saison und vergleicht es mit einem gesunden Feld. Je weiter es zurückfällt, desto höher der Stress-Score.' },
+        { k: 'Wie es funktioniert', v: 'Aus Feldern mit normaler Ernte wird eine „gesunde Referenzkurve“ gebildet. Ein einfaches statistisches Modell macht aus dem Abstand zu dieser Kurve ein Risiko für eine schlechte Ernte.' },
+        { k: 'Grundlage', v: 'Satelliten-Grünwerte (Sentinel-2 und das harmonisierte HLS-Produkt) vom 1. Juni bis zum Prognosestichtag.' },
+        { k: 'Trainingsdaten', v: <>Zwei öffentliche Datensätze (Michigan KBS, Maryland BARC): <b>{a0.n} Feld-Jahre</b> aus 8 unabhängigen Standort-Jahren, rund <b>1 GB</b> Rohdaten.</> },
+        { k: 'Wie gut', v: <>Deutlich besser als Zufall (Wert <b>{fmt(a0.pr_auc, 2)}</b> {fmtCi(a0.pr_auc_lo, a0.pr_auc_hi)} gegenüber {fmt(a0.prevalence, 2)} bei Zufall), aber nicht besser als die einfache Grünkurve ({fmt(raw.pr_auc, 2)}). Er findet {fmtPct(al.alarm_recall)} der gefährdeten Felder bei einer Fehlalarmrate von {fmtPct(al.alarm_fpr)}.</> },
       ],
       failures: [
-        'Late sowing after a cover crop looks like stress: organic plots are flagged every year.',
-        'Between plots with equal management it does not rank correctly.',
-        'Losses that only show after August are missed.',
-        'Disease, pests and hail cannot be told apart from drought.',
+        'Späte Aussaat nach einer Zwischenfrucht sieht aus wie Stress: Bio-Parzellen werden jedes Jahr markiert.',
+        'Zwischen Parzellen mit gleicher Bewirtschaftung reiht er nicht richtig.',
+        'Ausfälle, die sich erst nach August zeigen, werden übersehen.',
+        'Krankheiten, Schädlinge und Hagel lassen sich nicht von Trockenheit unterscheiden.',
       ],
       tech: [
-        { k: 'Architecture', v: <>Score = mean of min(NDVI<sub>d</sub> − reference<sub>d</sub>, 0) over observed dekads from 1 June to the forecast date. Risk model <b>A0</b>: logistic regression (C = 1, class-balanced) on the score. Alarm threshold set conformally for ≤ 20 % false alarms.</> },
-        { k: 'Inputs', v: 'NDVI dekads (Sentinel-2; HLS for the frozen Austria version). Reference = median curve of healthy field-years (≥ 95 % of normal yield), computed inside each training fold.' },
-        { k: 'Target', v: 'At risk = relative yield below 0.85, where “normal” is the same field’s yield in at least two other years.' },
-        { k: 'Training data', v: `${a0.n} field-years from 8 independent site-years (KBS Michigan, BARC Maryland).` },
-        { k: 'Validation', v: 'Leave field group and year out (LOFYO); cluster bootstrap over site-years; label shuffle, coordinate ablation and adversarial validation as controls.' },
-        { k: 'Metrics', v: <>PR-AUC A0 <b>{fmt(a0.pr_auc, 2)}</b> {fmtCi(a0.pr_auc_lo, a0.pr_auc_hi)}, raw score {fmt(raw.pr_auc, 2)}; chance {fmt(a0.prevalence, 2)}. At the threshold: recall {fmt(al.alarm_recall, 2)}, precision {fmt(al.alarm_precision, 2)}, false-alarm rate {fmt(al.alarm_fpr, 2)}.</> },
-        { k: 'Version', v: 'results/2026-10-16_feinjust_ablation · Austria freeze: reports/freeze_protocol_at.md, reference curve of 77 HLS field-years' },
+        { k: 'Architektur', v: <>Score = Mittel von min(NDVI<sub>d</sub> − Referenz<sub>d</sub>, 0) über die beobachteten Dekaden vom 1. Juni bis zum Prognosestichtag. Risikomodell <b>A0</b>: logistische Regression (C = 1, klassenbalanciert) auf den Score. Alarmschwelle konform festgelegt für ≤ 20 % Fehlalarme.</> },
+        { k: 'Eingaben', v: 'NDVI-Dekaden (Sentinel-2; HLS für die eingefrorene Österreich-Version). Referenz = Mediankurve gesunder Feld-Jahre (≥ 95 % des Normalertrags), innerhalb jedes Trainings-Folds berechnet.' },
+        { k: 'Zielgröße', v: 'Gefährdet = relativer Ertrag unter 0,85, wobei „normal“ der Ertrag desselben Feldes in mindestens zwei anderen Jahren ist.' },
+        { k: 'Trainingsdaten', v: `${a0.n} Feld-Jahre aus 8 unabhängigen Standort-Jahren (KBS Michigan, BARC Maryland).` },
+        { k: 'Validierung', v: 'Feldgruppe und Jahr ausgelassen (LOFYO); Cluster-Bootstrap über Standort-Jahre; Label-Shuffle, Koordinaten-Ablation und Adversarial Validation als Kontrollen.' },
+        { k: 'Metriken', v: <>PR-AUC A0 <b>{fmt(a0.pr_auc, 2)}</b> {fmtCi(a0.pr_auc_lo, a0.pr_auc_hi)}, roher Score {fmt(raw.pr_auc, 2)}; Zufallsniveau {fmt(a0.prevalence, 2)}. An der Schwelle: Recall {fmt(al.alarm_recall, 2)}, Präzision {fmt(al.alarm_precision, 2)}, Fehlalarmrate {fmt(al.alarm_fpr, 2)}.</> },
+        { k: 'Version', v: 'results/2026-10-16_feinjust_ablation · Österreich-Freeze: reports/freeze_protocol_at.md, Referenzkurve aus 77 HLS-Feld-Jahren' },
       ],
     },
     {
       key: 'eu',
-      name: 'EU regional model',
-      oneLine: 'Estimates whether a region’s maize year will be better or worse than usual.',
+      name: 'EU-Regionalmodell',
+      oneLine: 'Schätzt, ob das Maisjahr einer Region besser oder schlechter als üblich wird.',
       strength: 'certain-small',
-      good: ['An early hint on good and bad years per region', 'Ranking regions and years'],
-      notGood: ['Single fields', 'Forecasts in t/ha'],
+      good: ['Ein früher Hinweis auf gute und schlechte Jahre je Region', 'Regionen und Jahre reihen'],
+      notGood: ['Einzelne Felder', 'Prognosen in t/ha'],
       more: [
-        { k: 'What it does', v: 'Estimates, before harvest, whether a region’s maize year will come out above or below its recent normal.' },
-        { k: 'How it works', v: 'A machine-learning model (small decision trees) learns from past years how weather, soil moisture and plant greenness from April onwards relate to the final yield. One model per forecast date, 1 June to 1 September.' },
-        { k: 'Based on', v: 'Monthly weather, soil moisture, satellite plant-health values and soil properties. No place names, IDs or year are given to the model.' },
-        { k: 'Training data', v: <>One public dataset (CY-Bench): <b>{eu.n.toLocaleString('en-US')} region-years</b> from <b>{eu.countries} EU countries</b>, 2003–2021, roughly <b>0.9 GB</b> raw. Austria is left out entirely.</> },
-        { k: 'How good', v: <>Ranking of region-years: score <b>{fmt(eu.spearman.value, 2)}</b> {fmtCi(eu.spearman.lo, eu.spearman.hi)} (0 = random, 1 = perfect), tested on countries it never saw. Advantage over simply assuming a normal year: {fmt(eu.skill_vs_normal.value, 2)} {fmtCi(eu.skill_vs_normal.lo, eu.skill_vs_normal.hi)}, small but certain.</> },
+        { k: 'Was es macht', v: 'Schätzt vor der Ernte, ob das Maisjahr einer Region über oder unter ihrem üblichen Ertrag der letzten Jahre liegen wird.' },
+        { k: 'Wie es funktioniert', v: 'Ein Machine-Learning-Modell (kleine Entscheidungsbäume) lernt aus vergangenen Jahren, wie Wetter, Bodenfeuchte und Pflanzengrün ab April mit dem Endertrag zusammenhängen. Ein Modell je Prognosestichtag, 1. Juni bis 1. September.' },
+        { k: 'Grundlage', v: 'Monatliches Wetter, Bodenfeuchte, Satellitenwerte zur Pflanzengesundheit und Bodeneigenschaften. Ortsnamen, IDs oder das Jahr bekommt das Modell nicht.' },
+        { k: 'Trainingsdaten', v: <>Ein öffentlicher Datensatz (CY-Bench): <b>{fmtInt(eu.n)} Region-Jahre</b> aus <b>{eu.countries} EU-Ländern</b>, 2003–2021, rund <b>0,9 GB</b> Rohdaten. Österreich ist vollständig ausgeschlossen.</> },
+        { k: 'Wie gut', v: <>Reihung der Region-Jahre: Wert <b>{fmt(eu.spearman.value, 2)}</b> {fmtCi(eu.spearman.lo, eu.spearman.hi)} (0 = zufällig, 1 = perfekt), getestet an Ländern, die es nie gesehen hat. Vorteil gegenüber der einfachen Annahme eines Normaljahres: {fmt(eu.skill_vs_normal.value, 2)} {fmtCi(eu.skill_vs_normal.lo, eu.skill_vs_normal.hi)} – klein, aber sicher.</> },
       ],
       failures: [
-        `It mostly learns which year it is (yearly means ρ ${fmt(eu.yearly_mean_spearman, 2)}), less the differences between regions.`,
-        'Predictions stay close to normal and under-react to extreme years.',
-        'Before 15 July it has essentially no skill.',
+        `Es lernt vor allem, welches Jahr es ist (Jahresmittel ρ ${fmt(eu.yearly_mean_spearman, 2)}), weniger die Unterschiede zwischen Regionen.`,
+        'Die Vorhersagen bleiben nahe am Normalwert und reagieren zu schwach auf extreme Jahre.',
+        'Vor dem 15. Juli hat es praktisch keine Vorhersagekraft.',
       ],
       tech: [
-        { k: 'Architecture', v: 'LightGBM regression with shallow trees (depth ≤ 3, 50–100 trees), one model per forecast date from 1 June to 1 September. Hyper-parameters chosen by leave-one-country-out inside the training countries.' },
-        { k: 'Inputs', v: `Monthly mean/min/max of max and min temperature, precipitation, climatic water balance, root-zone and surface soil moisture, fPAR and NDVI from April to the forecast date, plus water capacity and bulk density — ${eu.n_features} features on 1 Sep. No coordinates, IDs or year.` },
-        { k: 'Target', v: 'YAS = yield ÷ olympic mean (without max and min) of the same region’s previous five years.' },
-        { k: 'Training data', v: `CY-Bench v1.10, maize, ${eu.countries} EU countries, ${eu.n.toLocaleString('en-US')} region-years from 2003–2021. Austria excluded by code and test.` },
-        { k: 'Validation', v: 'Leave-one-country-out; bootstrap over region-years and, as a check, over years. Controls: label shuffle, training without Germany, country-balanced weights.' },
-        { k: 'Metrics', v: <>Spearman ρ <b>{fmt(eu.spearman.value, 2)}</b> {fmtCi(eu.spearman.lo, eu.spearman.hi)}, R² {fmt(eu.r2.value, 2)}, skill vs normal year {fmt(eu.skill_vs_normal.value, 2)} {fmtCi(eu.skill_vs_normal.lo, eu.skill_vs_normal.hi)}. Within one year: ρ {fmt(eu.within_year.value, 2)}.</> },
-        { k: 'Version', v: `${ev.eu_meta.freeze} · commit ${ev.eu_meta.commit} · seed 42 · SHA-256 checksums in reports/freeze_protocol_cybench.md. The grid was widened once after a pilot run; numbers are slightly optimistic (disclosed).` },
+        { k: 'Architektur', v: 'LightGBM-Regression mit flachen Bäumen (Tiefe ≤ 3, 50–100 Bäume), ein Modell je Prognosestichtag vom 1. Juni bis 1. September. Hyperparameter per Leave-one-country-out innerhalb der Trainingsländer gewählt.' },
+        { k: 'Eingaben', v: `Monatliches Mittel/Minimum/Maximum von Tageshöchst- und Tagestiefsttemperatur, Niederschlag, klimatischer Wasserbilanz, Bodenfeuchte im Wurzelraum und an der Oberfläche, fPAR und NDVI von April bis zum Prognosestichtag, dazu Wasserspeicherfähigkeit und Lagerungsdichte – ${eu.n_features} Merkmale am 1. Sep. Keine Koordinaten, IDs oder Jahr.` },
+        { k: 'Zielgröße', v: 'YAS = Ertrag ÷ olympisches Mittel (ohne Maximum und Minimum) der fünf vorangegangenen Jahre derselben Region.' },
+        { k: 'Trainingsdaten', v: `CY-Bench v1.10, Mais, ${eu.countries} EU-Länder, ${fmtInt(eu.n)} Region-Jahre aus 2003–2021. Österreich per Code und Test ausgeschlossen.` },
+        { k: 'Validierung', v: 'Leave-one-country-out; Bootstrap über Region-Jahre und zur Kontrolle über Jahre. Kontrollen: Label-Shuffle, Training ohne Deutschland, länderbalancierte Gewichte.' },
+        { k: 'Metriken', v: <>Spearman ρ <b>{fmt(eu.spearman.value, 2)}</b> {fmtCi(eu.spearman.lo, eu.spearman.hi)}, R² {fmt(eu.r2.value, 2)}, Skill ggü. Normaljahr {fmt(eu.skill_vs_normal.value, 2)} {fmtCi(eu.skill_vs_normal.lo, eu.skill_vs_normal.hi)}. Innerhalb eines Jahres: ρ {fmt(eu.within_year.value, 2)}.</> },
+        { k: 'Version', v: `${ev.eu_meta.freeze} · Commit ${ev.eu_meta.commit} · Seed 42 · SHA-256-Prüfsummen in reports/freeze_protocol_cybench.md. Das Raster wurde nach einem Pilotlauf einmal erweitert; die Zahlen sind leicht optimistisch (offengelegt).` },
       ],
     },
   ]
@@ -134,10 +134,11 @@ export default function ModelCard() {
       <section className="pt-36 pb-12">
         <Container>
           <Reveal>
-            <p className="eyebrow mb-5">The three models</p>
-            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">What each one can do, and what not.</h1>
+            <p className="eyebrow mb-5">Die drei Modelle</p>
+            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Was jedes kann – und was nicht.</h1>
             <p className="mt-6 max-w-[680px] text-[17px] leading-relaxed text-ink-2">
-              Each model gets better with every Austrian field that is added. Open a card for the explanation, or for the exact method.
+              Jedes Modell wird mit jedem österreichischen Feld besser, das dazukommt. Öffnen Sie eine Karte für die Erklärung oder für die
+              genaue Methode.
             </p>
           </Reveal>
         </Container>
@@ -154,8 +155,8 @@ export default function ModelCard() {
             ))}
           </div>
           <p className="mt-10 max-w-[640px] text-[13.5px] leading-relaxed text-ink-3">
-            Trained on US and EU data only; Austria is used purely as the final test. Success criteria were written down before each run and
-            never changed. Every number can be reproduced from the code.
+            Nur mit US- und EU-Daten trainiert; Österreich dient ausschließlich als abschließender Test. Die Erfolgskriterien wurden vor
+            jedem Lauf schriftlich festgelegt und nie geändert. Jede Zahl lässt sich aus dem Code reproduzieren.
           </p>
         </Container>
       </section>
@@ -172,20 +173,20 @@ function ModelCardView({ card }: { card: Card }) {
       <p className="mt-3 text-pretty text-[17px] leading-snug text-ink">{card.oneLine}</p>
 
       <div className="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-        <Checklist title="Good for" items={card.good} ok />
-        <Checklist title="Not for" items={card.notGood} />
+        <Checklist title="Geeignet für" items={card.good} ok />
+        <Checklist title="Nicht geeignet für" items={card.notGood} />
       </div>
 
       <div className="mt-7 flex flex-wrap gap-2">
-        <Toggle open={level === 1} onClick={() => setLevel(level === 1 ? 0 : 1)}>More explanation</Toggle>
-        <Toggle open={level === 2} onClick={() => setLevel(level === 2 ? 0 : 2)}>Technical details</Toggle>
+        <Toggle open={level === 1} onClick={() => setLevel(level === 1 ? 0 : 1)}>Mehr Erklärung</Toggle>
+        <Toggle open={level === 2} onClick={() => setLevel(level === 2 ? 0 : 2)}>Technische Details</Toggle>
       </div>
 
       <AnimatePresence initial={false} mode="wait">
         {level === 1 && (
           <Panel key="more">
             <Rows rows={card.more} />
-            <p className="eyebrow mb-3 mt-6">Where it fails</p>
+            <p className="eyebrow mb-3 mt-6">Wo es scheitert</p>
             <ul className="flex flex-col gap-3">
               {card.failures.map((f) => (
                 <li key={f} className="flex gap-3 text-[13.5px] leading-relaxed text-ink-2">

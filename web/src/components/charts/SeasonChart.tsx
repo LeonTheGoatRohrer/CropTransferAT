@@ -5,7 +5,7 @@ import { useState } from 'react'
 import type { Nullable, ReferenceBand } from '../../api/types'
 import { tokens } from '../../lib/color'
 import { MONTH_TICKS, N_DEKADS, PHASES, dekadLabel } from '../../lib/dekads'
-import { fmt, fmtSigned } from '../../lib/format'
+import { fmt, fmtNum, fmtSigned } from '../../lib/format'
 import { ChartTooltip, GridY, axisText, useWidth } from './core'
 
 type Props = {
@@ -72,7 +72,7 @@ export function SeasonChart({
         width={width}
         height={height}
         role="img"
-        aria-label={`${label} season curve against the healthy reference`}
+        aria-label={`Saisonkurve ${label} im Vergleich zur gesunden Referenz`}
         onMouseLeave={() => setHover(null)}
         onMouseMove={(e) => {
           const r = (e.currentTarget as SVGSVGElement).getBoundingClientRect()
@@ -91,7 +91,7 @@ export function SeasonChart({
               )}
             </g>
           ))}
-        <GridY ticks={ticks} y={y} x0={m.l} x1={width - m.r} fmt={(v) => (Math.abs(v) < 1e-9 ? '0' : v.toFixed(1))} />
+        <GridY ticks={ticks} y={y} x0={m.l} x1={width - m.r} fmt={(v) => (Math.abs(v) < 1e-9 ? '0' : fmtNum(v, 1))} />
         {MONTH_TICKS.filter((t) => t.pos <= N_DEKADS - 1).map((t) => (
           <text key={t.label} x={x(t.pos)} y={height - m.b + 18} textAnchor="start" {...axisText}>
             {t.label}
@@ -114,7 +114,7 @@ export function SeasonChart({
             <line x1={x(cutoff)} x2={x(cutoff)} y1={m.t} y2={height - m.b} stroke={tokens.ink3} strokeDasharray="3 3" />
             {!compact && (
               <text x={x(cutoff) + 6} y={height - m.b - 8} {...axisText} fill={tokens.ink2}>
-                1 Sep cutoff
+                Stichtag 1. Sep
               </text>
             )}
           </g>
@@ -144,17 +144,17 @@ export function SeasonChart({
           <p className="eyebrow mb-1 !text-[10px]">{dekadLabel(hover, year)}</p>
           <p className="flex justify-between gap-4">
             <span className="text-ink-2">{label}</span>
-            <span className="font-mono tabular">{hv == null ? 'no clear scene' : fmt(hv, 3)}</span>
+            <span className="font-mono tabular">{hv == null ? 'keine wolkenfreie Szene' : fmt(hv, 3)}</span>
           </p>
           {hr != null && (
             <p className="flex justify-between gap-4">
-              <span className="text-ink-2">Healthy median</span>
+              <span className="text-ink-2">Gesunder Median</span>
               <span className="font-mono tabular">{fmt(hr, 3)}</span>
             </p>
           )}
           {hv != null && hr != null && (
             <p className="flex justify-between gap-4">
-              <span className="text-ink-2">Deviation</span>
+              <span className="text-ink-2">Abweichung</span>
               <span className={`font-mono tabular ${hv < hr ? 'text-rust' : 'text-sage'}`}>{fmtSigned(hv - hr, 3)}</span>
             </p>
           )}

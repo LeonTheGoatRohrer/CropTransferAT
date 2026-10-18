@@ -9,7 +9,7 @@ export function ErrorNote({ error }: { error: Error }) {
     <div role="alert" className="panel flex items-start gap-3 p-5 text-sm text-ink-2">
       <AlertTriangle className="mt-0.5 size-4 shrink-0 text-rust" />
       <div>
-        <p className="font-medium text-ink">Data could not be loaded</p>
+        <p className="font-medium text-ink">Daten konnten nicht geladen werden</p>
         <p className="mt-1">{error.message}</p>
       </div>
     </div>

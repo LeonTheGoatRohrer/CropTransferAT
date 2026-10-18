@@ -32,7 +32,7 @@ export function Metric({ label, value, digits = 2, prefix = '', suffix = '', ci,
       </span>
       {(hasCi || n) && (
         <span className="font-mono text-[11.5px] text-ink-3 tabular">
-          {hasCi && <>95 % CI {fmtCi(ci[0], ci[1], digits)}</>}
+          {hasCi && <>95-%-KI {fmtCi(ci[0], ci[1], digits)}</>}
           {hasCi && n && ' · '}
           {n && <>n = {n}</>}
         </span>

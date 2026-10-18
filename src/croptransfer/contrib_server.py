@@ -55,46 +55,46 @@ def ring_area_m2(ring: list[list[float]]) -> float:
 
 def _yield_ok(v: object) -> float:
     if isinstance(v, bool) or not isinstance(v, (int, float)) or not 0 < v <= MAX_YIELD_T_HA:
-        raise Invalid("Yields must be between 0 and 25 t/ha.")
+        raise Invalid("Erträge müssen zwischen 0 und 25 t/ha liegen.")
     return float(v)
 
 
 def _year_ok(v: object) -> int:
     if not isinstance(v, int) or isinstance(v, bool) or not YEAR_RANGE[0] <= v <= YEAR_RANGE[1]:
-        raise Invalid("Invalid year.")
+        raise Invalid("Ungültiges Jahr.")
     return v
 
 
 def validate(body: dict) -> dict:
     """Return the cleaned record or raise Invalid with a message safe to show the user."""
     if body.get("consent") is not True:
-        raise Invalid("Consent is required.")
+        raise Invalid("Ihre Zustimmung ist erforderlich.")
     poly = body.get("polygon")
     try:
         ring = poly["coordinates"][0]
         assert poly["type"] == "Polygon" and 4 <= len(ring) <= 500
         ring = [[float(x), float(y)] for x, y in ring]
     except Exception as e:  # noqa: BLE001
-        raise Invalid("The field outline is not a valid polygon.") from e
+        raise Invalid("Der Feldumriss ist kein gültiges Polygon.") from e
     west, south, east, north = AUSTRIA
     if not all(west <= x <= east and south <= y <= north for x, y in ring):
-        raise Invalid("The field must be in Austria.")
+        raise Invalid("Das Feld muss in Österreich liegen.")
     area = ring_area_m2(ring)
     if not MIN_AREA_M2 <= area <= MAX_AREA_M2:
-        raise Invalid("The field must be between 0.3 and 200 ha.")
+        raise Invalid("Das Feld muss zwischen 0,3 und 200 ha groß sein.")
 
     past = [{"year": _year_ok(i.get("year")), "tPerHa": _yield_ok(i.get("tPerHa"))} for i in body.get("pastYields") or []]
     if len({p["year"] for p in past}) != len(past):
-        raise Invalid("Each year can only appear once.")
+        raise Invalid("Jedes Jahr darf nur einmal vorkommen.")
     this = body.get("thisYear")
     if this is not None:
         if this.get("status") not in ("harvested", "estimate"):
-            raise Invalid("Invalid current-season entry.")
+            raise Invalid("Ungültige Angabe für dieses Jahr.")
         this = {"year": _year_ok(this.get("year")), "tPerHa": _yield_ok(this.get("tPerHa")), "status": this["status"]}
     if not past and this is None:
-        raise Invalid("Enter at least one yield.")
+        raise Invalid("Bitte geben Sie mindestens einen Ertrag ein.")
     if body.get("cropType") not in ("grain", "silage"):
-        raise Invalid("Invalid maize type.")
+        raise Invalid("Ungültige Maisart.")
     return {
         "polygon": {"type": "Polygon", "coordinates": [ring]},
         "area_m2": round(area),
@@ -159,19 +159,19 @@ class Handler(BaseHTTPRequestHandler):
         if self.path != "/api/contributions":
             return self._send(404, {"error": "not found"})
         if rate_limited(self.client_address[0]):
-            return self._send(429, {"error": "Too many submissions, please try again later."})
+            return self._send(429, {"error": "Zu viele Einsendungen. Bitte versuchen Sie es später erneut."})
         try:
             length = int(self.headers.get("Content-Length", "0"))
             if not 0 < length <= MAX_BODY:
-                raise Invalid("Request too large.")
+                raise Invalid("Anfrage zu groß.")
             body = json.loads(self.rfile.read(length))
             if not isinstance(body, dict):
-                raise Invalid("Invalid request.")
+                raise Invalid("Ungültige Anfrage.")
             record = validate(body)
         except Invalid as e:
             return self._send(400, {"error": str(e)})
         except ValueError:
-            return self._send(400, {"error": "Invalid request."})
+            return self._send(400, {"error": "Ungültige Anfrage."})
         with connect() as db:
             full = store(db, record)
         self._send(201, {"id": full["id"], "createdAt": full["createdAt"]})

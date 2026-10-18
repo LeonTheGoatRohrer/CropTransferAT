@@ -23,7 +23,7 @@ export function PlaceSearch({ onPick, countryCode }: { onPick: (p: Place) => voi
           setErr(null)
           setOpen(true)
         })
-        .catch((e: Error) => e.name !== 'AbortError' && setErr('Place search is unavailable offline.'))
+        .catch((e: Error) => e.name !== 'AbortError' && setErr('Die Ortssuche ist offline nicht verfügbar.'))
         .finally(() => setBusy(false))
     }, 450)
     return () => {
@@ -47,8 +47,8 @@ export function PlaceSearch({ onPick, countryCode }: { onPick: (p: Place) => voi
             }
             if (e.key === 'Escape') setOpen(false)
           }}
-          placeholder="Search a place, e.g. Leibnitz"
-          aria-label="Search a place"
+          placeholder="Ort suchen, z. B. Leibnitz"
+          aria-label="Ort suchen"
           className="h-full w-full bg-transparent text-[13.5px] text-ink placeholder:text-ink-4 focus:outline-none"
         />
       </div>
@@ -73,7 +73,7 @@ export function PlaceSearch({ onPick, countryCode }: { onPick: (p: Place) => voi
               </button>
             ))
           )}
-          <p className="px-3 pb-1 pt-1.5 text-[10px] text-ink-4">Search © OpenStreetMap contributors (Nominatim)</p>
+          <p className="px-3 pb-1 pt-1.5 text-[10px] text-ink-4">Suche © OpenStreetMap-Mitwirkende (Nominatim)</p>
         </div>
       ) : null}
     </div>

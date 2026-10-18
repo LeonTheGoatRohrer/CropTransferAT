@@ -7,7 +7,7 @@ import { PlaceSearch } from '../components/map/PlaceSearch'
 import { Button } from '../components/ui/Button'
 import { AT_SITES, AUSTRIA_BOUNDS } from '../data/content/atSites'
 import { Tabs } from '../components/ui/Tabs'
-import { fmt, fmtArea } from '../lib/format'
+import { fmt, fmtArea, fmtNum } from '../lib/format'
 import { areaM2 } from '../lib/geo'
 import { downloadContributions, judgeYield, listContributions, submitContribution, type Contribution } from '../services/contributionService'
 
@@ -19,7 +19,7 @@ const MAX_AREA = 2_000_000
 const SITE_POINTS = AT_SITES.map((s) => ({
   id: s.id,
   title: `${s.name} (${s.region})`,
-  text: `Trial site with ${s.years} yield years (${s.from}–${s.to}), average ${s.meanTHa.toFixed(1)} t/ha.`,
+  text: `Versuchsstandort mit ${s.years} Ertragsjahren (${s.from}–${s.to}), im Mittel ${fmtNum(s.meanTHa, 1)} t/ha.`,
   lngLat: s.lngLat,
 }))
 
@@ -53,7 +53,7 @@ export default function Contribute() {
 
   const area = polygon ? areaM2(polygon) : 0
   const outside = polygon ? !polygon.coordinates[0].every(([x, y]) => x >= AUSTRIA_BOUNDS[0] && x <= AUSTRIA_BOUNDS[2] && y >= AUSTRIA_BOUNDS[1] && y <= AUSTRIA_BOUNDS[3]) : false
-  const areaProblem = outside ? 'Please draw a field in Austria.' : polygon ? (area < MIN_AREA ? 'Too small, draw at least 0.3 ha.' : area > MAX_AREA ? 'Too large, draw a single field (max. 200 ha).' : null) : null
+  const areaProblem = outside ? 'Bitte zeichnen Sie ein Feld in Österreich.' : polygon ? (area < MIN_AREA ? 'Zu klein – zeichnen Sie mindestens 0,3 ha.' : area > MAX_AREA ? 'Zu groß – zeichnen Sie ein einzelnes Feld (max. 200 ha).' : null) : null
 
   const pastYields = useMemo(
     () => PAST_YEARS.flatMap((y) => { const t = toT(past[y] ?? '', unit); return t == null ? [] : [{ year: y, tPerHa: t }] }),
@@ -117,11 +117,11 @@ export default function Contribute() {
           <PlaceSearch countryCode="at" onPick={(p) => setFlyTo({ center: p.center, bbox: p.bbox, key: Date.now() })} />
           <Tabs
             size="sm"
-            label="Base map"
+            label="Grundkarte"
             value={basemap}
             onChange={setBasemap}
             className="panel-glass pointer-events-auto !rounded-[12px] !border-white/10"
-            items={[{ value: 'satellite', label: 'Satellite' }, { value: 'terrain', label: 'Terrain' }]}
+            items={[{ value: 'satellite', label: 'Satellit' }, { value: 'terrain', label: 'Gelände' }]}
           />
         </div>
         <div className="pointer-events-none absolute bottom-10 left-3 flex flex-col items-start gap-2 sm:left-4">
@@ -132,9 +132,9 @@ export default function Contribute() {
             icon={drawing ? <X className="size-3.5" /> : <PenLine className="size-3.5" />}
             onClick={() => setDrawing((d) => !d)}
           >
-            {drawing ? 'Cancel' : polygon ? 'Redraw field' : 'Draw your field'}
+            {drawing ? 'Abbrechen' : polygon ? 'Neu zeichnen' : 'Feld zeichnen'}
           </Button>
-          {drawing && <p className="panel-glass px-3 py-2 text-[12.5px] text-ink-2">Click the corners of your field. Click the first corner to close it.</p>}
+          {drawing && <p className="panel-glass px-3 py-2 text-[12.5px] text-ink-2">Klicken Sie auf die Ecken Ihres Feldes. Klicken Sie zum Schließen auf die erste Ecke.</p>}
         </div>
       </div>
 
@@ -144,54 +144,54 @@ export default function Contribute() {
             {sent ? (
               <motion.div key="done" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-5">
                 <span className="grid size-10 place-items-center rounded-full bg-sage/15 text-sage"><Check className="size-5" /></span>
-                <h1 className="text-[28px] leading-tight">Thank you. Your field is in.</h1>
+                <h1 className="text-[28px] leading-tight">Danke! Ihr Feld ist eingetragen.</h1>
                 <p className="text-[14.5px] leading-relaxed text-ink-2">
-                  Every field with a known yield makes the forecast for the next farmer better. Come back next year to add the new harvest.
+                  Jedes Feld mit bekanntem Ertrag verbessert die Prognose für den nächsten Betrieb. Kommen Sie nächstes Jahr wieder und tragen Sie die neue Ernte nach.
                 </p>
                 {verdict && <Result verdict={verdict} now={nowT} />}
                 <p className="rounded-xl border border-[var(--line)] bg-white/[0.02] p-4 text-[12.5px] leading-relaxed text-ink-3">
                   {sent.saved === 'server'
-                    ? 'Saved on the project server.'
-                    : `The project server could not be reached, so your entry is kept in this browser for now (${stored} so far). You can download it.`}
+                    ? 'Auf dem Projektserver gespeichert.'
+                    : `Der Projektserver war nicht erreichbar. Ihr Eintrag bleibt vorerst in diesem Browser gespeichert (bisher ${stored}). Sie können ihn herunterladen.`}
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  <Button variant="secondary" size="sm" icon={<Download className="size-3.5" />} onClick={() => downloadContributions(listContributions())}>Download entries</Button>
-                  <Button variant="ghost" size="sm" onClick={reset}>Add another field</Button>
+                  <Button variant="secondary" size="sm" icon={<Download className="size-3.5" />} onClick={() => downloadContributions(listContributions())}>Einträge herunterladen</Button>
+                  <Button variant="ghost" size="sm" onClick={reset}>Weiteres Feld eintragen</Button>
                 </div>
               </motion.div>
             ) : (
               <motion.div key="form" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col gap-7">
                 <div>
-                  <p className="eyebrow">Add your field</p>
-                  <h1 className="mt-3 text-[28px] leading-tight">Share your yields. Get a forecast for your field.</h1>
+                  <p className="eyebrow">Feld eintragen</p>
+                  <h1 className="mt-3 text-[28px] leading-tight">Teilen Sie Ihre Erträge – und erhalten Sie eine Prognose für Ihr Feld.</h1>
                   <p className="mt-3 text-[14px] leading-relaxed text-ink-2">
-                    The dots on the map are trial sites that already have yield data. Takes two minutes. You tell us what your field yielded; we tell you how this year compares, and the data helps the models learn Austria.
+                    Die Punkte auf der Karte sind Versuchsstandorte, für die es schon Ertragsdaten gibt. Das dauert zwei Minuten: Sie sagen uns, was Ihr Feld geerntet hat; wir zeigen Ihnen, wie dieses Jahr im Vergleich abschneidet – und die Daten helfen den Modellen, Österreich zu lernen.
                   </p>
                 </div>
 
-                <Step n={1} title="Where is your field?" done={Boolean(polygon) && !areaProblem}>
+                <Step n={1} title="Wo liegt Ihr Feld?" done={Boolean(polygon) && !areaProblem}>
                   {polygon ? (
-                    <p className="text-[14px] text-ink">{fmtArea(area)} drawn. {areaProblem && <span className="text-rust">{areaProblem}</span>}</p>
+                    <p className="text-[14px] text-ink">{fmtArea(area)} gezeichnet. {areaProblem && <span className="text-rust">{areaProblem}</span>}</p>
                   ) : (
-                    <p className="text-[14px] text-ink-3">Zoom to your village (search works for Austria), then press “Draw your field”. Just the outline; no address needed.</p>
+                    <p className="text-[14px] text-ink-3">Zoomen Sie zu Ihrem Ort (die Suche funktioniert für Österreich) und klicken Sie dann auf „Feld zeichnen“. Nur der Umriss – keine Adresse nötig.</p>
                   )}
                 </Step>
 
-                <Step n={2} title="What did it yield?" done={pastYields.length > 0 || nowT != null}>
+                <Step n={2} title="Wie hoch war der Ertrag?" done={pastYields.length > 0 || nowT != null}>
                   <div className="mb-3 flex items-center justify-between gap-3">
-                    <p className="text-[12.5px] text-ink-3">Leave out years you don’t know. Two or more earlier years give you a comparison.</p>
-                    <Tabs size="sm" label="Unit" value={unit} onChange={setUnit} items={[{ value: 'dt', label: 'dt/ha' }, { value: 't', label: 't/ha' }]} />
+                    <p className="text-[12.5px] text-ink-3">Lassen Sie Jahre aus, die Sie nicht wissen. Ab zwei früheren Jahren erhalten Sie einen Vergleich.</p>
+                    <Tabs size="sm" label="Einheit" value={unit} onChange={setUnit} items={[{ value: 'dt', label: 'dt/ha' }, { value: 't', label: 't/ha' }]} />
                   </div>
                   <div className="grid grid-cols-[1fr_120px] items-center gap-x-4 gap-y-2">
-                    <span className="text-[14px] font-medium text-maize">{THIS_YEAR} (this year)</span>
-                    <YieldInput value={now} onChange={setNow} unit={unit} label={`Yield ${THIS_YEAR}`} />
+                    <span className="text-[14px] font-medium text-maize">{THIS_YEAR} (dieses Jahr)</span>
+                    <YieldInput value={now} onChange={setNow} unit={unit} label={`Ertrag ${THIS_YEAR}`} />
                     <div className="col-span-2 -mt-1">
-                      <Tabs size="sm" label="This year status" value={nowStatus} onChange={setNowStatus} items={[{ value: 'harvested', label: 'Harvested' }, { value: 'estimate', label: 'My estimate so far' }]} />
+                      <Tabs size="sm" label="Stand dieses Jahr" value={nowStatus} onChange={setNowStatus} items={[{ value: 'harvested', label: 'Geerntet' }, { value: 'estimate', label: 'Meine Schätzung' }]} />
                     </div>
                     {PAST_YEARS.map((y) => (
                       <label key={y} className="contents">
                         <span className="text-[14px] text-ink-2">{y}</span>
-                        <YieldInput value={past[y] ?? ''} onChange={(v) => setPast((p) => ({ ...p, [y]: v }))} unit={unit} label={`Yield ${y}`} />
+                        <YieldInput value={past[y] ?? ''} onChange={(v) => setPast((p) => ({ ...p, [y]: v }))} unit={unit} label={`Ertrag ${y}`} />
                       </label>
                     ))}
                   </div>
@@ -203,13 +203,13 @@ export default function Contribute() {
                   </motion.div>
                 )}
 
-                <Step n={3} title="A few details (optional)" done={false}>
+                <Step n={3} title="Weitere Angaben (optional)" done={false}>
                   <div className="flex flex-col gap-3">
-                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Field name, e.g. Acker hinter dem Hof" aria-label="Field name" className="h-10 rounded-[10px] border border-[var(--line-strong)] bg-soil-850 px-3 text-[14px] text-ink placeholder:text-ink-4 focus:border-maize focus:outline-none" />
+                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Feldname, z. B. Acker hinter dem Hof" aria-label="Feldname" className="h-10 rounded-[10px] border border-[var(--line-strong)] bg-soil-850 px-3 text-[14px] text-ink placeholder:text-ink-4 focus:border-maize focus:outline-none" />
                     <div className="flex flex-wrap items-center gap-4">
-                      <Tabs size="sm" label="Maize type" value={cropType} onChange={setCropType} items={[{ value: 'grain', label: 'Grain maize' }, { value: 'silage', label: 'Silage maize' }]} />
+                      <Tabs size="sm" label="Maisart" value={cropType} onChange={setCropType} items={[{ value: 'grain', label: 'Körnermais' }, { value: 'silage', label: 'Silomais' }]} />
                       <label className="flex items-center gap-2 text-[13.5px] text-ink-2">
-                        <input type="checkbox" checked={irrigated} onChange={(e) => setIrrigated(e.target.checked)} className="size-4 accent-[var(--color-maize)]" /> Irrigated
+                        <input type="checkbox" checked={irrigated} onChange={(e) => setIrrigated(e.target.checked)} className="size-4 accent-[var(--color-maize)]" /> Bewässert
                       </label>
                     </div>
                   </div>
@@ -218,11 +218,11 @@ export default function Contribute() {
                 <div className="flex flex-col gap-4 border-t border-[var(--line)] pt-5">
                   <label className="flex items-start gap-3 text-[13px] leading-relaxed text-ink-2">
                     <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} className="mt-0.5 size-4 shrink-0 accent-[var(--color-maize)]" />
-                    <span>I agree that the outline and yields of this field are used to train and test the models of this research project. No name, address or contact details are stored.</span>
+                    <span>Ich stimme zu, dass Umriss und Erträge dieses Feldes zum Trainieren und Testen der Modelle dieses Forschungsprojekts verwendet werden. Name, Adresse oder Kontaktdaten werden nicht gespeichert.</span>
                   </label>
-                  <Button size="lg" disabled={!canSend || busy} onClick={send}>{busy ? 'Sending…' : 'Send and get my result'}</Button>
+                  <Button size="lg" disabled={!canSend || busy} onClick={send}>{busy ? 'Wird gesendet …' : 'Senden und Ergebnis ansehen'}</Button>
                   {error && <p role="alert" className="text-[13px] text-rust">{error}</p>}
-                  {!canSend && <p className="text-[12px] text-ink-4">Needs: a drawn field, at least one yield and your agreement.</p>}
+                  {!canSend && <p className="text-[12px] text-ink-4">Erforderlich: ein gezeichnetes Feld, mindestens ein Ertrag und Ihre Zustimmung.</p>}
                 </div>
               </motion.div>
             )}
@@ -268,14 +268,14 @@ function YieldInput({ value, onChange, unit, label }: { value: string; onChange:
 function Result({ verdict, now }: { verdict: NonNullable<ReturnType<typeof judgeYield>>; now: number | null }) {
   const pct = Math.round(verdict.ratio * 100)
   const tone = verdict.label === 'below' ? 'text-rust' : verdict.label === 'above' ? 'text-sage' : 'text-maize'
-  const text = { below: 'Below your usual yield', normal: 'About your usual yield', above: 'Above your usual yield' }[verdict.label]
+  const text = { below: 'Unter Ihrem üblichen Ertrag', normal: 'Etwa Ihr üblicher Ertrag', above: 'Über Ihrem üblichen Ertrag' }[verdict.label]
   return (
     <div className="rounded-2xl border border-[var(--line-strong)] bg-white/[0.03] p-5">
-      <p className="eyebrow">Your result</p>
+      <p className="eyebrow">Ihr Ergebnis</p>
       <p className={`mt-2 font-display text-[34px] font-semibold tracking-[-0.03em] ${tone}`}>{pct} %</p>
       <p className="text-[15px] text-ink">{text}</p>
       <p className="mt-2 text-[13px] leading-relaxed text-ink-3">
-        {fmt(now, 1)} t/ha this year against {fmt(verdict.normal, 1)} t/ha on average over your last {verdict.n} years. Satellite and weather analysis of your field follows once the project server is connected.
+        {fmt(now, 1)} t/ha dieses Jahr gegenüber durchschnittlich {fmt(verdict.normal, 1)} t/ha in Ihren letzten {verdict.n} Jahren. Die Satelliten- und Wetteranalyse Ihres Feldes folgt, sobald der Projektserver verbunden ist.
       </p>
     </div>
   )

@@ -11,11 +11,11 @@ export default function Method() {
       <section className="pt-36 pb-10">
         <Container>
           <Reveal>
-            <p className="eyebrow mb-5">Method</p>
-            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Decide the test first. Then run it once.</h1>
+            <p className="eyebrow mb-5">Methode</p>
+            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Erst den Test festlegen. Dann ein einziges Mal durchführen.</h1>
             <p className="mt-6 max-w-[680px] text-[17px] leading-relaxed text-ink-2">
-              Every model round was written down before it ran: features, splits, metrics and pass criteria. Results — good or bad — are
-              reported as they came out.
+              Jede Modellrunde wurde aufgeschrieben, bevor sie lief: Merkmale, Datenaufteilung, Metriken und Bestehenskriterien. Ergebnisse – gute
+              wie schlechte – werden so berichtet, wie sie herauskamen.
             </p>
           </Reveal>
         </Container>
@@ -36,7 +36,7 @@ function Pipeline() {
   return (
     <section className="py-20">
       <Container>
-        <SectionHeader eyebrow="How it works" title="From satellite pixels to field-level insight." lede="Seven steps, each with a rule that keeps future information out." />
+        <SectionHeader eyebrow="So funktioniert es" title="Vom Satellitenpixel zur Aussage über das Feld." lede="Sieben Schritte, jeder mit einer Regel, die Zukunftswissen ausschließt." />
         <div ref={ref} className="relative mx-auto mt-16 max-w-[880px]">
           <div className="absolute bottom-0 left-[19px] top-0 w-px bg-[var(--line)] sm:left-1/2">
             <motion.div className="w-full bg-gradient-to-b from-maize to-rust" style={{ height: reduce ? '100%' : h }} />
@@ -46,7 +46,7 @@ function Pipeline() {
               <li key={s.key} className={`relative grid gap-4 pl-14 sm:grid-cols-2 sm:gap-16 sm:pl-0 ${i % 2 ? 'sm:[&>div]:col-start-2' : ''}`}>
                 <span className="absolute left-[13px] top-2 size-[13px] rounded-full border-2 border-maize bg-soil-950 sm:left-1/2 sm:-translate-x-1/2" />
                 <Reveal className={`panel p-6 ${i % 2 ? '' : 'sm:text-right'}`}>
-                  <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-maize">Step {i + 1} · {s.meta}</p>
+                  <p className="font-mono text-[10.5px] uppercase tracking-[0.14em] text-maize">Schritt {i + 1} · {s.meta}</p>
                   <h3 className="mt-3 text-[21px]">{s.title}</h3>
                   <p className="mt-2 text-[14px] leading-relaxed text-ink-2">{s.body}</p>
                 </Reveal>
@@ -62,27 +62,27 @@ function Pipeline() {
 /** Visual explanation of the hold-out schemes: a grid of fields × years, with held-out cells highlighted. */
 function Validation() {
   const years = ['2014', '2017', '2018', '2019', '2020', '2021', '2023']
-  const fields = ['Field group 1', 'Field group 2', 'Field group 3', 'Field group 4']
+  const fields = ['Feldgruppe 1', 'Feldgruppe 2', 'Feldgruppe 3', 'Feldgruppe 4']
   const schemes = [
     {
       key: 'lofyo',
-      name: 'Leave field group and year out',
-      body: 'Test cell: one field group in one year. Training excludes that whole year and that whole field group — the model sees neither.',
-      used: 'Field models, stress score',
+      name: 'Feldgruppe und Jahr auslassen',
+      body: 'Testzelle: eine Feldgruppe in einem Jahr. Das Training schließt dieses ganze Jahr und diese ganze Feldgruppe aus – das Modell sieht keines von beiden.',
+      used: 'Feldmodelle, Stress-Score',
       cell: (f: number, y: number) => (f === 1 && y === 3 ? 'test' : f === 1 || y === 3 ? 'gap' : 'train'),
     },
     {
       key: 'lofo',
-      name: 'Leave one field out',
-      body: 'Within-field models are trained on the other fields and scored on cells of a field they have never seen.',
-      used: 'Within-field model M1',
+      name: 'Ein Feld auslassen',
+      body: 'Teilflächenmodelle werden auf den anderen Feldern trainiert und auf den Zellen eines Feldes bewertet, das sie nie gesehen haben.',
+      used: 'Teilflächenmodell M1',
       cell: (f: number) => (f === 2 ? 'test' : 'train'),
     },
     {
       key: 'loco',
-      name: 'Leave one country out',
-      body: 'Each EU country is predicted by a model trained on the other 15. Austria is never in any fold.',
-      used: 'EU regional model',
+      name: 'Ein Land auslassen',
+      body: 'Jedes EU-Land wird von einem Modell vorhergesagt, das auf den anderen 15 trainiert wurde. Österreich ist in keinem Durchgang enthalten.',
+      used: 'EU-Regionalmodell',
       cell: (f: number) => (f === 0 ? 'test' : 'train'),
     },
   ]
@@ -90,7 +90,7 @@ function Validation() {
   return (
     <section className="py-20">
       <Container>
-        <SectionHeader eyebrow="Validation" title="Held out means held out." lede="Three hold-out schemes, chosen so that a model can never recognise a field, a year or a country it was tested on." />
+        <SectionHeader eyebrow="Validierung" title="Zurückgehalten heißt zurückgehalten." lede="Drei Schemata zum Zurückhalten von Testdaten – so gewählt, dass ein Modell nie ein Feld, ein Jahr oder ein Land wiedererkennen kann, an dem es getestet wird." />
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
           {schemes.map((s, si) => (
             <Reveal key={s.key} delay={si * 0.06} className="panel p-6">
@@ -100,23 +100,23 @@ function Validation() {
                 {fields.map((_, f) => years.map((__, y) => <span key={`${f}-${y}`} className={`aspect-square rounded-[4px] ${color[s.cell(f, y) as keyof typeof color]}`} />))}
               </div>
               <div className="mt-2 flex justify-between font-mono text-[9.5px] text-ink-4">
-                <span>{s.key === 'loco' ? 'years →' : years[0]}</span>
-                <span>{s.key === 'loco' ? 'rows = countries' : years.at(-1)}</span>
+                <span>{s.key === 'loco' ? 'Jahre →' : years[0]}</span>
+                <span>{s.key === 'loco' ? 'Zeilen = Länder' : years.at(-1)}</span>
               </div>
               <p className="mt-5 text-[13.5px] leading-relaxed text-ink-2">{s.body}</p>
             </Reveal>
           ))}
         </div>
         <div className="mt-5 flex flex-wrap gap-5 text-[12.5px] text-ink-3">
-          <span className="flex items-center gap-2"><span className="size-3 rounded-[3px] bg-maize" />test</span>
-          <span className="flex items-center gap-2"><span className="size-3 rounded-[3px] bg-sage/35" />training</span>
-          <span className="flex items-center gap-2"><span className="size-3 rounded-[3px] bg-white/[0.06]" />excluded from both</span>
+          <span className="flex items-center gap-2"><span className="size-3 rounded-[3px] bg-maize" />Test</span>
+          <span className="flex items-center gap-2"><span className="size-3 rounded-[3px] bg-sage/35" />Training</span>
+          <span className="flex items-center gap-2"><span className="size-3 rounded-[3px] bg-white/[0.06]" />von beidem ausgeschlossen</span>
         </div>
         <Reveal className="mt-10 grid gap-5 md:grid-cols-3">
           {[
-            ['Label shuffle', 'Yields are permuted at random. Every model must fall to baseline; one that does not would reveal leakage.'],
-            ['Adversarial validation', 'Can a classifier tell training from test rows? It can tell Michigan from Maryland perfectly — so transfer between sites is reported separately.'],
-            ['As-of rule', 'A feature for forecast date t only uses observations made before t. A dedicated test (test_no_leakage.py) enforces it.'],
+            ['Label-Shuffle', 'Die Erträge werden zufällig vertauscht. Jedes Modell muss dann auf Baseline-Niveau fallen; eines, das das nicht tut, würde Leakage verraten.'],
+            ['Adversarial Validation', 'Kann ein Klassifikator Trainings- von Testzeilen unterscheiden? Michigan und Maryland trennt er perfekt – deshalb wird die Übertragung zwischen Standorten getrennt berichtet.'],
+            ['Stichtagsregel', 'Ein Merkmal für den Prognosestichtag t nutzt nur Beobachtungen, die vor t gemacht wurden. Ein eigener Test (test_no_leakage.py) erzwingt das.'],
           ].map(([t, b]) => (
             <div key={t} className="border-t border-[var(--line-strong)] pt-5">
               <h3 className="text-[17px]">{t}</h3>
@@ -129,19 +129,22 @@ function Validation() {
   )
 }
 
+/** The 'deliberately excluded' group, identified by its source path so it survives title translation. */
+const isExcluded = (g: { source: string }) => g.source.includes('test_no_leakage')
+
 function Features() {
   return (
     <section className="py-20">
       <Container>
-        <SectionHeader eyebrow="Feature engineering" title="More than raw pixels." lede="What the models actually see, and what they are deliberately denied." />
+        <SectionHeader eyebrow="Merkmalsbildung" title="Mehr als rohe Pixel." lede="Was die Modelle tatsächlich sehen – und was ihnen bewusst vorenthalten wird." />
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {FEATURE_GROUPS.map((g, i) => (
-            <Reveal key={g.title} delay={i * 0.05} className={`panel p-6 ${g.title.startsWith('Deliberately') ? 'border-rust/25' : ''}`}>
+            <Reveal key={g.title} delay={i * 0.05} className={`panel p-6 ${isExcluded(g) ? 'border-rust/25' : ''}`}>
               <h3 className="text-[18px]">{g.title}</h3>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {g.items.map((it) => (
                   <li key={it} className="flex gap-2.5 text-[13.5px] leading-relaxed text-ink-2">
-                    <span className={`mt-[7px] size-1.5 shrink-0 rounded-full ${g.title.startsWith('Deliberately') ? 'bg-rust' : 'bg-maize'}`} />
+                    <span className={`mt-[7px] size-1.5 shrink-0 rounded-full ${isExcluded(g) ? 'bg-rust' : 'bg-maize'}`} />
                     {it}
                   </li>
                 ))}
@@ -160,9 +163,9 @@ function Experiments() {
     <section id="experiments" className="scroll-mt-20 py-20">
       <Container>
         <SectionHeader
-          eyebrow="Experiments"
-          title={`${EXPERIMENTS.length} steps, in the order they happened.`}
-          lede={`Each step changed one thing and was judged against criteria fixed beforehand. ${EXPERIMENTS.filter((e) => e.status === 'failed').length} of them failed; they are listed with the same care as the successes.`}
+          eyebrow="Experimente"
+          title={`${EXPERIMENTS.length} Schritte, in der Reihenfolge, in der sie stattfanden.`}
+          lede={`Jeder Schritt änderte genau eine Sache und wurde an vorab festgelegten Kriterien gemessen. ${EXPERIMENTS.filter((e) => e.status === 'failed').length} davon sind gescheitert; sie stehen mit derselben Sorgfalt hier wie die Erfolge.`}
         />
         <ol className="relative mt-14 border-l border-[var(--line-strong)] pl-6 sm:ml-[132px] sm:pl-10">
           {EXPERIMENTS.map((e, i) => (
@@ -178,7 +181,7 @@ function Experiments() {
                   <StrengthBadge strength={e.status} />
                 </div>
                 <p className="mt-2 max-w-[720px] text-[14px] leading-relaxed text-ink-2">
-                  <span className="text-ink-3">Changed: </span>
+                  <span className="text-ink-3">Geändert: </span>
                   {e.changed}
                 </p>
                 <p className="mt-1 max-w-[720px] text-[14px] leading-relaxed text-ink">{e.result}</p>

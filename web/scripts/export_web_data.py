@@ -37,18 +37,18 @@ CLEAR_FRAC_MIN = 0.7  # config.yaml field.clear_frac_min
 SEASON_START = "04-01"
 N_DEKADS = 21
 
-# Prepared demo fields: real held-out field-years from the training sites.
+# Prepared demo fields: real held-out field-years from the training sites (display texts in German).
 DEMO_FIELDS = [
     {"id": "barc-2021", "fy_key": "BARC|BARC:EastFarm_5_12|2021", "role": "healthy",
-     "label": "Field A", "title": "Strong season", "blurb": "Curve tracks the healthy reference all summer."},
+     "label": "Feld A", "title": "Starke Saison", "blurb": "Die Kurve folgt den ganzen Sommer über der gesunden Referenz."},
     {"id": "barc-2018", "fy_key": "BARC|BARC:EastFarm_6_60|2018", "role": "stressed",
-     "label": "Field B", "title": "July stress, caught", "blurb": "Falls below the reference in July; the alarm fires."},
+     "label": "Feld B", "title": "Juli-Stress, erkannt", "blurb": "Fällt im Juli unter die Referenz; der Alarm schlägt an."},
     {"id": "kbs-2017", "fy_key": "KBS|KBS:T2R3|2017", "role": "average",
-     "label": "Field C", "title": "Average conditions", "blurb": "Small research plot, close to its normal yield."},
+     "label": "Feld C", "title": "Durchschnittliche Bedingungen", "blurb": "Kleine Versuchsparzelle, nahe an ihrem üblichen Ertrag."},
     {"id": "kbs-t4-2020", "fy_key": "KBS|KBS:T4R1|2020", "role": "edge",
-     "label": "Field D", "title": "False alarm", "blurb": "Organic plot, sown late after a cover crop. Flagged, yet harvested normally."},
+     "label": "Feld D", "title": "Fehlalarm", "blurb": "Bio-Parzelle, spät nach einer Zwischenfrucht gesät. Als auffällig markiert, aber mit üblichem Ertrag geerntet."},
     {"id": "barc-2018-miss", "fy_key": "BARC|BARC:EastFarm_5_12|2018", "role": "missed",
-     "label": "Field E", "title": "Missed loss", "blurb": "Yield fell by half while the curve stayed near the reference. No alarm, but the map still finds the weak zones."},
+     "label": "Feld E", "title": "Übersehener Ausfall", "blurb": "Der Ertrag halbierte sich, während die Kurve nahe an der Referenz blieb. Kein Alarm – die Karte findet die schwachen Zonen aber trotzdem."},
 ]
 
 
@@ -146,7 +146,7 @@ def pixel_grid(fy_key: str) -> dict | None:
     return {
         "n_cells": int(len(c)),
         "cell_m": 10,
-        "window": "Median NDVI of the dekads 10 Jul - 18 Aug (Sentinel-2, rule B0)",
+        "window": "Median-NDVI der Dekaden 10. Jul – 18. Aug (Sentinel-2, Regel B0)",
         "weak_threshold": r(thr),
         "rho": r(rho),
         "precision_weak": r(prec),
@@ -223,7 +223,7 @@ def build_fields() -> dict:
                 "score": r(score.get(key), 4), "risk_p": r(rk.p), "alarm": bool(rk.alarm),
                 "threshold": r(product["alarm_threshold_oof"]),
                 "phases": {"Jun": r(rk.Juni), "Jul": r(rk.Juli), "Aug": r(rk.August)},
-                "main_phase": None if pd.isna(rk.main_phase) else str(rk.main_phase).replace("Juni", "June").replace("Juli", "July"),
+                "main_phase": None if pd.isna(rk.main_phase) else str(rk.main_phase),  # German month name, shown as is
                 "rank_in_site_year": None if pd.isna(rk.rank_in_site_year) else int(rk.rank_in_site_year),
                 "fold": None if pd.isna(rk.fold) else str(rk.fold)},
             "weather": weather_for(c.x, c.y, year),
@@ -295,10 +295,10 @@ def build_evidence() -> dict:
     ev["phase2_models"] = [{k: (r(v) if isinstance(v, (float, np.floating)) else (int(v) if isinstance(v, (np.integer,)) else v))
                             for k, v in row.items()} for row in m2.to_dict("records")]
     stages = []
-    for d, label, crit in [("2026-10-16_phase2", "Phase 2 · base models", "criteria_main.json"),
-                           ("2026-10-16_round1", "Round 1 · relative features", "criteria.json"),
-                           ("2026-10-16_round2", "Round 2 · fewer features", "criteria.json"),
-                           ("2026-10-16_round3", "Round 3 · stronger regularisation", "criteria.json")]:
+    for d, label, crit in [("2026-10-16_phase2", "Phase 2 · Basismodelle", "criteria_main.json"),
+                           ("2026-10-16_round1", "Runde 1 · relative Merkmale", "criteria.json"),
+                           ("2026-10-16_round2", "Runde 2 · weniger Merkmale", "criteria.json"),
+                           ("2026-10-16_round3", "Runde 3 · stärkere Regularisierung", "criteria.json")]:
         c = json.loads((RES / d / crit).read_text(encoding="utf-8"))
         s = c["selected"]
         stages.append({"stage": label, "model": s["model"], "kind": s["kind"], "basis": s["basis"],
@@ -345,7 +345,7 @@ def build_evidence() -> dict:
         "mean_yas": g.yas.mean(), "mean_pred": g.pred.mean()}), include_groups=False).reset_index()
     ev["eu_by_year"] = [{k: (int(v) if k in ("year", "n") else r(v)) for k, v in row.items()} for row in by_year.to_dict("records")]
     bins = [0, 0.7, 0.85, 0.95, 1.05, 1.15, 10]
-    labels = ["< 0.70", "0.70–0.85", "0.85–0.95", "0.95–1.05", "1.05–1.15", "> 1.15"]
+    labels = ["< 0,70", "0,70–0,85", "0,85–0,95", "0,95–1,05", "1,05–1,15", "> 1,15"]  # display labels, decimal comma
     pr["bin"] = pd.cut(pr.yas, bins, labels=labels)
     by_bin = pr.groupby("bin", observed=False).apply(lambda g: pd.Series({
         "n": len(g), "mae_model": g.err_model.abs().mean(), "mae_normal": g.err_normal.abs().mean(),

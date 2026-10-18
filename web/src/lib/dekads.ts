@@ -1,7 +1,7 @@
 /** Season axis: 21 dekads (10-day steps) starting 1 April, as in the project (dekad 0 = 1–10 Apr). */
 
 export const N_DEKADS = 21
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+const MONTHS = ['Jän', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez']
 
 export function dekadDate(i: number, year = 2021): Date {
   const d = new Date(Date.UTC(year, 3, 1))
@@ -11,24 +11,24 @@ export function dekadDate(i: number, year = 2021): Date {
 
 export const dekadLabel = (i: number, year?: number) => {
   const d = dekadDate(i, year)
-  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]}`
+  return `${d.getUTCDate()}. ${MONTHS[d.getUTCMonth()]}`
 }
 
 /** Fractional dekad position of the first day of each month in the season, for axis ticks. */
 export const MONTH_TICKS: { pos: number; label: string }[] = [
   { pos: 0, label: 'Apr' },
-  { pos: 3.0, label: 'May' },
+  { pos: 3.0, label: 'Mai' },
   { pos: 6.1, label: 'Jun' },
   { pos: 9.1, label: 'Jul' },
   { pos: 12.2, label: 'Aug' },
   { pos: 15.3, label: 'Sep' },
-  { pos: 18.3, label: 'Oct' },
+  { pos: 18.3, label: 'Okt' },
 ]
 
 /** Dekads that make up the phases used by the project's alarm explanation. */
 export const PHASES = [
-  { key: 'Jun', label: 'June', from: 6.1, to: 9.1 },
-  { key: 'Jul', label: 'July', from: 9.1, to: 12.2 },
+  { key: 'Jun', label: 'Juni', from: 6.1, to: 9.1 },
+  { key: 'Jul', label: 'Juli', from: 9.1, to: 12.2 },
   { key: 'Aug', label: 'August', from: 12.2, to: 15.3 },
 ] as const
 

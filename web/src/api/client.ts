@@ -21,9 +21,9 @@ export function getJson<T>(path: string): Promise<T> {
   const hit = cache.get(url)
   if (hit) return hit as Promise<T>
   const p = fetch(url, { headers: { Accept: 'application/json' } }).then(async (res) => {
-    if (!res.ok) throw new ApiError(`Could not load ${path} (HTTP ${res.status}).`, res.status)
+    if (!res.ok) throw new ApiError(`${path} konnte nicht geladen werden (HTTP ${res.status}).`, res.status)
     const type = res.headers.get('content-type') ?? ''
-    if (!type.includes('json')) throw new ApiError(`${path} is missing. Run web/scripts/export_web_data.py.`, 404)
+    if (!type.includes('json')) throw new ApiError(`${path} fehlt. Bitte web/scripts/export_web_data.py ausführen.`, 404)
     return (await res.json()) as T
   })
   p.catch(() => cache.delete(url))

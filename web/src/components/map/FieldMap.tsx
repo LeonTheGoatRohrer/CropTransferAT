@@ -53,6 +53,26 @@ const RASTERS: Record<Basemap, { tiles: string[]; maxzoom: number; attribution: 
 
 const EMPTY: GeoJSON.FeatureCollection = { type: 'FeatureCollection', features: [] }
 
+/** German labels for MapLibre's built-in controls (tooltips, aria labels). */
+const LOCALE_DE = {
+  'AttributionControl.ToggleAttribution': 'Quellenangaben ein-/ausblenden',
+  'AttributionControl.MapFeedback': 'Feedback zur Karte',
+  'FullscreenControl.Enter': 'Vollbild',
+  'FullscreenControl.Exit': 'Vollbild beenden',
+  'GeolocateControl.FindMyLocation': 'Meinen Standort finden',
+  'GeolocateControl.LocationNotAvailable': 'Standort nicht verfügbar',
+  'LogoControl.Title': 'MapLibre-Logo',
+  'Map.Title': 'Karte',
+  'Marker.Title': 'Kartenmarkierung',
+  'NavigationControl.ResetBearing': 'Ziehen zum Drehen, Klicken für Nordausrichtung',
+  'NavigationControl.ZoomIn': 'Vergrößern',
+  'NavigationControl.ZoomOut': 'Verkleinern',
+  'Popup.Close': 'Popup schließen',
+  'CooperativeGesturesHandler.WindowsHelpText': 'Strg + Mausrad zum Zoomen der Karte',
+  'CooperativeGesturesHandler.MacHelpText': '⌘ + Mausrad zum Zoomen der Karte',
+  'CooperativeGesturesHandler.MobileHelpText': 'Karte mit zwei Fingern verschieben',
+}
+
 function boundsOf(p: FieldGeometry): LngLatBoundsLike {
   const [x0, y0, x1, y1] = bbox(p)
   return [[x0, y0], [x1, y1]]
@@ -94,6 +114,7 @@ export function FieldMap({ fields, selectedId, selectedGeometry, overlay, basema
         ? { bounds: [[startBounds.current[0], startBounds.current[1]], [startBounds.current[2], startBounds.current[3]]] as LngLatBoundsLike, fitBoundsOptions: { padding: 24 }, maxBounds: [[startBounds.current[0] - 1, startBounds.current[1] - 0.7], [startBounds.current[2] + 1, startBounds.current[3] + 0.7]] as LngLatBoundsLike, minZoom: 5.5 }
         : { center: [-76.9, 39.02] as [number, number], zoom: 12.4 }),
       attributionControl: { compact: true },
+      locale: LOCALE_DE,
       maxPitch: 0,
       dragRotate: false,
     })
@@ -264,5 +285,5 @@ export function FieldMap({ fields, selectedId, selectedGeometry, overlay, basema
     } else m.flyTo({ center: flyTo.center, zoom: flyTo.zoom ?? 14, duration: 1600 })
   }, [flyTo, ready])
 
-  return <div ref={el} className={`h-full w-full ${className}`} aria-label="Field map" role="region" />
+  return <div ref={el} className={`h-full w-full ${className}`} aria-label="Feldkarte" role="region" />
 }
