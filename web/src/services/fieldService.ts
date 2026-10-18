@@ -12,6 +12,9 @@ export const phaseLabel = (p: string | null | undefined): string | null => (p ==
 /** Prepared demo fields: real held-out field-years from the US training sites. */
 export const getPreparedFields = () => getJson<FieldsPayload>('fields.json')
 
+/** Home-page field (BARC EastFarm 6-60, 2018), exported separately by scripts/export_hero.py. */
+export const getHeroField = () => getJson<FieldsPayload>('hero.json').then((p) => p.fields[0])
+
 export type AnalysisCallbacks = {
   onStage: (stage: PipelineStage) => void
   onStageDone: (stage: PipelineStage, facts: StageFacts) => void

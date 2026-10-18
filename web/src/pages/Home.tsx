@@ -9,16 +9,13 @@ import { Reveal } from '../components/ui/Reveal'
 import { Container, SectionHeader } from '../components/ui/Section'
 import { ErrorNote, Skeleton } from '../components/ui/States'
 import { useResource } from '../lib/useResource'
-import { getPreparedFields } from '../services/fieldService'
-
-const HERO_FIELD = 'barc-2018'
+import { getHeroField } from '../services/fieldService'
 
 export default function Home() {
-  const fields = useResource(getPreparedFields, 'fields')
-  const hero = fields.data?.fields.find((f) => f.id === HERO_FIELD)
+  const hero = useResource(getHeroField, 'hero')
   return (
     <>
-      <Hero field={hero} error={fields.error} />
+      <Hero field={hero.data} error={hero.error} />
       <GiveGet />
       <HowItWorks />
       <WhyAustria />
@@ -47,8 +44,8 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
           <motion.p {...rise(0)} className="eyebrow mb-6 flex items-center gap-3">
             <span className="inline-block h-px w-8 bg-maize" /> Für Maisbäuerinnen und -bauern in Österreich
           </motion.p>
-          <motion.h1 {...rise(0.08)} className="text-balance text-[clamp(2.9rem,6vw,5.1rem)] font-semibold leading-[0.96] tracking-[-0.045em]">
-            Ein Feld. Viele Unterschiede. <span className="text-maize">Endlich sichtbar.</span>
+          <motion.h1 {...rise(0.08)} className="text-balance text-[clamp(2.6rem,6vw,4.8rem)] font-semibold leading-[0.96] tracking-[-0.045em]">
+            Ein Feld. Viele Unterschiede. <span className="whitespace-nowrap text-maize">Endlich sichtbar.</span>
           </motion.h1>
           <motion.p {...rise(0.18)} className="mt-7 max-w-[540px] text-pretty text-[18px] leading-relaxed text-ink-2">
             Der Regen bleibt aus. Wie steht es um Ihren Mais? Wir machen mit Satellitendaten sichtbar, welche Bereiche Ihres Felds

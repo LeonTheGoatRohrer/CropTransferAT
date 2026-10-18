@@ -7,6 +7,7 @@ Läuft **nur lokal / privat** (KBS-Daten dürfen nur mit schriftlicher Erlaubnis
 
 ```
 .venv\Scripts\python.exe web\scripts\export_web_data.py   # echte Daten -> web/public/data/*.json (nach jedem neuen Lauf)
+.venv\Scripts\python.exe web\scripts\export_hero.py       # Feld der Startseite (BARC 2018) -> web/public/data/hero.json
 cd web
 npm install
 npm run dev        # http://localhost:5180
