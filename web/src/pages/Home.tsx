@@ -1,25 +1,26 @@
 import { motion, useReducedMotion } from 'motion/react'
-import { ArrowRight, ArrowUpRight, Gift, PenLine, Sprout, TrendingUp } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router'
-import type { FieldAnalysis } from '../api/types'
+import type { Evidence, FieldAnalysis } from '../api/types'
 import { HeroField } from '../components/field/HeroField'
 import { Backdrop } from '../components/ui/Backdrop'
+import { FieldJourney } from '../components/ui/FieldJourney'
 import { ButtonLink } from '../components/ui/Button'
 import { Reveal } from '../components/ui/Reveal'
 import { Container, SectionHeader } from '../components/ui/Section'
 import { ErrorNote, Skeleton } from '../components/ui/States'
 import { useResource } from '../lib/useResource'
+import { getEvidence } from '../services/evidenceService'
 import { getHeroField } from '../services/fieldService'
 
 export default function Home() {
   const hero = useResource(getHeroField, 'hero')
+  const evidence = useResource(getEvidence, 'evidence')
   return (
     <>
       <Hero field={hero.data} error={hero.error} />
-      <GiveGet />
-      <HowItWorks />
+      <Journey ev={evidence.data} />
       <WhyAustria />
-      <Models />
       <ClosingCta />
     </>
   )
@@ -90,65 +91,14 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
   )
 }
 
-function GiveGet() {
-  const cols = [
-    {
-      icon: <Gift className="size-5" />,
-      title: 'Sie geben',
-      items: ['Den Umriss eines Maisfelds', 'Seinen Ertrag in den letzten Jahren, soweit Sie ihn kennen', 'Die Ernte dieses Jahres oder Ihre bisherige Schätzung'],
-    },
-    {
-      icon: <TrendingUp className="size-5" />,
-      title: 'Sie bekommen',
-      items: ['Wie dieses Jahr im Vergleich zu Ihrem üblichen Ertrag liegt', 'Eine Prognose, die mit jedem weiteren Feld besser wird', 'Satelliten- und Wetteranalyse Ihres Felds, sobald verfügbar'],
-    },
-  ]
-  return (
-    <section className="py-16 sm:py-20">
-      <Container className="grid gap-5 md:grid-cols-2">
-        {cols.map((c, i) => (
-          <Reveal key={c.title} delay={i * 0.08} className="panel p-8">
-            <div className="flex items-center gap-3 text-maize">
-              {c.icon}
-              <h2 className="text-[24px]">{c.title}</h2>
-            </div>
-            <ul className="mt-6 flex flex-col gap-3.5">
-              {c.items.map((t) => (
-                <li key={t} className="flex gap-3 text-[15.5px] leading-snug text-ink-2">
-                  <span className="mt-2 size-1.5 shrink-0 rounded-full bg-maize" />
-                  {t}
-                </li>
-              ))}
-            </ul>
-          </Reveal>
-        ))}
-      </Container>
-    </section>
-  )
-}
-
-function HowItWorks() {
-  const steps = [
-    { icon: <PenLine className="size-5" />, t: 'Feld einzeichnen', d: 'Suchen Sie Ihren Ort auf der Satellitenkarte und klicken Sie die Ecken des Felds an.' },
-    { icon: <Sprout className="size-5" />, t: 'Erträge eingeben', d: 'Vergangene Jahre und dieses Jahr, in Tonnen pro Hektar (t/ha). Unbekannte Jahre bleiben einfach leer.' },
-    { icon: <TrendingUp className="size-5" />, t: 'Ergebnis ansehen', d: 'Ihr Feld im Vergleich zu seinem eigenen Durchschnitt, sofort. Die Modelle lernen daraus für die nächste Saison.' },
-  ]
+function Journey({ ev }: { ev?: Evidence }) {
   return (
     <section className="py-16 sm:py-20">
       <Container>
-        <SectionHeader eyebrow="So funktioniert es" title="Drei Schritte, kein Konto." />
-        <ol className="mt-12 grid gap-5 md:grid-cols-3">
-          {steps.map((s, i) => (
-            <Reveal key={s.t} delay={i * 0.08}>
-              <li className="panel h-full p-7">
-                <span className="grid size-10 place-items-center rounded-xl bg-maize/10 text-maize">{s.icon}</span>
-                <p className="mt-6 font-mono text-[11px] text-ink-4">Schritt {i + 1}</p>
-                <h3 className="mt-1 text-[20px]">{s.t}</h3>
-                <p className="mt-3 text-[14.5px] leading-relaxed text-ink-3">{s.d}</p>
-              </li>
-            </Reveal>
-          ))}
-        </ol>
+        <SectionHeader eyebrow="So funktioniert es" title="Was mit einem Feld passiert." lede="Vom eingezeichneten Umriss bis zur Feldkarte – mit kostenlosen Satelliten-, Wetter- und Bodendaten." />
+        <div className="mt-12">
+          <FieldJourney ev={ev} />
+        </div>
       </Container>
     </section>
   )
@@ -177,34 +127,6 @@ function WhyAustria() {
             </div>
           </div>
         </Reveal>
-      </Container>
-    </section>
-  )
-}
-
-function Models() {
-  const items = [
-    { t: 'Teilflächenkarte', d: 'Zeigt, welcher Teil eines Felds wahrscheinlich schwächer ist.' },
-    { t: 'Feld-Stress-Score', d: 'Markiert Felder, deren Saison im Vergleich zu gesunden Feldern ungewöhnlich aussieht.' },
-    { t: 'EU-Regionalmodell', d: 'Schätzt, ob das Maisjahr einer Region besser oder schlechter als üblich ausfällt.' },
-  ]
-  return (
-    <section className="py-16 sm:py-20">
-      <Container>
-        <SectionHeader eyebrow="Was wir bauen" title="Drei Modelle, einfach erklärt." />
-        <div className="mt-12 grid gap-5 md:grid-cols-3">
-          {items.map((m, i) => (
-            <Reveal key={m.t} delay={i * 0.08}>
-              <Link to="/model" className="panel group flex h-full flex-col p-7 transition-[transform,border-color] duration-300 hover:-translate-y-1 hover:border-[var(--line-strong)]">
-                <div className="flex items-start justify-between">
-                  <h3 className="text-[20px]">{m.t}</h3>
-                  <ArrowUpRight className="size-4 text-ink-4 transition group-hover:text-ink" />
-                </div>
-                <p className="mt-3 text-[14.5px] leading-relaxed text-ink-3">{m.d}</p>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
       </Container>
     </section>
   )
