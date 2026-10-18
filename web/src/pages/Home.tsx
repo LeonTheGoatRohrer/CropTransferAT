@@ -48,12 +48,11 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
             <span className="inline-block h-px w-8 bg-maize" /> Für Maisbäuerinnen und -bauern in Österreich
           </motion.p>
           <motion.h1 {...rise(0.08)} className="text-balance text-[clamp(2.9rem,6vw,5.1rem)] font-semibold leading-[0.96] tracking-[-0.045em]">
-            Erträge teilen. <span className="text-maize">Bessere Prognose erhalten.</span>
+            Ein Feld. Viele Unterschiede. <span className="text-maize">Endlich sichtbar.</span>
           </motion.h1>
           <motion.p {...rise(0.18)} className="mt-7 max-w-[540px] text-pretty text-[18px] leading-relaxed text-ink-2">
-            Zeichnen Sie Ihr Maisfeld ein und sagen Sie uns, was es in den letzten Jahren gebracht hat. Sie sehen sofort, wie dieses
-            Jahr im Vergleich zu Ihrer üblichen Ernte liegt. Wir bekommen die österreichischen Felddaten, die eine Frühwarnung per
-            Satellit hier braucht.
+            Der Regen bleibt aus. Wie steht es um Ihren Mais? Wir machen mit Satellitendaten sichtbar, welche Bereiche Ihres Felds
+            zurückbleiben – damit Sie wissen, wo sich ein genauerer Blick lohnt.
           </motion.p>
           <motion.div {...rise(0.28)} className="mt-10 flex flex-wrap gap-3">
             <ButtonLink to="/contribute" size="lg" icon={<ArrowRight className="size-4" />}>

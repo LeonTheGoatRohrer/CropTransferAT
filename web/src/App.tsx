@@ -27,7 +27,7 @@ function ScrollManager() {
 }
 
 const TITLES: Record<string, string> = {
-  '/': 'CropTransfer AT · Erträge teilen, bessere Prognose erhalten',
+  '/': 'CropTransfer AT · Ein Feld. Viele Unterschiede. Endlich sichtbar.',
   '/contribute': 'Feld eintragen · CropTransfer AT',
   '/analyse': 'Feld analysieren · CropTransfer AT',
   '/evidence': 'Belege · CropTransfer AT',
