@@ -1,6 +1,6 @@
 import { bin, extent } from 'd3-array'
 import { scaleLinear } from 'd3-scale'
-import { CloudSun, Layers, Lock, MapPinned, Mountain, Satellite } from 'lucide-react'
+import { CloudSun, FlaskConical, Layers, Lock, MapPinned, Mountain, Satellite } from 'lucide-react'
 import { useMemo, useState, type ReactNode } from 'react'
 import type { ExplorerRow } from '../api/types'
 import { Scatter } from '../components/charts/Stats'
@@ -11,19 +11,20 @@ import { Backdrop } from '../components/ui/Backdrop'
 import { Container, SectionHeader, Source } from '../components/ui/Section'
 import { ErrorNote, Skeleton } from '../components/ui/States'
 import { Tabs } from '../components/ui/Tabs'
-import { DATA_SOURCES, type DataSource } from '../data/content/project'
+import { DATA_SOURCES, DATA_TOTALS, type DataSource } from '../data/content/project'
 import { tokens } from '../lib/color'
 import { fmt, fmtNum } from '../lib/format'
 import { useResource } from '../lib/useResource'
 import { getExplorer } from '../services/evidenceService'
 
-const GROUP_META: Record<DataSource['group'], { label: string; icon: ReactNode }> = {
-  yield: { label: 'Gemessener Ertrag', icon: <MapPinned className="size-4" /> },
-  satellite: { label: 'Satellit', icon: <Satellite className="size-4" /> },
-  weather: { label: 'Wetter', icon: <CloudSun className="size-4" /> },
-  soil: { label: 'Boden und Gelände', icon: <Mountain className="size-4" /> },
-  regional: { label: 'Regionalstatistik', icon: <Layers className="size-4" /> },
-  austria: { label: 'Österreich – nur Test', icon: <Lock className="size-4" /> },
+const GROUP_META: Record<DataSource['group'], { label: string; icon: ReactNode; lede: string }> = {
+  yield: { label: 'Gemessener Ertrag', icon: <MapPinned className="size-4" />, lede: 'Was tatsächlich geerntet wurde – daraus lernt das Modell.' },
+  satellite: { label: 'Satellit', icon: <Satellite className="size-4" />, lede: 'Wie grün und dicht der Mais im Lauf der Saison war.' },
+  weather: { label: 'Wetter', icon: <CloudSun className="size-4" />, lede: 'Wie heiß und wie trocken die Saison war.' },
+  soil: { label: 'Boden und Gelände', icon: <Mountain className="size-4" />, lede: 'Was der Boden speichern kann und wie das Feld liegt.' },
+  regional: { label: 'Regionalstatistik', icon: <Layers className="size-4" />, lede: 'Durchschnittserträge ganzer Regionen statt einzelner Felder.' },
+  austria: { label: 'Österreich – nur Test', icon: <Lock className="size-4" />, lede: 'Erst nach dem Einfrieren der Modelle geöffnet, nie für das Training genutzt.' },
+  extra: { label: 'Nebenversuche', icon: <FlaskConical className="size-4" />, lede: 'Seitenfragen und getestete Zusatzdaten – nicht Teil des Hauptmodells.' },
 }
 
 const SITE_COLOR: Record<string, string> = { KBS: tokens.sage, BARC: tokens.water, Colorado: tokens.maize }
@@ -55,7 +56,11 @@ export default function Data() {
             <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Gemessen, wo es zählt: auf dem Feld.</h1>
             <p className="mt-6 max-w-[680px] text-[17px] leading-relaxed text-ink-2">
               Die Modelle lernen von Feldern, deren Ertrag gewogen oder vom Mähdrescher kartiert wurde – verknüpft mit offenen Satelliten-, Wetter- und Bodendaten.
-              Österreichische Daten sind gesammelt, bleiben aber bis zum Test unter Verschluss.
+              Österreichische Daten blieben gesperrt, bis die Modelle eingefroren waren, und wurden erst danach für zwei Tests geöffnet.
+            </p>
+            <p className="mt-4 max-w-[680px] text-[14px] leading-relaxed text-ink-3">
+              So lesen Sie die Zahlen: Die <span className="text-maize">große Zahl</span> zählt die Fälle, in Klammern steht ungefähr die Datenmenge.
+              Ein <span className="text-ink-2">Feld-Jahr</span> ist ein Feld in einer Saison mit gemessenem Ertrag.
             </p>
           </Reveal>
         </Container>
@@ -66,37 +71,76 @@ export default function Data() {
   )
 }
 
+/* Short groups share a column so no panel is left half empty. */
+const COLUMNS: DataSource['group'][][] = [['yield'], ['satellite', 'weather'], ['soil', 'regional']]
+
 function SourceFlow() {
-  const groups = Object.keys(GROUP_META) as DataSource['group'][]
   return (
     <section className="py-12">
       <Container>
-        <div className="grid gap-5 lg:grid-cols-3">
-          {groups.map((g, gi) => (
-            <Reveal key={g} delay={gi * 0.05} className={`panel p-6 ${g === 'austria' ? 'border-dashed !bg-none' : ''}`}>
-              <div className="flex items-center gap-2.5 text-maize">
-                {GROUP_META[g].icon}
-                <p className="eyebrow !text-maize">{GROUP_META[g].label}</p>
-              </div>
-              <ul className="mt-5 flex flex-col divide-y divide-[var(--line)]">
-                {DATA_SOURCES.filter((d) => d.group === g).map((d) => (
-                  <li key={d.name} className="py-4 first:pt-0 last:pb-0">
-                    <div className="flex flex-wrap items-baseline justify-between gap-2">
-                      <p className="text-[15px] font-medium text-ink">{d.name}</p>
-                      <span className="font-mono text-[10.5px] text-ink-4">{d.scale}</span>
-                    </div>
-                    <p className="mt-0.5 text-[12.5px] text-ink-3">{d.provider}</p>
-                    <p className="mt-2 text-[13.5px] leading-relaxed text-ink-2">{d.role} — {d.detail}</p>
-                    <p className="mt-1.5 font-mono text-[10.5px] text-ink-4">{d.license}</p>
-                  </li>
-                ))}
-              </ul>
-            </Reveal>
+        <Reveal className="panel grid sm:grid-cols-2 lg:grid-cols-4">
+          {DATA_TOTALS.map((t) => (
+            <div key={t.label} className="border-[var(--line)] p-6 lg:border-l lg:first:border-l-0">
+              <p className="whitespace-nowrap font-display text-[clamp(2.2rem,4vw,2.9rem)] font-semibold leading-none tracking-[-0.035em] text-maize tabular">{t.value}</p>
+              <p className="mt-3 text-[15px] font-medium text-ink">{t.label}</p>
+              <p className="mt-1 text-[13px] text-ink-3">{t.note}</p>
+            </div>
+          ))}
+        </Reveal>
+
+        <div className="mt-5 grid gap-5 lg:grid-cols-3 lg:items-start">
+          {COLUMNS.map((col, ci) => (
+            <div key={ci} className="flex flex-col gap-5">
+              {col.map((g) => (
+                <GroupPanel key={g} group={g} delay={ci * 0.05} />
+              ))}
+            </div>
           ))}
         </div>
-        <Source className="mt-6">DATA_SOURCES.md · SUPPORT.md – Lizenzen, Abrufdaten und Schritte zur Neuerzeugung jeder Datei</Source>
+        <GroupPanel group="austria" columns="md:grid-cols-3" className="mt-5 border-dashed !bg-none" />
+        <GroupPanel group="extra" columns="md:grid-cols-3" className="mt-5" />
+        <Source className="mt-6">DATA_SOURCES.md · data/processed/*.parquet · Größe von data/raw/ am 18.10.2026 – Lizenzen, Abrufdaten und Schritte zur Neuerzeugung jeder Datei</Source>
       </Container>
     </section>
+  )
+}
+
+function GroupPanel({ group, delay = 0, columns, className = '' }: { group: DataSource['group']; delay?: number; columns?: string; className?: string }) {
+  const meta = GROUP_META[group]
+  const items = DATA_SOURCES.filter((d) => d.group === group)
+  return (
+    <Reveal delay={delay} className={`panel p-6 ${className}`}>
+      <div className="flex items-center gap-2.5 text-maize">
+        {meta.icon}
+        <p className="eyebrow !text-maize">{meta.label}</p>
+      </div>
+      <p className="mt-2 text-[13.5px] text-ink-3">{meta.lede}</p>
+      <ul className={columns ? `mt-5 grid gap-x-8 gap-y-6 ${columns}` : 'mt-5 flex flex-col divide-y divide-[var(--line)]'}>
+        {items.map((d) => (
+          <SourceItem key={d.name} d={d} className={columns ? '' : 'py-5 first:pt-0 last:pb-0'} />
+        ))}
+      </ul>
+    </Reveal>
+  )
+}
+
+function SourceItem({ d, className = '' }: { d: DataSource; className?: string }) {
+  return (
+    <li className={className}>
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <p className="text-[15px] font-medium text-ink">{d.name}</p>
+        {d.status && <Badge tone={d.status === 'Nebenversuch' ? 'neutral' : 'rust'}>{d.status}</Badge>}
+      </div>
+      <p className="mt-0.5 text-[12.5px] text-ink-3">{d.provider}</p>
+      <p className="mt-3 flex flex-wrap items-baseline gap-x-2">
+        <span className="whitespace-nowrap font-display text-[32px] font-semibold leading-none tracking-[-0.03em] text-maize tabular">{d.count}</span>
+        <span className="text-[14.5px] font-medium text-ink">{d.unit}</span>
+      </p>
+      <p className="mt-1.5 text-[13px] leading-snug text-ink-2 tabular">({d.volume})</p>
+      <p className="mt-3 text-[13.5px] leading-relaxed text-ink-2">{d.role}</p>
+      <p className="mt-1 text-[12.5px] leading-relaxed text-ink-3 tabular">{d.detail}</p>
+      <p className="mt-2 font-mono text-[10.5px] text-ink-4">{d.scale} · {d.license}</p>
+    </li>
   )
 }
 

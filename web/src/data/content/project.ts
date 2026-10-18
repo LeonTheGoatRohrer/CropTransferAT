@@ -21,25 +21,58 @@ export const PROJECT = {
 export type DataSource = {
   name: string
   provider: string
+  /** Headline number, shown large. */
+  count: string
+  /** What the headline number counts. */
+  unit: string
+  /** Rough data volume, shown in brackets after the number. */
+  volume: string
+  /** What the project uses it for, one short sentence. */
   role: string
   detail: string
   scale: string
   license: string
-  group: 'yield' | 'satellite' | 'weather' | 'soil' | 'regional' | 'austria'
+  /** Set when the source is not part of the main model. */
+  status?: 'getestet, verworfen' | 'Nebenversuch'
+  group: 'yield' | 'satellite' | 'weather' | 'soil' | 'regional' | 'austria' | 'extra'
 }
 
+/*
+ * Counts: data/processed/*.parquet (gt_field_years, gt_yield_points, gt_pixels,
+ * gt_dekads, gt_static, gt_site_years), data/interim/cybench_eu_features.parquet,
+ * DATA_SOURCES.md. Volumes: size of data/raw/<source>/ on 2026-10-18.
+ */
 export const DATA_SOURCES: DataSource[] = [
-  { group: 'yield', name: 'KBS LTER', provider: 'Kellogg Biological Station, Michigan', role: 'Gemessene Parzellenerträge (Labels)', detail: '294 Mais-Parzellen-Jahre inkl. Bio- und Zwischenfrucht-Varianten T1–T4', scale: '≈ 0,6-ha-Parzellen', license: 'Nutzung nur mit schriftlicher Erlaubnis' },
-  { group: 'yield', name: 'BARC Gridded Yield Archive', provider: 'USDA-ARS Beltsville, Maryland', role: 'Mähdrescher-Ertragskarten (Labels, innerhalb des Felds)', detail: '61 Mais-Feld-Jahre, auf 10-m-Blöcke gekrigt', scale: 'Felder mit 2–14 ha', license: 'U.S. Public Domain' },
-  { group: 'yield', name: 'Akron Dryland', provider: 'USDA-ARS, Colorado', role: 'Beprobte Ertragspunkte', detail: '10 Mais-Teilfeld-Jahre, 2019–2022', scale: 'Punkte', license: 'CC0' },
-  { group: 'yield', name: 'Kayad-Maisfeld', provider: 'Kayad et al. 2019, Poebene, Italien', role: 'Zweiter Standort für Teilflächen', detail: '3 Feld-Jahre mit rohen Mähdrescherpunkten', scale: 'Feld mit 22 ha', license: 'CC BY 4.0' },
-  { group: 'satellite', name: 'Sentinel-2 L2A', provider: 'ESA / Copernicus über Google Earth Engine', role: 'Vegetationsindizes je 10-Tage-Dekade', detail: 'NDVI, EVI, NDMI, NDRE, GNDVI · Maskierung mit Cloud Score+', scale: '10 m · seit 2017', license: 'Copernicus-Open-Lizenz' },
-  { group: 'satellite', name: 'HLS v2', provider: 'NASA (Landsat 8/9 + Sentinel-2 harmonisiert)', role: 'Längere Indexreihe für kleine Parzellen', detail: 'Genutzt ab 2013; Landsat 5/7 hat die Harmonisierungsprüfung nicht bestanden', scale: '30 m', license: 'NASA Open Data' },
-  { group: 'weather', name: 'ERA5-Land', provider: 'ECMWF / Copernicus', role: 'Tägliche Temperatur, Regen, Bodenfeuchte', detail: 'GDD (10/30 °C), Hitzetage, Wasserbilanz, VPD', scale: '≈ 9-km-Raster', license: 'Copernicus-Lizenz' },
-  { group: 'soil', name: 'SoilGrids 2.0 + Copernicus DEM', provider: 'ISRIC · ESA', role: 'Bodenart, Kohlenstoff, Wasserspeicher, Gelände', detail: 'Ton, Sand, SOC, nFK (AWC), pH; Höhe, Hangneigung, TPI, TWI', scale: '250 m · 30 m', license: 'CC BY 4.0' },
-  { group: 'soil', name: 'SSURGO', provider: 'USDA NRCS', role: 'US-Ertragsfähigkeitsindex (Kontrolle)', detail: 'NCCPI Mais', scale: 'Karteneinheiten', license: 'U.S. Public Domain' },
-  { group: 'regional', name: 'CY-Bench v1.10', provider: 'Kallenberg et al.', role: 'Regionale Maiserträge in der EU + Prädiktoren', detail: '16 Länder, 8 371 Region-Jahre, ohne Österreich', scale: 'NUTS-2/3-Regionen', license: 'EUPL-1.2' },
-  { group: 'austria', name: 'INVEKOS-Feldstücke, Statistik Austria, Versuche Hatzendorf', provider: 'AMA · Statistik Austria · Land Steiermark', role: 'Österreichische Testdaten – bis zum Freeze zurückgehalten', detail: 'Nie für Training, Merkmale, Schwellen oder Modellwahl genutzt. Nach freeze-at-1 einmal für den explorativen Test geöffnet.', scale: 'Feldstücke · Bundesländer · Versuchsstandorte', license: 'CC BY 4.0 / öffentlich' },
+  { group: 'yield', name: 'KBS LTER', provider: 'Kellogg Biological Station, Michigan', count: '294', unit: 'Mais-Parzellen-Jahre', volume: '≈ 108 MB Rohdaten, ≈ 215 000 Mähdrescher-Punkte', role: 'Gewogene Parzellenerträge – die Hauptquelle für das Training.', detail: '24 Parzellen × 14 Maisjahre (1989–2023), inkl. Bio- und Zwischenfrucht-Varianten T1–T4', scale: '≈ 0,6-ha-Parzellen', license: 'Nutzung nur mit schriftlicher Erlaubnis' },
+  { group: 'yield', name: 'BARC Gridded Yield Archive', provider: 'USDA-ARS Beltsville, Maryland', count: '61', unit: 'Mais-Feld-Jahre', volume: '≈ 850 MB Rohdaten, 46 500 Ertragszellen à 10 m', role: 'Mähdrescher-Ertragskarten – zeigen, wo im Feld weniger wächst.', detail: '33 Felder, 2014–2021', scale: 'Felder mit 2–14 ha', license: 'U.S. Public Domain' },
+  { group: 'yield', name: 'Akron Dryland', provider: 'USDA-ARS, Colorado', count: '10', unit: 'Mais-Teilfeld-Jahre', volume: '< 1 MB, 188 Ertragspunkte', role: 'Beprobte Ertragspunkte im Trockenfeldbau.', detail: '10 Teilflächen, 2019–2022', scale: 'Punkte im 30-m-Abstand', license: 'CC0' },
+  { group: 'yield', name: 'Kayad-Maisfeld', provider: 'Kayad et al. 2019, Poebene, Italien', count: '3', unit: 'Feld-Jahre', volume: '≈ 31 MB, ≈ 60 000 Mähdrescher-Punkte', role: 'Zweiter Standort für die Karte innerhalb des Felds.', detail: '1 Feld, 2016–2018', scale: 'Feld mit 22 ha', license: 'CC BY 4.0' },
+
+  { group: 'satellite', name: 'Sentinel-2 L2A', provider: 'ESA / Copernicus über Google Earth Engine', count: '27 800', unit: 'Pixel à 10 m in Ertragsfeldern', volume: '≈ 9 MB ausgelesen – die Bilder selbst bleiben in Google Earth Engine', role: 'Vegetationsindizes je 10-Tage-Abschnitt, auch innerhalb des Felds.', detail: 'NDVI, EVI, NDMI, NDRE, GNDVI · Wolkenmaske Cloud Score+ · 123 Feld-Jahre ab 2017', scale: '10 m · seit 2017', license: 'Copernicus-Open-Lizenz' },
+  { group: 'satellite', name: 'HLS v2', provider: 'NASA (Landsat 8/9 + Sentinel-2 harmonisiert)', count: '365', unit: 'Feld-Jahre als Wachstumskurve', volume: '≈ 13 900 wolkenfreie Indexwerte, < 1 MB', role: 'Längere Indexreihe für die kleinen KBS-Parzellen.', detail: 'Genutzt ab 2013; Landsat 5/7 hat die Harmonisierungsprüfung nicht bestanden', scale: '30 m', license: 'NASA Open Data' },
+  { group: 'extra', name: 'Radar, Wärmebild, Verdunstung', provider: 'Sentinel-1 · Landsat 8/9 · MODIS · ERA5-Land', count: '4', unit: 'Zusatzquellen einzeln getestet', volume: '≈ 2 MB, Feld-Jahre ab 2017', role: 'Alle vier haben die Erkennung verschlechtert und werden nicht genutzt.', detail: 'Radar ΔPR-AUC −0,14 · Temperatur + Verdunstung −0,22', scale: '10 m – 500 m', license: 'Copernicus · USGS · NASA', status: 'getestet, verworfen' },
+
+  { group: 'weather', name: 'ERA5-Land', provider: 'ECMWF / Copernicus', count: '18 620', unit: 'Tageswerte an 4 Wetterpunkten', volume: '≈ 1,5 MB, 1989–2023, 10 Größen je Tag', role: 'Temperatur, Regen, Bodenfeuchte und Strahlung je Tag.', detail: 'Daraus: Wachstumsgradtage (10/30 °C), Hitzetage, Wasserbilanz, VPD', scale: '≈ 9-km-Raster', license: 'Copernicus-Lizenz' },
+
+  { group: 'soil', name: 'SoilGrids 2.0 + Copernicus DEM', provider: 'ISRIC · ESA', count: '67', unit: 'Felder mit Boden- und Geländewerten', volume: '16 Kennwerte je Feld, < 0,1 MB', role: 'Bodenart, Kohlenstoff, Wasserspeicher und Gelände.', detail: 'Ton, Sand, SOC, nFK, pH; Höhe, Hangneigung, TPI, TWI', scale: '250 m · 30 m', license: 'CC BY 4.0' },
+  { group: 'soil', name: 'SSURGO', provider: 'USDA NRCS', count: '67', unit: 'Felder mit Ertragsfähigkeitsindex', volume: '1 Kennwert je Feld (NCCPI Mais), < 0,1 MB', role: 'US-Bodenkarte als Kontrolle, nie als Label.', detail: 'Alle 24 KBS-Parzellen liegen in derselben Karteneinheit', scale: 'Karteneinheiten', license: 'U.S. Public Domain' },
+
+  { group: 'regional', name: 'CY-Bench v1.10', provider: 'Kallenberg et al.', count: '8 371', unit: 'Region-Jahre mit Maisertrag', volume: '≈ 930 MB Rohdaten, 652 Regionen in 16 Ländern', role: 'Regionale Maiserträge der EU mit Wetter, Boden und Satellit – Grundlage des EU-Regionalmodells.', detail: '2003–2021, ohne Österreich', scale: 'NUTS-2/3-Regionen', license: 'EUPL-1.2' },
+
+  { group: 'austria', name: 'INVEKOS-Feldstücke', provider: 'AMA (Agrarmarkt Austria)', count: '≈ 110 000', unit: 'Körnermais-Schläge pro Jahr', volume: '≈ 52 GB, 8 Jahre (2018–2025), davon 34 000–39 000 pro Jahr in der Steiermark', role: 'Feldgrenzen und angebaute Kultur für ganz Österreich.', detail: 'Bisher nur gezählt; für einen Test auf Feldebene fehlen Erträge', scale: 'Feldstücke', license: 'CC BY 4.0' },
+  { group: 'austria', name: 'Sorten- und Düngeversuche', provider: 'LK Oberösterreich · Versuchsstation Hatzendorf', count: '150', unit: 'Versuchs-Jahre mit Ertrag', volume: '≈ 233 MB, 101 PDF-Berichte abgeschrieben – 106 Oberösterreich, 44 Steiermark', role: 'Gemessene Erträge für die zwei Österreich-Tests.', detail: 'Test 1: 34 Standort-Jahre in Oberösterreich · Test 2: 12 in der Steiermark, zu wenig für eine Aussage', scale: 'Versuchsstandorte', license: 'öffentlich, Quellenangabe' },
+  { group: 'austria', name: 'Statistik Austria + Verwaltungsgrenzen', provider: 'Statistik Austria · Eurostat', count: '170', unit: 'Bundesland-Jahre Körnermais', volume: '≈ 220 MB inkl. Grenzen von 2 114 Gemeinden', role: 'Regionaler Vergleich für das EU-Modell.', detail: '2010–2026 × 9 Bundesländer + Österreich; 2026 vorläufig', scale: 'Bundesländer · Gemeinden', license: 'CC BY 4.0 / Quellenangabe' },
+
+  { group: 'extra', name: 'Weizen, Gerste, Erbse, Mais (G2F)', provider: 'INVITE · BRIWECS · Nordic Barley · Recherche Data Gouv · Genomes to Fields', count: '1 783', unit: 'Standort-Jahre anderer Versuche', volume: '≈ 350 MB Rohdaten – 715 Gerste, 614 Weizen, 318 Erbse, 136 Mais', role: 'Prüfte, ob Wissen aus anderen Kulturen beim Mais hilft – es hilft nicht.', detail: 'Übertragung auf Mais ρ 0,01 [−0,26; 0,32]', scale: 'Versuchsstandorte', license: 'CC BY u. a. (je Paket)', status: 'Nebenversuch' },
+  { group: 'extra', name: 'One Acre Fund', provider: 'Aramburu-Merlos et al. 2024, Ostafrika', count: '14 773', unit: 'Kleinbauern-Maisfelder', volume: '≈ 5 MB, 7 Länder, 2016–2022', role: 'Prüfte die Pipeline an afrikanischen Feldern.', detail: 'R² 0,05–0,07 – kaum Signal; keine Feldgrößen, Koordinaten gerundet', scale: 'Punkte (± 56 m)', license: 'CC BY 4.0', status: 'Nebenversuch' },
+]
+
+/** Totals across all sources, for the summary strip on the data page. */
+export const DATA_TOTALS = [
+  { value: '365', label: 'Mais-Feld-Jahre mit gemessenem Ertrag', note: 'USA, 1989–2023 – damit wird trainiert' },
+  { value: '8 371', label: 'Region-Jahre EU-Statistik', note: '16 Länder, ohne Österreich' },
+  { value: '1 783', label: 'Standort-Jahre anderer Kulturen', note: 'Nebenversuch, nicht im Modell' },
+  { value: '≈ 55 GB', label: 'Rohdaten insgesamt', note: 'davon 52 GB österreichische Feldstücke' },
 ]
 
 /* ------------------------------------------------------------------ */
