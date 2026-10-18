@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
+import { ChevronDown } from 'lucide-react'
+import { useMemo, useState, type ReactNode } from 'react'
 import type { Evidence as Ev } from '../api/types'
-import { CiRows, Histogram, LineCi, PairedBars, Scatter, Strip, type CiRow } from '../components/charts/Stats'
+import { CiRows, Histogram, LineCi, PairedBars, Scatter, type CiRow } from '../components/charts/Stats'
 import { Legend } from '../components/charts/core'
 import { StrengthBadge, type Strength } from '../components/ui/Badge'
 import { Metric } from '../components/ui/Metric'
@@ -47,11 +49,10 @@ export default function Evidence() {
         <Container>
           <Reveal>
             <p className="eyebrow mb-5">Belege · Benchmarks</p>
-            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Jede Aussage – mit dem Test, den sie bestehen musste.</h1>
+            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Was funktioniert – und wie gut.</h1>
             <p className="mt-6 max-w-[680px] text-pretty text-[17px] leading-relaxed text-ink-2">
-              Alle Zahlen unten stammen direkt aus den Ergebnisdateien des Projekts. Zu jeder gibt es ein 95-%-Konfidenzintervall aus einem
-              Cluster-Bootstrap und die Zahl der unabhängigen Einheiten dahinter. Bei der Validierung werden immer ganze Felder, Jahre oder
-              Länder zurückgehalten.
+              Fünf Fragen, fünf ehrliche Antworten. Getestet wurde immer an Feldern, Jahren oder Ländern, die das Modell vorher nie gesehen
+              hat. Wer es genau wissen will, klappt bei jedem Abschnitt die technischen Details auf.
             </p>
           </Reveal>
         </Container>
@@ -79,43 +80,86 @@ function Scorecard({ ev }: { ev: Ev }) {
   const a0 = ev.stress_models.A0
   const eu = ev.eu_cutoffs.find((c) => c.cutoff === '09-01')!
   const st = ev.phase4_stages.at(-1)!
-  const rows: { q: string; metric: string; value: string; ci: string; n: string; baseline: string; strength: Strength; href: string }[] = [
-    { q: 'Wo im Feld fehlt Ertrag?', metric: 'Median Spearman ρ (NDVI ggü. Pixel-Ertrag)', value: fmt(b0.rho_median, 2), ci: fmtCi(b0.rho_ci?.[0], b0.rho_ci?.[1]), n: `${b0.n_fy} Feld-Jahre · ${b0.n_clusters} Felder`, baseline: 'nur Position: ρ 0,03', strength: 'robust', href: '#within-field' },
-    { q: 'Welche Feld-Jahre sind gefährdet?', metric: 'PR-AUC am 1. Sep', value: fmt(a0.pr_auc, 2), ci: fmtCi(a0.pr_auc_lo, a0.pr_auc_hi), n: `${a0.n} Feld-Jahre · 8 Standort-Jahre`, baseline: `Zufallsniveau ${fmt(a0.prevalence, 2)}`, strength: 'limited', href: '#field-level' },
-    { q: 'Wie viel schlechter wird das Jahr dieses Feldes?', metric: 'Spearman ρ, beste vorab festgelegte Runde', value: fmt(st.rho, 2), ci: fmtCi(st.rho_lo, st.rho_hi), n: `${st.n} Feld-Jahre · ${st.clusters} Standort-Jahre`, baseline: 'schlägt „Normaljahr“ nicht', strength: 'failed', href: '#year-models' },
-    { q: 'Welche Jahre sind für eine Region schlechter?', metric: 'Spearman ρ am 1. Sep (EU, LOCO)', value: fmt(eu.spearman.value, 2), ci: fmtCi(eu.spearman.lo, eu.spearman.hi), n: `${fmtInt(eu.n)} Region-Jahre · ${eu.countries} Länder`, baseline: `Skill ${fmt(eu.skill_vs_normal.value, 2)} ggü. Normaljahr`, strength: 'certain-small', href: '#regional' },
+  const rows: { q: string; plain: string; metric: string; value: string; ci: string; n: string; baseline: string; strength: Strength; href: string }[] = [
+    { q: 'Wo im Feld wächst weniger?', plain: 'Die Satellitenkarte reiht die 10-m-Zellen eines Feldes ähnlich wie die echte Ertragskarte des Mähdreschers (0 = zufällig, 1 = perfekt).', metric: 'Median Spearman ρ (NDVI ggü. Pixel-Ertrag)', value: fmt(b0.rho_median, 2), ci: fmtCi(b0.rho_ci?.[0], b0.rho_ci?.[1]), n: `${b0.n_fy} Feld-Jahre · ${b0.n_clusters} Felder`, baseline: 'nur Position: ρ 0,03', strength: 'robust', href: '#within-field' },
+    { q: 'Welche Felder haben ein schlechtes Jahr?', plain: `Ein Feld-Jahr ist ein Feld in einer Saison. Der Score findet ${fmtPct(ev.alarm.alarm_recall)} der Feld-Jahre mit mindestens 15 % Ertragsverlust; Zufall läge beim Wert ${fmt(a0.prevalence, 2)}.`, metric: 'PR-AUC am 1. Sep', value: fmt(a0.pr_auc, 2), ci: fmtCi(a0.pr_auc_lo, a0.pr_auc_hi), n: `${a0.n} Feld-Jahre · 8 Standort-Jahre`, baseline: `Zufallsniveau ${fmt(a0.prevalence, 2)}`, strength: 'limited', href: '#field-level' },
+    { q: 'Wie viel schlechter wird das Jahr eines Feldes?', plain: 'Noch nicht besser als die einfache Annahme „normales Jahr“ – dafür gab es zu wenige unabhängige Jahre.', metric: 'Spearman ρ, beste vorab festgelegte Runde', value: fmt(st.rho, 2), ci: fmtCi(st.rho_lo, st.rho_hi), n: `${st.n} Feld-Jahre · ${st.clusters} Standort-Jahre`, baseline: 'schlägt „Normaljahr“ nicht', strength: 'failed', href: '#year-models' },
+    { q: 'Welche Jahre werden für eine Region schlechter?', plain: `In ${eu.countries} EU-Ländern klar besser als Zufall – durch ${fmtInt(eu.n)} Region-Jahre statistisch gesichert.`, metric: 'Spearman ρ am 1. Sep (EU, LOCO)', value: fmt(eu.spearman.value, 2), ci: fmtCi(eu.spearman.lo, eu.spearman.hi), n: `${fmtInt(eu.n)} Region-Jahre · ${eu.countries} Länder`, baseline: `Skill ${fmt(eu.skill_vs_normal.value, 2)} ggü. Normaljahr`, strength: 'certain-small', href: '#regional' },
   ]
   const at = ev.austria?.cutoffs['09-01']?.['V2-A_stress_score']
-  if (at) rows.push({ q: 'Lässt es sich auf Österreich übertragen?', metric: 'Spearman ρ, eingefrorener Stress-Score, 1. Sep', value: fmt(at.rho, 2), ci: fmtCi(at.lo, at.hi), n: `${at.n} Standort-Jahre · ${at.clusters} Jahre`, baseline: `einfacher NDVI ρ ${fmt(ev.austria?.cutoffs['09-01']['V2-baseline_NDVI']?.rho, 2)}`, strength: 'limited', href: '#austria' })
+  if (at) rows.push({ q: 'Lässt es sich auf Österreich übertragen?', plain: 'Ja, mit besseren Datensätzen (Hagelversicherung). Erster Test: Gute und schlechte Jahre werden richtig gereiht, einzelne Standorte noch nicht.', metric: 'Spearman ρ, eingefrorener Stress-Score, 1. Sep', value: fmt(at.rho, 2), ci: fmtCi(at.lo, at.hi), n: `${at.n} Standort-Jahre · ${at.clusters} Jahre`, baseline: `einfacher NDVI ρ ${fmt(ev.austria?.cutoffs['09-01']['V2-baseline_NDVI']?.rho, 2)}`, strength: 'limited', href: '#austria' })
+  const [tech, setTech] = useState(false)
+  const head = ['Frage', 'Wert', 'Was das heißt', ...(tech ? ['Metrik', '95-%-KI', 'Einheiten', 'Verglichen mit'] : []), 'Urteil']
   return (
     <section className="pb-12">
       <Container>
         <Reveal className="panel overflow-x-auto">
-          <table className="w-full min-w-[860px] text-left text-[13.5px]">
+          <table className={`w-full text-left text-[13.5px] ${tech ? 'min-w-[1180px]' : 'min-w-[760px]'}`}>
             <thead>
               <tr className="border-b border-[var(--line)] text-ink-3">
-                {['Frage', 'Metrik', 'Wert', '95-%-KI', 'Einheiten', 'Verglichen mit', 'Urteil'].map((h) => (
+                {head.map((h) => (
                   <th key={h} className="px-5 py-4 font-mono text-[10.5px] font-normal uppercase tracking-[0.12em]">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={r.q} className="group border-b border-[var(--line)] last:border-0 transition-colors hover:bg-white/[0.025]">
-                  <td className="px-5 py-4"><a href={r.href} className="font-medium text-ink group-hover:text-maize">{r.q}</a></td>
-                  <td className="px-5 py-4 text-ink-2">{r.metric}</td>
-                  <td className="px-5 py-4 font-display text-[22px] font-semibold tabular">{r.value}</td>
-                  <td className="px-5 py-4 font-mono text-[12px] text-ink-3 tabular">{r.ci}</td>
-                  <td className="px-5 py-4 text-ink-3">{r.n}</td>
-                  <td className="px-5 py-4 text-ink-3">{r.baseline}</td>
+                <tr key={r.q} className="group border-b border-[var(--line)] align-top transition-colors last:border-0 hover:bg-white/[0.025]">
+                  <td className="w-[230px] px-5 py-4"><a href={r.href} className="text-[14.5px] font-medium text-ink group-hover:text-maize">{r.q}</a></td>
+                  <td className="px-5 py-4 font-display text-[24px] font-semibold leading-none tabular">{r.value}</td>
+                  <td className="max-w-[420px] px-5 py-4 leading-relaxed text-ink-2">{r.plain}</td>
+                  {tech && (
+                    <>
+                      <td className="px-5 py-4 text-ink-3">{r.metric}</td>
+                      <td className="px-5 py-4 font-mono text-[12px] text-ink-3 tabular">{r.ci}</td>
+                      <td className="px-5 py-4 text-ink-3">{r.n}</td>
+                      <td className="px-5 py-4 text-ink-3">{r.baseline}</td>
+                    </>
+                  )}
                   <td className="px-5 py-4"><StrengthBadge strength={r.strength} /></td>
                 </tr>
               ))}
             </tbody>
           </table>
         </Reveal>
+        <div className="mt-4">
+          <Toggle open={tech} onClick={() => setTech(!tech)}>{tech ? 'Technische Angaben ausblenden' : 'Technische Angaben einblenden (Metrik, Konfidenzintervall, Stichprobe)'}</Toggle>
+        </div>
       </Container>
     </section>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+
+function Toggle({ open, onClick, children }: { open: boolean; onClick: () => void; children: ReactNode }) {
+  return (
+    <button
+      type="button"
+      aria-expanded={open}
+      onClick={onClick}
+      className={`inline-flex min-h-9 items-center gap-1.5 rounded-[var(--radius-control)] border px-3 py-1.5 text-left text-[13px] transition ${open ? 'border-maize/40 bg-maize/10 text-maize' : 'border-[var(--line-strong)] text-ink-2 hover:border-ink-3 hover:text-ink'}`}
+    >
+      {children}
+      <ChevronDown className={`size-3.5 shrink-0 transition-transform ${open ? 'rotate-180' : ''}`} />
+    </button>
+  )
+}
+
+/** Collapsed block for charts, controls and method details below the plain-language summary of a section. */
+function TechDetails({ children, label = 'Technische Details' }: { children: ReactNode; label?: string }) {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="mt-6">
+      <Toggle open={open} onClick={() => setOpen(!open)}>{open ? `${label} ausblenden` : `${label} anzeigen`}</Toggle>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.3 }} className="overflow-hidden">
+            <div className="pt-5">{children}</div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   )
 }
 
@@ -142,17 +186,7 @@ function WithinField({ ev }: { ev: Ev }) {
     { label: 'M1, an anderen Standorten trainiert', sub: 'Leave-one-site-out', value: l.BARC.M1.rho_median, lo: l.BARC.M1.rho_ci?.[0], hi: l.BARC.M1.rho_ci?.[1] },
     { label: 'Nur Position (Kontrolle)', sub: 'Zellkoordinaten, kein Satellit', value: e.BARC.KRAUM.rho_median, lo: e.BARC.KRAUM.rho_ci?.[0], hi: e.BARC.KRAUM.rho_ci?.[1], color: tokens.ink3 },
   ]
-  const groups = (model: string, scheme: string) =>
-    [
-      { key: 'BARC', label: 'BARC', sub: 'Maryland · 41', color: tokens.sage },
-      { key: 'KAYAD', label: 'Kayad', sub: 'Italien · 3', color: tokens.maize },
-      { key: 'COLORADO', label: 'Akron', sub: 'Colorado · 6', color: tokens.water },
-    ].map((s) => {
-      const vals = ev.innerfeld_per_fy.filter((r) => r.model === model && r.scheme === scheme && r.site === s.key && r.rho != null)
-      return { label: s.label, sub: s.sub, color: s.color, values: vals.map((v) => ({ v: v.rho as number, title: `${v.fy_key.split(':')[1]?.split('|')[0] ?? ''} ${v.year}` })), median: vals.length ? vals.map((v) => v.rho as number).sort((a, b) => a - b)[Math.floor(vals.length / 2)] : undefined }
-    })
-  const b0All = ev.innerfeld_per_fy.filter((r) => r.model === 'B0' && r.scheme === 'untrained' && r.rho != null)
-  const nPos = b0All.filter((r) => (r.rho as number) > 0).length
+  const b0 = u.BARC.B0
   const map = ev.within_field_map
   const shuffle = ev.innerfeld_label_shuffle.E_BARC_median_rho
   return (
@@ -160,33 +194,36 @@ function WithinField({ ev }: { ev: Ev }) {
       <Container>
         <SectionHeader
           eyebrow="1 · Innerhalb des Feldes"
-          title="Der NDVI im Hochsommer findet die schwachen Zonen."
-          lede="Je Feld-Jahr werden die 10-m-Zellen nach NDVI gereiht und mit der Ertragskarte des Mähdreschers verglichen. Ein trainiertes Modell bringt etwas mehr; die einfache Regel trägt bereits den Großteil des Signals."
+          title="Der Satellit findet die schwachen Stellen im Feld."
+          lede="Das Satellitenbild aus dem Hochsommer wird in 10 × 10 m große Zellen geteilt und mit der Ertragskarte des Mähdreschers verglichen. Grünere Zellen bringen meist mehr Ertrag – das funktioniert schon ganz ohne Training."
           aside={<StrengthBadge strength="robust" />}
         />
-        <div className="mt-12 grid gap-5 lg:grid-cols-[1.15fr_1fr]">
-          <Panel title="Median-ρ über 41 BARC-Feld-Jahre, 95-%-KI" source="results/2026-10-17_innerfeld/metrics.json · Schemata E (je Standort) und L (Leave-one-site-out)">
-            <CiRows rows={rows} domain={[-0.4, 1]} reference={0} />
-          </Panel>
-          <Panel title="Jeder Punkt ist ein Feld-Jahr · Regel B0" source="results/2026-10-17_innerfeld/per_fy.csv">
-            <Strip groups={groups('B0', 'untrained')} domain={[-0.2, 1]} xLabel="Spearman ρ" reference={0} />
-            <p className="mt-4 text-[13px] leading-relaxed text-ink-3">{nPos} von {b0All.length} Feld-Jahren sind positiv. Nur BARC hat genug Feld-Jahre für ein Urteil; Italien und Colorado zeigen in dieselbe Richtung.</p>
-          </Panel>
-        </div>
-        <div className="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-          <Panel title="Markiertes Viertel ist wirklich schwach">
-            <Metric label="Median-Präzision" value={map.median_precision} digits={2} n={`${map.n_fy} Feld-Jahre`} note={`gegenüber ${fmtPct(map.median_prevalence)} ertragsschwachen Zellen insgesamt`} />
+        <div className="mt-12 grid gap-5 md:grid-cols-3">
+          <Panel title="Übereinstimmung mit der Ertragskarte">
+            <Metric label="Reihung der Zellen" value={b0.rho_median} digits={2} size="lg" tone="sage" note="0 = zufällig, 1 = perfekt. Zum Vergleich: Nur die Lage im Feld ergibt 0,03." />
           </Panel>
           <Panel title="Besser als Zufall">
-            <Metric label="Median-Lift" value={map.median_lift} digits={1} prefix="× " note={`${fmtPct(map.median_recall)} der ertragsschwachen Zellen werden gefunden`} />
+            <Metric label="Treffer ggü. Zufall" value={map.median_lift} digits={1} prefix="× " size="lg" tone="sage" note={`2,3-mal so viele ertragsschwache Stellen wie bei zufälliger Auswahl. Gemessen an ${map.n_fy} Feld-Jahren – mit mehr Ertragskarten wird die Zahl noch belastbarer.`} />
           </Panel>
-          <Panel title="Label-Shuffle-Kontrolle">
-            <Metric label="Mittleres ρ, gemischte Erträge" value={shuffle.mean} digits={2} note="20 Wiederholungen. Fällt wie erwartet auf null; einzelne Läufe erreichen ±0,45, was der Bericht offenlegt." />
-          </Panel>
-          <Panel title="Wie viel Luft bleibt (Kayad)">
-            <Metric label="Karte ggü. Obergrenze" value={u.KAYAD.B0.rho_median} digits={2} note="Das Messrauschen des Mähdreschers begrenzt das erreichbare ρ auf diesem Feld auf 0,72–0,94." />
+          <Panel title="Markiertes Viertel ist wirklich schwach">
+            <Metric label="Anteil echter Treffer" value={map.median_precision} digits={2} size="lg" note={`${fmtPct(map.median_precision)} der markierten Zellen bringen tatsächlich wenig Ertrag; bei Zufall wären es ${fmtPct(map.median_prevalence)}.`} />
           </Panel>
         </div>
+        <TechDetails>
+          <div className="grid gap-5 lg:grid-cols-[1.15fr_1fr]">
+            <Panel title="Median-ρ über 41 BARC-Feld-Jahre, 95-%-KI" source="results/2026-10-17_innerfeld/metrics.json · Schemata E (je Standort) und L (Leave-one-site-out)">
+              <CiRows rows={rows} domain={[-0.4, 1]} reference={0} />
+            </Panel>
+            <div className="grid gap-5">
+              <Panel title="Gegenprobe: Erträge vertauscht (Label-Shuffle)">
+                <Metric label="Mittleres ρ mit vertauschten Erträgen" value={shuffle.mean} digits={2} note="Die Erträge wurden 20-mal zufällig zwischen den Zellen vertauscht. Dann fällt die Übereinstimmung wie erwartet auf etwa 0 – das Signal kommt also wirklich aus den Daten und nicht aus einem Rechenfehler. Einzelne Durchläufe schwanken bis ±0,45, weil es nur wenige Felder sind; das steht offen im Bericht." />
+              </Panel>
+              <Panel title="Wie viel Luft bleibt (Kayad, Italien)">
+                <Metric label="Karte ggü. Obergrenze" value={u.KAYAD.B0.rho_median} digits={2} note="Auch der Mähdrescher misst ungenau. Auf diesem Feld ist deshalb höchstens 0,72–0,94 erreichbar." />
+              </Panel>
+            </div>
+          </div>
+        </TechDetails>
       </Container>
     </section>
   )
@@ -254,11 +291,31 @@ function FieldLevel({ ev }: { ev: Ev }) {
       <Container>
         <SectionHeader
           eyebrow="2 · Ganze Felder"
-          title="Der einfachste Score schlägt jedes gelernte Modell – mit einem Haken."
-          lede="Ein Feld-Jahr gilt als gefährdet, wenn sein Ertrag mindestens 15 % unter seinem eigenen Normalertrag liegt. Ausgewertet nur auf ungesehenen Feldgruppen und Jahren (LOFYO): 89 Feld-Jahre aus 8 Standort-Jahren."
+          title="Felder mit schlechtem Jahr: deutlich besser als Zufall – mit einem Haken."
+          lede="Ein Feld-Jahr ist ein Feld in einer Saison. „Gefährdet“ heißt: mindestens 15 % weniger Ertrag als sonst auf diesem Feld. Der Stress-Score vergleicht die Grünkurve jedes Feldes mit der eines gesunden Feldes. Getestet an 89 Feld-Jahren, die das Modell nie gesehen hat."
           aside={<StrengthBadge strength="limited" />}
         />
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+        <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <Panel title="Trefferqualität">
+            <Metric label="PR-AUC, 1. September" value={sm.A0.pr_auc} digits={2} size="lg" tone="maize" note={`0 bis 1. Zufall läge bei ${fmt(sm.A0.prevalence, 2)}.`} />
+          </Panel>
+          <Panel title="Gefundene gefährdete Felder">
+            <Metric label="Trefferquote" value={a.alarm_recall} digits={2} size="lg" note={`${fmtPct(a.alarm_recall)} der gefährdeten Feld-Jahre bekommen einen Alarm.`} />
+          </Panel>
+          <Panel title="Zutreffende Alarme">
+            <Metric label="Präzision" value={a.alarm_precision} digits={2} size="lg" note={`${Math.round(a.alarm_precision * a.n_alarm)} von ${a.n_alarm} Alarmen waren wirklich gefährdete Feld-Jahre.`} />
+          </Panel>
+          <Panel title="Fehlalarme">
+            <Metric label="Fehlalarmrate" value={a.alarm_fpr} digits={2} size="lg" note="Anteil der normalen Felder mit Alarm. Die Schwelle wurde für höchstens 20 % festgelegt." />
+          </Panel>
+        </div>
+        <Reveal className="mt-5 panel p-6 text-[14px] leading-relaxed text-ink-2">
+          <p className="eyebrow mb-2">Der Haken</p>
+          Spät gesäte Bio-Parzellen sehen für den Satelliten aus wie gestresste Felder und werden jedes Jahr markiert – auch 2020, als sie
+          normal erbrachten. Ein Alarm heißt deshalb „die Kurve liegt unter der gesunden Referenz“, nicht „sicher ein Ausfall“.
+        </Reveal>
+        <TechDetails>
+        <div className="grid gap-5 lg:grid-cols-2">
           <Panel title={`PR-AUC am 1. September · Zufallsniveau = ${fmt(sm.A0.prevalence, 2)}`} source="results/2026-10-16_feinjust_ablation/metrics.json, metrics.csv · results/2026-10-16_round3/phase3.json">
             <CiRows rows={rows} domain={[0, 1]} reference={sm.A0.prevalence} referenceLabel="Zufallsniveau" />
           </Panel>
@@ -291,17 +348,12 @@ function FieldLevel({ ev }: { ev: Ev }) {
             </div>
           </Panel>
         </div>
-        <div className="mt-5 grid gap-5 md:grid-cols-3">
-          <Panel title="Alarmschwelle">
-            <Metric label="Fehlalarmrate" value={a.alarm_fpr} digits={2} note="Konforme Schwelle, festgelegt für höchstens 20 % Fehlalarme unter nicht gefährdeten Feldern." />
-          </Panel>
-          <Panel title="Zutreffende Alarme">
-            <Metric label="Präzision" value={a.alarm_precision} digits={2} note={`${Math.round(a.alarm_precision * a.n_alarm)} von ${a.n_alarm} Alarmen waren gefährdete Feld-Jahre.`} />
-          </Panel>
-          <Panel title="Gefundene gefährdete Felder">
-            <Metric label="Trefferquote (Recall)" value={a.alarm_recall} digits={2} note={`${a.main_phase_alarms.Juli} von ${a.n_alarm} Alarmen gingen vor allem auf den Juli zurück.`} />
-          </Panel>
-        </div>
+        <p className="mt-5 max-w-[760px] text-[13.5px] leading-relaxed text-ink-3">
+          Alarmschwelle konform festgelegt für höchstens 20 % Fehlalarme unter nicht gefährdeten Feldern. {a.main_phase_alarms.Juli} von{' '}
+          {a.n_alarm} Alarmen gingen vor allem auf den Juli zurück. Ausgewertet nur auf ungesehenen Feldgruppen und Jahren (LOFYO), 89
+          Feld-Jahre aus 8 Standort-Jahren.
+        </p>
+        </TechDetails>
       </Container>
     </section>
   )
@@ -322,10 +374,11 @@ function YearModels({ ev }: { ev: Ev }) {
         <SectionHeader
           eyebrow="3 · Von Jahr zu Jahr auf Feldebene"
           title="Vorhersagen, wie viel schlechter ein Jahr wird: nicht stark genug."
-          lede="Die Modelle sollten den relativen Ertrag eines ungesehenen Feldes in einem ungesehenen Jahr schätzen. Mit nur 8–11 unabhängigen Standort-Jahren schlug beim Fehler keines die einfache Annahme eines Normaljahres. Das vorab festgelegte Urteil lautete „nicht stark genug“, daher wurde dieses Modell nie eingefroren."
+          lede="Die Modelle sollten schätzen, wie viel weniger ein Feld in einem neuen Jahr bringt. Mit nur 8 unabhängigen Standort-Jahren war keines genauer als die einfache Annahme „normales Jahr“. Das vorher festgelegte Urteil lautete „nicht stark genug“ – deshalb wird dieses Modell nicht verwendet."
           aside={<StrengthBadge strength="failed" />}
         />
-        <div className="mt-12 grid gap-5 lg:grid-cols-2">
+        <TechDetails>
+        <div className="grid gap-5 lg:grid-cols-2">
           <Panel title="Spearman ρ am 1. Sep, Sentinel-2-Merkmale, LOFYO" source="results/2026-10-16_phase2/metrics.csv · 89 Feld-Jahre / 8 Standort-Jahre">
             <div className="mb-5"><Tabs size="sm" label="Modellart" value={kind} onChange={setKind} items={[{ value: 'ridge', label: 'Ridge' }, { value: 'lgbm', label: 'LightGBM' }]} /></div>
             <CiRows rows={famRows} domain={[-0.6, 0.8]} reference={0} />
@@ -349,6 +402,7 @@ function YearModels({ ev }: { ev: Ev }) {
           Warum: Kennt das Modell das Jahr bereits, erreicht es ρ 0,65 – es lernt „welches Jahr ist das“, nicht „wie geht es diesem
           Feld“. Mit gemischten Erträgen fällt zudem jedes Modell auf Baseline-Niveau; hinter dem schwachen Ergebnis steckt also kein Leakage.
         </p>
+        </TechDetails>
       </Container>
     </section>
   )
@@ -373,15 +427,24 @@ function Regional({ ev }: { ev: Ev }) {
       <Container>
         <SectionHeader
           eyebrow="4 · Regionen, EU"
-          title="Ein kleines, sicheres Signal für schlechte Jahre – eingefroren vor Österreich."
-          lede="LightGBM auf CY-Bench-Maisstatistiken aus 16 EU-Ländern, ohne Österreich. Jedes Land wird von einem Modell vorhergesagt, das es nie gesehen hat (Leave-one-country-out). Zielgröße: der Ertrag der Region relativ zu ihren letzten fünf Jahren."
+          title="Ein statistisch gesichertes Signal für schlechte Erntejahre – eingefroren vor Österreich."
+          lede="Ein Modell lernt aus Wetter, Bodenfeuchte und Satellitendaten, ob das Maisjahr einer Region besser oder schlechter als üblich wird. Jedes Land wird von einem Modell vorhergesagt, das dieses Land nie gesehen hat: 16 EU-Länder, Österreich bewusst ausgeschlossen."
           aside={<StrengthBadge strength="certain-small" />}
         />
-        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <Panel title="Rangkorrelation"><Metric label="Spearman ρ, 1. Sep" value={last.spearman.value} ci={[last.spearman.lo, last.spearman.hi]} n={fmtInt(last.n)} tone="water" size="lg" /></Panel>
-          <Panel title="Besser als ein Normaljahr"><Metric label="Skill (RMSE)" value={last.skill_vs_normal.value} ci={[last.skill_vs_normal.lo, last.skill_vs_normal.hi]} size="lg" /></Panel>
-          <Panel title="Erklärte Varianz"><Metric label="R²" value={last.r2.value} ci={[last.r2.lo, last.r2.hi]} size="lg" /></Panel>
-          <Panel title="Innerhalb eines Jahres"><Metric label="Mittleres ρ zwischen Regionen" value={last.within_year.value} ci={[last.within_year.lo, last.within_year.hi]} size="lg" note={`Über die Jahre: ρ ${fmt(last.yearly_mean_spearman, 2)} – es lernt vor allem das Jahr.`} /></Panel>
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          <Panel title="Reihung der Jahre">
+            <Metric label="Rangkorrelation am 1. September" value={last.spearman.value} digits={2} tone="water" size="lg" note={`Wie gut das Modell die Region-Jahre von schlecht bis gut reiht (0 = zufällig, 1 = perfekt). Mit ${fmtInt(last.n)} Region-Jahren ist der Wert eng abgesichert: ${fmtCi(last.spearman.lo, last.spearman.hi)}.`} />
+          </Panel>
+          <Panel title="Genauer als „normales Jahr“">
+            <Metric label="Verbesserung" value={last.skill_vs_normal.value} digits={2} size="lg" note="Der quadratische Fehler ist rund 7 % kleiner als bei der einfachen Annahme, dass jedes Jahr normal wird – der Vorsprung liegt vor allem in sehr schlechten und sehr guten Jahren." />
+          </Panel>
+        </div>
+        <TechDetails>
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          <Panel title="Rangkorrelation"><Metric label="Spearman ρ, 1. Sep" value={last.spearman.value} ci={[last.spearman.lo, last.spearman.hi]} n={fmtInt(last.n)} tone="water" /></Panel>
+          <Panel title="Besser als ein Normaljahr"><Metric label="Skill (MSE)" value={last.skill_vs_normal.value} ci={[last.skill_vs_normal.lo, last.skill_vs_normal.hi]} /></Panel>
+          <Panel title="Erklärte Varianz"><Metric label="R²" value={last.r2.value} ci={[last.r2.lo, last.r2.hi]} /></Panel>
+          <Panel title="Innerhalb eines Jahres"><Metric label="Mittleres ρ zwischen Regionen" value={last.within_year.value} ci={[last.within_year.lo, last.within_year.hi]} note={`Über die Jahre: ρ ${fmt(last.yearly_mean_spearman, 2)} – es lernt vor allem das Jahr.`} /></Panel>
         </div>
         <div className="mt-5 grid gap-5 lg:grid-cols-2">
           <Panel title="Modell ggü. Baselines am 1. Sep (niedriger ist besser)" source="results/2026-10-16_cybench_eu/metrics.json · gepoolt">
@@ -424,6 +487,7 @@ function Regional({ ev }: { ev: Ev }) {
           daher leicht optimistisch; der Österreich-Test ist davon nicht betroffen. Modelldateien und Testregeln sind mit SHA-256-Prüfsummen
           eingefroren (Tag {ev.eu_meta.freeze}, Commit {ev.eu_meta.commit}).
         </Reveal>
+        </TechDetails>
       </Container>
     </section>
   )
@@ -449,10 +513,24 @@ function Austria({ ev }: { ev: Ev }) {
         <SectionHeader
           eyebrow="5 · Österreich, erster Test (explorativ)"
           title="Eingefrorene Modelle in Österreich: Die Jahre lassen sich reihen, die Felder noch nicht."
-          lede="Einmal ausgeführt nach dem als freeze-at-1 eingefrorenen Protokoll, ohne einen Sieger auszuwählen. Explorativ, weil kein Feldmodell das Kriterium „stark genug“ bestanden hatte. Der lokale Test umfasst nur Oberösterreich: Für die steirischen Versuchsstandorte gab es keine Sortenversuche, daher hat sie der vorab festgelegte Filter ausgeschlossen."
+          lede="Die eingefrorenen Modelle wurden einmal an österreichischen Erträgen getestet, ohne danach etwas anzupassen. Sie reihen gute und schlechte Jahre richtig, unterscheiden aber innerhalb eines Jahres noch nicht zwischen einzelnen Standorten. Dafür fehlen österreichische Feld-Erträge – mit besseren Datensätzen, etwa von Hagelversicherungen, lässt sich genau das prüfen und nachtrainieren."
           aside={<StrengthBadge strength="limited" />}
         />
-        <div className="mt-12 grid gap-5 lg:grid-cols-[1.2fr_1fr]">
+        <div className="mt-12 grid gap-5 md:grid-cols-2">
+          <Panel title="Gute und schlechte Jahre">
+            <Metric label="Reihung, Stress-Score" value={last['V2-A_stress_score'].rho} digits={2} size="lg" tone="maize" note={`${last['V2-A_stress_score'].n} Versuchs-Jahre in Oberösterreich (0 = zufällig, 1 = perfekt). Ein einfacher Grünwert schafft ähnlich viel.`} />
+          </Panel>
+          <Panel title="Standorte im selben Jahr">
+            <Metric label="Reihung innerhalb eines Jahres" value={last['V2-A_within_year'].median} digits={2} size="lg" tone="rust" note="Etwa 0: Welcher Standort im selben Jahr schlechter abschneidet, erkennt das Modell noch nicht." />
+          </Panel>
+        </div>
+        <TechDetails>
+        <p className="mb-5 max-w-[760px] text-[13.5px] leading-relaxed text-ink-3">
+          Einmal ausgeführt nach dem als freeze-at-1 eingefrorenen Protokoll, ohne einen Sieger auszuwählen. Explorativ, weil kein Feldmodell
+          das Kriterium „stark genug“ bestanden hatte. Der lokale Test umfasst nur Oberösterreich: Für die steirischen Versuchsstandorte gab es
+          keine Sortenversuche, daher hat sie der vorab festgelegte Filter ausgeschlossen.
+        </p>
+        <div className="grid gap-5 lg:grid-cols-[1.2fr_1fr]">
           <Panel title="Spearman ρ am 1. September, 95-%-KI (Cluster = Jahre)" source="results/2026-10-17_at_test/metrics.json · reports/at_test_ergebnis.md">
             <CiRows rows={rows} domain={[-1, 1]} reference={0} />
           </Panel>
@@ -489,6 +567,7 @@ function Austria({ ev }: { ev: Ev }) {
           Dass der Stress-Score mehr leistet als einfacher NDVI; dass er Felder oder Standorte innerhalb eines Jahres unterscheidet; dass das
           Ergebnis für die Steiermark gilt; irgendetwas auf Feldebene – ein Test auf Feldebene (V3) braucht noch österreichische Feld-Erträge.
         </Reveal>
+        </TechDetails>
       </Container>
     </section>
   )

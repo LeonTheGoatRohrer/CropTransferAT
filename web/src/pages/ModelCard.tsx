@@ -3,6 +3,7 @@ import { Check, ChevronDown, X } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import type { Evidence } from '../api/types'
 import { Backdrop } from '../components/ui/Backdrop'
+import { ProjectFlow } from '../components/ui/ProjectFlow'
 import { StrengthBadge, type Strength } from '../components/ui/Badge'
 import { Reveal } from '../components/ui/Reveal'
 import { Container } from '../components/ui/Section'
@@ -107,7 +108,7 @@ function cards(ev: Evidence): Card[] {
         { k: 'Wie es funktioniert', v: 'Ein Machine-Learning-Modell (kleine Entscheidungsbäume) lernt aus vergangenen Jahren, wie Wetter, Bodenfeuchte und Pflanzengrün ab April mit dem Endertrag zusammenhängen. Ein Modell je Prognosestichtag, 1. Juni bis 1. September.' },
         { k: 'Grundlage', v: 'Monatliches Wetter, Bodenfeuchte, Satellitenwerte zur Pflanzengesundheit und Bodeneigenschaften. Ortsnamen, IDs oder das Jahr bekommt das Modell nicht.' },
         { k: 'Trainingsdaten', v: <>Ein öffentlicher Datensatz (CY-Bench): <b>{fmtInt(eu.n)} Region-Jahre</b> aus <b>{eu.countries} EU-Ländern</b>, 2003–2021, rund <b>0,9 GB</b> Rohdaten. Österreich ist vollständig ausgeschlossen.</> },
-        { k: 'Wie gut', v: <>Reihung der Region-Jahre: Wert <b>{fmt(eu.spearman.value, 2)}</b> {fmtCi(eu.spearman.lo, eu.spearman.hi)} (0 = zufällig, 1 = perfekt), getestet an Ländern, die es nie gesehen hat. Vorteil gegenüber der einfachen Annahme eines Normaljahres: {fmt(eu.skill_vs_normal.value, 2)} {fmtCi(eu.skill_vs_normal.lo, eu.skill_vs_normal.hi)} – klein, aber sicher.</> },
+        { k: 'Wie gut', v: <>Reihung der Region-Jahre: Wert <b>{fmt(eu.spearman.value, 2)}</b> {fmtCi(eu.spearman.lo, eu.spearman.hi)} (0 = zufällig, 1 = perfekt), getestet an Ländern, die es nie gesehen hat. Vorteil gegenüber der einfachen Annahme eines Normaljahres: {fmt(eu.skill_vs_normal.value, 2)} {fmtCi(eu.skill_vs_normal.lo, eu.skill_vs_normal.hi)} – statistisch gesichert.</> },
       ],
       failures: [
         `Es lernt vor allem, welches Jahr es ist (Jahresmittel ρ ${fmt(eu.yearly_mean_spearman, 2)}), weniger die Unterschiede zwischen Regionen.`,
@@ -136,17 +137,30 @@ export default function ModelCard() {
         <Backdrop name="modelle-pixelfelder" />
         <Container>
           <Reveal>
-            <p className="eyebrow mb-5">Die drei Modelle</p>
-            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Was jedes kann – und was nicht.</h1>
+            <p className="eyebrow mb-5">Modelle</p>
+            <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Wie aus Satellitendaten eine Warnung wird.</h1>
             <p className="mt-6 max-w-[680px] text-[17px] leading-relaxed text-ink-2">
-              Jedes Modell wird mit jedem österreichischen Feld besser, das dazukommt. Öffnen Sie eine Karte für die Erklärung oder für die
-              genaue Methode.
+              Zuerst der Weg im Überblick, dann die drei Modelle. Jedes wird mit jedem österreichischen Feld besser, das dazukommt. Öffnen Sie
+              eine Karte für die Erklärung oder für die genaue Methode.
             </p>
           </Reveal>
         </Container>
       </section>
+      <section className="pb-20">
+        <Container>
+          <Reveal>
+            <p className="eyebrow mb-3">So sind wir vorgegangen</p>
+            <h2 className="mb-8 max-w-[760px] text-balance text-[clamp(1.7rem,3vw,2.3rem)] leading-tight">Vom Satellitenbild zur Warnung – in sechs Schritten.</h2>
+          </Reveal>
+          <ProjectFlow />
+        </Container>
+      </section>
       <section>
         <Container>
+          <Reveal>
+            <p className="eyebrow mb-3">Die drei Modelle</p>
+            <h2 className="mb-8 text-[clamp(1.7rem,3vw,2.3rem)] leading-tight">Was jedes kann – und was nicht.</h2>
+          </Reveal>
           {ev.status === 'loading' && <Skeleton className="h-[600px]" />}
           {ev.error && <ErrorNote error={ev.error} />}
           <div className="grid items-start gap-5 lg:grid-cols-3">

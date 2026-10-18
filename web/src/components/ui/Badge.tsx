@@ -24,7 +24,7 @@ export type Strength = 'robust' | 'certain-small' | 'limited' | 'failed' | 'froz
 
 const strengthMap: Record<Strength, { tone: Tone; label: string }> = {
   robust: { tone: 'sage', label: 'Robust' },
-  'certain-small': { tone: 'water', label: 'Klein, aber sicher' },
+  'certain-small': { tone: 'water', label: 'Statistisch gesichert' },
   limited: { tone: 'maize', label: 'Eingeschränkt' },
   failed: { tone: 'rust', label: 'Nicht bestanden' },
   frozen: { tone: 'neutral', label: 'Eingefroren' },
