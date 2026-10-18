@@ -1,5 +1,6 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
+import { Backdrop } from '../components/ui/Backdrop'
 import { StrengthBadge, type Strength } from '../components/ui/Badge'
 import { CountUp } from '../components/ui/CountUp'
 import { Reveal } from '../components/ui/Reveal'
@@ -9,7 +10,8 @@ import { EXPERIMENTS, FEATURE_GROUPS, MODEL_INVENTORY, PIPELINE_STEPS } from '..
 export default function Method() {
   return (
     <>
-      <section className="pt-36 pb-10">
+      <section className="relative isolate overflow-hidden pt-36 pb-16">
+        <Backdrop name="methode-drohne" />
         <Container>
           <Reveal>
             <p className="eyebrow mb-5">Methode</p>
