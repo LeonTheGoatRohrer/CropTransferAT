@@ -5,6 +5,7 @@ import { Legend } from '../components/charts/core'
 import { StrengthBadge, type Strength } from '../components/ui/Badge'
 import { Metric } from '../components/ui/Metric'
 import { Reveal } from '../components/ui/Reveal'
+import { Backdrop } from '../components/ui/Backdrop'
 import { Container, SectionHeader, Source } from '../components/ui/Section'
 import { ErrorNote, Skeleton } from '../components/ui/States'
 import { Tabs } from '../components/ui/Tabs'
@@ -41,7 +42,8 @@ export default function Evidence() {
   const ev = useResource(getEvidence, 'evidence')
   return (
     <>
-      <section className="pt-36 pb-10">
+      <section className="relative isolate overflow-hidden pt-36 pb-16">
+        <Backdrop name="belege-orbit" />
         <Container>
           <Reveal>
             <p className="eyebrow mb-5">Belege · Benchmarks</p>

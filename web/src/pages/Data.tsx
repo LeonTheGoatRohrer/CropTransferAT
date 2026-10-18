@@ -7,6 +7,7 @@ import { Scatter } from '../components/charts/Stats'
 import { axisText, useWidth } from '../components/charts/core'
 import { Badge } from '../components/ui/Badge'
 import { Reveal } from '../components/ui/Reveal'
+import { Backdrop } from '../components/ui/Backdrop'
 import { Container, SectionHeader, Source } from '../components/ui/Section'
 import { ErrorNote, Skeleton } from '../components/ui/States'
 import { Tabs } from '../components/ui/Tabs'
@@ -46,7 +47,8 @@ const NUM: { key: NumKey; label: string; digits: number }[] = [
 export default function Data() {
   return (
     <>
-      <section className="pt-36 pb-10">
+      <section className="relative isolate overflow-hidden pt-36 pb-16">
+        <Backdrop name="daten-karte" />
         <Container>
           <Reveal>
             <p className="eyebrow mb-5">Daten</p>

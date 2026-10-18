@@ -3,6 +3,7 @@ import { ArrowRight, ArrowUpRight, Gift, PenLine, Sprout, TrendingUp } from 'luc
 import { Link } from 'react-router'
 import type { FieldAnalysis } from '../api/types'
 import { HeroField } from '../components/field/HeroField'
+import { Backdrop } from '../components/ui/Backdrop'
 import { ButtonLink } from '../components/ui/Button'
 import { Reveal } from '../components/ui/Reveal'
 import { Container, SectionHeader } from '../components/ui/Section'
@@ -35,7 +36,8 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
     transition: { duration: 0.9, delay: d, ease: [0.22, 1, 0.36, 1] as const },
   })
   return (
-    <section className="relative overflow-hidden pt-28 pb-20 sm:pt-36 lg:pb-28">
+    <section className="relative isolate overflow-hidden pt-28 pb-20 sm:pt-36 lg:pb-28">
+      <Backdrop name="hero-pixelfelder" />
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -top-40 right-[-10%] h-[620px] w-[620px] rounded-full bg-[radial-gradient(closest-side,rgba(230,180,80,0.10),transparent)]" />
         <div className="absolute bottom-[-30%] left-[-15%] h-[560px] w-[760px] rounded-full bg-[radial-gradient(closest-side,rgba(85,160,90,0.08),transparent)]" />
