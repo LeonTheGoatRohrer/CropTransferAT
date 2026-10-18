@@ -7,8 +7,8 @@ Datei: `index.html` (im Browser öffnen, Vollbild F11, Leertaste = Start, mit OB
 
 | Zeit | Szene | Bild | Text im Bild |
 |---|---|---|---|
-| 0–4,5 s | Aufhänger | Flug über Maisreihen, braune Stressflecken ziehen vorbei | „Trockenstress kostet Ertrag. Aber *wo* im Feld – und *wann*?“ |
-| 4,5–9,6 s | 01 Feld wählen | Handy, Satellitenkarte, Finger tippt 4 Ecken, Feld wird umrandet | „Feld auswählen“ |
+| 0–4,5 s | Aufhänger | Drohnenflug über Maisreihen (Higgsfield-Clip) | „Manche Felder bringen weniger als sonst. Aber *wo* genau – und *wann*?“ |
+| 4,5–9,6 s | 01 Feld wählen | Handy mit Luftbild, Finger tippt die Ecken, Feld wird umrandet. Finale Fassung: KI-Luftbild (`?map=ai`, Standard); Alternative `?map=ortho`: echtes Orthofoto basemap.at 2024 + echter INVEKOS-Körnermaisschlag bei Feldbach | „Feld auswählen“ |
 | 9,6–13,8 s | 02 Erträge | Formular „What did it yield?“, 2021–2025 werden eingetippt, Start | „Alte Erträge eintragen“ |
 | 13,8–20 s | 03 Satellit | Weltall, Erdkrümmung, Satellit zieht vorbei, Strahl aufs Feld, Zoom hinein | „Der Satellit schaut zu“ |
 | 20–24,8 s | Jahre | Dasselbe Feld 2019 → 2025, jedes Jahr ein neues Bild (Scan-Effekt), Mini-Bilder unten | „Jahr für Jahr ein neues Bild“ |
@@ -46,10 +46,16 @@ Mischung: Kompressor + Lautheit −16 LUFS; Endbild um 1 s verlängert. Ergebnis
 
 | Start | Text |
 |---|---|
-| 0,2 s | Trockenstress kostet Ertrag. Aber wo im Feld – und wann? |
-| 4,9 s | Mit CropTransfer wählst du dein Feld einfach auf der Karte aus. |
+| 0,1 s | Manche Felder bringen weniger als sonst. Aber wo genau – und wann? |
+| 5,15 s | Mit CropTransfer wählst du dein Feld einfach auf der Karte aus. |
 | 9,9 s | Dann trägst du ein, was es in den letzten Jahren gebracht hat. |
 | 14,2 s | Der Satellit Sentinel-2 fotografiert jedes Feld in Europa – alle paar Tage. |
 | 19,9 s | So entsteht Jahr für Jahr ein neues Bild deines Feldes, in nassen wie in trockenen Jahren. |
 | 25,6 s | Das Modell wertet jedes Pixel aus und markiert die Stellen, die immer wieder schwächeln. |
 | 31,0 s | CropTransfer AT. Stress im Maisfeld sichtbar machen. |
+
+## Was das Modell wirklich zeigt (für den Sprechertext)
+
+Das Modell sagt den **relativen Ertrag** voraus (Ertrag im Vergleich zum eigenen Normalniveau des Feldes) bzw. misst, wie weit die Satellitenkurve von „gesundem Mais“ abweicht.
+Es erkennt also, *dass* ein Feld oder Feldteil zurückbleibt, nicht *warum*: Trockenheit, Hitze, Nässe, Hagel, Boden oder Bewirtschaftung sind alles mögliche Ursachen.
+Deshalb ist der Einstieg neutral formuliert und nennt keine Dürre.
