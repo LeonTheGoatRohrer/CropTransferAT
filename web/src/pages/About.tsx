@@ -110,7 +110,7 @@ export default function About() {
           </div>
           <Source className="mt-6">SUPPORT.md · DATA_SOURCES.md · DECISIONS.md</Source>
           <Reveal className="mt-16 flex flex-col items-start justify-between gap-6 border-t border-[var(--line)] pt-10 sm:flex-row sm:items-center">
-            <p className="max-w-[560px] font-display text-[24px] leading-snug tracking-[-0.02em]">Sehen Sie es an einem echten Feld: fünf zurückgehaltene Feld-Jahre mit ihrem gemessenen Ergebnis.</p>
+            <p className="max-w-[560px] font-display text-[24px] leading-snug tracking-[-0.02em]">Sehen Sie es an einem echten Feld: sechs zurückgehaltene Feld-Jahre mit ihrem gemessenen Ergebnis.</p>
             <ButtonLink to="/analyse" size="lg" icon={<ArrowRight className="size-4" />}>Feld analysieren</ButtonLink>
           </Reveal>
         </Container>

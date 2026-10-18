@@ -65,7 +65,7 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
               {[
                 ['365', 'Feld-Jahre mit gemessenem Ertrag', '19 Saisonen, 1989–2023 · im Schnitt 19 pro Saison'],
                 ['28 000', 'Ertragszellen (10 × 10 m)', 'ungefähr, in 54 Feld-Jahren (Karten und Punkte)'],
-                ['7 700', 'Satellitenkurven', 'ungefähr, 365 Feld-Jahre × 21 Zehn-Tage-Schritte'],
+                ['22 800', 'wolkenfreie Satellitenwerte', 'ungefähr, 5 Indizes je 10-Tage-Schritt (HLS und Sentinel-2)'],
               ].map(([v, l, d]) => (
                 <div key={l}>
                   <dd className="whitespace-nowrap font-display text-[24px] font-semibold tracking-[-0.03em]">{v}</dd>

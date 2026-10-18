@@ -9,8 +9,8 @@ const TRAIN: Step[] = [
     n: 1,
     icon: Database,
     title: 'Daten sammeln',
-    text: 'Nur öffentliche Daten aus den USA und der EU.',
-    facts: ['Gemessene Erträge: 294 Parzellen-Jahre (Michigan), 61 Felder mit Ertragskarte (Maryland)', 'Satellit, Wetter, Boden', '8 371 Region-Jahre aus 16 EU-Ländern'],
+    text: 'Frei zugängliche Forschungsdaten aus den USA und der EU.',
+    facts: ['Gemessene Erträge: 294 Parzellen-Jahre (Michigan), 61 Feld-Jahre mit Ertragskarte (33 Felder, Maryland)', 'Satellit, Wetter, Boden', '8 371 Region-Jahre aus 16 EU-Ländern'],
   },
   {
     n: 2,
