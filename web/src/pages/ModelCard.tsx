@@ -3,11 +3,12 @@ import { Check, ChevronDown, X } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import type { Evidence } from '../api/types'
 import { Backdrop } from '../components/ui/Backdrop'
-import { ProjectFlow } from '../components/ui/ProjectFlow'
+import { CountUp } from '../components/ui/CountUp'
 import { StrengthBadge, type Strength } from '../components/ui/Badge'
 import { Reveal } from '../components/ui/Reveal'
-import { Container } from '../components/ui/Section'
+import { Container, SectionHeader, Source } from '../components/ui/Section'
 import { ErrorNote, Skeleton } from '../components/ui/States'
+import { MODEL_INVENTORY } from '../data/content/project'
 import { fmt, fmtCi, fmtInt, fmtPct } from '../lib/format'
 import { useResource } from '../lib/useResource'
 import { getEvidence } from '../services/evidenceService'
@@ -140,19 +141,10 @@ export default function ModelCard() {
             <p className="eyebrow mb-5">Modelle</p>
             <h1 className="max-w-[900px] text-balance text-[clamp(2.6rem,6vw,4.6rem)] leading-[0.98] tracking-[-0.04em]">Wie aus Satellitendaten eine Warnung wird.</h1>
             <p className="mt-6 max-w-[680px] text-[17px] leading-relaxed text-ink-2">
-              Zuerst der Weg im Überblick, dann die drei Modelle. Jedes wird mit jedem österreichischen Feld besser, das dazukommt. Öffnen Sie
-              eine Karte für die Erklärung oder für die genaue Methode.
+              Zuerst die drei Modelle, die geblieben sind, dann alle Modellvarianten, die auf dem Weg dorthin trainiert wurden. Jedes Modell wird
+              mit jedem österreichischen Feld besser, das dazukommt. Öffnen Sie eine Karte oder eine Zeile für mehr Details.
             </p>
           </Reveal>
-        </Container>
-      </section>
-      <section id="vorgehen" className="scroll-mt-20 pb-20">
-        <Container>
-          <Reveal>
-            <p className="eyebrow mb-3">So sind wir vorgegangen</p>
-            <h2 className="mb-8 max-w-[760px] text-balance text-[clamp(1.7rem,3vw,2.3rem)] leading-tight">Vom Satellitenbild zur Warnung – in sechs Schritten.</h2>
-          </Reveal>
-          <ProjectFlow />
         </Container>
       </section>
       <section id="drei-modelle" className="scroll-mt-20">
@@ -176,7 +168,101 @@ export default function ModelCard() {
           </p>
         </Container>
       </section>
+      <ModelInventory />
     </>
+  )
+}
+
+const barColor: Partial<Record<Strength, string>> = { robust: 'bg-sage', 'certain-small': 'bg-water', limited: 'bg-maize', failed: 'bg-rust' }
+
+/** How many model variants were trained per block, as proportional bars; each row opens to show what came out. */
+function ModelInventory() {
+  const [open, setOpen] = useState<string | null>(null)
+  const total = MODEL_INVENTORY.reduce((s, b) => s + b.count, 0)
+  const max = Math.max(...MODEL_INVENTORY.map((b) => b.count))
+  return (
+    <section id="varianten" className="scroll-mt-20 pt-24">
+      <Container>
+        <SectionHeader
+          eyebrow="Modellvarianten"
+          title={<><CountUp value={total} digits={0} /> trainierte Modellvarianten. Drei Ergebnisse sind geblieben.</>}
+          lede={`Verteilt auf ${MODEL_INVENTORY.length} Experimentblöcke. Eine Variante ist ein Modell mit festen Merkmalen und festem Stichtag, bewertet an einem vorab festgelegten Kriterium. Weil jede Variante in einer Kreuzvalidierung mehrfach trainiert wurde, sind es mehrere Tausend einzelne Trainingsläufe. Klicken Sie auf einen Block für Details.`}
+        />
+        <Reveal className="panel mt-12 p-3 sm:p-5">
+          <ul className="flex flex-col">
+            {MODEL_INVENTORY.map((b) => {
+              const isOpen = open === b.block
+              return (
+                <li key={b.block} className="border-b border-[var(--line)] last:border-b-0">
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    onClick={() => setOpen(isOpen ? null : b.block)}
+                    className={`grid w-full gap-2 rounded-xl px-3 py-4 text-left transition-colors hover:bg-white/[0.03] sm:grid-cols-[minmax(0,260px)_minmax(0,1fr)_56px_20px] sm:items-center sm:gap-6 ${isOpen ? 'bg-white/[0.03]' : ''}`}
+                  >
+                    <div className="min-w-0">
+                      <p className="text-[15px] text-ink">{b.block}</p>
+                      <p className="text-[12.5px] leading-snug text-ink-3">{b.what}</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/[0.04]">
+                        <div className={`h-full rounded-full ${barColor[b.status] ?? 'bg-ink-3'}`} style={{ width: `${Math.max((b.count / max) * 100, 1.5)}%` }} />
+                      </div>
+                      <span className="w-10 text-right font-mono text-[14px] tabular text-ink sm:hidden">{b.count}</span>
+                      <ChevronDown className={`size-4 shrink-0 text-ink-3 transition-transform sm:hidden ${isOpen ? 'rotate-180' : ''}`} />
+                    </div>
+                    <span className="hidden text-right font-mono text-[15px] tabular text-ink sm:block">{b.count}</span>
+                    <ChevronDown className={`hidden size-4 text-ink-3 transition-transform sm:block ${isOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
+                        <div className="grid gap-6 px-3 pb-6 pt-2 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+                          <div>
+                            <StrengthBadge strength={b.status} />
+                            <p className="eyebrow mb-1.5 mt-4">Was trainiert wurde</p>
+                            <p className="text-[14px] leading-relaxed text-ink-2">{b.detail}</p>
+                          </div>
+                          <div>
+                            <p className="eyebrow mb-1.5">Was herauskam</p>
+                            <p className="text-[14px] leading-relaxed text-ink">{b.result}</p>
+                            <div className="mt-4 flex flex-wrap gap-2">
+                              {b.numbers.map((n) => (
+                                <span key={n.label} className="rounded-lg border border-[var(--line)] bg-white/[0.02] px-2.5 py-1 font-mono text-[11.5px] text-ink-2">
+                                  {n.label} <span className="text-ink">{n.value}</span>
+                                </span>
+                              ))}
+                            </div>
+                            <Source className="mt-3">{b.source}</Source>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
+              )
+            })}
+          </ul>
+          <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--line)] px-3 pt-5 text-[12.5px] text-ink-3">
+            {(['robust', 'certain-small', 'limited', 'failed'] as Strength[]).map((st) => (
+              <StrengthBadge key={st} strength={st} />
+            ))}
+          </div>
+        </Reveal>
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {[
+            ['Die einfachsten Methoden haben gewonnen', 'Die Teilflächenkarte beruht auf einer NDVI-Regel, der Stress-Score auf einer festen Referenzkurve. Gelernte Modelle waren dort nicht besser. Eingefroren und gespeichert sind nur die 7 Modelle des EU-Regionalmodells.'],
+            ['Nicht mitgezählt', 'Regeln ohne Training (NDVI-Regeln, Stress-Score, Normaljahr- und Trend-Baselines), die Glättung aus Runde 2, die Kalibrierung der Warnschwellen und alle Label-Shuffle-Kontrollen. Die Österreich-Tests haben nur eingefrorene Modelle angewendet.'],
+          ].map(([t, body]) => (
+            <Reveal key={t} className="border-t border-[var(--line-strong)] pt-5">
+              <h3 className="text-[17px]">{t}</h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-2">{body}</p>
+            </Reveal>
+          ))}
+        </div>
+        <Source className="mt-6">results/ (alle Branches), gezählt am 2026-10-18 · reports/doku/hauptergebnis.md §5</Source>
+      </Container>
+    </section>
   )
 }
 

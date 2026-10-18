@@ -135,21 +135,130 @@ export const EXPERIMENTS: Experiment[] = [
 /* Model inventory (counted from results/, all branches, 2026-10-18)   */
 /* ------------------------------------------------------------------ */
 
-export type ModelBlock = { block: string; what: string; count: number; status: Strength; source: string }
+export type ModelBlock = {
+  block: string
+  what: string
+  count: number
+  status: Strength
+  source: string
+  /** Shown when the row is opened: what exactly was trained, what came out, and the key numbers. */
+  detail: string
+  result: string
+  numbers: { label: string; value: string }[]
+}
 
-/** Trained model variants per experiment block; mirrors reports/doku/hauptergebnis.md §5. */
+/** Trained model variants per experiment block; mirrors reports/doku/hauptergebnis.md §5 and reports/results.md. */
 export const MODEL_INVENTORY: ModelBlock[] = [
-  { block: 'Basismodelle', what: 'Ridge und LightGBM je Merkmalsgruppe × HLS/S2 × 7 Stichtage', count: 336, status: 'failed', source: 'results/2026-10-16_phase2/' },
-  { block: 'Zusatzfragen', what: 'Vorlauf 1.9., absoluter Ertrag, Temperatursummen-Achse', count: 72, status: 'limited', source: 'phase2_quick0901/, phase2_Y/, gdd_axis/' },
-  { block: 'Verbesserungsrunden 1–3', what: 'relative Merkmale, weniger Merkmale, stärkere Regularisierung', count: 168, status: 'failed', source: 'round1/ … round3/' },
-  { block: 'Problemfelder', what: 'direkter Klassifikator „gefährdet“ je Stichtag', count: 7, status: 'failed', source: 'round3/phase3.json' },
-  { block: 'Innerhalb des Felds (BARC)', what: '3 Zeitfenster × 3 Merkmalssätze × 2 Modelltypen × 3 Aufteilungen', count: 54, status: 'robust', source: 'within_field/' },
-  { block: 'One Acre Fund (Afrika)', what: '14 Merkmalssätze × 2 Modelltypen × Land/Jahr auslassen', count: 56, status: 'limited', source: 'oaf_tabular/' },
-  { block: 'EU-Regionalmodell', what: 'LightGBM je Stichtag (7 eingefroren) + 3 Kontrollvarianten', count: 28, status: 'certain-small', source: 'cybench_eu/' },
-  { block: 'Mehr-Kulturen', what: 'je Kultur und gepoolt × Wetter / Wetter + Satellit', count: 16, status: 'failed', source: 'mehrkultur_h030/' },
-  { block: 'Feinjustierung', what: 'Radar, Temperatur/Verdunstung, Temperatursummen, Begrünung', count: 4, status: 'failed', source: 'feinjust_ablation/' },
-  { block: 'Drei Standorte', what: 'M1, M2, K-Raum an BARC, Kayad, Colorado und dazwischen', count: 36, status: 'limited', source: 'innerfeld/' },
-  { block: 'Österreich, explorativ', what: 'Neukalibrierung, Nachtraining, Machbarkeitstest', count: 5, status: 'limited', source: 'at_retrain/, at_feasibility/' },
+  {
+    block: 'Basismodelle',
+    what: 'Ridge und LightGBM je Merkmalsgruppe × HLS/S2 × 7 Stichtage',
+    count: 336,
+    status: 'failed',
+    source: 'results/2026-10-16_phase2/',
+    detail: 'Zwei Modelltypen (Ridge-Regression und flaches LightGBM) für jede Merkmalsgruppe – Satellit, Wetter, Boden und Kombinationen – mit zwei Satellitenprodukten (HLS, Sentinel-2) und sieben Prognosestichtagen. Hauptlauf 224 Varianten, Variante „Wetter lang“ 112. Geprüft an einem Feld und einem Jahr, die das Modell nie gesehen hat.',
+    result: 'Ob ein Jahr für ein Feld besser oder schlechter als üblich wird, lässt sich nicht auf unbekannte Jahre übertragen. Innerhalb eines Feldes findet der Satellit dagegen die schwachen Zonen – daraus wurde später die Teilflächenkarte.',
+    numbers: [{ label: 'Unbekanntes Feld + Jahr', value: 'ρ −0,04 [−0,29; 0,37]' }, { label: 'Innerhalb des Feldes', value: 'ρ 0,68 [0,54; 0,72]' }],
+  },
+  {
+    block: 'Zusatzfragen',
+    what: 'Vorlauf 1.9., absoluter Ertrag, Temperatursummen-Achse',
+    count: 72,
+    status: 'limited',
+    source: 'phase2_quick0901/, phase2_Y/, gdd_axis/',
+    detail: 'Drei Nebenfragen mit derselben Pipeline: nur der Stichtag 1. September (48 Varianten), absoluter Ertrag in t/ha statt relativem Ertrag (16) und Zeitachse nach Kalender gegen Temperatursummen (8).',
+    result: 'Der Satellit sieht das Ertragsniveau eines Feldes, aber nicht, ob dieses Jahr besser als üblich wird. Boden allein sagt den Ertrag kaum voraus. Die Temperatursummen-Achse bringt keinen robusten Unterschied.',
+    numbers: [{ label: 'Absoluter Ertrag, Satellit', value: 'ρ 0,52 [0,22; 0,76]' }, { label: 'Absoluter Ertrag, Boden', value: 'ρ ≤ 0,16' }],
+  },
+  {
+    block: 'Verbesserungsrunden 1–3',
+    what: 'relative Merkmale, weniger Merkmale, stärkere Regularisierung',
+    count: 168,
+    status: 'failed',
+    source: 'round1/ … round3/',
+    detail: 'Drei Runden mit je 56 Varianten, jede vor dem Lauf schriftlich festgelegt: Runde 1 relative Satellitenmerkmale, Runde 2 weniger Merkmale, Runde 3 stärkere Regularisierung.',
+    result: 'Relative Merkmale helfen bei der Reihung, aber keine Runde schlägt beim Fehler die einfache Annahme eines Normaljahres. Das vorab festgelegte Kriterium wurde verfehlt.',
+    numbers: [{ label: 'Runde 1', value: 'ρ 0,37' }, { label: 'Runde 2', value: 'ρ −0,01' }, { label: 'Runde 3', value: 'ρ 0,37' }],
+  },
+  {
+    block: 'Problemfelder',
+    what: 'direkter Klassifikator „gefährdet“ je Stichtag',
+    count: 7,
+    status: 'failed',
+    source: 'round3/phase3.json',
+    detail: 'Ein Klassifikator je Stichtag, der direkt lernt, ob ein Feld „gefährdet“ ist (mindestens 15 % unter seinem üblichen Ertrag). Verglichen mit dem Stress-Score aus der gesunden Referenzkurve, der ganz ohne Training auskommt.',
+    result: 'Die einfache Referenzkurve gewinnt deutlich. Deshalb ist der Feld-Stress-Score eine Regel und kein gelerntes Modell.',
+    numbers: [{ label: 'Gelernter Klassifikator PR-AUC', value: '0,40 [0,32; 0,82]' }, { label: 'Stress-Score PR-AUC', value: '0,71 (Zufall 0,33)' }],
+  },
+  {
+    block: 'Innerhalb des Feldes (BARC)',
+    what: '3 Zeitfenster × 3 Merkmalssätze × 2 Modelltypen × 3 Aufteilungen',
+    count: 54,
+    status: 'robust',
+    source: 'within_field/',
+    detail: 'Modelle für einzelne 10-m-Zellen der Maryland-Ertragskarten: drei Zeitfenster im Sommer, drei Merkmalssätze (Satellit, Gelände, beides), Ridge und LightGBM, je drei Arten der Datenaufteilung.',
+    result: 'Der Satellit erklärt die Unterschiede innerhalb eines Feldes gut, das Gelände kaum. Die schwachen Zonen kehren von Jahr zu Jahr wieder.',
+    numbers: [{ label: 'NDVI vs. Zellertrag', value: 'ρ 0,68 [0,54; 0,72]' }, { label: 'Satellit · Gelände', value: '0,70 · 0,29' }, { label: 'Feld-Jahre', value: '41' }],
+  },
+  {
+    block: 'One Acre Fund (Afrika)',
+    what: '14 Merkmalssätze × 2 Modelltypen × Land/Jahr auslassen',
+    count: 56,
+    status: 'limited',
+    source: 'oaf_tabular/',
+    detail: 'Rund 10 000 Kleinbauernfelder aus Ostafrika, nur Tabellendaten (Bewirtschaftung, Boden, Wetter, gemeldete Schäden). 14 Merkmalssätze, Ridge und LightGBM, jeweils ein Land oder ein Jahr ausgelassen.',
+    result: 'Nur die Bewirtschaftung trägt ein schwaches Signal; Boden, Wetter und Schäden erklären nichts. Auf Österreich nicht übertragbar.',
+    numbers: [{ label: 'Bewirtschaftung', value: 'ρ 0,25–0,30' }, { label: 'R²', value: '0,05–0,07' }, { label: 'Felder', value: '10 204' }],
+  },
+  {
+    block: 'EU-Regionalmodell',
+    what: 'LightGBM je Stichtag (7 eingefroren) + 3 Kontrollvarianten',
+    count: 28,
+    status: 'certain-small',
+    source: 'cybench_eu/',
+    detail: 'Ein LightGBM-Modell je Prognosestichtag vom 1. Juni bis 1. September (7 Modelle), trainiert auf 16 EU-Ländern ohne Österreich. Dazu je Stichtag drei Kontrollen: ohne Deutschland, mit Koordinaten, ohne feste Merkmale.',
+    result: 'Ein kleines, aber statistisch gesichertes Signal dafür, welche Jahre schlechter ausfallen. Die 7 Hauptmodelle sind die einzigen gespeicherten und mit Prüfsummen eingefrorenen Modelle.',
+    numbers: [{ label: 'Spearman ρ, 1. Sep', value: '0,38 [0,36; 0,40]' }, { label: 'Skill ggü. Normaljahr', value: '0,07' }],
+  },
+  {
+    block: 'Mehr-Kulturen',
+    what: 'je Kultur und gepoolt × Wetter / Wetter + Satellit',
+    count: 16,
+    status: 'failed',
+    source: 'mehrkultur_h030/',
+    detail: 'Vier offene Datensätze mit Mais, Weizen und Erbsen ergänzt. Modelle je Kultur und über alle Kulturen gemeinsam, jeweils nur mit Wetter oder mit Wetter und Satellit.',
+    result: 'Kein Signal über den Mittelwert hinaus; Wissen aus Weizen und Erbsen überträgt sich nicht auf Mais.',
+    numbers: [{ label: 'Übertragung auf Mais', value: 'ρ 0,01 [−0,26; 0,32]' }, { label: 'Standort-Jahre', value: '235' }],
+  },
+  {
+    block: 'Feinjustierung',
+    what: 'Radar, Temperatur/Verdunstung, Temperatursummen, Begrünung',
+    count: 4,
+    status: 'failed',
+    source: 'feinjust_ablation/',
+    detail: 'Die Stress-Erkennung mit je einer zusätzlichen Quelle (M1–M4): Radar, Oberflächentemperatur und Verdunstung, Temperatursummen-Achse, Ergrünungsdatum. Behalten nur, wenn eine vorab festgelegte Regel erfüllt ist.',
+    result: 'Alle vier haben die Erkennung verschlechtert und wurden verworfen. Die Fallprüfung zeigte: Der Score markiert spät gesäte Bio-Parzellen.',
+    numbers: [{ label: 'Radar', value: 'ΔPR-AUC −0,14' }, { label: 'Temperatur + ET', value: 'ΔPR-AUC −0,22' }],
+  },
+  {
+    block: 'Drei Standorte',
+    what: 'M1, M2, K-Raum an BARC, Kayad, Colorado und dazwischen',
+    count: 36,
+    status: 'limited',
+    source: 'innerfeld/',
+    detail: 'Die Teilflächenkarte an drei Standorten: Maryland (BARC), Italien (Kayad) und Colorado. Trainierte Modelle M1, M2 und K-Raum je Standort, über Feld-Jahre und von einem Standort auf einen anderen übertragen – immer gegen die einfache NDVI-Regel B0.',
+    result: 'An allen drei Standorten dieselbe Richtung (49 von 50 Feld-Jahren positiv). Das trainierte M1 ist nur wenig besser als die Regel; belastbar ist das Ergebnis nur für BARC.',
+    numbers: [{ label: 'BARC Regel B0', value: 'ρ 0,67 [0,59; 0,74]' }, { label: 'BARC Modell M1', value: 'ρ 0,70 [0,64; 0,75]' }, { label: 'Kayad · Colorado', value: '0,60 · 0,63' }],
+  },
+  {
+    block: 'Österreich, explorativ',
+    what: 'Neukalibrierung, Nachtraining, Machbarkeitstest',
+    count: 5,
+    status: 'limited',
+    source: 'at_retrain/, at_feasibility/',
+    detail: 'Getrennt vom eigentlichen Österreich-Test: Neukalibrierung R1 und Nachtraining R2 des EU-Modells mit österreichischen Bundesland-Jahren (je 2 Stichtage), dazu ein Machbarkeitstest auf 34 oberösterreichischen Standort-Jahren.',
+    result: 'Neukalibrieren senkt den Fehler etwas, beruht aber auf nur 45 Zeilen – ein Hinweis, kein Beleg. Der Machbarkeitstest ergab kein brauchbares Ergebnis.',
+    numbers: [{ label: 'R1 ΔRMSE ggü. R0', value: '−0,030 [−0,047; −0,009]' }, { label: 'Machbarkeitstest', value: 'ρ 0,01 [−0,44; 0,41]' }],
+  },
 ]
 
 /* ------------------------------------------------------------------ */

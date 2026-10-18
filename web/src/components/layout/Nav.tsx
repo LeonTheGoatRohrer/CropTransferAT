@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight, ChevronDown, Menu, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, useLocation, type Location } from 'react-router'
+import { MODEL_INVENTORY } from '../../data/content/project'
 import { ButtonLink } from '../ui/Button'
 
 export type NavSection = { hash: string; label: string }
@@ -12,22 +13,19 @@ export const NAV_LINKS: NavItem[] = [
   { to: '/', label: 'Übersicht' },
   { to: '/analyse', label: 'Feld analysieren' },
   {
-    to: '/model',
-    label: 'Modelle',
-    sections: [
-      { hash: 'vorgehen', label: 'So sind wir vorgegangen' },
-      { hash: 'drei-modelle', label: 'Die drei Modelle' },
-    ],
-  },
-  {
     to: '/method',
     label: 'Methode',
     sections: [
-      { hash: 'ablauf', label: 'So funktioniert es' },
-      { hash: 'validierung', label: 'Validierung' },
+      { hash: 'vorgehen', label: 'So sind wir vorgegangen' },
       { hash: 'merkmale', label: 'Merkmalsbildung' },
-      { hash: 'modelle', label: 'Modellübersicht' },
-      { hash: 'experiments', label: 'Experimente' },
+    ],
+  },
+  {
+    to: '/model',
+    label: 'Modelle',
+    sections: [
+      { hash: 'drei-modelle', label: 'Die drei Modelle' },
+      { hash: 'varianten', label: `${MODEL_INVENTORY.reduce((n, b) => n + b.count, 0)} Modellvarianten` },
     ],
   },
   {

@@ -14,8 +14,8 @@ const COLUMNS = [
   {
     title: 'Wissenschaft',
     links: [
-      { to: '/model', label: 'Die drei Modelle' },
-      { to: '/method', label: 'Methode und Experimente' },
+      { to: '/method', label: 'Methode' },
+      { to: '/model', label: 'Modelle und Modellvarianten' },
       { to: '/data', label: 'Datenquellen und Datenexplorer' },
     ],
   },
