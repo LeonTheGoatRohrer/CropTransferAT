@@ -22,7 +22,7 @@ const TRAIN: Step[] = [
   {
     n: 3,
     icon: Cpu,
-    title: 'Modelle bauen',
+    title: 'Modelle trainieren',
     text: 'Drei Modelle für drei Fragen.',
     facts: ['Teilflächenkarte: wo im Feld?', 'Stress-Score: welches Feld?', 'EU-Regionalmodell: welches Jahr?'],
   },

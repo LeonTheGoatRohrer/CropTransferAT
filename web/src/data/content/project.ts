@@ -6,7 +6,7 @@
 import type { Strength } from '../../components/ui/Badge'
 
 export const PROJECT = {
-  name: 'CropTransfer AT',
+  name: 'Delta Green',
   competition: 'Bundeswettbewerb Künstliche Intelligenz (BWKI) Österreich',
   question:
     'Können Satelliten-Zeitreihen, Wetter und Boden Stress und Ertragsverlust in einzelnen Maisfeldern noch vor der Ernte zeigen – gelernt dort, wo Erträge gemessen wurden, und dann unverändert in Österreich getestet?',

@@ -58,7 +58,7 @@ export function downloadContributions(rows: Contribution[]) {
   const blob = new Blob([JSON.stringify(rows, null, 2)], { type: 'application/json' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
-  a.download = 'croptransfer-contributions.json'
+  a.download = 'delta-green-contributions.json'
   a.click()
   URL.revokeObjectURL(a.href)
 }

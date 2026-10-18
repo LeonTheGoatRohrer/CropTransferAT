@@ -86,7 +86,7 @@ def test_app_entry_smoke():
 
     at = AppTest.from_file(str(APP), default_timeout=90).run(timeout=90)
     assert not at.exception, [e.value for e in at.exception]
-    assert at.title[0].value.startswith("🌽 CropTransfer AT")
+    assert at.title[0].value.startswith("🌽 Delta Green")
 
 
 @pytest.mark.parametrize("module", PAGES)

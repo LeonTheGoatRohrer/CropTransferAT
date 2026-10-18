@@ -7,7 +7,7 @@ from app.ui.common import big, figure, glossary, lead, load_versions, status_bad
 
 
 def page() -> None:
-    st.title("🌽 CropTransfer AT")
+    st.title("🌽 Delta Green")
     big("Kann ein Computer vom Satelliten aus erkennen, welchem Maisfeld es schlecht geht – "
         "und zwar schon im Sommer, nicht erst bei der Ernte?")
     lead("Das ist die Frage dieses Projekts. Diese Website zeigt, wie wir vorgehen, welche Daten wir nutzen "

@@ -36,7 +36,7 @@ export function Footer() {
         <div className="max-w-[340px]">
           <div className="flex items-center gap-2.5">
             <Logo className="size-5" />
-            <span className="font-display text-[16px] font-semibold">CropTransfer AT</span>
+            <span className="font-display text-[16px] font-semibold">Delta Green</span>
           </div>
           <p className="mt-4 text-[13.5px] leading-relaxed text-ink-3">
             Früherkennung von Stress und Ertragsverlust bei Mais aus Sentinel-2-Zeitreihen, Wetter und Boden. Ein Einzelprojekt für den

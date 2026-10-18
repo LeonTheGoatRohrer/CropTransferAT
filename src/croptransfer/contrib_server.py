@@ -138,7 +138,7 @@ def rate_limited(client: str, now: float | None = None) -> bool:
 
 
 class Handler(BaseHTTPRequestHandler):
-    server_version = "CropTransferContrib/1"
+    server_version = "DeltaGreenContrib/1"
 
     def _send(self, code: int, payload: object, ctype: str = "application/json") -> None:
         data = payload if isinstance(payload, bytes) else json.dumps(payload).encode()

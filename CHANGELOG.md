@@ -4,6 +4,9 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Changed – Projektname „Delta Green“
+- Neuer Projektname **Delta Green** (vorher „CropTransfer AT“) in Website (`web/`), Streamlit-App, Doku, Anfrage-Entwürfen und Pitch-Intro; neues Logo „Pixel-Delta“ (Δ aus 9 NDVI-Pixeln) in Navigation, Favicon und Video. Technische Namen (Paket `croptransfer`, Repo `CropTransferAT`) bleiben, siehe `DECISIONS.md`.
+
 ### Added (Branch `phase-9-frontend`) – Web-Frontend für die Jury
 - `web/`: neue Präsentations- und Demo-Website (React 19, TypeScript, Vite, Tailwind 4, MapLibre, Terra Draw, D3, Motion), nur lokal/privat. Seiten: Überblick, Feldanalyse (Karte, Suche, Polygon zeichnen, Pipeline als Zustandsmaschine), Evidence (alle Benchmarks inkl. Österreich-Test), Model card, Daten + Explorer, Methode + Experimente, Grenzen/Roadmap/Offenlegung.
 - `web/scripts/export_web_data.py`: schreibt `web/public/data/{fields,evidence,explorer}.json` aus `data/` und `results/` (keine österreichischen Roh-/Merkmalsdaten). Fünf vorbereitete US-Feld-Jahre mit echten Kurven, Wetter, Boden, 10-m-Zellen und out-of-fold-Risiko; gezeichnete Felder laufen bis zum Backend als markierte Simulation.

@@ -49,20 +49,20 @@ function ScrollManager() {
 }
 
 const TITLES: Record<string, string> = {
-  '/': 'CropTransfer AT · Ein Feld. Viele Unterschiede. Endlich sichtbar.',
-  '/contribute': 'Feld eintragen · CropTransfer AT',
-  '/analyse': 'Feld analysieren · CropTransfer AT',
-  '/evidence': 'Belege · CropTransfer AT',
-  '/model': 'Modellsteckbrief · CropTransfer AT',
-  '/data': 'Daten · CropTransfer AT',
-  '/method': 'Methode · CropTransfer AT',
-  '/about': 'Über das Projekt · CropTransfer AT',
+  '/': 'Delta Green · Ein Feld. Viele Unterschiede. Endlich sichtbar.',
+  '/contribute': 'Feld eintragen · Delta Green',
+  '/analyse': 'Feld analysieren · Delta Green',
+  '/evidence': 'Belege · Delta Green',
+  '/model': 'Modellsteckbrief · Delta Green',
+  '/data': 'Daten · Delta Green',
+  '/method': 'Methode · Delta Green',
+  '/about': 'Über das Projekt · Delta Green',
 }
 
 export default function App() {
   const location = useLocation()
   useEffect(() => {
-    document.title = TITLES[location.pathname] ?? 'CropTransfer AT'
+    document.title = TITLES[location.pathname] ?? 'Delta Green'
   }, [location.pathname])
 
   return (

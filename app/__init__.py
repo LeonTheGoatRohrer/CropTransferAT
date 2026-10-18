@@ -1,1 +1,1 @@
-"""CropTransfer AT website (Streamlit). Entry point: app/streamlit_app.py."""
+"""Delta Green website (Streamlit). Entry point: app/streamlit_app.py."""

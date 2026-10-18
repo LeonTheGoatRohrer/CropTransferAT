@@ -126,7 +126,7 @@ Kurzer Text für Gespräch, Kammer oder Maschinenring:
 
 > Sehr geehrte Damen und Herren,
 >
-> ich heiße [Name] und besuche die [Klasse, Schule, Ort]. Für den Bundeswettbewerb Künstliche Intelligenz Österreich (BWKI) arbeite ich am Projekt „CropTransfer AT“. Ein Verfahren erkennt aus Satellitenbildern (Sentinel-2), welche Maisfelder im Sommer auffällig schwach wachsen und wo innerhalb eines Feldes Ertrag fehlt. Entwickelt wird es ausschließlich mit Daten aus den USA; danach wird es unverändert in Österreich geprüft. Für diese Prüfung bräuchte ich unabhängige Angaben zu tatsächlichen Schäden.
+> ich heiße [Name] und besuche die [Klasse, Schule, Ort]. Für den Bundeswettbewerb Künstliche Intelligenz Österreich (BWKI) arbeite ich am Projekt „Delta Green“. Ein Verfahren erkennt aus Satellitenbildern (Sentinel-2), welche Maisfelder im Sommer auffällig schwach wachsen und wo innerhalb eines Feldes Ertrag fehlt. Entwickelt wird es ausschließlich mit Daten aus den USA; danach wird es unverändert in Österreich geprüft. Für diese Prüfung bräuchte ich unabhängige Angaben zu tatsächlichen Schäden.
 >
 > Darf ich Sie fragen, ob Sie mir für die nicht-kommerzielle Forschung **anonymisierte** Schadensmeldungen für Körnermais in der Steiermark (gerne auch Niederösterreich, Burgenland und Oberösterreich) aus den Jahren 2018–2025 zur Verfügung stellen könnten? Hilfreich wären je Schadensfall:
 > - Schadensdatum und Schadensursache (z. B. Hagel, Sturm, Dürre, Überschwemmung),
@@ -148,7 +148,7 @@ Kurzer Text für Gespräch, Kammer oder Maschinenring:
 
 > Sehr geehrter Herr Büechi,
 >
-> ich heiße [Name] und besuche die [Klasse, Schule, Ort]. Für den Bundeswettbewerb Künstliche Intelligenz Österreich (BWKI) arbeite ich am Projekt „CropTransfer AT“. Aus Sentinel-2-Zeitreihen soll erkannt werden, welche Maisfelder in einem Jahr auffällig schwach sind. Trainiert wird außerhalb Österreichs; danach wird das Verfahren unverändert in der Steiermark getestet.
+> ich heiße [Name] und besuche die [Klasse, Schule, Ort]. Für den Bundeswettbewerb Künstliche Intelligenz Österreich (BWKI) arbeite ich am Projekt „Delta Green“. Aus Sentinel-2-Zeitreihen soll erkannt werden, welche Maisfelder in einem Jahr auffällig schwach sind. Trainiert wird außerhalb Österreichs; danach wird das Verfahren unverändert in der Steiermark getestet.
 >
 > Bisher habe ich nur US-Versuchsparzellen mit gemessenem Ertrag. Dabei zeigt sich, dass mein Verfahren vor allem Bewirtschaftungsunterschiede zwischen den Versuchsvarianten erkennt (z. B. späte Bio-Saat), nicht den Stress auf Praxisfeldern. Die YIPEEO-Felder aus Südmähren wären dafür ideal: echte Praxisfelder in Maisgröße, nahe an Österreich und aus den Sentinel-2-Jahren.
 >
@@ -168,7 +168,7 @@ Kurzer Text für Gespräch, Kammer oder Maschinenring:
 
 **Begründung (Formularfeld):**
 
-> I am a secondary-school student in Austria working on "CropTransfer AT" for the Austrian national AI competition for students (BWKI Österreich). The project shows from Sentinel-2 imagery where yield is missing inside maize fields. At one site (USDA BARC, Maryland, 41 field-years), mid-summer NDVI ranks within-field yield well (median Spearman 0.68). I would like to use the DWFI yield maps 2021–2024 (Morris MN, Williams IA, Mead NE) only as independent held-out validation, to test whether this holds at other sites; no model will be trained on them. I agree to keep the data confidential, to acknowledge DWFI and ARPA-E (DE-AR0001226), and not to publish or share the data or maps without DWFI's written consent. Only aggregated statistics would appear in the competition entry, and only with your consent. The crop per field and year, the yield unit and the moisture basis would be very helpful.
+> I am a secondary-school student in Austria working on "Delta Green" for the Austrian national AI competition for students (BWKI Österreich). The project shows from Sentinel-2 imagery where yield is missing inside maize fields. At one site (USDA BARC, Maryland, 41 field-years), mid-summer NDVI ranks within-field yield well (median Spearman 0.68). I would like to use the DWFI yield maps 2021–2024 (Morris MN, Williams IA, Mead NE) only as independent held-out validation, to test whether this holds at other sites; no model will be trained on them. I agree to keep the data confidential, to acknowledge DWFI and ARPA-E (DE-AR0001226), and not to publish or share the data or maps without DWFI's written consent. Only aggregated statistics would appear in the competition entry, and only with your consent. The crop per field and year, the yield unit and the moisture basis would be very helpful.
 
 ## 11. SwissYield Witzwil (ETH Zürich)
 
@@ -176,7 +176,7 @@ Kurzer Text für Gespräch, Kammer oder Maschinenring:
 
 > Dear Mr Perich,
 >
-> I am a secondary-school student in Austria working on "CropTransfer AT" for the Austrian national AI competition for students (BWKI Österreich). The project shows from Sentinel-2 imagery where yield is missing inside fields; at a US maize site, mid-summer NDVI ranks within-field yield well (median Spearman 0.68). I would like to test whether this also holds for other crops and in a Central European climate, and your Witzwil combine yield maps 2017–2021 would be an ideal test.
+> I am a secondary-school student in Austria working on "Delta Green" for the Austrian national AI competition for students (BWKI Österreich). The project shows from Sentinel-2 imagery where yield is missing inside fields; at a US maize site, mid-summer NDVI ranks within-field yield well (median Spearman 0.68). I would like to test whether this also holds for other crops and in a Central European climate, and your Witzwil combine yield maps 2017–2021 would be an ideal test.
 >
 > Could you tell me whether I may use the SwissYield/Witzwil yield maps (ETH Research Collection) for this non-commercial project, and how I can access them? It would also help to know the field boundaries, the yield unit and moisture basis, and the crop per field and year. The data would be used only as held-out validation and would not be redistributed; only aggregated results would be shown. I will cite your dataset and paper as you prefer.
 >

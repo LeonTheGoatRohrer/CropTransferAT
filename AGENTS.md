@@ -1,4 +1,4 @@
-# AGENTS.md – Arbeitsanweisung für KI-Agenten in CropTransfer AT
+# AGENTS.md – Arbeitsanweisung für KI-Agenten in Delta Green
 
 Diese Datei gilt für **jeden** Agenten (Claude Code, Codex, …), der in diesem Repository arbeitet. Sie wird vor jeder Arbeitssitzung gelesen. `PLAN.md` sagt **was** gemacht wird, diese Datei sagt **wie**.
 

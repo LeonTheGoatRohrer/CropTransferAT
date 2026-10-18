@@ -60,12 +60,24 @@ export const NAV_LINKS: NavItem[] = [
   },
 ]
 
+// Pixel-Delta: a triangle (Δ) split into 9 "pixels" in NDVI colours, one flagged in rust.
+const LOGO_CELLS: [string, string][] = [
+  ['32,8.31 24,22.18 40,22.18', '#23704a'],
+  ['22,25.64 14,39.51 30,39.51', '#55a05a'],
+  ['24,24.49 40,24.49 32,38.36', '#9dbb5c'],
+  ['42,25.64 34,39.51 50,39.51', '#e4694a'],
+  ['12,42.98 4,56.84 20,56.84', '#9dbb5c'],
+  ['14,41.82 30,41.82 22,55.69', '#55a05a'],
+  ['32,42.98 24,56.84 40,56.84', '#c4a44b'],
+  ['34,41.82 50,41.82 42,55.69', '#55a05a'],
+  ['52,42.98 44,56.84 60,56.84', '#8a6a36'],
+]
+
 export function Logo({ className = '' }: { className?: string }) {
-  const cells = [1, 0.7, 0.45, 0.7, 1, 2, 0.45, 0.7, 1]
   return (
-    <svg viewBox="0 0 22 22" className={className} aria-hidden>
-      {cells.map((o, i) => (
-        <rect key={i} x={(i % 3) * 7.5} y={Math.floor(i / 3) * 7.5} width="6" height="6" rx="1.2" fill={o === 2 ? '#e4694a' : '#e6b450'} opacity={o === 2 ? 1 : o} />
+    <svg viewBox="2 4 60 56" className={className} aria-hidden>
+      {LOGO_CELLS.map(([points, fill]) => (
+        <polygon key={points} points={points} fill={fill} stroke={fill} strokeWidth="1.6" strokeLinejoin="round" />
       ))}
     </svg>
   )
@@ -101,10 +113,10 @@ export function Nav() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-[1240px] items-center justify-between gap-6 px-4 sm:px-8">
-        <Link to="/" className="flex items-center gap-2.5" aria-label="CropTransfer AT, Übersicht">
+        <Link to="/" className="flex items-center gap-2.5" aria-label="Delta Green, Übersicht">
           <Logo className="size-[22px]" />
           <span className="whitespace-nowrap font-display text-[17px] font-semibold tracking-[-0.02em]">
-            CropTransfer <span className="text-ink-3">AT</span>
+            Delta Green
           </span>
         </Link>
         <nav aria-label="Hauptnavigation" className="hidden items-center lg:flex">

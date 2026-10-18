@@ -1,4 +1,4 @@
-# CropTransfer AT – Arbeitsplan
+# Delta Green – Arbeitsplan
 
 > Früherkennung von Stress und Ertragsverlust auf einzelnen Maisfeldern aus Satelliten-Zeitreihen, Wetter und Boden: **vollständig gelernt an Feldern mit gemessenem Ertrag** (USA mit vielen Jahren je Feld, dazu viele Felder aus Afrika und Südamerika), dann **eingefroren** und **ohne jede Anpassung in Österreich getestet**. Österreich ist der Beweis, ob der Algorithmus gut genug ist – nicht Trainingsgebiet.
 

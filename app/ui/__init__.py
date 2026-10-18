@@ -1,1 +1,1 @@
-"""Pages of the CropTransfer AT website (Streamlit, local and private)."""
+"""Pages of the Delta Green website (Streamlit, local and private)."""

@@ -1,4 +1,4 @@
-# CropTransfer AT – Web-Frontend
+# Delta Green – Web-Frontend
 
 Präsentations- und Demo-Website für die BWKI-Jury (React 19, TypeScript, Vite, Tailwind CSS 4, MapLibre GL, Terra Draw, D3, Motion).
 Läuft **nur lokal / privat** (KBS-Daten dürfen nur mit schriftlicher Erlaubnis veröffentlicht werden). Die Streamlit-App unter `app/` bleibt das interne Projektprotokoll.

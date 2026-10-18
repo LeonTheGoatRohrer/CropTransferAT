@@ -1,4 +1,4 @@
-"""CropTransfer AT – Website (Streamlit, lokal und privat).
+"""Delta Green – Website (Streamlit, lokal und privat).
 
 Run from the repository root:  streamlit run app/streamlit_app.py
 Reads ONLY data/app/ (made by app/precompute.py), app/versions.yaml, reports/ and a few
@@ -24,7 +24,7 @@ PAGE_TITLES = ["Ziel", "Vorgehen & Quellen", "Ergebnisse", "Vergleich", "Felder 
 
 
 def main() -> None:
-    st.set_page_config(page_title="CropTransfer AT", page_icon="🌽", layout="wide")
+    st.set_page_config(page_title="Delta Green", page_icon="🌽", layout="wide")
     inject_css()
     data = load_app_data(str(APP_DATA))
 
@@ -38,7 +38,7 @@ def main() -> None:
         st.Page(lambda: page_log.page(data), title=PAGE_TITLES[6], icon="📒", url_path="log"),
     ]
     with st.sidebar:
-        st.markdown("## 🌽 CropTransfer AT")
+        st.markdown("## 🌽 Delta Green")
         st.caption("Früherkennung von Stress auf Maisfeldern – gelernt in den USA, geprüft in Österreich.")
         problem = data_problem(data)
         if problem:

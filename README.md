@@ -1,4 +1,4 @@
-# CropTransfer AT
+# Delta Green
 
 Früherkennung von Stress und Ertragsverlust auf einzelnen Maisfeldern aus Satelliten-Zeitreihen, Wetter und Boden – gelernt an Feldern mit gemessenem Ertrag (USA mit vielen Jahren je Feld, dazu Afrika und Südamerika), dann eingefroren und ohne Anpassung in Österreich (Steiermark) als Beweis getestet; ergänzt um einen regionalen Transfer-Test EU → Österreich (CY-Bench).
 

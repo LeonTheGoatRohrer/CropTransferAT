@@ -155,7 +155,7 @@ Sortierung: Bewertung absteigend, innerhalb der Bewertung nach Kultur (Mais → 
 - Gesperrt bis mindestens 2027: EJP SOIL ARTEMIS organic yields (Zenodo 14258149, Embargo 31.10.2027) – 2027 erneut prüfen.
 - R-Paket-Beispieldaten (agridat gartner.corn 2011, lasrosas.corn 1999/2001): vor 2013.
 
-## 2. Top 10 nach Nutzen für CropTransfer AT
+## 2. Top 10 nach Nutzen für Delta Green
 
 Gewichtung: Feldpolygon oder ≤100 m Koordinaten, Felder ≥1 ha, viele Standort-Jahre, Mais, offene Lizenz; Kleinparzellen zählen nur als Standortmittel. „NC"-Lizenzen sind für das nicht-kommerzielle Schülerprojekt akzeptabel, „ND"- und „Confidential"-Klauseln sind markiert.
 
@@ -247,11 +247,11 @@ Alle Kontakte stammen ausschließlich aus den geöffneten Seiten der Recherche (
 
 ### Generischer Anfragetext (Deutsch)
 
-Betreff: Anfrage Ertragsdaten auf Feld-/Standortebene für ein nicht-kommerzielles Schülerforschungsprojekt (CropTransfer AT, BWKI)
+Betreff: Anfrage Ertragsdaten auf Feld-/Standortebene für ein nicht-kommerzielles Schülerforschungsprojekt (Delta Green, BWKI)
 
 Sehr geehrte/r [Name],
 
-ich heiße [Name], bin Schüler/in der [Schule, Ort] und arbeite im Rahmen des Bundeswettbewerbs Künstliche Intelligenz (BWKI) am Projekt „CropTransfer AT". Ziel ist ein Modell, das Ertragsverluste auf Maisfeldern aus Sentinel-2/HLS-Zeitreihen, Wetter- und Bodendaten vorhersagt. Das Modell wird ausschließlich mit Daten außerhalb Österreichs trainiert und anschließend in Österreich getestet; dafür suche ich gemessene Erträge als Trainingslabels.
+ich heiße [Name], bin Schüler/in der [Schule, Ort] und arbeite im Rahmen des Bundeswettbewerbs Künstliche Intelligenz (BWKI) am Projekt „Delta Green". Ziel ist ein Modell, das Ertragsverluste auf Maisfeldern aus Sentinel-2/HLS-Zeitreihen, Wetter- und Bodendaten vorhersagt. Das Modell wird ausschließlich mit Daten außerhalb Österreichs trainiert und anschließend in Österreich getestet; dafür suche ich gemessene Erträge als Trainingslabels.
 
 Ich möchte Sie fragen, ob Sie mir aus [Datensatz/Versuch, Jahre] folgende Daten für die nicht-kommerzielle Forschung zur Verfügung stellen könnten:
 - Feldgrenzen (Polygon) oder Koordinaten der Versuchsflächen/Felder,
@@ -266,11 +266,11 @@ Mit freundlichen Grüßen
 
 ### Generic request text (English)
 
-Subject: Request for field-/site-level yield data for a non-commercial student research project (CropTransfer AT, German AI competition BWKI)
+Subject: Request for field-/site-level yield data for a non-commercial student research project (Delta Green, German AI competition BWKI)
 
 Dear [Name],
 
-My name is [Name]; I am a secondary-school student at [school, town, Austria] working on the project "CropTransfer AT" for the German national AI competition for students (Bundeswettbewerb Künstliche Intelligenz, BWKI). The project builds a model that predicts yield loss on maize fields from Sentinel-2/HLS time series, weather and soil data. The model is trained only on data from outside Austria and then tested on Austrian fields; measured yields are needed as training labels.
+My name is [Name]; I am a secondary-school student at [school, town, Austria] working on the project "Delta Green" for the German national AI competition for students (Bundeswettbewerb Künstliche Intelligenz, BWKI). The project builds a model that predicts yield loss on maize fields from Sentinel-2/HLS time series, weather and soil data. The model is trained only on data from outside Austria and then tested on Austrian fields; measured yields are needed as training labels.
 
 I would like to ask whether you could share, for non-commercial research use, the following from [dataset/experiment, years]:
 - field boundaries (polygons) or coordinates of the trial fields,

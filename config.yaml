@@ -1,4 +1,4 @@
-# CropTransfer AT – central configuration (see PLAN.md §2/§3).
+# Delta Green – central configuration (see PLAN.md §2/§3).
 # All paths are relative to the repository root. No magic numbers in code.
 
 seed: 42
