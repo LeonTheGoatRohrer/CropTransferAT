@@ -134,7 +134,7 @@ function GiveGet() {
 function HowItWorks() {
   const steps = [
     { icon: <PenLine className="size-5" />, t: 'Feld einzeichnen', d: 'Suchen Sie Ihren Ort auf der Satellitenkarte und klicken Sie die Ecken des Felds an.' },
-    { icon: <Sprout className="size-5" />, t: 'Erträge eingeben', d: 'Vergangene Jahre und dieses Jahr, in dt/ha oder t/ha. Unbekannte Jahre bleiben einfach leer.' },
+    { icon: <Sprout className="size-5" />, t: 'Erträge eingeben', d: 'Vergangene Jahre und dieses Jahr, in Tonnen pro Hektar (t/ha). Unbekannte Jahre bleiben einfach leer.' },
     { icon: <TrendingUp className="size-5" />, t: 'Ergebnis ansehen', d: 'Ihr Feld im Vergleich zu seinem eigenen Durchschnitt, sofort. Die Modelle lernen daraus für die nächste Saison.' },
   ]
   return (

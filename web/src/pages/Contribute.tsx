@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { Check, Download, PenLine, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import type { Polygon } from '../api/types'
+import { ModeSwitch } from '../components/field/ModeSwitch'
 import { FieldMap, type Basemap } from '../components/map/FieldMap'
 import { PlaceSearch } from '../components/map/PlaceSearch'
 import { Button } from '../components/ui/Button'
@@ -23,13 +24,10 @@ const SITE_POINTS = AT_SITES.map((s) => ({
   lngLat: s.lngLat,
 }))
 
-type Unit = 't' | 'dt'
-
-/** Parse "9,8" / "9.8" into t/ha; returns null when empty or out of range. */
-function toT(raw: string, unit: Unit): number | null {
-  const v = Number(raw.replace(',', '.'))
-  if (!raw.trim() || !Number.isFinite(v) || v <= 0) return null
-  const t = unit === 'dt' ? v / 10 : v
+/** Parse "9,8" / "9.8" t/ha; returns null when empty or out of range. */
+function toT(raw: string): number | null {
+  const t = Number(raw.replace(',', '.'))
+  if (!raw.trim() || !Number.isFinite(t)) return null
   return t > 0 && t <= 25 ? t : null
 }
 
@@ -38,7 +36,6 @@ export default function Contribute() {
   const [drawing, setDrawing] = useState(false)
   const [basemap, setBasemap] = useState<Basemap>('satellite')
   const [flyTo, setFlyTo] = useState<{ center: [number, number]; bbox?: [number, number, number, number]; key: number } | null>(null)
-  const [unit, setUnit] = useState<Unit>('dt')
   const [past, setPast] = useState<Record<number, string>>({})
   const [now, setNow] = useState('')
   const [nowStatus, setNowStatus] = useState<'harvested' | 'estimate'>('harvested')
@@ -56,10 +53,10 @@ export default function Contribute() {
   const areaProblem = outside ? 'Bitte zeichnen Sie ein Feld in Österreich.' : polygon ? (area < MIN_AREA ? 'Zu klein – zeichnen Sie mindestens 0,3 ha.' : area > MAX_AREA ? 'Zu groß – zeichnen Sie ein einzelnes Feld (max. 200 ha).' : null) : null
 
   const pastYields = useMemo(
-    () => PAST_YEARS.flatMap((y) => { const t = toT(past[y] ?? '', unit); return t == null ? [] : [{ year: y, tPerHa: t }] }),
-    [past, unit],
+    () => PAST_YEARS.flatMap((y) => { const t = toT(past[y] ?? ''); return t == null ? [] : [{ year: y, tPerHa: t }] }),
+    [past],
   )
-  const nowT = toT(now, unit)
+  const nowT = toT(now)
   const verdict = judgeYield(pastYields, nowT)
   const canSend = Boolean(polygon) && !areaProblem && (pastYields.length >= 1 || nowT != null) && consent
 
@@ -140,6 +137,7 @@ export default function Contribute() {
 
       <aside className="relative flex w-full flex-col border-t border-[var(--line)] bg-soil-900/95 lg:w-[460px] lg:border-l lg:border-t-0">
         <div className="flex-1 p-5 sm:p-6 lg:overflow-y-auto">
+          <ModeSwitch active="contribute" />
           <AnimatePresence mode="wait">
             {sent ? (
               <motion.div key="done" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col gap-5">
@@ -178,20 +176,17 @@ export default function Contribute() {
                 </Step>
 
                 <Step n={2} title="Wie hoch war der Ertrag?" done={pastYields.length > 0 || nowT != null}>
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <p className="text-[12.5px] text-ink-3">Lassen Sie Jahre aus, die Sie nicht wissen. Ab zwei früheren Jahren erhalten Sie einen Vergleich.</p>
-                    <Tabs size="sm" label="Einheit" value={unit} onChange={setUnit} items={[{ value: 'dt', label: 'dt/ha' }, { value: 't', label: 't/ha' }]} />
-                  </div>
+                  <p className="mb-3 text-[12.5px] text-ink-3">Erträge in Tonnen pro Hektar (t/ha). Lassen Sie Jahre aus, die Sie nicht wissen. Ab zwei früheren Jahren erhalten Sie einen Vergleich.</p>
                   <div className="grid grid-cols-[1fr_120px] items-center gap-x-4 gap-y-2">
                     <span className="text-[14px] font-medium text-maize">{THIS_YEAR} (dieses Jahr)</span>
-                    <YieldInput value={now} onChange={setNow} unit={unit} label={`Ertrag ${THIS_YEAR}`} />
+                    <YieldInput value={now} onChange={setNow} label={`Ertrag ${THIS_YEAR}`} />
                     <div className="col-span-2 -mt-1">
                       <Tabs size="sm" label="Stand dieses Jahr" value={nowStatus} onChange={setNowStatus} items={[{ value: 'harvested', label: 'Geerntet' }, { value: 'estimate', label: 'Meine Schätzung' }]} />
                     </div>
                     {PAST_YEARS.map((y) => (
                       <label key={y} className="contents">
                         <span className="text-[14px] text-ink-2">{y}</span>
-                        <YieldInput value={past[y] ?? ''} onChange={(v) => setPast((p) => ({ ...p, [y]: v }))} unit={unit} label={`Ertrag ${y}`} />
+                        <YieldInput value={past[y] ?? ''} onChange={(v) => setPast((p) => ({ ...p, [y]: v }))} label={`Ertrag ${y}`} />
                       </label>
                     ))}
                   </div>
@@ -247,8 +242,8 @@ function Step({ n, title, done, children }: { n: number; title: string; done: bo
   )
 }
 
-function YieldInput({ value, onChange, unit, label }: { value: string; onChange: (v: string) => void; unit: Unit; label: string }) {
-  const bad = value.trim() !== '' && toT(value, unit) == null
+function YieldInput({ value, onChange, label }: { value: string; onChange: (v: string) => void; label: string }) {
+  const bad = value.trim() !== '' && toT(value) == null
   return (
     <div className="relative">
       <input
@@ -257,10 +252,10 @@ function YieldInput({ value, onChange, unit, label }: { value: string; onChange:
         onChange={(e) => onChange(e.target.value)}
         aria-label={label}
         aria-invalid={bad}
-        placeholder={unit === 'dt' ? '100' : '10'}
+        placeholder="10"
         className={`h-10 w-full rounded-[10px] border bg-soil-850 pl-3 pr-14 text-right font-mono text-[14px] text-ink placeholder:text-ink-4 focus:outline-none ${bad ? 'border-rust' : 'border-[var(--line-strong)] focus:border-maize'}`}
       />
-      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-mono text-[11px] text-ink-4">{unit}/ha</span>
+      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 font-mono text-[11px] text-ink-4">t/ha</span>
     </div>
   )
 }

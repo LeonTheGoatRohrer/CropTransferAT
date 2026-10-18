@@ -2,6 +2,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import { ArrowDown, Layers as LayersIcon, Loader2, MapPin, PenLine, Play, RotateCcw, X } from 'lucide-react'
 import { useEffect, useMemo, useReducer, useRef, useState } from 'react'
 import type { FieldAnalysis, Polygon } from '../api/types'
+import { ModeSwitch } from '../components/field/ModeSwitch'
 import { PipelinePanel } from '../components/field/PipelinePanel'
 import { filledSeries } from '../lib/series'
 import { Assessment, PhaseContributions, SatellitePanel, SoilPanel, WeatherPanel, WithinFieldPanel } from '../components/field/Results'
@@ -74,10 +75,16 @@ export default function Analyse() {
     dispatch({ type: 'select', selection: { kind: 'custom', polygon: p, areaM2: areaM2(p), label: 'Ihr Feld' } })
   }
 
-  // Cell overlay on the map (after the analysis).
+  // Cell grid: prepared field-years already carry their pixels, so their tiles show from selection on;
+  // drawn fields get theirs with the (simulated) result.
+  const pixels = state.status === 'completed' ? result?.pixels : state.status !== 'idle' ? selectedPrepared?.pixels : null
+  const pixelYear = result?.year ?? selectedPrepared?.year ?? 2020
+  const pixelsSimulated = state.status === 'completed' ? Boolean(result?.simulated) : false
+
+  // Cell overlay on the map.
   const overlay = useMemo<CellOverlay | null>(() => {
-    const px = result?.pixels
-    if (!px || layer === 'none' || state.status !== 'completed') return null
+    const px = pixels
+    if (!px || layer === 'none') return null
     const filled = layer === 'season' && px.ndvi_by_dekad ? filledSeries(px.ndvi_by_dekad) : null
     return {
       type: 'FeatureCollection',
@@ -96,7 +103,7 @@ export default function Analyse() {
         return { type: 'Feature', geometry: { type: 'Polygon', coordinates: [cellSquare(c[0], c[1], px.cell_m * 0.92)] }, properties: { color, opacity } }
       }),
     }
-  }, [result, layer, dekad, state.status])
+  }, [pixels, layer, dekad])
 
   const sel = state.selection
   const areaWarning = sel?.kind === 'custom' ? (sel.areaM2 < MIN_AREA ? 'Zu klein – zeichnen Sie mindestens 0,3 ha.' : sel.areaM2 > MAX_AREA ? 'Zu groß – zeichnen Sie ein einzelnes Feld (max. 200 ha).' : null) : null
@@ -157,7 +164,7 @@ export default function Analyse() {
                   Klicken Sie, um Ecken zu setzen. Klicken Sie zum Schließen auf die erste Ecke. Danach können Sie Ecken verschieben.
                 </motion.p>
               )}
-              {state.status === 'completed' && result?.pixels && (
+              {pixels && (
                 <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="panel-glass pointer-events-auto flex flex-col gap-2 p-2.5">
                   <div className="flex items-center gap-2">
                     <LayersIcon className="ml-1 size-3.5 text-ink-3" />
@@ -169,7 +176,7 @@ export default function Analyse() {
                       items={[
                         { value: 'weak', label: 'Schwache Zonen' },
                         { value: 'season', label: 'NDVI-Saison' },
-                        { value: 'yield', label: result.simulated ? 'Ertrag (sim.)' : 'Gemessener Ertrag' },
+                        { value: 'yield', label: pixelsSimulated ? 'Ertrag (sim.)' : 'Gemessener Ertrag' },
                         { value: 'none', label: 'Aus' },
                       ]}
                     />
@@ -177,7 +184,7 @@ export default function Analyse() {
                   {layer === 'season' && (
                     <div className="flex items-center gap-3 px-1">
                       <input type="range" min={0} max={N_DEKADS - 1} value={dekad} onChange={(e) => setDekad(Number(e.target.value))} aria-label="Dekade" className="h-1 w-48 cursor-pointer appearance-none rounded-full bg-white/15 accent-[var(--color-maize)]" />
-                      <span className="w-14 font-mono text-[11px] text-ink-2">{dekadLabel(dekad, result.year)}</span>
+                      <span className="w-14 font-mono text-[11px] text-ink-2">{dekadLabel(dekad, pixelYear)}</span>
                     </div>
                   )}
                 </motion.div>
@@ -189,6 +196,7 @@ export default function Analyse() {
         {/* Side panel */}
         <aside className="relative flex w-full flex-col border-t border-[var(--line)] bg-soil-900/95 lg:w-[420px] lg:border-l lg:border-t-0">
           <div className="flex-1 p-5 sm:p-6 lg:overflow-y-auto">
+            <ModeSwitch active="analyse" />
             <AnimatePresence mode="wait">
               {state.status === 'idle' && (
                 <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
