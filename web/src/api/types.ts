@@ -62,6 +62,8 @@ export type FieldStress = {
   alarm: boolean
   threshold: number
   phases: { Jun: Nullable<number>; Jul: Nullable<number>; Aug: Nullable<number> }
+  /** per month: summed NDVI below (<= 0, counts for the score) and above (>= 0, ignored) the healthy reference */
+  phase_parts?: Record<'Jun' | 'Jul' | 'Aug', { below: Nullable<number>; above: Nullable<number> }>
   main_phase: Nullable<string>
   rank_in_site_year: Nullable<number>
   fold: Nullable<string>
@@ -72,8 +74,11 @@ export type FieldAnalysis = {
   fy_key: string
   role: FieldRole
   label: string
+  /** outcome headline and text: shown only after the analysis */
   title: string
   blurb: string
+  /** neutral location text, safe to show before the analysis */
+  place?: string
   site: string
   field_id: string
   year: number
@@ -112,6 +117,8 @@ export type FieldAnalysis = {
     nccpi_corn: Nullable<number>
   }>
   pixels: Nullable<PixelGrid>
+  /** measured maize yields of the same field in all recorded years */
+  history?: { year: number; yield_t_ha: Nullable<number> }[]
   /** true for results produced by the in-browser simulation (no backend yet) */
   simulated?: boolean
 }

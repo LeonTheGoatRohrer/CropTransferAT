@@ -131,6 +131,12 @@ export function Assessment({ f }: { f: FieldAnalysis }) {
               {fmtPct(outcome.relative_yield)} des üblichen Ertrags dieses Feldes ·{' '}
               <span className={outcome.at_risk ? 'text-rust' : 'text-sage'}>{outcome.at_risk ? 'gefährdet (≥ 15 % Ausfall)' : 'nicht gefährdet'}</span>
             </p>
+            {f.title && (
+              <div className="mt-5 border-t border-[var(--line)] pt-4">
+                <p className="text-[15px] font-medium text-ink">{f.title}</p>
+                <p className="mt-1 text-[13.5px] leading-relaxed text-ink-3">{f.blurb}</p>
+              </div>
+            )}
             <div className="mt-auto pt-6">
               {verdict === 'correct' && <Badge tone="sage" dot>{alarm ? 'Richtiger Alarm' : 'Zu Recht kein Alarm'}</Badge>}
               {verdict === 'false-alarm' && <Badge tone="maize" dot>Fehlalarm</Badge>}
@@ -150,55 +156,136 @@ export function Assessment({ f }: { f: FieldAnalysis }) {
 export function PhaseContributions({ f, typical }: { f: FieldAnalysis; typical?: { at_risk: Record<string, number>; not_at_risk: Record<string, number> } }) {
   const s = f.stress
   if (!s) return null
+  // Same month windows as the stress model: dekads 6-8 (31.5.-29.6.), 9-11, 12-14 (fj_product.PHASES).
   const rows = [
-    { key: 'Jun' as const, label: 'Juni', t: 'Juni' },
-    { key: 'Jul' as const, label: 'Juli', t: 'Juli' },
-    { key: 'Aug' as const, label: 'August', t: 'August' },
+    { key: 'Jun' as const, label: 'Juni', t: 'Juni', dekads: [6, 7, 8] },
+    { key: 'Jul' as const, label: 'Juli', t: 'Juli', dekads: [9, 10, 11] },
+    { key: 'Aug' as const, label: 'August', t: 'August', dekads: [12, 13, 14] },
   ]
-  const lo = Math.min(-0.35, ...rows.map((r) => s.phases[r.key] ?? 0))
-  const pos = (v: number) => `${(v / lo) * 100}%`
+  const ndvi = f.satellite.indices.ndvi ?? []
+  // below (<= 0, counts for the score) and above (>= 0, ignored by the score) the healthy reference
+  const part = (k: 'Jun' | 'Jul' | 'Aug') => s.phase_parts?.[k] ?? { below: s.phases[k] ?? 0, above: 0 }
+  const span = Math.max(0.35, ...rows.flatMap((r) => [-(part(r.key).below ?? 0), part(r.key).above ?? 0]))
+  const w = (v: number) => `${(Math.abs(v) / span) * 50}%` // each side is half the track
+  const at = (v: number) => `${50 + (v / span) * 50}%`
+  const MIN = 0.005
   return (
-    <Block eyebrow="Woher die Abweichung kommt" title="Rückstand gegenüber der gesunden Kurve, je Monat">
+    <Block eyebrow="Woher die Abweichung kommt" title="Abstand zur gesunden Kurve, je Monat">
+      <div className="mb-2 grid grid-cols-[120px_1fr_96px] gap-4 font-mono text-[10.5px] text-ink-4">
+        <span />
+        <div className="flex justify-between">
+          <span>← unter der Referenz (Rückstand)</span>
+          <span>über der Referenz →</span>
+        </div>
+        <span />
+      </div>
       <div className="flex flex-col gap-5">
         {rows.map((r) => {
-          const v = s.phases[r.key] ?? 0
+          const below = part(r.key).below ?? 0
+          const above = part(r.key).above ?? 0
+          const seen = r.dekads.filter((i) => ndvi[i] != null).length
           const tr = typical?.at_risk[r.t]
           const tn = typical?.not_at_risk[r.t]
           return (
-            <div key={r.key} className="grid grid-cols-[72px_1fr_64px] items-center gap-4">
-              <span className="text-[14px] text-ink">{r.label}</span>
+            <div key={r.key} className="grid grid-cols-[120px_1fr_96px] items-center gap-4">
+              <span className="text-[14px] leading-tight text-ink">
+                {r.label}
+                <span className="mt-0.5 block font-mono text-[10.5px] text-ink-4" title="Ein Monat hat drei Dekaden (je 10 Tage). Gezählt sind die mit wolkenfreiem Satellitenbild.">
+                  Bild in {seen} von 3 Dekaden
+                </span>
+              </span>
               <div className="relative h-7 rounded-md bg-white/[0.035]">
+                <span className="absolute inset-y-0 left-1/2 w-px bg-ink-3/50" />
                 <motion.div
-                  className="absolute inset-y-1 left-0 rounded-[4px] bg-rust/80"
+                  className="absolute inset-y-1 right-1/2 rounded-l-[4px] bg-rust/80"
                   initial={{ width: 0 }}
-                  whileInView={{ width: pos(v) }}
+                  whileInView={{ width: w(below) }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 />
-                {tn != null && <span className="absolute inset-y-0 w-px bg-sage" style={{ left: pos(tn) }} title="Typisches nicht gefährdetes Feld" />}
-                {tr != null && <span className="absolute inset-y-0 w-px bg-ink" style={{ left: pos(tr) }} title="Typisches gefährdetes Feld" />}
+                <motion.div
+                  className="absolute inset-y-1 left-1/2 rounded-r-[4px] bg-sage/80"
+                  initial={{ width: 0 }}
+                  whileInView={{ width: w(above) }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                />
+                {tn != null && <span className="absolute inset-y-0 w-px bg-ink-3" style={{ left: at(tn) }} title="Mittel nicht gefährdeter US-Felder" />}
+                {tr != null && <span className="absolute inset-y-0 w-px bg-ink" style={{ left: at(tr) }} title="Mittel gefährdeter US-Felder" />}
               </div>
-              <span className="text-right font-mono text-[13px] tabular text-ink-2">{fmtSigned(v, 2)}</span>
+              <span className="flex flex-col items-end font-mono text-[13px] leading-tight tabular">
+                {below < -MIN && <span className="text-rust">{fmtSigned(below, 2)}</span>}
+                {above > MIN && <span className="text-sage">{fmtSigned(above, 2)}</span>}
+                {below >= -MIN && above <= MIN && <span className="text-ink-3">0</span>}
+              </span>
             </div>
           )
         })}
       </div>
-      {typical && (
-        <Legend
-          className="mt-6"
-          items={[
-            { label: 'Dieses Feld', color: tokens.rust, kind: 'bar' },
-            { label: 'Mittel gefährdeter US-Felder', color: tokens.ink },
-            { label: 'Mittel nicht gefährdeter US-Felder', color: tokens.sage },
-          ]}
-        />
-      )}
+      <Legend
+        className="mt-6"
+        items={[
+          { label: 'Unter der Referenz', color: tokens.rust, kind: 'bar' },
+          { label: 'Über der Referenz', color: tokens.sage, kind: 'bar' },
+          ...(typical
+            ? [
+                { label: 'Rückstand im Mittel gefährdeter US-Felder', color: tokens.ink },
+                { label: '… nicht gefährdeter US-Felder', color: tokens.ink3 },
+              ]
+            : []),
+        ]}
+      />
       <p className="mt-5 flex gap-2 text-[13px] leading-relaxed text-ink-3">
         <Info className="mt-0.5 size-3.5 shrink-0" />
-        Summierter NDVI-Rückstand je Monat (nur beobachtete Dekaden). Das erklärt den Alarm, ist aber keine Ursachenzuordnung. In den
-        US-Daten kamen 22 von 31 Alarmen hauptsächlich aus dem Juli.
+        Summierter NDVI-Abstand zur gesunden Referenz je Monat. Eine Dekade sind 10 Tage, ein Monat hat drei; gezählt werden nur Dekaden mit
+        wolkenfreiem Satellitenbild („Bild in 2 von 3 Dekaden“ heißt: In einem der drei 10-Tage-Abschnitte gab es keine wolkenfreie Aufnahme). Für
+        Stress-Score und Alarm zählt nur der rote Teil; ein Vorsprung (grün) gleicht keinen Rückstand aus. Das erklärt den Alarm, ist aber
+        keine Ursachenzuordnung. In den US-Daten kamen 22 von 31 Alarmen hauptsächlich aus dem Juli.
       </p>
       <Source className="mt-4">results/2026-10-16_feinjust_ablation/ranking.csv · product.json</Source>
+    </Block>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+/* Yield history                                                       */
+/* ------------------------------------------------------------------ */
+
+export function YieldHistory({ f }: { f: FieldAnalysis }) {
+  const h = (f.history ?? []).filter((x) => x.yield_t_ha != null) as { year: number; yield_t_ha: number }[]
+  if (h.length < 2) return null
+  const max = Math.max(...h.map((x) => x.yield_t_ha))
+  const others = h.filter((x) => x.year !== f.year)
+  const mean = others.reduce((a, x) => a + x.yield_t_ha, 0) / Math.max(others.length, 1)
+  const BAR = 120 // px for the highest year; the year label below takes 22 px
+  const px = (v: number) => (v / max) * BAR
+  return (
+    <Block eyebrow="Ertragshistorie" title={`Gemessene Maiserträge dieses Feldes, ${h[0].year}–${h.at(-1)!.year}`}>
+      <div className="relative flex h-44 items-end gap-1.5">
+        <div className="pointer-events-none absolute inset-x-0 z-10 border-t border-dashed border-ink-3/70" style={{ bottom: 22 + px(mean) }} />
+        {h.map((x) => {
+          const cur = x.year === f.year
+          return (
+            <div key={x.year} className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-1.5">
+              <span className={`font-mono text-[10px] tabular ${cur ? 'text-maize' : 'text-ink-4'}`}>{fmt(x.yield_t_ha, 1)}</span>
+              <motion.div
+                className={`w-full max-w-[38px] shrink-0 rounded-t-[3px] ${cur ? 'bg-maize' : 'bg-white/15'}`}
+                initial={{ height: 0 }}
+                whileInView={{ height: px(x.yield_t_ha) }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              />
+              <span className={`h-4 font-mono text-[10.5px] leading-4 tabular ${cur ? 'text-maize' : 'text-ink-3'}`}>{h.length > 8 ? `’${String(x.year).slice(2)}` : x.year}</span>
+            </div>
+          )
+        })}
+      </div>
+      <p className="mt-5 flex gap-2 text-[13px] leading-relaxed text-ink-3">
+        <Info className="mt-0.5 size-3.5 shrink-0" />
+        Gestrichelt: Mittel der anderen Jahre ({fmt(mean, 1)} t/ha). Nur Jahre mit Mais (Fruchtfolge). Der „übliche Ertrag“ für die Bewertung ist der Ertrag dieses Feldes in seinen anderen Jahren,
+        bereinigt um den Ertragstrend über die Jahre – deshalb weicht er etwas vom einfachen Mittel ab.
+      </p>
+      <Source className="mt-4">data/processed/gt_field_years.parquet</Source>
     </Block>
   )
 }

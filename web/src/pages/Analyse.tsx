@@ -5,9 +5,9 @@ import type { FieldAnalysis, Polygon } from '../api/types'
 import { ModeSwitch } from '../components/field/ModeSwitch'
 import { PipelinePanel } from '../components/field/PipelinePanel'
 import { filledSeries } from '../lib/series'
-import { Assessment, PhaseContributions, SatellitePanel, SoilPanel, WeatherPanel, WithinFieldPanel } from '../components/field/Results'
+import { Assessment, PhaseContributions, SatellitePanel, SoilPanel, WeatherPanel, WithinFieldPanel, YieldHistory } from '../components/field/Results'
 import { FieldMap, type Basemap, type CellOverlay } from '../components/map/FieldMap'
-import { Badge, SimulatedBadge, type Tone } from '../components/ui/Badge'
+import { Badge, SimulatedBadge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Container } from '../components/ui/Section'
 import { ErrorNote } from '../components/ui/States'
@@ -22,11 +22,25 @@ import { getPreparedFields, runAnalysis } from '../services/fieldService'
 import { PlaceSearch } from '../components/map/PlaceSearch'
 import { analysisReducer, initialAnalysis, isRunning } from '../state/analysisMachine'
 
-const ROLE_TONE: Record<string, Tone> = { healthy: 'sage', stressed: 'rust', average: 'neutral', edge: 'maize', missed: 'water' }
 const MIN_AREA = 3000 // m²
 const MAX_AREA = 2_000_000 // m² (200 ha)
 
 type Layer = 'none' | 'season' | 'weak' | 'yield'
+
+/** Neutral description of a prepared field-year: where, how big, how much satellite data – nothing about the outcome. */
+function teaser(f: FieldAnalysis): string {
+  const nd = f.satellite.indices.ndvi ?? []
+  const summer = nd.slice(6, 15).filter((v) => v != null).length
+  const years = f.history?.length ?? 0
+  return [
+    f.place,
+    fmtArea(f.area_m2),
+    `${f.satellite.n_observed_dekads} von 21 Dekaden beobachtet (Juni–August: ${summer} von 9)`,
+    years > 1 ? `Erträge aus ${years} Jahren` : null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+}
 
 export default function Analyse() {
   const fields = useResource(getPreparedFields, 'fields')
@@ -66,7 +80,7 @@ export default function Analyse() {
 
   const selectPrepared = (f: FieldAnalysis) => {
     setDrawing(false)
-    dispatch({ type: 'select', selection: { kind: 'prepared', id: f.id, polygon: f.geometry, areaM2: f.area_m2, label: `${f.label} · ${f.title}` } })
+    dispatch({ type: 'select', selection: { kind: 'prepared', id: f.id, polygon: f.geometry, areaM2: f.area_m2, label: `${f.label} · ${f.site} ${f.year}` } })
   }
 
   const onPolygon = (p: Polygon | null) => {
@@ -75,9 +89,8 @@ export default function Analyse() {
     dispatch({ type: 'select', selection: { kind: 'custom', polygon: p, areaM2: areaM2(p), label: 'Ihr Feld' } })
   }
 
-  // Cell grid: prepared field-years already carry their pixels, so their tiles show from selection on;
-  // drawn fields get theirs with the (simulated) result.
-  const pixels = state.status === 'completed' ? result?.pixels : state.status !== 'idle' ? selectedPrepared?.pixels : null
+  // Cell grid: shown only with the result, so the coloured zones do not give the answer away before the run.
+  const pixels = state.status === 'completed' ? result?.pixels : null
   const pixelYear = result?.year ?? selectedPrepared?.year ?? 2020
   const pixelsSimulated = state.status === 'completed' ? Boolean(result?.simulated) : false
 
@@ -204,7 +217,7 @@ export default function Analyse() {
                   <h1 className="mt-3 text-[30px] leading-tight">Wählen Sie ein Feld-Jahr oder zeichnen Sie Ihr eigenes Feld.</h1>
                   <p className="mt-3 text-[14px] leading-relaxed text-ink-2">
                     Vorbereitete Felder sind echte, beim Training zurückgehaltene Feld-Jahre von den US-Trainingsstandorten, mit gemessenem
-                    Ergebnis. Für gezeichnete Felder läuft eine Simulation, bis das Backend für die Datenabfrage verbunden ist.
+                    Ertrag. Was das Modell sagt und ob es stimmt, sehen Sie erst nach der Analyse. Für gezeichnete Felder läuft eine Simulation, bis das Backend für die Datenabfrage verbunden ist.
                   </p>
                   {fields.error && <div className="mt-6"><ErrorNote error={fields.error} /></div>}
                   <ul className="mt-6 flex flex-col gap-2">
@@ -218,10 +231,10 @@ export default function Analyse() {
                           <span className="mt-0.5 font-display text-[15px] font-semibold text-maize">{f.label.replace(/^(Field|Feld) /, '')}</span>
                           <span className="min-w-0 flex-1">
                             <span className="flex flex-wrap items-center gap-2">
-                              <span className="text-[14.5px] font-medium text-ink">{f.title}</span>
-                              <Badge tone={ROLE_TONE[f.role]}>{f.site} {f.year}</Badge>
+                              <span className="text-[14.5px] font-medium text-ink">{f.site} {f.year}</span>
+                              {f.treatment && <Badge tone="neutral">Variante {f.treatment}</Badge>}
                             </span>
-                            <span className="mt-1 block text-[13px] leading-snug text-ink-3">{f.blurb}</span>
+                            <span className="mt-1 block text-[13px] leading-snug text-ink-3">{teaser(f)}</span>
                           </span>
                           <MapPin className="mt-1 size-4 text-ink-4 transition group-hover:text-ink-2" />
                         </button>
@@ -249,7 +262,7 @@ export default function Analyse() {
                   {sel.kind === 'custom' && <SimulatedBadge />}
                   {state.status === 'fieldSelected' && (
                     <>
-                      {selectedPrepared && <p className="text-[14px] leading-relaxed text-ink-2">{selectedPrepared.blurb}</p>}
+                      {selectedPrepared && <p className="text-[14px] leading-relaxed text-ink-2">{teaser(selectedPrepared)}</p>}
                       {areaWarning && <p className="text-[13px] text-rust">{areaWarning}</p>}
                       <Button size="lg" icon={<Play className="size-4" />} disabled={Boolean(areaWarning)} onClick={() => dispatch({ type: 'start' })}>
                         Feld analysieren
@@ -296,7 +309,9 @@ export default function Analyse() {
             <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
               <div>
                 <p className="eyebrow">Ergebnis · {result.label}</p>
-                <h2 className="mt-3 text-[clamp(2rem,4vw,3rem)]">{result.title}</h2>
+                {/* The outcome headline (title/blurb) appears only once the measured yield is revealed (Assessment). */}
+                <h2 className="mt-3 text-[clamp(2rem,4vw,3rem)]">{result.simulated ? result.title : `${result.site} ${result.year}`}</h2>
+                {result.place && <p className="mt-2 text-[15px] text-ink-2">{result.place}</p>}
                 <p className="mt-2 font-mono text-[12.5px] text-ink-3">
                   {result.site} · {result.field_id.replace(/_/g, '-')} · {result.year} · {fmtArea(result.area_m2)}
                 </p>
@@ -306,6 +321,7 @@ export default function Analyse() {
             <Assessment f={result} />
             <PhaseContributions f={result} typical={evidence.data?.alarm.phase_sum_mean} />
             <SatellitePanel f={result} />
+            <YieldHistory f={result} />
             <WithinFieldPanel f={result} />
             <WeatherPanel f={result} />
             <SoilPanel f={result} />

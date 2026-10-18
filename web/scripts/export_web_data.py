@@ -24,6 +24,10 @@ sys.path.insert(0, str(ROOT / "src"))
 from croptransfer.features import daily_weather  # noqa: E402
 from croptransfer.innerfeld_features import window_median  # noqa: E402
 from croptransfer.innerfeld_run import B0_DEKADS  # noqa: E402
+from croptransfer import feinjust, splits, stress, targets  # noqa: E402
+from croptransfer.config import load_config  # noqa: E402
+from croptransfer.fj_product import PHASES  # noqa: E402
+from croptransfer.run_phase2 import eval_mask  # noqa: E402
 
 APP = ROOT / "data" / "app"
 PROC = ROOT / "data" / "processed"
@@ -38,17 +42,31 @@ SEASON_START = "04-01"
 N_DEKADS = 21
 
 # Prepared demo fields: real held-out field-years from the training sites (display texts in German).
+# Chosen 2026-10-18 among the 89 out-of-fold field-years for dense Sentinel-2 coverage (>= 7 of the 9
+# June-August dekads observed) and long yield records; one per outcome type, including a false alarm
+# and a miss. `place` is neutral and shown before the analysis; `title`/`blurb` describe the outcome
+# and are shown only afterwards.
+_BARC = "Beltsville, Maryland (USA)"
+_KBS = "Kellogg Biological Station, Michigan (USA)"
 DEMO_FIELDS = [
-    {"id": "barc-2021", "fy_key": "BARC|BARC:EastFarm_5_12|2021", "role": "healthy",
-     "label": "Feld A", "title": "Starke Saison", "blurb": "Die Kurve folgt den ganzen Sommer über der gesunden Referenz."},
-    {"id": "barc-2018", "fy_key": "BARC|BARC:EastFarm_6_60|2018", "role": "stressed",
-     "label": "Feld B", "title": "Juli-Stress, erkannt", "blurb": "Fällt im Juli unter die Referenz; der Alarm schlägt an."},
-    {"id": "kbs-2017", "fy_key": "KBS|KBS:T2R3|2017", "role": "average",
-     "label": "Feld C", "title": "Durchschnittliche Bedingungen", "blurb": "Kleine Versuchsparzelle, nahe an ihrem üblichen Ertrag."},
-    {"id": "kbs-t4-2020", "fy_key": "KBS|KBS:T4R1|2020", "role": "edge",
-     "label": "Feld D", "title": "Fehlalarm", "blurb": "Bio-Parzelle, spät nach einer Zwischenfrucht gesät. Als auffällig markiert, aber mit üblichem Ertrag geerntet."},
-    {"id": "barc-2018-miss", "fy_key": "BARC|BARC:EastFarm_5_12|2018", "role": "missed",
-     "label": "Feld E", "title": "Übersehener Ausfall", "blurb": "Der Ertrag halbierte sich, während die Kurve nahe an der Referenz blieb. Kein Alarm – die Karte findet die schwachen Zonen aber trotzdem."},
+    {"id": "barc-2020", "fy_key": "BARC|BARC:EastFarm_5_3A|2020", "role": "healthy", "place": _BARC,
+     "label": "Feld A", "title": "Starke Saison",
+     "blurb": "Früh grün und im Juni und Juli über der gesunden Referenz; geerntet wurden 19 % mehr als üblich. Kein Alarm – zu Recht."},
+    {"id": "kbs-t1-2020", "fy_key": "KBS|KBS:T1R1|2020", "role": "stressed", "place": _KBS,
+     "label": "Feld B", "title": "Stress den ganzen Sommer, erkannt",
+     "blurb": "Konventionelle Parzelle. Die Kurve bleibt von Juni bis August unter der Referenz; geerntet wurde gut die Hälfte des üblichen Ertrags. Der Alarm schlägt an."},
+    {"id": "kbs-t2-2020", "fy_key": "KBS|KBS:T2R4|2020", "role": "average", "place": _KBS,
+     "label": "Feld C", "title": "Normale Saison",
+     "blurb": "Direktsaat-Parzelle. Die Kurve liegt fast genau auf der gesunden Referenz, der Ertrag entspricht dem üblichen. Kein Alarm."},
+    {"id": "barc-2017-alarm", "fy_key": "BARC|BARC:EastFarm_5_3B|2017", "role": "stressed", "place": _BARC,
+     "label": "Feld D", "title": "Später Aufwuchs, knapp Alarm",
+     "blurb": "Wird erst Anfang Juli richtig grün und liegt im Juli deutlich unter der Referenz; Ertrag rund ein Viertel unter dem üblichen. Das Risiko liegt knapp über der Alarmschwelle."},
+    {"id": "barc-2017-miss", "fy_key": "BARC|BARC:EastFarm_5_3C|2017", "role": "missed", "place": _BARC,
+     "label": "Feld E", "title": "Gleiches Muster, knapp übersehen",
+     "blurb": "Nachbarfeld von Feld D mit fast derselben Kurve und ähnlichem Ertragsverlust. Das Risiko liegt knapp unter der Schwelle, deshalb kein Alarm – die Grenze ist hart."},
+    {"id": "kbs-t4-2020", "fy_key": "KBS|KBS:T4R4|2020", "role": "edge", "place": _KBS,
+     "label": "Feld F", "title": "Fehlalarm",
+     "blurb": "Bio-Parzelle: Im Mai steht noch die Zwischenfrucht (hoher NDVI), der Mais wird spät gesät und liegt von Juni bis August unter der Referenz. Als auffällig markiert, aber mit überdurchschnittlichem Ertrag geerntet."},
 ]
 
 
@@ -161,6 +179,38 @@ def pixel_grid(fy_key: str) -> dict | None:
     }
 
 
+def phase_parts(keys: set[str]) -> dict[str, dict]:
+    """Per month: NDVI below (<= 0) and above (>= 0) the fold reference, summed over observed dekads.
+
+    Same folds, healthy reference and dekad windows as fj_product.explanations; the `below` part is
+    exactly the value in ranking.csv (checked in build_fields), `above` is the part the score ignores.
+    """
+    cfg = load_config()
+    fj = cfg["feinjust"]
+    df = feinjust.load_features(cfg, fj["cutoff"])
+    dek = pd.read_parquet(PROC / "gt_dekads.parquet")
+    dek = dek[(dek["index"] == "ndvi") & (dek.basis == fj["basis"])]
+    k = stress.last_complete_dekad(fj["cutoff"])
+    out = {}
+    for _, tr, te in splits.lofyo(df, eval_mask(df, fj["basis"])):
+        ry_tr, ry_te = targets.ry_in_fold(df, tr, te)
+        ry_tr = ry_tr.dropna()
+        test_keys = [df.loc[i, "fy_key"] for i in ry_te.index[ry_te.notna()] if df.loc[i, "fy_key"] in keys]
+        if not test_keys:
+            continue
+        healthy = df.loc[ry_tr.index[(ry_tr >= feinjust.HEALTHY) & (df.loc[ry_tr.index, "sensor_era"] == "HLS")], "fy_key"]
+        ref = stress.reference_curve(dek, healthy, basis=fj["basis"])
+        for key in test_keys:
+            d = dek[(dek.fy_key == key) & dek.is_observed & dek.dekad.between(6, k)]
+            dev = d.value.to_numpy() - ref.reindex(d.dekad).to_numpy()
+            parts = {}
+            for name, (a, b) in PHASES.items():
+                m = d.dekad.between(a, b).to_numpy()
+                parts[name] = {"below": r(np.nansum(np.minimum(dev[m], 0))), "above": r(np.nansum(np.maximum(dev[m], 0)))}
+            out[key] = parts
+    return out
+
+
 def build_fields() -> dict:
     fields = gpd.read_parquet(APP / "fields.parquet")
     dek = pd.read_parquet(APP / "dekads.parquet")
@@ -170,12 +220,14 @@ def build_fields() -> dict:
     oof = pd.read_parquet(RES / "2026-10-16_feinjust_ablation" / "oof.parquet")
     score = oof[oof.model == "A_roh"].set_index("fy_key")["score"]
     product = json.loads((RES / "2026-10-16_feinjust_ablation" / "product.json").read_text(encoding="utf-8"))
+    gt = pd.read_parquet(PROC / "gt_field_years.parquet", columns=["field_uid", "year", "Y_t_ha"])
 
     def ref_band(index: str) -> dict:
         b = ref[(ref.basis == "S2") & (ref["index"] == index)].set_index("dekad").reindex(range(N_DEKADS))
         return {k: [r(v) for v in b[k].to_numpy()] for k in ["p25", "median", "p75"]} | {
             "n_fieldyears": int(ref.n_fieldyears.iloc[0])}
 
+    parts = phase_parts({spec["fy_key"] for spec in DEMO_FIELDS})
     out = []
     for spec in DEMO_FIELDS:
         key = spec["fy_key"]
@@ -223,13 +275,22 @@ def build_fields() -> dict:
                 "score": r(score.get(key), 4), "risk_p": r(rk.p), "alarm": bool(rk.alarm),
                 "threshold": r(product["alarm_threshold_oof"]),
                 "phases": {"Jun": r(rk.Juni), "Jul": r(rk.Juli), "Aug": r(rk.August)},
+                # below/above the fold reference per month; below == phases (asserted below)
+                "phase_parts": {m: parts[key][de] for m, de in [("Jun", "Juni"), ("Jul", "Juli"), ("Aug", "August")]},
                 "main_phase": None if pd.isna(rk.main_phase) else str(rk.main_phase),  # German month name, shown as is
                 "rank_in_site_year": None if pd.isna(rk.rank_in_site_year) else int(rk.rank_in_site_year),
                 "fold": None if pd.isna(rk.fold) else str(rk.fold)},
             "weather": weather_for(c.x, c.y, year),
             "soil": soil,
+            # measured maize yields of the same field/plot in all years (rotation years without maize are absent)
+            "history": [{"year": int(h.year), "yield_t_ha": r(h.Y_t_ha, 2)}
+                        for h in gt[gt.field_uid == row.field_uid].sort_values("year").itertuples()],
             "pixels": pixel_grid(key),
         })
+        st_ = out[-1]["stress"]
+        if st_:
+            for m in ["Jun", "Jul", "Aug"]:
+                assert abs((st_["phase_parts"][m]["below"] or 0) - (st_["phases"][m] or 0)) <= 1.5e-3, (key, m)  # rounding only
         print(f"field {spec['id']}: area {out[-1]['area_m2']} m2, scenes {len(obs)}/{len(clear)}, "
               f"pixels {out[-1]['pixels']['n_cells'] if out[-1]['pixels'] else 0}")
     return {"fields": out, "dekad_count": N_DEKADS, "season_start": SEASON_START}

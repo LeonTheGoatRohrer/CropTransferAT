@@ -30,6 +30,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 - 2026-10-17: Zwei KI-generierte Videoclips für das Pitch-Intro (Drohnenflug über Maisfeld, Satellit im Orbit) mit Higgsfield „Cinema Studio Video 3.0“ (720p, je 5 s), gestartet von Claude Code; Dateien `pitch/intro/clips/`. Die Clips sind Illustration, keine Daten.
 - 2026-10-18: KI-Sprecherstimme für das Pitch-Intro (Higgsfield/ElevenLabs v4, Stimme „Grady“); Sprechertext von Claude Code entworfen, Stimme vom Projektinhaber ausgewählt.
 - 2026-10-18: Kartenszene im Pitch-Intro: Orthofoto basemap.at (CC BY 4.0, Stand 2024) mit einem INVEKOS-2024-Schlag (AMA) als Feldgrenze; alternativ ein KI-generiertes Luftbild (Higgsfield, Nano Banana Pro).
+- 2026-10-18: Referenzfelder der Website von Claude Code neu ausgewählt (6 echte Out-of-Fold-Feld-Jahre aus BARC/KBS mit dichter Sentinel-2-Zeitreihe, Auswahlkriterien im Export-Skript); Ergebnis und Feldkarte erst nach „Feld analysieren“, neuer Block Ertragshistorie, Monatsblock mit Rückstand (rot) und Vorsprung (grün) zur Referenz sowie Dekaden-Zählung je Monat.
 
 ## Datensätze
 Details, Lizenzen und Zitate in `DATA_SOURCES.md`.
