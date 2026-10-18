@@ -38,3 +38,18 @@ und sind im HTML bewusst als „schematische Darstellung“ gekennzeichnet. Noch
 - Die App ist eine Web-App, sie wird hier in der Handyansicht gezeigt (keine eigene App aus dem Store).
 - Feld, Zahlen und Pixel im Clip sind Illustrationen, keine Ergebnisse.
 - Wenn KI-Bilder (Higgsfield) und KI-Code (Claude) verwendet werden, gehört das in `SUPPORT.md`.
+
+## Sprecher (Version mit Ton)
+
+Stimme „Grady“, ElevenLabs v4 über Higgsfield, jeder Satz einzeln erzeugt (`voice/lines/`) und an den Szenenanfang gesetzt (`voice/timing.tsv`: Start in s, Tempofaktor).
+Mischung: Kompressor + Lautheit −16 LUFS; Endbild um 1 s verlängert. Ergebnis: `export/CropTransfer_Intro_1080p_Sprecher.mp4` (36 s).
+
+| Start | Text |
+|---|---|
+| 0,2 s | Trockenstress kostet Ertrag. Aber wo im Feld – und wann? |
+| 4,9 s | Mit CropTransfer wählst du dein Feld einfach auf der Karte aus. |
+| 9,9 s | Dann trägst du ein, was es in den letzten Jahren gebracht hat. |
+| 14,2 s | Der Satellit Sentinel-2 fotografiert jedes Feld in Europa – alle paar Tage. |
+| 19,9 s | So entsteht Jahr für Jahr ein neues Bild deines Feldes, in nassen wie in trockenen Jahren. |
+| 25,6 s | Das Modell wertet jedes Pixel aus und markiert die Stellen, die immer wieder schwächeln. |
+| 31,0 s | CropTransfer AT. Stress im Maisfeld sichtbar machen. |
