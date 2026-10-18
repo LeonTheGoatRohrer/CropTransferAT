@@ -32,6 +32,8 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 - 2026-10-18: Kartenszene im Pitch-Intro: Orthofoto basemap.at (CC BY 4.0, Stand 2024) mit einem INVEKOS-2024-Schlag (AMA) als Feldgrenze; alternativ ein KI-generiertes Luftbild (Higgsfield, Nano Banana Pro).
 - 2026-10-18: Referenzfelder der Website von Claude Code neu ausgewählt (6 echte Out-of-Fold-Feld-Jahre aus BARC/KBS mit dichter Sentinel-2-Zeitreihe, Auswahlkriterien im Export-Skript); Ergebnis und Feldkarte erst nach „Feld analysieren“, neuer Block Ertragshistorie, Monatsblock mit Rückstand (rot) und Vorsprung (grün) zur Referenz sowie Dekaden-Zählung je Monat.
 - 2026-10-18: Pitch-Überarbeitung der Website von Claude Code: Grafik „So sind wir vorgegangen“ (Modelle), Belege-Seite vereinfacht (Klartext oben, technische Details aufklappbar), Formulierung „Statistisch gesichert“ statt „Klein, aber sicher“.
+- 2026-10-18: Modellübersicht (782 trainierte Modellvarianten in 11 Experimentblöcken) von Claude Code aus allen Ergebnisordnern unter `results/` gezählt; Abschnitt 5 in `reports/doku/hauptergebnis.md` und Abschnitt „Modellübersicht“ auf der Methode-Seite der Website.
+- 2026-10-18: Navigation der Website von Claude Code erweitert (alle Seiten und Abschnitte über die Navbar erreichbar), auf Wunsch des Projektinhabers.
 
 ## Datensätze
 Details, Lizenzen und Zitate in `DATA_SOURCES.md`.

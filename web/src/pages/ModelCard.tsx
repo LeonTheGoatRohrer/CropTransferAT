@@ -146,7 +146,7 @@ export default function ModelCard() {
           </Reveal>
         </Container>
       </section>
-      <section className="pb-20">
+      <section id="vorgehen" className="scroll-mt-20 pb-20">
         <Container>
           <Reveal>
             <p className="eyebrow mb-3">So sind wir vorgegangen</p>
@@ -155,7 +155,7 @@ export default function ModelCard() {
           <ProjectFlow />
         </Container>
       </section>
-      <section>
+      <section id="drei-modelle" className="scroll-mt-20">
         <Container>
           <Reveal>
             <p className="eyebrow mb-3">Die drei Modelle</p>

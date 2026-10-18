@@ -7,6 +7,8 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 ### Added (Branch `phase-9-frontend`) – Web-Frontend für die Jury
 - `web/`: neue Präsentations- und Demo-Website (React 19, TypeScript, Vite, Tailwind 4, MapLibre, Terra Draw, D3, Motion), nur lokal/privat. Seiten: Überblick, Feldanalyse (Karte, Suche, Polygon zeichnen, Pipeline als Zustandsmaschine), Evidence (alle Benchmarks inkl. Österreich-Test), Model card, Daten + Explorer, Methode + Experimente, Grenzen/Roadmap/Offenlegung.
 - `web/scripts/export_web_data.py`: schreibt `web/public/data/{fields,evidence,explorer}.json` aus `data/` und `results/` (keine österreichischen Roh-/Merkmalsdaten). Fünf vorbereitete US-Feld-Jahre mit echten Kurven, Wetter, Boden, 10-m-Zellen und out-of-fold-Risiko; gezeichnete Felder laufen bis zum Backend als markierte Simulation.
+- Modellübersicht: `reports/doku/hauptergebnis.md` §5 und Methode-Seite (`MODEL_INVENTORY` in `web/src/data/content/project.ts`) zählen 782 trainierte Modellvarianten in 11 Experimentblöcken, gezählt aus `results/` aller Branches (ohne Regeln ohne Training, Glättung und Label-Shuffle-Kontrollen).
+- Navigation: Die Navbar führt jetzt zu allen Seiten (neu: Übersicht, Feld analysieren, Methode) und klappt je Seite ihre Abschnitte auf; das Handy-Menü zeigt dieselben Abschnitte. Neue Sprungmarken auf Modelle, Methode und Daten; Sprünge auf andere Seiten landen zuverlässig am Abschnitt (`web/src/App.tsx`).
 - Datenkritik `reports/data_review/phase9_frontend.md`, Website-Eintrag `web-frontend` in `app/versions.yaml`.
 
 ## [at-test-1] – 2026-10-17 – Österreich-Test (erster, explorativ; Tag `freeze-at-1` für das Protokoll)

@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react'
-import { Suspense, lazy, useEffect } from 'react'
+import { Suspense, lazy, useEffect, useRef } from 'react'
 import { Route, Routes, useLocation } from 'react-router'
 import { Footer } from './components/layout/Footer'
 import { Nav } from './components/layout/Nav'
@@ -16,10 +16,32 @@ const NotFound = lazy(() => import('./pages/NotFound'))
 
 function ScrollManager() {
   const { pathname, hash } = useLocation()
+  const prevPath = useRef(pathname)
   useEffect(() => {
+    // Jump straight to a section on another page; glide only within the current page.
+    const behavior: ScrollBehavior = prevPath.current === pathname ? 'smooth' : 'auto'
+    prevPath.current = pathname
     if (hash) {
-      const t = setTimeout(() => document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350)
-      return () => clearTimeout(t)
+      // The target page mounts only after the exit animation and its lazy chunk, and data
+      // above the section can still shift it: poll for the anchor, then correct once.
+      const id = hash.slice(1)
+      let tries = 0
+      let fix: ReturnType<typeof setTimeout> | undefined
+      const poll = setInterval(() => {
+        const el = document.getElementById(id)
+        if (!el && ++tries < 40) return
+        clearInterval(poll)
+        if (!el) return
+        el.scrollIntoView({ behavior, block: 'start' })
+        fix = setTimeout(() => {
+          const top = document.getElementById(id)?.getBoundingClientRect().top ?? 0
+          if (Math.abs(top - 80) > 24) document.getElementById(id)?.scrollIntoView({ behavior: 'auto', block: 'start' })
+        }, behavior === 'smooth' ? 1500 : 900)
+      }, 100)
+      return () => {
+        clearInterval(poll)
+        clearTimeout(fix)
+      }
     }
     window.scrollTo({ top: 0 })
   }, [pathname, hash])

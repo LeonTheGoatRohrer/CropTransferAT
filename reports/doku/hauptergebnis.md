@@ -37,3 +37,28 @@ Das EU-Regionalmodell (Phase 5, CY-Bench, 16 Länder ohne Österreich) ordnet am
 - **Jahresvorhersage auf Feldebene:** in drei vorab festgelegten Runden und mit mehreren Kulturen nicht „stark genug“ (Phase 4, Mehr-Kulturen). Ursache: 8–11 unabhängige Standort-Jahre.
 - **Feinjustierung:** Radar, Oberflächentemperatur und Verdunstung, eine Temperatursummen-Achse und das Begrünungsdatum wurden einzeln nach einer vorher festgelegten Regel getestet. Alle machten die Erkennung schlechter (`reports/feinjustierung_ergebnis.md`).
 - Jedes Kriterium war vorab festgelegt und wurde nicht nachträglich geändert. Die negativen Ergebnisse zeigen, wo die Grenze der vorhandenen Daten liegt: Mehr Standort-Jahre und echte Praxisfelder sind der Hebel, nicht mehr Merkmale.
+
+## 5. Wie viele Modelle stecken dahinter?
+
+Stand 2026-10-18, gezählt aus allen Ergebnisordnern unter `results/` (alle Branches). Insgesamt wurden **782 Modellvarianten trainiert und bewertet**, in elf Experimentblöcken. Übrig geblieben sind die drei Ergebnisse aus Abschnitt 1–3.
+
+| Block | Was trainiert wurde | Varianten | Quelle |
+|---|---|---:|---|
+| Phase 2: Basismodelle | Ridge und flaches LightGBM je Merkmalsgruppe (Satellit, Wetter, Boden, Kombinationen) × HLS/S2 × 7 Stichtage; Hauptlauf 224, Variante „Wetter lang“ 112 | 336 | `results/2026-10-16_phase2/` |
+| Phase 2: Zusatzfragen | Vorlauf nur 1.9. (48), absoluter Ertrag in t/ha (16), Kalender- gegen Temperatursummen-Achse (8) | 72 | `phase2_quick0901/`, `phase2_Y/`, `gdd_axis/` |
+| Verbesserungsrunden 1–3 | relative Satellitenmerkmale, weniger Merkmale, stärkere Regularisierung; je 56 | 168 | `round1/` … `round3/` |
+| Phase 3: Problemfelder | direkter Klassifikator „gefährdet“ je Stichtag | 7 | `round3/phase3.json` |
+| Innerhalb des Feldes (BARC) | 3 Zeitfenster × 3 Merkmalssätze × Ridge/LightGBM × 3 Aufteilungen | 54 | `within_field/` |
+| One Acre Fund (Afrika) | 14 Merkmalssätze × Ridge/LightGBM × Land/Jahr auslassen | 56 | `oaf_tabular/` |
+| EU-Regionalmodell | LightGBM je Stichtag (7, **eingefroren**) und 3 Kontrollvarianten je Stichtag (ohne Deutschland, mit Koordinaten, ohne feste Merkmale) | 28 | `cybench_eu/`, `models/cybench_freeze/` |
+| Mehr-Kulturen | je Kultur und gepoolt × Wetter / Wetter + Satellit | 16 | `mehrkultur_h030/` |
+| Feinjustierung | Stress-Erkennung mit Radar, Temperatur/Verdunstung, Temperatursummen-Achse, Begrünungsdatum (M1–M4) | 4 | `feinjust_ablation/` |
+| Innerhalb des Feldes, drei Standorte | M1, M2 und K-Raum je Standort (BARC, Kayad, Colorado), über Feld-Jahre und zwischen Standorten | 36 | `innerfeld/` |
+| Österreich, explorativ | Neukalibrierung R1 und Nachtraining R2 je 2 Stichtage (4), Machbarkeitstest (1) | 5 | `at_retrain/`, `at_feasibility/` (Branch `phase-9-feldverlauf`) |
+| **Summe** | | **782** | |
+
+**Was nicht mitgezählt ist:** Regeln ohne Training (NDVI-Regeln B0–B2, Stress-Score aus der Referenzkurve, Normaljahr- und Trend-Baselines), die Glättung aus Runde 2 (dieselben Modelle, nur nachbearbeitet), die Kalibrierung der Warnschwellen und alle Label-Shuffle-Kontrollen. Die beiden Österreich-Tests haben nur eingefrorene Modelle angewendet und nichts neu trainiert.
+
+**Zum Lesen der Zahl:** Eine Variante ist ein Modell mit festen Merkmalen und festem Stichtag. Jede Variante wurde in einer Kreuzvalidierung mehrfach trainiert (ein Feld, ein Jahr oder ein Land ausgelassen, teils mit verschachteltem Tuning). Die Zahl der einzelnen Trainingsläufe liegt deshalb bei mehreren Tausend.
+
+**Wichtig für die Darstellung:** Zwei der drei Hauptergebnisse sind keine gelernten Modelle. Die Teilflächenkarte beruht auf der einfachen NDVI-Regel, der Stress-Score auf einer festen Referenzkurve. Die gelernten Modelle waren dort nicht besser. Gespeichert und eingefroren sind nur die 7 Modelle des EU-Regionalmodells.

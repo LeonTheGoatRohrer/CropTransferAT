@@ -1,9 +1,10 @@
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
-import { StrengthBadge } from '../components/ui/Badge'
+import { StrengthBadge, type Strength } from '../components/ui/Badge'
+import { CountUp } from '../components/ui/CountUp'
 import { Reveal } from '../components/ui/Reveal'
 import { Container, SectionHeader, Source } from '../components/ui/Section'
-import { EXPERIMENTS, FEATURE_GROUPS, PIPELINE_STEPS } from '../data/content/project'
+import { EXPERIMENTS, FEATURE_GROUPS, MODEL_INVENTORY, PIPELINE_STEPS } from '../data/content/project'
 
 export default function Method() {
   return (
@@ -23,6 +24,7 @@ export default function Method() {
       <Pipeline />
       <Validation />
       <Features />
+      <ModelInventory />
       <Experiments />
     </>
   )
@@ -34,7 +36,7 @@ function Pipeline() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start 70%', 'end 60%'] })
   const h = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
   return (
-    <section className="py-20">
+    <section id="ablauf" className="scroll-mt-20 py-20">
       <Container>
         <SectionHeader eyebrow="So funktioniert es" title="Vom Satellitenpixel zur Aussage über das Feld." lede="Sieben Schritte, jeder mit einer Regel, die Zukunftswissen ausschließt." />
         <div ref={ref} className="relative mx-auto mt-16 max-w-[880px]">
@@ -88,7 +90,7 @@ function Validation() {
   ]
   const color = { train: 'bg-sage/35', test: 'bg-maize', gap: 'bg-white/[0.04]' }
   return (
-    <section className="py-20">
+    <section id="validierung" className="scroll-mt-20 py-20">
       <Container>
         <SectionHeader eyebrow="Validierung" title="Zurückgehalten heißt zurückgehalten." lede="Drei Schemata zum Zurückhalten von Testdaten – so gewählt, dass ein Modell nie ein Feld, ein Jahr oder ein Land wiedererkennen kann, an dem es getestet wird." />
         <div className="mt-12 grid gap-5 lg:grid-cols-3">
@@ -134,7 +136,7 @@ const isExcluded = (g: { source: string }) => g.source.includes('test_no_leakage
 
 function Features() {
   return (
-    <section className="py-20">
+    <section id="merkmale" className="scroll-mt-20 py-20">
       <Container>
         <SectionHeader eyebrow="Merkmalsbildung" title="Mehr als rohe Pixel." lede="Was die Modelle tatsächlich sehen – und was ihnen bewusst vorenthalten wird." />
         <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -153,6 +155,61 @@ function Features() {
             </Reveal>
           ))}
         </div>
+      </Container>
+    </section>
+  )
+}
+
+const barColor: Partial<Record<Strength, string>> = { robust: 'bg-sage', 'certain-small': 'bg-water', limited: 'bg-maize', failed: 'bg-rust' }
+
+/** How many model variants were trained per block, as proportional bars. */
+function ModelInventory() {
+  const total = MODEL_INVENTORY.reduce((s, b) => s + b.count, 0)
+  const max = Math.max(...MODEL_INVENTORY.map((b) => b.count))
+  return (
+    <section id="modelle" className="scroll-mt-20 py-20">
+      <Container>
+        <SectionHeader
+          eyebrow="Modellübersicht"
+          title={<><CountUp value={total} digits={0} /> trainierte Modellvarianten. Drei Ergebnisse sind geblieben.</>}
+          lede={`Verteilt auf ${MODEL_INVENTORY.length} Experimentblöcke. Eine Variante ist ein Modell mit festen Merkmalen und festem Stichtag, bewertet an einem vorab festgelegten Kriterium. Weil jede Variante in einer Kreuzvalidierung mehrfach trainiert wurde, sind es mehrere Tausend einzelne Trainingsläufe.`}
+        />
+        <Reveal className="panel mt-12 p-6 sm:p-8">
+          <ul className="flex flex-col gap-4">
+            {MODEL_INVENTORY.map((b) => (
+              <li key={b.block} className="grid gap-2 sm:grid-cols-[minmax(0,260px)_minmax(0,1fr)_56px] sm:items-center sm:gap-6">
+                <div className="min-w-0">
+                  <p className="text-[15px] text-ink">{b.block}</p>
+                  <p className="text-[12.5px] leading-snug text-ink-3">{b.what}</p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-white/[0.04]">
+                    <div className={`h-full rounded-full ${barColor[b.status] ?? 'bg-ink-3'}`} style={{ width: `${Math.max((b.count / max) * 100, 1.5)}%` }} />
+                  </div>
+                  <span className="w-10 text-right font-mono text-[14px] tabular text-ink sm:hidden">{b.count}</span>
+                </div>
+                <span className="hidden text-right font-mono text-[15px] tabular text-ink sm:block">{b.count}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="mt-8 flex flex-wrap gap-x-5 gap-y-2 border-t border-[var(--line)] pt-5 text-[12.5px] text-ink-3">
+            {(['robust', 'certain-small', 'limited', 'failed'] as Strength[]).map((st) => (
+              <StrengthBadge key={st} strength={st} />
+            ))}
+          </div>
+        </Reveal>
+        <div className="mt-10 grid gap-5 md:grid-cols-2">
+          {[
+            ['Die einfachsten Methoden haben gewonnen', 'Die Teilflächenkarte beruht auf einer NDVI-Regel, der Stress-Score auf einer festen Referenzkurve. Gelernte Modelle waren dort nicht besser. Eingefroren und gespeichert sind nur die 7 Modelle des EU-Regionalmodells.'],
+            ['Nicht mitgezählt', 'Regeln ohne Training (NDVI-Regeln, Stress-Score, Normaljahr- und Trend-Baselines), die Glättung aus Runde 2, die Kalibrierung der Warnschwellen und alle Label-Shuffle-Kontrollen. Die Österreich-Tests haben nur eingefrorene Modelle angewendet.'],
+          ].map(([t, body]) => (
+            <Reveal key={t} className="border-t border-[var(--line-strong)] pt-5">
+              <h3 className="text-[17px]">{t}</h3>
+              <p className="mt-2 text-[13.5px] leading-relaxed text-ink-2">{body}</p>
+            </Reveal>
+          ))}
+        </div>
+        <Source className="mt-6">results/ (alle Branches), gezählt am 2026-10-18 · reports/doku/hauptergebnis.md §5</Source>
       </Container>
     </section>
   )

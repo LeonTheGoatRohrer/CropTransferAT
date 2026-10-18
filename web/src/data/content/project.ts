@@ -132,6 +132,27 @@ export const EXPERIMENTS: Experiment[] = [
 ]
 
 /* ------------------------------------------------------------------ */
+/* Model inventory (counted from results/, all branches, 2026-10-18)   */
+/* ------------------------------------------------------------------ */
+
+export type ModelBlock = { block: string; what: string; count: number; status: Strength; source: string }
+
+/** Trained model variants per experiment block; mirrors reports/doku/hauptergebnis.md §5. */
+export const MODEL_INVENTORY: ModelBlock[] = [
+  { block: 'Basismodelle', what: 'Ridge und LightGBM je Merkmalsgruppe × HLS/S2 × 7 Stichtage', count: 336, status: 'failed', source: 'results/2026-10-16_phase2/' },
+  { block: 'Zusatzfragen', what: 'Vorlauf 1.9., absoluter Ertrag, Temperatursummen-Achse', count: 72, status: 'limited', source: 'phase2_quick0901/, phase2_Y/, gdd_axis/' },
+  { block: 'Verbesserungsrunden 1–3', what: 'relative Merkmale, weniger Merkmale, stärkere Regularisierung', count: 168, status: 'failed', source: 'round1/ … round3/' },
+  { block: 'Problemfelder', what: 'direkter Klassifikator „gefährdet“ je Stichtag', count: 7, status: 'failed', source: 'round3/phase3.json' },
+  { block: 'Innerhalb des Felds (BARC)', what: '3 Zeitfenster × 3 Merkmalssätze × 2 Modelltypen × 3 Aufteilungen', count: 54, status: 'robust', source: 'within_field/' },
+  { block: 'One Acre Fund (Afrika)', what: '14 Merkmalssätze × 2 Modelltypen × Land/Jahr auslassen', count: 56, status: 'limited', source: 'oaf_tabular/' },
+  { block: 'EU-Regionalmodell', what: 'LightGBM je Stichtag (7 eingefroren) + 3 Kontrollvarianten', count: 28, status: 'certain-small', source: 'cybench_eu/' },
+  { block: 'Mehr-Kulturen', what: 'je Kultur und gepoolt × Wetter / Wetter + Satellit', count: 16, status: 'failed', source: 'mehrkultur_h030/' },
+  { block: 'Feinjustierung', what: 'Radar, Temperatur/Verdunstung, Temperatursummen, Begrünung', count: 4, status: 'failed', source: 'feinjust_ablation/' },
+  { block: 'Drei Standorte', what: 'M1, M2, K-Raum an BARC, Kayad, Colorado und dazwischen', count: 36, status: 'limited', source: 'innerfeld/' },
+  { block: 'Österreich, explorativ', what: 'Neukalibrierung, Nachtraining, Machbarkeitstest', count: 5, status: 'limited', source: 'at_retrain/, at_feasibility/' },
+]
+
+/* ------------------------------------------------------------------ */
 /* Limitations and roadmap                                             */
 /* ------------------------------------------------------------------ */
 
