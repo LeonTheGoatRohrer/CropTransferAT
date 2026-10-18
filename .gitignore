@@ -12,6 +12,8 @@ results/**/models/
 web/node_modules/
 web/dist/
 web/public/data/
+# web/src/data/ is source code (static texts, demo simulation), not raw data
+!web/src/data/
 .playwright-mcp/
 
 # Secrets
