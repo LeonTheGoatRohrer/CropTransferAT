@@ -447,6 +447,40 @@ function Austria({ ev }: { ev: Ev }) {
           <p className="eyebrow mb-3">{t('evidence.at.notClaim')}</p>
           {t('evidence.at.notClaimBody')}
         </Reveal>
+        {ev.at_feasibility && (
+          <Reveal className="mt-5 panel border-dashed p-6">
+            <div className="flex flex-wrap items-center gap-3">
+              <p className="eyebrow">{t('concept.atTitle')}</p>
+              <StrengthBadge strength="failed" />
+            </div>
+            <p className="mt-3 text-[14px] text-ink-2">{t('concept.atBody')}</p>
+            <div className="mt-3 flex flex-col gap-2 text-[13.5px] text-ink">
+              <p>
+                {t('concept.atCounts', {
+                  sy: ev.at_feasibility.counts.site_years_with_yield_and_score,
+                  s: ev.at_feasibility.counts.sites,
+                  y: ev.at_feasibility.counts.years,
+                  c: ev.at_feasibility.counts.trial_rows_with_coordinates ?? 0,
+                  t: ev.at_feasibility.counts.trial_rows ?? 0,
+                })}
+              </p>
+              {ev.at_feasibility.metrics && (
+                <p>
+                  {keepGreek(
+                    t('concept.atResult', {
+                      rho: fmt(ev.at_feasibility.metrics.rho, 2),
+                      ci: fmtCi(ev.at_feasibility.metrics.rho_ci[0], ev.at_feasibility.metrics.rho_ci[1]),
+                      rm: fmt(ev.at_feasibility.metrics.rmse_model, 3),
+                      rn: fmt(ev.at_feasibility.metrics.rmse_normal, 3),
+                    }),
+                  )}
+                </p>
+              )}
+              <p className="text-ink-2">{t('concept.atVerdict')}</p>
+            </div>
+            <Source className="mt-4">results/2026-10-17_at_feasibility/metrics.json · DECISIONS.md</Source>
+          </Reveal>
+        )}
       </Container>
     </section>
   )

@@ -1,8 +1,8 @@
 import { animate, useInView, useReducedMotion } from 'motion/react'
 import { useEffect, useRef } from 'react'
+import { fmt } from '../../lib/format'
 
-const text = (v: number, digits: number) =>
-  Number.isFinite(v) ? (v < 0 ? `−${Math.abs(v).toFixed(digits)}` : v.toFixed(digits)) : '–'
+const text = (v: number, digits: number) => fmt(v, digits)
 
 /** Counts from 0 to value once the number scrolls into view. */
 export function CountUp({ value, digits = 2 }: { value: number; digits?: number }) {

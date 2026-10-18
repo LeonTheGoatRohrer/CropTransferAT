@@ -10,21 +10,24 @@ import { Badge, ConceptBadge, LiveBadge } from '../components/ui/Badge'
 import { Button } from '../components/ui/Button'
 import { Reveal } from '../components/ui/Reveal'
 import { Container, SectionHeader, Source } from '../components/ui/Section'
-import { keepGreek } from '../components/ui/Text'
 import { tokens } from '../lib/color'
-import { fmt, fmtArea, fmtCi, fmtCutoff, fmtDate } from '../lib/format'
+import { fmt, fmtArea, fmtCutoff, fmtDate } from '../lib/format'
 import type { Unit } from '../lib/baseline'
 import { areaM2 } from '../lib/geo'
 import { useResource } from '../lib/useResource'
 import { api, backendAvailable, type AlertSetting, type Baseline, type Calibration, type FieldDetail, type FieldRecord, type Notification } from '../services/backendService'
-import { getEvidence } from '../services/evidenceService'
-import { runAnalysis } from '../services/fieldService'
+import { getEvidence, getExplorer } from '../services/evidenceService'
+import { getPreparedFields, runAnalysis } from '../services/fieldService'
 import { getFieldStore, type FieldStore } from '../services/fieldStore'
 
 const CUTOFFS = ['06-01', '06-15', '07-01', '07-15', '08-01', '08-15', '09-01']
 const X_OPTIONS = [10, 15, 20, 25, 30]
 const THIS_YEAR = new Date().getFullYear()
 const LAST_SEASON = new Date().getMonth() >= 9 ? THIS_YEAR : THIS_YEAR - 1
+/** Example field for the tool: a real KBS trial plot whose yields were measured over many seasons. */
+const DEMO_FIELD = 'kbs-2017'
+/** Earliest season the tool (and the backend) accepts. */
+const FIRST_YEAR = 1990
 
 export default function Concept() {
   const { t } = useTranslation()
@@ -50,8 +53,8 @@ export default function Concept() {
                 <LiveBadge />
               ) : (
                 <>
-                  <Badge tone="maize" className="border-dashed">{t('concept.backendOff')}</Badge>
-                  <code className="font-mono text-[12px] text-ink-3">{t('concept.backendHow')}</code>
+                  <Badge>{t('concept.backendOff')}</Badge>
+                  <span className="font-mono text-[11.5px] text-ink-4">{t('concept.backendHow')}</span>
                 </>
               )}
             </div>
@@ -77,47 +80,6 @@ export default function Concept() {
       </section>
 
       {cal && <CalibrationSection cal={cal} />}
-
-      <section className="py-10">
-        <Container>
-          <Reveal className="panel border-dashed p-7">
-            <div className="flex flex-wrap items-center gap-3">
-              <p className="eyebrow">{t('concept.atTitle')}</p>
-              <Badge tone="rust" dot>{t('strength.failed')}</Badge>
-            </div>
-            <p className="mt-3 text-[14.5px] text-ink-2">{t('concept.atBody')}</p>
-            {ev.data?.at_feasibility ? (
-              <div className="mt-4 flex flex-col gap-2 text-[14px] text-ink">
-                <p>
-                  {t('concept.atCounts', {
-                    sy: ev.data.at_feasibility.counts.site_years_with_yield_and_score,
-                    s: ev.data.at_feasibility.counts.sites,
-                    y: ev.data.at_feasibility.counts.years,
-                    c: ev.data.at_feasibility.counts.trial_rows_with_coordinates ?? 0,
-                    t: ev.data.at_feasibility.counts.trial_rows ?? 0,
-                  })}
-                </p>
-                {ev.data.at_feasibility.metrics && (
-                  <p>
-                    {keepGreek(
-                      t('concept.atResult', {
-                        rho: fmt(ev.data.at_feasibility.metrics.rho, 2),
-                        ci: fmtCi(ev.data.at_feasibility.metrics.rho_ci[0], ev.data.at_feasibility.metrics.rho_ci[1]),
-                        rm: fmt(ev.data.at_feasibility.metrics.rmse_model, 3),
-                        rn: fmt(ev.data.at_feasibility.metrics.rmse_normal, 3),
-                      }),
-                    )}
-                  </p>
-                )}
-                <p className="text-ink-2">{t('concept.atVerdict')}</p>
-              </div>
-            ) : (
-              <p className="mt-3 text-[14px] text-ink-3">{t('concept.atNotRun')}</p>
-            )}
-            <Source className="mt-4">results/2026-10-17_at_feasibility/metrics.json · DECISIONS.md</Source>
-          </Reveal>
-        </Container>
-      </section>
 
       <Tool cal={cal} />
     </>
@@ -276,6 +238,26 @@ function Tool({ cal }: { cal: Calibration | undefined }) {
     setTimeout(() => setMsg(null), 3500)
   }
 
+  const loadDemo = async () => {
+    if (!store) return
+    try {
+      const [prepared, explorer] = await Promise.all([getPreparedFields(), getExplorer()])
+      const f = prepared.fields.find((x) => x.id === DEMO_FIELD)
+      if (!f || f.geometry.type !== 'Polygon') throw new Error(DEMO_FIELD)
+      const plot = f.fy_key.split('|')[1]
+      const ys = explorer.rows.filter((r) => r.fy_key.split('|')[1] === plot && r.Y_t_ha != null && r.year >= FIRST_YEAR).map((r) => ({ year: r.year, value: r.Y_t_ha as number }))
+      const rec = await store.create(t('concept.demoLabel', { id: f.field_id }), f.geometry)
+      await store.setYields(rec.id, 't/ha', ys)
+      const last = Math.max(...ys.map((y) => y.year))
+      setTargetYear(last)
+      await refresh(store)
+      setSel(rec.id)
+      flash('ok', t('concept.demoLoaded', { n: ys.length }))
+    } catch (e) {
+      flash('err', t('concept.error', { msg: (e as Error).message }))
+    }
+  }
+
   const createField = async () => {
     if (!store || !draft || !name.trim()) return
     try {
@@ -336,7 +318,7 @@ function Tool({ cal }: { cal: Calibration | undefined }) {
   const b = detail?.baseline
   const hint = hitText(t, cal, alert.cutoff, alert.hint_pct)
   const warn = hitText(t, cal, alert.cutoff, alert.warn_pct)
-  const years = Array.from({ length: THIS_YEAR - 1990 + 1 }, (_, i) => THIS_YEAR - i)
+  const years = Array.from({ length: THIS_YEAR - FIRST_YEAR + 1 }, (_, i) => THIS_YEAR - i)
   const input = 'h-9 rounded-[10px] border border-[var(--line-strong)] bg-soil-850 px-3 text-[13.5px] text-ink focus:border-maize focus:outline-none'
 
   return (
@@ -380,6 +362,11 @@ function Tool({ cal }: { cal: Calibration | undefined }) {
             <div>
               <p className="eyebrow mb-3">{t('concept.myFields')}</p>
               {fields.length === 0 && !draft && <p className="text-[13.5px] text-ink-3">{t('concept.noFields')}</p>}
+              {!fields.some((f) => f.label === t('concept.demoLabel', { id: 'T2R3' })) && !draft && (
+                <Button size="sm" variant="secondary" className="mb-3 mt-3" icon={<Plus className="size-3.5" />} onClick={loadDemo}>
+                  {t('concept.loadDemo')}
+                </Button>
+              )}
               <ul className="flex flex-col gap-1.5">
                 {fields.map((f) => (
                   <li key={f.id}>

@@ -4,21 +4,20 @@ import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
 import type { Evidence, FieldAnalysis } from '../api/types'
-import { LineCi, Strip } from '../components/charts/Stats'
 import { SeasonChart } from '../components/charts/SeasonChart'
 import { FieldOutline } from '../components/field/FieldOutline'
 import { HeroField } from '../components/field/HeroField'
 import { PixelField } from '../components/field/PixelField'
-import { ConceptBadge, StrengthBadge, type Strength } from '../components/ui/Badge'
+import { StrengthBadge, type Strength } from '../components/ui/Badge'
 import { ButtonLink } from '../components/ui/Button'
 import { Metric } from '../components/ui/Metric'
 import { Reveal } from '../components/ui/Reveal'
-import { Container, SectionHeader, Source } from '../components/ui/Section'
+import { Container, SectionHeader } from '../components/ui/Section'
 import { ErrorNote, Skeleton } from '../components/ui/States'
 import { useContent } from '../i18n'
-import { tokens } from '../lib/color'
+import { NDVI_LEGEND, tokens } from '../lib/color'
 import { lastCompleteDekad, phaseName } from '../lib/dekads'
-import { fmt, fmtArea, fmtCutoff, fmtInt, fmtSigned } from '../lib/format'
+import { fmt, fmtArea, fmtInt, fmtSigned } from '../lib/format'
 import { useResource } from '../lib/useResource'
 import { getEvidence } from '../services/evidenceService'
 import { getPreparedFields } from '../services/fieldService'
@@ -33,12 +32,11 @@ export default function Home() {
   return (
     <>
       <Hero field={hero} error={fields.error} />
+      <Params />
       {hero && <FieldToSignal field={hero} />}
       {evidence.data && <Claims ev={evidence.data} />}
-      {evidence.data && <ProofPreview ev={evidence.data} />}
-      <ConceptTeaser />
-      <WhatFailed />
       <AustriaBand />
+      <ReadOn />
       <ClosingCta />
     </>
   )
@@ -68,7 +66,7 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
           <motion.h1 {...rise(0.08)} className="text-balance text-[clamp(2.5rem,4.9vw,4.1rem)] font-semibold leading-[1] tracking-[-0.045em] [hyphens:auto]">
             {t('home.h1a')} <span className="text-maize">{t('home.h1b')}</span>
           </motion.h1>
-          <motion.p {...rise(0.18)} className="mt-7 max-w-[540px] text-pretty text-[18px] leading-relaxed text-ink-2">
+          <motion.p {...rise(0.18)} className="mt-6 max-w-[540px] text-pretty text-[clamp(1.05rem,1.6vw,1.25rem)] leading-snug text-ink-2">
             {t('home.lede')}
           </motion.p>
           <motion.div {...rise(0.28)} className="mt-10 flex flex-wrap gap-3">
@@ -96,6 +94,49 @@ function Hero({ field, error }: { field?: FieldAnalysis; error?: Error }) {
         <motion.div initial={reduce ? false : { opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 1.1, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}>
           {field ? <HeroField field={field} /> : error ? <ErrorNote error={error} /> : <Skeleton className="h-[520px]" />}
         </motion.div>
+      </Container>
+    </section>
+  )
+}
+
+/* ------------------------------------------------------------------ */
+
+type Param = { name: string; q: string; body: string; formula: string }
+
+/** Plain-language explainer of the measures the whole site builds on. */
+function Params() {
+  const { t } = useTranslation()
+  const items = t('home.params.items', { returnObjects: true }) as Param[]
+  const [ndvi, ...rest] = items
+  const gradient = `linear-gradient(90deg, ${NDVI_LEGEND.map((s) => `${s.c} ${s.v * 100}%`).join(', ')})`
+  return (
+    <section className="py-20 sm:py-24">
+      <Container>
+        <SectionHeader eyebrow={t('home.params.eyebrow')} title={t('home.params.title')} lede={t('home.params.lede')} />
+        <div className="mt-14 grid gap-5 lg:grid-cols-3">
+          <Reveal className="panel flex flex-col p-7 lg:row-span-2">
+            <p className="eyebrow text-maize">{t('home.params.main')}</p>
+            <h3 className="mt-4 font-display text-[34px] font-semibold tracking-[-0.03em]">{ndvi.name}</h3>
+            <p className="mt-1 text-[17px] text-ink">{ndvi.q}</p>
+            <p className="mt-4 text-pretty text-[14.5px] leading-relaxed text-ink-2">{ndvi.body}</p>
+            {ndvi.formula && <p className="mt-6 rounded-lg border border-[var(--line)] bg-white/[0.02] px-4 py-3 font-mono text-[13px] text-ink">{ndvi.formula}</p>}
+            <div className="mt-auto pt-8">
+              <div aria-hidden className="h-3 rounded-full" style={{ background: gradient }} />
+              <div className="mt-2 flex justify-between font-mono text-[11.5px] text-ink-3">
+                <span>{fmt(0, 1)} · {t('home.params.legendLow')}</span>
+                <span>{fmt(1, 1)}</span>
+              </div>
+              <p className="mt-1 text-right font-mono text-[11.5px] text-ink-3">{t('home.params.legendHigh')} ≈ {fmt(0.7, 1)}–{fmt(0.9, 1)}</p>
+            </div>
+          </Reveal>
+          {rest.map((p, i) => (
+            <Reveal key={p.name} delay={(i + 1) * 0.06} className="panel flex flex-col p-6">
+              <p className="font-mono text-[12px] uppercase tracking-[0.1em] text-maize">{p.name}</p>
+              <h3 className="mt-3 text-[18px] leading-snug">{p.q}</h3>
+              <p className="mt-3 text-pretty text-[13.5px] leading-relaxed text-ink-3">{p.body}</p>
+            </Reveal>
+          ))}
+        </div>
       </Container>
     </section>
   )
@@ -214,136 +255,6 @@ function Claims({ ev }: { ev: Evidence }) {
 
 /* ------------------------------------------------------------------ */
 
-function ProofPreview({ ev }: { ev: Evidence }) {
-  const { t } = useTranslation()
-  const b0 = ev.innerfeld_per_fy.filter((r) => r.model === 'B0' && r.scheme === 'untrained' && r.rho != null)
-  const sites = [
-    { key: 'BARC', label: 'BARC', sub: t('evidence.wf.siteBarc'), color: tokens.sage },
-    { key: 'KAYAD', label: 'Kayad', sub: t('evidence.wf.siteKayad'), color: tokens.maize },
-    { key: 'COLORADO', label: 'Akron', sub: t('evidence.wf.siteAkron'), color: tokens.water },
-  ]
-  const groups = sites.map((s) => {
-    const vals = b0.filter((r) => r.site === s.key)
-    const summ = ev.innerfeld_main.untrained[s.key]?.B0
-    return {
-      label: s.label,
-      sub: s.sub,
-      color: s.color,
-      values: vals.map((v) => ({ v: v.rho as number, title: `${v.fy_key.split('|')[1].split(':')[1]} · ${v.year}` })),
-      median: summ?.rho_median,
-    }
-  })
-  const cut = ev.eu_cutoffs
-  return (
-    <section className="py-24 sm:py-28">
-      <Container>
-        <SectionHeader
-          eyebrow={t('home.proof.eyebrow')}
-          title={t('home.proof.title')}
-          lede={t('home.proof.lede')}
-          aside={
-            <ButtonLink to="/evidence" variant="secondary" icon={<ArrowRight className="size-4" />}>
-              {t('home.proof.all')}
-            </ButtonLink>
-          }
-        />
-        <div className="mt-14 grid gap-5 lg:grid-cols-2">
-          <Reveal className="panel p-6">
-            <p className="eyebrow">{t('home.proof.stripTitle')}</p>
-            <div className="mt-6">
-              <Strip groups={groups} domain={[-0.2, 1]} xLabel="Spearman ρ" reference={0} />
-            </div>
-            <Source className="mt-4">{t('home.proof.srcStrip')}</Source>
-          </Reveal>
-          <Reveal className="panel p-6" delay={0.1}>
-            <p className="eyebrow">{t('home.proof.euTitle')}</p>
-            <div className="mt-6">
-              <LineCi
-                categories={cut.map((c) => fmtCutoff(c.cutoff))}
-                yDomain={[-0.1, 0.5]}
-                yFmt={(v) => fmt(v, 2)}
-                series={[
-                  { label: t('home.proof.rho'), color: tokens.water, values: cut.map((c) => ({ v: c.spearman.value, lo: c.spearman.lo, hi: c.spearman.hi })) },
-                  { label: t('home.proof.skill'), color: tokens.maize, values: cut.map((c) => ({ v: c.skill_vs_normal.value, lo: c.skill_vs_normal.lo, hi: c.skill_vs_normal.hi })) },
-                ]}
-              />
-            </div>
-            <Source className="mt-4">{t('home.proof.srcEu')}</Source>
-          </Reveal>
-        </div>
-      </Container>
-    </section>
-  )
-}
-
-/* ------------------------------------------------------------------ */
-
-function ConceptTeaser() {
-  const { t } = useTranslation()
-  return (
-    <section className="py-20">
-      <Container>
-        <Reveal className="panel relative overflow-hidden border-dashed p-8 sm:p-12">
-          <div className="flex flex-wrap items-center gap-3">
-            <ConceptBadge label={t('home.concept.badge')} />
-            <p className="eyebrow">{t('home.concept.eyebrow')}</p>
-          </div>
-          <div className="mt-6 grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:items-start">
-            <div>
-              <h2 className="text-balance text-[clamp(1.8rem,3.4vw,2.6rem)]">{t('home.concept.title')}</h2>
-              <p className="mt-5 max-w-[560px] text-pretty text-[16px] leading-relaxed text-ink-2">{t('home.concept.body')}</p>
-              <div className="mt-8">
-                <ButtonLink to="/konzept" variant="secondary" icon={<ArrowRight className="size-4" />}>
-                  {t('home.concept.cta')}
-                </ButtonLink>
-              </div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              {[
-                [t('home.concept.a'), t('home.concept.aBody')],
-                [t('home.concept.b'), t('home.concept.bBody')],
-              ].map(([h, b]) => (
-                <div key={h} className="rounded-xl border border-[var(--line)] bg-white/[0.02] p-5">
-                  <p className="font-display text-[17px] font-semibold">{h}</p>
-                  <p className="mt-2 text-[13.5px] leading-relaxed text-ink-3">{b}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
-      </Container>
-    </section>
-  )
-}
-
-function WhatFailed() {
-  const { t } = useTranslation()
-  const { experiments } = useContent()
-  const failed = experiments.filter((e) => e.status === 'failed')
-  return (
-    <section className="py-24 sm:py-28">
-      <Container>
-        <SectionHeader eyebrow={t('home.failed.eyebrow')} title={t('home.failed.title')} lede={t('home.failed.lede')} />
-        <div className="mt-14 grid gap-px overflow-hidden rounded-[var(--radius-panel)] border border-[var(--line)] bg-[var(--line)] md:grid-cols-2 lg:grid-cols-4">
-          {failed.slice(0, 4).map((e, i) => (
-            <Reveal key={e.id} delay={i * 0.06} className="flex flex-col bg-soil-900 p-6">
-              <StrengthBadge strength="failed" />
-              <h3 className="mt-5 text-[18px] leading-snug">{e.title}</h3>
-              <p className="mt-3 flex-1 text-[13.5px] leading-relaxed text-ink-3">{e.result}</p>
-              <p className="mt-5 font-mono text-[12px] text-ink-2">
-                {e.numbers[0].label}: {e.numbers[0].value}
-              </p>
-            </Reveal>
-          ))}
-        </div>
-        <Link to="/method#experiments" className="link-underline mt-6 inline-flex items-center gap-1.5 text-[14px] text-ink-2 hover:text-ink">
-          {t('home.failed.all', { n: experiments.length })} <ArrowRight className="size-3.5" />
-        </Link>
-      </Container>
-    </section>
-  )
-}
-
 function AustriaBand() {
   const { t } = useTranslation()
   const steps: ['done' | 'now' | 'next', string][] = [
@@ -373,6 +284,34 @@ function AustriaBand() {
             </ol>
           </div>
         </Reveal>
+      </Container>
+    </section>
+  )
+}
+
+function ReadOn() {
+  const { t } = useTranslation()
+  const { experiments } = useContent()
+  const nFailed = experiments.filter((e) => e.status === 'failed').length
+  const links = [
+    { to: '/evidence', h: t('home.more.evidence'), d: t('home.more.evidenceD') },
+    { to: '/method#experiments', h: t('home.more.failed'), d: t('home.more.failedD', { n: nFailed }) },
+    { to: '/konzept', h: t('home.more.concept'), d: t('home.more.conceptD') },
+  ]
+  return (
+    <section className="py-16">
+      <Container>
+        <p className="eyebrow mb-5">{t('home.more.eyebrow')}</p>
+        <div className="grid gap-px overflow-hidden rounded-[var(--radius-panel)] border border-[var(--line)] bg-[var(--line)] md:grid-cols-3">
+          {links.map((l) => (
+            <Link key={l.to} to={l.to} className="group flex flex-col bg-soil-900 p-6 transition-colors hover:bg-white/[0.03]">
+              <span className="flex items-center justify-between font-display text-[17px] font-semibold">
+                {l.h} <ArrowUpRight className="size-4 text-ink-4 transition group-hover:text-ink" />
+              </span>
+              <span className="mt-2 text-[13.5px] leading-relaxed text-ink-3">{l.d}</span>
+            </Link>
+          ))}
+        </div>
       </Container>
     </section>
   )

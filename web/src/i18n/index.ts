@@ -3,10 +3,8 @@ import { initReactI18next, useTranslation } from 'react-i18next'
 import { DEFAULT_LANG, LANGS, setCurrentLang, type LangCode } from './lang'
 import de, { type Locale } from './locales/de'
 import en from './locales/en'
-import es from './locales/es'
-import fr from './locales/fr'
 
-export const LOCALES: Record<LangCode, Locale> = { de, en, es, fr }
+export const LOCALES: Record<LangCode, Locale> = { de, en }
 
 const STORAGE_KEY = 'ct-lang'
 

@@ -228,7 +228,7 @@ export default function Analyse() {
                           <span className="min-w-0 flex-1">
                             <span className="flex flex-wrap items-center gap-2">
                               <span className="text-[14.5px] font-medium text-ink">{title(f)}</span>
-                              <Badge tone={ROLE_TONE[f.role]}>{f.site} {f.year}</Badge>
+                              <Badge tone={ROLE_TONE[f.role]}>{f.site} {f.field_id.replace(/_/g, '-')} · {f.year}</Badge>
                             </span>
                             <span className="mt-1 block text-[13px] leading-snug text-ink-3">{blurb(f)}</span>
                           </span>
@@ -244,7 +244,7 @@ export default function Analyse() {
                 <motion.div key="sel" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col gap-6">
                   <div className="flex items-start justify-between gap-3">
                     <div>
-                      <p className="eyebrow">{sel.kind === 'prepared' ? `${selectedPrepared?.site} · ${selectedPrepared?.year}` : t('analyse.drawnField')}</p>
+                      <p className="eyebrow">{sel.kind === 'prepared' ? `${selectedPrepared?.site} · ${selectedPrepared?.field_id.replace(/_/g, '-')} · ${selectedPrepared?.year}` : t('analyse.drawnField')}</p>
                       <h2 className="mt-2 text-[24px] leading-tight">{sel.label}</h2>
                       <p className="mt-1 font-mono text-[12.5px] text-ink-3">
                         {fmtArea(sel.areaM2)}

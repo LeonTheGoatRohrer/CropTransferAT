@@ -4,6 +4,12 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Changed (Branch `phase-9-feldverlauf`) – Website vor dem Pitch
+- Startseite: Überschrift „Schwache Zonen vor der Ernte finden“ statt „früh erkennen“ (ein früher Vorlauf ist nicht belegt); Einführung in zwei Sätzen; neuer Abschnitt „Worauf das System schaut“ (NDVI, EVI/NDRE/NDMI, 10-m-Zellen und Dekaden, Referenz und Stress-Score, Wetter und Boden); Kennzahlen in Klartext, ρ erklärt; Evidenz-Vorschau, Konzept-Teaser und negative Ergebnisse durch eine Linkzeile ersetzt.
+- Hochzählende Zahlen im Sprachformat (0,67 statt 0.67); Feldkarten mit Feld-ID (zwei Felder hießen „BARC 2018“).
+- Konzept-Seite: ruhiger Offline-Hinweis, Knopf „Beispielschlag laden“ (echtes KBS-Feld T2R3 mit seinen gemessenen Jahreserträgen ab 1990); AT-Machbarkeitstest steht jetzt im Österreich-Abschnitt der Evidenz.
+- Spanisch und Französisch entfernt (ungeprüfte KI-Übersetzungen; wiederherstellbar aus `6e57725`).
+
 ### Added (Branch `phase-9-feldverlauf`) – Umbau „Dein Feld, dein Verlauf“ (Schulprojekt)
 - Vorab-Festlegungen in `DECISIONS.md` (Weg A/B, Warnlogik, AT-Machbarkeit, nur App-Benachrichtigung, lokales Backend), danach:
 - `alert_calibration.py` + `notebooks/09_alert_calibration.ipynb`: Warnlogik auf US-Daten kalibriert und eingefroren (`results/2026-10-17_alert_calibration/`, `reports/warnlogik_ergebnis.md`): Aussage erst ab 15.8.; z. B. 15.8., X = 20 %: 12 von 26 Warnungen bei Prävalenz 0,22.
