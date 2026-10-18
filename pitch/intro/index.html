@@ -228,7 +228,7 @@ body.idle { cursor: none; }
       <div id="screen">
         <div class="notch"></div>
         <div class="status"><span>9:41</span><span>●●● ▮</span></div>
-        <div class="appbar"><div class="logo-mark" data-mark></div><b>Delta Green</b><span>Contribute</span></div>
+        <div class="appbar"><div class="logo-mark" data-mark></div><b>Delta Green</b><span>Feld eintragen</span></div>
 
         <div class="pane" id="mapPane">
           <svg id="mapsvg" viewBox="0 0 394 746" preserveAspectRatio="xMidYMid slice">
@@ -243,20 +243,20 @@ body.idle { cursor: none; }
             <g id="verts"></g>
           </svg>
           <div class="mapCredit" id="mapCredit"></div>
-          <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Search a place…</div>
+          <div class="search"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>Ort suchen …</div>
           <div class="sheet">
-            <div class="ask"><div class="step">STEP 1 / 3</div><h3>Where is your field?</h3><p>Tap the corners of your field on the map.</p></div>
-            <div class="done"><div class="step">STEP 1 / 3 · DONE</div><h3>Field outlined</h3><span class="chip">✓ 4.2 ha · Your field</span></div>
+            <div class="ask"><div class="step">SCHRITT 1 / 3</div><h3>Wo liegt dein Feld?</h3><p>Tippe die Ecken deines Feldes auf der Karte an.</p></div>
+            <div class="done"><div class="step">SCHRITT 1 / 3 · FERTIG</div><h3>Feld umrandet</h3><span class="chip">✓ 4,5 ha · Dein Feld</span></div>
           </div>
         </div>
 
         <div class="pane" id="form">
-          <div class="eyebrow">STEP 2 / 3</div>
-          <h3>What did it yield?</h3>
-          <p class="sub">Past harvests of this field, as far back as you know.</p>
+          <div class="eyebrow">SCHRITT 2 / 3</div>
+          <h3>Was hat es gebracht?</h3>
+          <p class="sub">Frühere Ernten dieses Feldes, so weit du sie kennst.</p>
           <div class="tabs"><span class="on">dt/ha</span><span>t/ha</span></div>
           <div id="yrows"></div>
-          <div class="btn" id="btn"><span class="spin" id="spin"></span><span id="btnTxt">Start analysis</span></div>
+          <div class="btn" id="btn"><span class="spin" id="spin"></span><span id="btnTxt">Analyse starten</span></div>
         </div>
 
         <div id="finger"></div>
@@ -365,8 +365,7 @@ body.idle { cursor: none; }
         <h3>Ab wann sollst du gewarnt werden?</h3>
         <p class="sub">Wenn mehr als dieser Anteil der Fläche auffällig ist.</p>
         <div class="sx-big"><span id="wVal">0</span> %<small>der Feldfläche auffällig</small></div>
-        <div class="slider"><div class="sfill" id="sFill"></div><div class="knob" id="sKnob"></div><div class="sTick"></div></div>
-        <div class="sTickLbl" id="sTickLbl"></div>
+        <div class="slider"><div class="sfill" id="sFill"></div><div class="knob" id="sKnob"></div><div class="sTick"></div><div class="sTickLbl" id="sTickLbl"></div></div>
         <div class="sScale"><span>0 %</span><span>50 %</span></div>
         <div class="sx-toggle"><span>Push-Nachricht</span><b>an</b></div>
       </div>
@@ -544,16 +543,17 @@ MARKS.forEach((m, i) => {
 //  ai:    Higgsfield (Nano Banana Pro) generated aerial view, outline traced on the image
 // ------------------------------------------------------------------
 const MAPS = {
-  ortho: { src: 'assets/map_ortho.jpg', credit: 'Luftbild: basemap.at', area: '2.9 ha',
+  ortho: { src: 'assets/map_ortho.jpg', credit: 'Luftbild: basemap.at', area: '2,9 ha',
     points: [[189.8, 534.9], [252.5, 509.4], [248.5, 314.7], [202.5, 318.4], [178.2, 324.3], [111.0, 348.2]] },
-  ai: { src: 'assets/map_ai.jpg', credit: 'KI-generiertes Luftbild', area: '4.5 ha',
+  ai: { src: 'assets/map_ai.jpg', credit: 'KI-generiertes Luftbild', area: '4,5 ha',
     points: [[129, 259.4], [269.9, 259.4], [270.8, 489.0], [129, 489.0]] },
 };
 const MAP = MAPS[new URLSearchParams(location.search).get('map')] || MAPS.ai;
 const patches = document.querySelector('#mapsvg .patches');
 el('image', { href: MAP.src, x: 0, y: 0, width: 394, height: 746, preserveAspectRatio: 'none', style: MAP === MAPS.ortho ? 'filter: brightness(1.12) saturate(1.15) contrast(1.05)' : '' }, patches);
 document.getElementById('mapCredit').textContent = MAP.credit;
-document.querySelector('.sheet .chip').textContent = `✓ ${MAP.area} · Your field`;
+document.querySelector('.sheet .chip').textContent = `✓ ${MAP.area} · Dein Feld`;
+document.querySelector('#s7 .sx-eye').textContent = `DEIN FELD · ${MAP.area}`;
 const P = MAP.points.map(([x, y]) => ({ x, y })), NP = P.length;
 document.getElementById('fillPoly').setAttribute('points', P.map((p) => `${p.x},${p.y}`).join(' '));
 const edges = document.getElementById('edges'), verts = document.getElementById('verts');
@@ -569,7 +569,7 @@ const FP = P.map((p) => ({ x: p.x, y: p.y + 104 }));
 const YIELDS = [['2021', '112'], ['2022', '86'], ['2023', '118'], ['2024', '94'], ['2025', '109']];
 const yrows = document.getElementById('yrows');
 YIELDS.forEach(([y], i) => {
-  yrows.insertAdjacentHTML('beforeend', `<div class="yrow"><label>Yield ${y}</label><div class="yin" id="yin${i}"><span class="val" id="yv${i}"></span><small>dt/ha</small></div></div>`);
+  yrows.insertAdjacentHTML('beforeend', `<div class="yrow"><label>Ertrag ${y}</label><div class="yin" id="yin${i}"><span class="val" id="yv${i}"></span><small>dt/ha</small></div></div>`);
 });
 
 // ------------------------------------------------------------------
@@ -699,7 +699,7 @@ tl.set('#finger', { x: 197, y: 700, scale: 1 }, 12.7)
   .to('#finger', { autoAlpha: 1, duration: 0.2 }, 12.75);
 tap(12.95);
 tl.to('#btn', { scale: 0.96, duration: 0.1, yoyo: true, repeat: 1 }, 12.95)
-  .set('#btnTxt', { textContent: 'Analysing…' }, 13.05)
+  .set('#btnTxt', { textContent: 'Wird analysiert …' }, 13.05)
   .set('#spin', { display: 'inline-block' }, 13.05)
   .to('#spin', { rotation: 720, duration: 1, ease: 'none' }, 13.05)
   .to('#finger', { autoAlpha: 0, duration: 0.2 }, 13.2)
