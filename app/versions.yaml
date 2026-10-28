@@ -17,6 +17,37 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: freeze-at-3
+    date: 2026-10-28
+    phase: "Österreich-Test III: Steiermark mit Hatzendorf-Excel-Reihen (explorativ, Tag freeze-at-3)"
+    title: "Steiermark-Test mit den langen Versuchsreihen vorab festgeschrieben"
+    status: eingefroren
+    changed: "Die Versuchsstation Hatzendorf hat die langen Ertragsreihen von Wagna und Kalsdorf geschickt; ein dritter Österreich-Test mit 2026 wurde vor jeder Berechnung festgeschrieben."
+    plain: >
+      Für die Steiermark gibt es jetzt durchgehende Ertragsreihen bis 2026 direkt von der Versuchsstation. Damit könnten erstmals 15 Standort-Jahre zusammenkommen,
+      die Mindestzahl für einen echten Test. Wir haben vorher festgelegt, wie gerechnet wird. Ehrlich dazugesagt: 13 dieser 15 Punkte kannten wir schon,
+      wirklich neu und blind sind nur die zwei Jahre 2026. Ein Ergebnis gibt es noch nicht.
+    metrics:
+      - label: "Erwartete Standort-Jahre"
+        value: "15"
+        n: "Wagna 9, Kalsdorf 6 (2018–2026)"
+        plain: "Genau an der vorab verlangten Schwelle; fehlt ein 2026-Wert, ist der Test nicht auswertbar."
+      - label: "Davon blind (Scores noch nicht berechnet)"
+        value: "2"
+        n: "Wagna 2026, Kalsdorf 2026"
+        plain: "Nur diese beiden Punkte sind ein echter Test ohne Vorwissen."
+    found:
+      - "Die Excel-Werte stimmen mit den früher aus den Versuchsberichten abgeschriebenen Werten fast genau überein (Abweichung höchstens 0,6 %)."
+      - "Wagna liegt ab 2021 deutlich tiefer, auch ohne Düngung; 2025 und 2026 sind Extremjahre (2,4 und 3,3 t/ha)."
+    limits:
+      - "Der Score beschreibt die Maisfelder im Umkreis von 5 km, nicht die kleine Versuchsfläche."
+      - "13 von 15 Standort-Jahren waren vor dem Festschreiben bekannt; das Ergebnis ist eine Neubewertung, kein unabhängiger Beweis."
+      - "Ursache des Strukturbruchs in Wagna und der Extremjahre ist offen (Rückfrage an die Station)."
+    links:
+      - label: "Freeze-Protokoll"
+        path: reports/freeze_protocol_at3.md
+      - label: "Datenkritik Erträge"
+        path: reports/data_review/at_test3_ertraege.md
   - id: at-test-2
     date: 2026-10-17
     phase: "Österreich-Test II: Steiermark (explorativ, Tag freeze-at-2)"

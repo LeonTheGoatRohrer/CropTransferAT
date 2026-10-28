@@ -350,6 +350,13 @@ Hinweise: Die Corn-Teilregel heißt in SDA „(I)“, nicht „(II)“ (nur Cott
 
 **Status: ✅ gesammelt** (150 Standort-Versuch-Jahre). ⚠️ Es fehlen Koordinaten, Ortsnamen sind nicht vereinheitlicht, die Feuchte ist teils unbekannt. **Auswertung erst nach dem Freeze.**
 
+### 12c. Hatzendorf – lange Excel-Reihen der Körnermais-Stickstoffversuche Wagna und Kalsdorf
+- **Quelle:** E-Mail von Christoph Hödl (Versuchsstation für Pflanzenbau Hatzendorf, Amt d. Stmk. Landesregierung, A10) an den Projektinhaber, 2026-10-28; nicht öffentlich, Nutzung für das Schülerprojekt erlaubt („Wir können dein Projekt sehr gerne mit historischen Daten unterstützen“).
+- **Dateien:** `data/raw/at_trials/hatzendorf_excel/KM-Wagna-2008-2026.xlsx` (86 Blätter; genutzt: `Daten Ertrag RP N 2007-2022`, Erträge 2007–2026, 12 Varianten) und `KM-Kalsdorf-Kornertrag-(alle-Varianten)-2009-2026 vers.xlsx` (78 Blätter; genutzt: `Daten Ertrag RP N`, Erträge 2009–2016, 2018, 2020–2022, 2024, 2026; 2017/2019 Körnersorghum, 2023 Feldtag, 2025 Problem Sämaschine). Dazu Feldpläne 2026 als PDF (Saat, Ernte, Düngung, Parzellenplan). Prüfsummen in `reports/freeze_protocol_at3.md` §6.
+- **Einheit:** dt/ha bei 14 % Feuchte (Gegenprobe mit den Versuchsberichten, `reports/data_review/at_test3_ertraege.md`).
+- **Erzeugung:** `python -m croptransfer.at_test3 --yields-only` → `data/raw/at_trials_hatzendorf_excel.csv` (`site, variant, year, yield_dt_ha, header_note, excluded`).
+- **Nur Testziel** (Österreich-Regel), Auswertung nach `freeze-at-3`.
+
 ## 13. Bodenklimazahl (Finanzbodenschätzung, Österreich)
 
 Verhältniszahl 1–100 für die natürliche Ertragsfähigkeit; im Kataster je Grundstück abfragbar, in GIS Steiermark als Layer vorhanden (in Landesplanungen verwendet), **offener Massendownload nicht gefunden**. eBOD (bodenkarte.at) frei einsehbar, kein Rohdatenexport.

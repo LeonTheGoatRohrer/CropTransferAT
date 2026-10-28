@@ -4,6 +4,9 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Added (Branch `phase-7-at-test-3`, Tag `freeze-at-3`)
+- **Österreich-Test III vorab festgeschrieben:** Protokoll `reports/freeze_protocol_at3.md`, Konfiguration `at_test3` (`reports/freeze_at/at_test3_config.json`), Modul `at_test3.py` (Einlesen der Hatzendorf-Excel-Reihen Wagna 2007–2026 und Kalsdorf 2009–2026, Kernvarianten-Mittel, Auswertung), Tests `tests/test_at_test3.py`, Datenkritik `reports/data_review/at_test3_ertraege.md` (⚠️). Noch kein Ergebnis: Scores 2026 folgen nach dem Freeze.
+
 ### Added (Branch `phase-7-austria-test`, Tag `freeze-at-2`)
 - **Österreich-Test II (Steiermark, explorativ):** Freeze-Protokoll `reports/freeze_protocol_at2.md` (vor der Auswertung), `at_test_stmk.py`, `tests/test_at_test_stmk.py`; Ergebnis `reports/at_test_stmk_ergebnis.md`, Datenkritik `reports/data_review/at_test_stmk.md` (⚠️): nur 12 Standort-Jahre (Wagna, Kalsdorf; Hatzendorf ohne `YAS_site`) → **nicht auswertbar, nur beschreibend** (Stress-Score ρ 0,47 [−0,32; 0,95], Regionalmodell −0,13). Branches `phase-7-austria-test` und `phase-9-frontend` zusammengeführt.
 

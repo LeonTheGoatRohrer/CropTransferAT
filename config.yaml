@@ -311,3 +311,27 @@ at_test_stmk:
   region: AT22
   first_test_results: results/2026-10-17_at_test/site_year.csv
   results_dir: results/2026-10-17_at_test_stmk
+
+at_test3:
+  version: 1
+  base_freeze: freeze-at-1           # stress score, reference curve, parcel sampling and HLS rules unchanged
+  sites: [wagna, kalsdorf]
+  years: [2018, 2026]
+  first_yield_year: 2013             # yields from 2013 on (core variants and YAS_site baselines)
+  min_site_years: 15                 # same threshold as freeze-at-2 (evaluate() reads at_test_stmk.min_site_years)
+  excel:                             # Hatzendorf station, N-fertilisation trials, dt/ha at 14 % moisture
+    wagna:
+      path: data/raw/at_trials/hatzendorf_excel/KM-Wagna-2008-2026.xlsx
+      sheet: Daten Ertrag RP N 2007-2022
+      header_row: 5
+      variant_col: 59
+    kalsdorf:
+      path: data/raw/at_trials/hatzendorf_excel/KM-Kalsdorf-Kornertrag-(alle-Varianten)-2009-2026 vers.xlsx
+      sheet: Daten Ertrag RP N
+      header_row: 5
+      variant_col: 63
+      exclude_years: [2023, 2025]    # 2023 field day "nicht mitgewertet", 2025 "Problem Saemaschine" (2017/2019 sorghum: no column)
+  seen_new_points: ["wagna|2025", "kalsdorf|2020"]   # new site-years whose score AND new yield were seen before the freeze
+  tidy_csv: data/raw/at_trials_hatzendorf_excel.csv
+  scores_2026: results/2026-10-28_at_test3/site_year_scores_2026.csv
+  results_dir: results/2026-10-28_at_test3

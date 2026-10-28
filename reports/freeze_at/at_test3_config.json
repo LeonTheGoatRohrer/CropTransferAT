@@ -1,0 +1,39 @@
+{
+  "base_freeze": "freeze-at-1",
+  "excel": {
+    "kalsdorf": {
+      "exclude_years": [
+        2023,
+        2025
+      ],
+      "header_row": 5,
+      "path": "data/raw/at_trials/hatzendorf_excel/KM-Kalsdorf-Kornertrag-(alle-Varianten)-2009-2026 vers.xlsx",
+      "sheet": "Daten Ertrag RP N",
+      "variant_col": 63
+    },
+    "wagna": {
+      "header_row": 5,
+      "path": "data/raw/at_trials/hatzendorf_excel/KM-Wagna-2008-2026.xlsx",
+      "sheet": "Daten Ertrag RP N 2007-2022",
+      "variant_col": 59
+    }
+  },
+  "first_yield_year": 2013,
+  "min_site_years": 15,
+  "results_dir": "results/2026-10-28_at_test3",
+  "scores_2026": "results/2026-10-28_at_test3/site_year_scores_2026.csv",
+  "seen_new_points": [
+    "wagna|2025",
+    "kalsdorf|2020"
+  ],
+  "sites": [
+    "wagna",
+    "kalsdorf"
+  ],
+  "tidy_csv": "data/raw/at_trials_hatzendorf_excel.csv",
+  "version": 1,
+  "years": [
+    2018,
+    2026
+  ]
+}

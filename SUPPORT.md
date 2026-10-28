@@ -6,6 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-10-28 | Claude (Anthropic), Claude Code (Opus 5.5) | Sichtung der Hatzendorf-Excel-Reihen und der Ertragskarte (Pablo), Einschätzung des Nutzens; Österreich-Test III: Einlesemodul `at_test3.py`, Tests, Datenkritik, Freeze-Protokoll `freeze-at-3` (Festlegungen vorgeschlagen, Entscheidung „Mit 2026“ beim Projektinhaber) |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Steiermark-Test (Österreich II): Zusammenführen der Branches, Freeze-Protokoll `freeze-at-2`, Auswertungsmodul, Tests, Ergebnisbericht und Datenkritik (alle Festlegungen vorab, Entscheidung des Projektinhabers im Chat) |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Österreich-Test: Freeze-Protokoll, Feldauswahl (INVEKOS), GEE-Abfrage, Auswertungscode (`at_*.py`), Tests, Nachtrainieren (Vorab-Plan, Code), Ergebnisbericht, Datenkritik, Website-Eintrag; Beratung zur Testlogik (Entscheidungen beim Projektinhaber) |
 | 2026-10-16 | Claude (Anthropic), Claude Code (Opus 5.5) | Vorschlag und Ausformulierung des Hauptergebnisses der Abgabe (Doku-Entwurf, Website-Texte); Entwürfe der Anfragetexte Hagelversicherung, YIPEEO, DWFI, SwissYield, Booßen (Versand durch den Projektinhaber) |
@@ -35,6 +36,7 @@ Details, Lizenzen und Zitate in `DATA_SOURCES.md`.
 | One Acre Fund – Maize management and yield 2016–2022 | One Acre Fund; Aramburu-Merlos et al. 2024 (DOI 10.5281/zenodo.11115815, CC BY 4.0) | Querschnitt-Trainingsdaten (Nutzung offen, siehe DATA_SOURCES §9) |
 | SSURGO (Soil Data Access) | USDA NRCS | US-Boden-Ertragspotenzial (NCCPI Mais, Mais-Ertragsschätzung) |
 | Versuchsberichte Versuchsstation Hatzendorf; Praxisversuche Körnermais | Land Steiermark (Landwirtschaftliche Fachschulen); Landwirtschaftskammer Oberösterreich | Österreich-Test V2 (nur nach dem Freeze ausgewertet) |
+| Excel-Ertragsreihen der Körnermais-Stickstoffversuche Wagna (2007–2026) und Kalsdorf (2009–2026), Feldpläne 2026 | Christoph Hödl, Versuchsstation für Pflanzenbau Hatzendorf (Amt d. Stmk. Landesregierung, A10), per E-Mail 2026-10-28 | Österreich-Test III (nur nach `freeze-at-3` ausgewertet) |
 | Akron Dryland Yield/TPI | USDA-ARS Akron (Poss et al., DOI 10.15482/USDA.ADC/28914434.v1) | Ergänzende Ertragspunkte |
 | CY-Bench v1.10 | Kallenberg et al. 2026 (DOI 10.5281/zenodo.17279151) | Regionalmodell EU → AT |
 | Feldfruchternte | Statistik Austria; Eurostat | Regionalerträge Österreich |
