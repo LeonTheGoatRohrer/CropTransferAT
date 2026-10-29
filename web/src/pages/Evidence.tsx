@@ -80,14 +80,14 @@ function Scorecard({ ev }: { ev: Ev }) {
   const a0 = ev.stress_models.A0
   const eu = ev.eu_cutoffs.find((c) => c.cutoff === '09-01')!
   const st = ev.phase4_stages.at(-1)!
-  const rows: { q: string; plain: string; metric: string; value: string; ci: string; n: string; baseline: string; strength: Strength; href: string }[] = [
-    { q: 'Wo im Feld wächst weniger?', plain: 'Die Satellitenkarte reiht die 10-m-Zellen eines Feldes ähnlich wie die echte Ertragskarte des Mähdreschers (0 = zufällig, 1 = perfekt).', metric: 'Median Spearman ρ (NDVI ggü. Pixel-Ertrag)', value: fmt(b0.rho_median, 2), ci: fmtCi(b0.rho_ci?.[0], b0.rho_ci?.[1]), n: `${b0.n_fy} Feld-Jahre · ${b0.n_clusters} Felder`, baseline: 'nur Position: ρ 0,03', strength: 'robust', href: '#within-field' },
-    { q: 'Welche Felder haben ein schlechtes Jahr?', plain: `Ein Feld-Jahr ist ein Feld in einer Saison. Der Score findet ${fmtPct(ev.alarm.alarm_recall)} der Feld-Jahre mit mindestens 15 % Ertragsverlust; Zufall läge beim Wert ${fmt(a0.prevalence, 2)}.`, metric: 'PR-AUC am 1. Sep', value: fmt(a0.pr_auc, 2), ci: fmtCi(a0.pr_auc_lo, a0.pr_auc_hi), n: `${a0.n} Feld-Jahre · 8 Standort-Jahre`, baseline: `Zufallsniveau ${fmt(a0.prevalence, 2)}`, strength: 'limited', href: '#field-level' },
-    { q: 'Wie viel schlechter wird das Jahr eines Feldes?', plain: 'Noch nicht besser als die einfache Annahme „normales Jahr“ – dafür gab es zu wenige unabhängige Jahre.', metric: 'Spearman ρ, beste vorab festgelegte Runde', value: fmt(st.rho, 2), ci: fmtCi(st.rho_lo, st.rho_hi), n: `${st.n} Feld-Jahre · ${st.clusters} Standort-Jahre`, baseline: 'schlägt „Normaljahr“ nicht', strength: 'failed', href: '#year-models' },
-    { q: 'Welche Jahre werden für eine Region schlechter?', plain: `In ${eu.countries} EU-Ländern klar besser als Zufall – durch ${fmtInt(eu.n)} Region-Jahre statistisch gesichert.`, metric: 'Spearman ρ am 1. Sep (EU, LOCO)', value: fmt(eu.spearman.value, 2), ci: fmtCi(eu.spearman.lo, eu.spearman.hi), n: `${fmtInt(eu.n)} Region-Jahre · ${eu.countries} Länder`, baseline: `Skill ${fmt(eu.skill_vs_normal.value, 2)} ggü. Normaljahr`, strength: 'certain-small', href: '#regional' },
+  const rows: { q: string; plain: string; metric: string; value: string; ci: string; n: string; baseline: string; strength: Strength; href: string; why: string }[] = [
+    { q: 'Wo im Feld wächst weniger?', plain: 'Die Satellitenkarte reiht die 10-m-Zellen eines Feldes ähnlich wie die echte Ertragskarte des Mähdreschers (0 = zufällig, 1 = perfekt).', metric: 'Median Spearman ρ (NDVI ggü. Pixel-Ertrag)', value: fmt(b0.rho_median, 2), ci: fmtCi(b0.rho_ci?.[0], b0.rho_ci?.[1]), n: `${b0.n_fy} Feld-Jahre · ${b0.n_clusters} Felder`, baseline: 'nur Position: ρ 0,03', strength: 'robust', href: '#within-field', why: 'Konfidenzintervall eng, 41 Feld-Jahre aus 27 Feldern; deutlich über der Positions-Baseline (0,03).' },
+    { q: 'Welche Felder haben ein schlechtes Jahr?', plain: `Ein Feld-Jahr ist ein Feld in einer Saison. Der Score findet ${fmtPct(ev.alarm.alarm_recall)} der Feld-Jahre mit mindestens 15 % Ertragsverlust; Zufall läge beim Wert ${fmt(a0.prevalence, 2)}.`, metric: 'PR-AUC am 1. Sep', value: fmt(a0.pr_auc, 2), ci: fmtCi(a0.pr_auc_lo, a0.pr_auc_hi), n: `${a0.n} Feld-Jahre · 8 Standort-Jahre`, baseline: `Zufallsniveau ${fmt(a0.prevalence, 2)}`, strength: 'limited', href: '#field-level', why: 'Untergrenze 0,42 liegt knapp über Zufall (0,33); nur 8 Standort-Jahre als unabhängige Einheiten.' },
+    { q: 'Wie viel schlechter wird das Jahr eines Feldes?', plain: 'Noch nicht besser als die einfache Annahme „normales Jahr“ – dafür gab es zu wenige unabhängige Jahre.', metric: 'Spearman ρ, beste vorab festgelegte Runde', value: fmt(st.rho, 2), ci: fmtCi(st.rho_lo, st.rho_hi), n: `${st.n} Feld-Jahre · ${st.clusters} Standort-Jahre`, baseline: 'schlägt „Normaljahr“ nicht', strength: 'failed', href: '#year-models', why: 'Schlägt das Normaljahr nicht; das Konfidenzintervall schließt Null ein.' },
+    { q: 'Welche Jahre werden für eine Region schlechter?', plain: `In ${eu.countries} EU-Ländern klar besser als Zufall – durch ${fmtInt(eu.n)} Region-Jahre statistisch gesichert.`, metric: 'Spearman ρ am 1. Sep (EU, LOCO)', value: fmt(eu.spearman.value, 2), ci: fmtCi(eu.spearman.lo, eu.spearman.hi), n: `${fmtInt(eu.n)} Region-Jahre · ${eu.countries} Länder`, baseline: `Skill ${fmt(eu.skill_vs_normal.value, 2)} ggü. Normaljahr`, strength: 'certain-small', href: '#regional', why: 'Konfidenzintervall liegt vollständig über Null; viele Region-Jahre (Stichprobe groß genug).' },
   ]
   const at = ev.austria?.cutoffs['09-01']?.['V2-A_stress_score']
-  if (at) rows.push({ q: 'Lässt es sich auf Österreich übertragen?', plain: 'Ja, mit besseren Datensätzen (Hagelversicherung). Erster Test: Gute und schlechte Jahre werden richtig gereiht, einzelne Standorte noch nicht.', metric: 'Spearman ρ, eingefrorener Stress-Score, 1. Sep', value: fmt(at.rho, 2), ci: fmtCi(at.lo, at.hi), n: `${at.n} Standort-Jahre · ${at.clusters} Jahre`, baseline: `einfacher NDVI ρ ${fmt(ev.austria?.cutoffs['09-01']['V2-baseline_NDVI']?.rho, 2)}`, strength: 'limited', href: '#austria' })
+  if (at) rows.push({ q: 'Lässt es sich auf Österreich übertragen?', plain: 'Ja, mit besseren Datensätzen (Hagelversicherung). Erster Test: Gute und schlechte Jahre werden richtig gereiht, einzelne Standorte noch nicht.', metric: 'Spearman ρ, eingefrorener Stress-Score, 1. Sep', value: fmt(at.rho, 2), ci: fmtCi(at.lo, at.hi), n: `${at.n} Standort-Jahre · ${at.clusters} Jahre`, baseline: `einfacher NDVI ρ ${fmt(ev.austria?.cutoffs['09-01']['V2-baseline_NDVI']?.rho, 2)}`, strength: 'limited', href: '#austria', why: 'Explorativ: nur 34 Standort-Jahre aus 7 Jahren; das Konfidenzintervall reicht von 0,19 bis 0,68.' })
   const [tech, setTech] = useState(false)
   const head = ['Frage', 'Wert', 'Was das heißt', ...(tech ? ['Metrik', '95-%-KI', 'Einheiten', 'Verglichen mit'] : []), 'Urteil']
   return (
@@ -116,7 +116,10 @@ function Scorecard({ ev }: { ev: Ev }) {
                       <td className="px-5 py-4 text-ink-3">{r.baseline}</td>
                     </>
                   )}
-                  <td className="px-5 py-4"><StrengthBadge strength={r.strength} /></td>
+                  <td className="px-5 py-4">
+                    <StrengthBadge strength={r.strength} />
+                    <p className="mt-2 max-w-[260px] text-[12.5px] leading-snug text-ink-3">{r.why}</p>
+                  </td>
                 </tr>
               ))}
             </tbody>

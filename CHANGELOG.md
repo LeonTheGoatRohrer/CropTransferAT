@@ -179,3 +179,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 - Projektplan (`PLAN.md`) mit Forschungsfragen, technischen Festlegungen, Definitionen und Phasen 0–8.
 - Agenten-Arbeitsanweisung (`AGENTS.md`) mit Arbeitszyklus, Datenkritik-Prüfliste, Versionierungs- und Testregeln.
 - Repository-Grundgerüst (README, CHANGELOG, DECISIONS, SUPPORT, .gitignore).
+
+## 2026-10-29 — Portfolio preparation
+
+English setup/status documentation and publication exclusions added. Scientific results and research scope unchanged. Verification results are recorded in PUBLICATION_CHECKS.md.

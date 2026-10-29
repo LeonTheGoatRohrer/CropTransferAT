@@ -29,6 +29,14 @@ export const NAV_LINKS: NavItem[] = [
     ],
   },
   {
+    to: '/data',
+    label: 'Daten',
+    sections: [
+      { hash: 'quellen', label: 'Datenquellen' },
+      { hash: 'explorer', label: 'Daten erkunden' },
+    ],
+  },
+  {
     to: '/evidence',
     label: 'Belege',
     sections: [
@@ -37,14 +45,6 @@ export const NAV_LINKS: NavItem[] = [
       { hash: 'year-models', label: 'Von Jahr zu Jahr' },
       { hash: 'regional', label: 'Regionen, EU' },
       { hash: 'austria', label: 'Österreich-Test' },
-    ],
-  },
-  {
-    to: '/data',
-    label: 'Daten',
-    sections: [
-      { hash: 'quellen', label: 'Datenquellen' },
-      { hash: 'explorer', label: 'Daten erkunden' },
     ],
   },
   {

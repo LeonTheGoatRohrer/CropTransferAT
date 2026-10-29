@@ -1,24 +1,43 @@
-# Delta Green
+# Delta Green (formerly CropTransferAT)
 
-Früherkennung von Stress und Ertragsverlust auf einzelnen Maisfeldern aus Satelliten-Zeitreihen, Wetter und Boden – gelernt an Feldern mit gemessenem Ertrag (USA mit vielen Jahren je Feld, dazu Afrika und Südamerika), dann eingefroren und ohne Anpassung in Österreich (Steiermark) als Beweis getestet; ergänzt um einen regionalen Transfer-Test EU → Österreich (CY-Bench).
+A scientific machine-learning project investigating early maize stress and yield-related signals from satellite time series, weather and soil data, with cross-region transfer as a research goal.
 
-Projekt für den Bundeswettbewerb Künstliche Intelligenz (BWKI) Österreich.
+## Implemented features
 
-- **Was gemacht wird:** [PLAN.md](PLAN.md)
-- **Wie gearbeitet wird:** [AGENTS.md](AGENTS.md)
-- **Änderungen:** [CHANGELOG.md](CHANGELOG.md) · **Entscheidungen:** [DECISIONS.md](DECISIONS.md) · **Unterstützung:** [SUPPORT.md](SUPPORT.md)
+- Field/time-series processing and yield-target construction in `src/croptransfer/`.
+- Baselines, grouped validation, diagnostics and documented experiments.
+- Streamlit project/result browser and a React/Vite presentation frontend.
+- Versioned methodology, decisions, data provenance and assistance records.
 
-## Status
+## Technology
 
-Phasen 0–3 abgeschlossen (v0.4.0), Phase 4 „stark genug“ **nicht bestanden** (kein Freeze, kein Österreich-Test), Phase 5 bis zum EU-Freeze (`freeze-cybench-1`), Feinjustierung ohne Verbesserung (Gate H2 ✗). **Hauptergebnis der Abgabe:** [reports/doku/hauptergebnis.md](reports/doku/hauptergebnis.md) – Karte innerhalb des Feldes (ρ 0,68) und EU-Regionalmodell (ρ 0,38). Offene Entscheidungen: [reports/NACHTLAUF.md](reports/NACHTLAUF.md). Offene Anfragen: [ANFRAGEN.md](ANFRAGEN.md).
+Python 3.11, scientific/geospatial Python dependencies from `requirements.txt`, Streamlit, React, TypeScript, Vite and MapLibre.
 
-## Website (lokal, privat)
+## Installation and local use
 
-Die Website zeigt Ziel, Vorgehen, Quellen, alle Ergebnisse Version für Version, einen interaktiven Modellvergleich, einzelne Felder und das Projektlog. Sie läuft nur lokal und liest keine österreichischen Daten.
-
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python -m pip install -r requirements.txt
+.\.venv\Scripts\python -m pytest -q
+.\.venv\Scripts\streamlit run app/streamlit_app.py
 ```
-.venv\Scripts\python.exe app\precompute.py          # einmal nach jedem neuen Lauf
-.venv\Scripts\streamlit.exe run app\streamlit_app.py
-```
 
-Dann im Browser http://localhost:8501 öffnen. Inhalte der Seite „Ergebnisse“ stehen in [app/versions.yaml](app/versions.yaml) (ein Eintrag je Version: was geändert wurde, Zahlen, Befunde, Grenzen, Abbildungen); `tests/test_app.py` prüft, dass jede dort genannte Abbildung und jeder Pfad existiert.
+For the separate frontend: `cd web`, `npm ci --ignore-scripts`, then `npm run dev` or `npm run build`. Read `PLAN.md`, `DATA_SOURCES.md` and `DECISIONS.md` before running a data pipeline. A fresh checkout does not include the large local source datasets and models.
+
+## Configuration and requirements
+
+Obtain data through the documented providers and supply any required credentials locally. Do not commit `.env`, service-account keys, raw data or large trained models. The demo requires the corresponding locally generated outputs; it is not a complete online data service.
+
+## Development status and limitations
+
+Research prototype for BWKI Austria. Existing documentation records that the phase-4 strength gate was not passed, so there is no justified field-model freeze or Austrian field test. EU regional transfer and field-level mapping are separate documented results. Planned phases are not claimed as completed functionality. See `reports/doku/hauptergebnis.md`, `CHANGELOG.md` and the original German README for the detailed historical status.
+
+## Contribution and attribution
+
+Leon Rohrer: project owner and research/development contributor. AI and other assistance are recorded in `SUPPORT.md`; dataset and dependency attribution remains in `DATA_SOURCES.md` and the source notices.
+
+
+
+## Publication notes
+
+This portfolio copy includes project source and relevant documentation. Local credentials, private datasets, dependencies and generated build files are excluded. No deployment or paid service is configured by this publication. Existing copyright and license notices remain applicable; this publication does not introduce a new license.

@@ -58,3 +58,7 @@ _(keine bisher)_
 
 ## Code Dritter / Bibliotheken
 Open-Source-Pakete laut `requirements.txt` (u. a. earthengine-api, geemap, geopandas, pandas, scikit-learn, LightGBM, PyTorch, SHAP, Streamlit); keine fremden Codeteile übernommen.
+
+## 2026-10-29 — GitHub portfolio preparation
+
+OpenAI Codex assisted with an English README, publication exclusions, source/history review and verification. No model retraining, new scientific result or change to the research design was performed. Local working changes were preserved in a separate publication checkout.

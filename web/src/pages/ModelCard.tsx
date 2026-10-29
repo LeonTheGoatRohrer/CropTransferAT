@@ -40,7 +40,7 @@ function cards(ev: Evidence): Card[] {
   return [
     {
       key: 'map',
-      name: 'Teilflächenkarte',
+      name: 'Problemzonen-Karte',
       oneLine: 'Zeigt, welcher Teil eines Feldes wahrscheinlich weniger Ertrag bringt.',
       strength: 'robust',
       good: ['Schwache Zonen innerhalb eines Feldes finden', 'Entscheiden, wo Sie ab Juli zuerst nachsehen'],
@@ -69,7 +69,7 @@ function cards(ev: Evidence): Card[] {
     },
     {
       key: 'score',
-      name: 'Feld-Stress-Score',
+      name: 'Feld-Auffälligkeitsalarm',
       oneLine: 'Markiert Felder, deren Saison schlechter aussieht als die eines gesunden Feldes.',
       strength: 'limited',
       good: ['Eine Beobachtungsliste von Feldern je Region und Jahr', 'Auffällige Saisonen bis zum 1. September erkennen'],
@@ -99,7 +99,7 @@ function cards(ev: Evidence): Card[] {
     },
     {
       key: 'eu',
-      name: 'EU-Regionalmodell',
+      name: 'Regionaler Jahreswarner',
       oneLine: 'Schätzt, ob das Maisjahr einer Region besser oder schlechter als üblich wird.',
       strength: 'certain-small',
       good: ['Ein früher Hinweis auf gute und schlechte Jahre je Region', 'Regionen und Jahre reihen'],
