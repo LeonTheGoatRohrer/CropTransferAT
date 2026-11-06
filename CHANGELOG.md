@@ -4,6 +4,10 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Added (Branch `phase-9-finale-video`)
+- **Finale-Video:** Drehbuch `pitch/finale/DREHBUCH.md`, Einstieg aus echten BARC-Daten `pitch/finale/render/` (Rendercode, Ton synthetisch).
+- **Datenkritik Feldkarte:** Modul `within_field_coverage.py`, Bericht `reports/data_review/within_field_coverage.md`. Die Kernzahl 0,68 hält auch nur auf Zellen nahe echter Messpunkte; 1,5 % der Zellen liegen weit weg, 4 von 41 Feld-Jahren betroffen.
+
 ### Added (Branch `phase-7-at-test-3`, Ergebnis nach `freeze-at-3`)
 - **Österreich-Test III ausgeführt:** S-A am 1.9. ρ = 0,77 [0,30; 0,97], n = 15 Standort-Jahre, 9 Jahre, **bestanden**; NDVI 0,72 [0,27; 0,95]. Die zwei blinden Punkte 2026 haben die niedrigsten Scores; 13 von 15 Punkten waren vorher bekannt. Bericht `reports/at_test3_ergebnis.md`, Datenkritik `reports/data_review/at_test3_ergebnis.md`, Lauf `results/2026-10-28_at_test3/`, neues Modul `at_test3_review.py`, INVEKOS 2026-1 geladen.
 

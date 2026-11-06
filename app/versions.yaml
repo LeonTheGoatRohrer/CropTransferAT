@@ -17,6 +17,34 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: within-field-coverage
+    date: 2026-11-06
+    phase: "Datenkritik der Feldkarte (BARC)"
+    title: "Feldkarte hält auch nur auf echten Messpunkten"
+    status: abgeschlossen
+    changed: "Die Feldkarte wurde zusätzlich nur auf Zellen nahe echten Mähdrescher-Punkten geprüft, weil die Ertragskarten Messlücken überbrücken."
+    plain: >
+      Die Ertragskarten sind aus Mähdrescher-Punkten interpoliert, und in manchen Feldern fehlen dort ganze Bereiche Messpunkte. Beim Bau des Videos fiel das an einem Feld auf.
+      Darum haben wir die Kernzahl noch einmal nur dort berechnet, wo wirklich gemessen wurde. Sie ändert sich nicht.
+    metrics:
+      - label: "Median-ρ nur auf Zellen bis 15 m vom nächsten Messpunkt"
+        value: "0,68"
+        ci: "[0,59; 0,73]"
+        n: "41 Feld-Jahre"
+        plain: "Gleich hoch wie auf allen Zellen (0,68): Die Lücken erzeugen die Kernzahl nicht."
+      - label: "Zellen weiter als 15 m vom nächsten Messpunkt"
+        value: "1,5 %"
+        n: "4 von 41 Feld-Jahren betroffen"
+        plain: "Nur wenige Felder haben größere Lücken."
+    found:
+      - "In den zwei am stärksten betroffenen Feldern senkt die Lücke den Wert eher (APU_1 2021: 0,06 gegenüber 0,63 nahe den Punkten)."
+    limits:
+      - "Auch nahe den Punkten bleibt die Karte eine geglättete Interpolation, und belastbar ist weiter nur der Standort BARC."
+    links:
+      - label: "Datenkritik"
+        path: reports/data_review/within_field_coverage.md
+      - label: "Metriken"
+        path: results/2026-11-06_within_field_coverage/metrics.json
   - id: at-test-3
     date: 2026-11-06
     phase: "Österreich-Test III: Steiermark mit Hatzendorf-Excel-Reihen (explorativ, nach freeze-at-3)"

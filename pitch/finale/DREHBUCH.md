@@ -14,7 +14,7 @@
 
 ## 1 · Einstieg (0:00–0:25)
 
-**Bild:** Schwarz, nur Motorgeräusch. Echte Mähdrescher-Punkte eines BARC-Feldes (Public Domain) zeichnen sich Spur für Spur und ergeben eine Karte von rot bis grün. Einblendung „Herbst · Mähdrescher“. Ab 0:14 legt sich das echte Satellitenbild desselben Feldes darüber, „Hochsommer · Sentinel-2“. Die schwachen Zonen passen sichtbar zusammen. Ein tiefer Ton, Titel „Delta Green“.
+**Bild:** Schwarz, nur Motorgeräusch. Echte Mähdrescher-Punkte eines BARC-Feldes (Public Domain) zeichnen sich in der echten Fahrreihenfolge Spur für Spur und ergeben eine Karte von rot bis grün. Einblendung „Herbst · Mähdrescher“. Ab 0:14 legt sich das echte Satellitenbild desselben Feldes darüber, „Hochsommer · Sentinel-2“. Danach stehen beide Karten nebeneinander, und eine weiße Linie zeigt auf beiden die schwachen Zonen laut Mähdrescher. Ein tiefer Ton, Titel „Delta Green“.
 
 **Sprecher (ab 0:06):**
 
@@ -24,7 +24,7 @@
 
 > Beide wussten nichts voneinander.
 
-**Beleg:** `CentralFarm_1_1` 2020, ρ 0,68, n = 828 (`reports/figures/phase2_within_field_maps.png`), Rohpunkte `data/raw/barc/`. Beim Bau prüfen: Erntedatum des Feldes im BARC-Bewirtschaftungsbericht.
+**Beleg:** `EastFarm_5_12` 2021, ρ 0,68, 1.338 Zellen, 8.472 Rohpunkte, Ernte 27.09.2021 (`data/raw/barc/2021.zip`). Nach Regel gewählt: ρ am Median, praktisch keine Messlücke (`reports/data_review/within_field_coverage.md`). Umsetzung: `pitch/finale/render/opener.py`.
 
 ## 2 · Problem (0:25–0:55)
 
@@ -34,11 +34,11 @@
 
 > Ich bin Leon Rohrer, und das ist Delta Green.
 
-> Kein Feld ist überall gleich. Auf diesem reicht der Ertrag von weniger als der Hälfte bis zum Doppelten des Mittels. Am Ende bleibt davon oft nur eine Zahl: der Durchschnitt.
+> Kein Feld ist überall gleich. Auf diesem reicht der Ertrag von 40 bis fast 140 Prozent des Mittels. Am Ende bleibt davon oft nur eine Zahl: der Durchschnitt.
 
 > Wo genau Ertrag fehlt, zeigt nur eine Ertragskarte. Die gibt es längst nicht für jedes Feld. Und in Österreich gibt es keine öffentlichen Erträge einzelner Felder.
 
-**Beleg:** Streuung aus derselben Abbildung (relativer Pixel-Ertrag). Österreich: `reports/doku/01_motivation.md`, `DATA_SOURCES.md`.
+**Beleg:** Streuung von `EastFarm_5_12` 2021 (relativer Ertrag je Zelle 0,39–1,39). Österreich: `reports/doku/01_motivation.md`, `DATA_SOURCES.md`.
 
 ## 3 · Idee (0:55–1:20)
 
@@ -56,7 +56,7 @@
 
 **Sprecher:**
 
-> Ich habe das an 41 Feld-Jahren aus den USA geprüft, jeweils gegen den gemessenen Ertrag.
+> Ich habe das an 41 Feld-Jahren aus den USA geprüft, jeweils gegen die Ertragskarte vom Mähdrescher.
 
 > Satellit und Mähdrescher reihen die Stellen im Feld sehr ähnlich. Die Rangkorrelation liegt bei 0,68. Null wäre Zufall, eins wäre perfekt. Und sie ist in allen 41 Fällen positiv.
 
@@ -64,7 +64,7 @@
 
 > Belastbar ist das bisher an diesem einen Standort. In Italien und Colorado zeigt es in dieselbe Richtung, dort aber nur mit wenigen Feldern.
 
-**Beleg:** `reports/doku/hauptergebnis.md` §1 (0,68 [0,54; 0,71], 41 Feld-Jahre, 27 Felder), `reports/innerfeld_ergebnis.md`.
+**Beleg:** `reports/doku/hauptergebnis.md` §1 (0,68 [0,54; 0,71], 41 Feld-Jahre, 27 Felder), `reports/innerfeld_ergebnis.md`. Hält auch nur auf Zellen nahe echter Messpunkte (0,68, 58 %): `reports/data_review/within_field_coverage.md`.
 
 ## 5 · 782 Modelle (2:02–2:32)
 

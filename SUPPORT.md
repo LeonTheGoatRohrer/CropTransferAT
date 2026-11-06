@@ -6,6 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-11-06 | Claude (Anthropic), Claude Code (Opus 5.5) | Video-Einstieg: Rendercode und synthetischer Ton (`pitch/finale/render/`), Datenkritik Feldkarte (`within_field_coverage.py`), ausgelöst durch eine Auffälligkeit beim Rendern |
 | 2026-11-06 | Claude (Anthropic), Claude Code (Opus 5.5) | Österreich-Test III: Parzellenauswahl 2026, Gegenprobe, Auswertung, Datenkritik mit Modul `at_test3_review.py`, Ergebnisbericht; Vorschlag des Video-Ablaufs und Drehbuch-Entwurf fürs Finale (`pitch/finale/DREHBUCH.md`, Text vom Projektinhaber zu überarbeiten). Entscheidung zum Testlauf beim Projektinhaber |
 | 2026-10-28 | Claude (Anthropic), Claude Code (Opus 5.5) | Sichtung der Hatzendorf-Excel-Reihen und der Ertragskarte (Pablo), Einschätzung des Nutzens; Österreich-Test III: Einlesemodul `at_test3.py`, Tests, Datenkritik, Freeze-Protokoll `freeze-at-3` (Festlegungen vorgeschlagen, Entscheidung „Mit 2026“ beim Projektinhaber) |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Steiermark-Test (Österreich II): Zusammenführen der Branches, Freeze-Protokoll `freeze-at-2`, Auswertungsmodul, Tests, Ergebnisbericht und Datenkritik (alle Festlegungen vorab, Entscheidung des Projektinhabers im Chat) |
