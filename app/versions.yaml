@@ -17,6 +17,51 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: at-test-3
+    date: 2026-11-06
+    phase: "Österreich-Test III: Steiermark mit Hatzendorf-Excel-Reihen (explorativ, nach freeze-at-3)"
+    title: "Steiermark-Test bestanden, im Hitzesommer 2026 blind ausgeschlagen"
+    status: eingeschraenkt
+    changed: "Der vorab festgeschriebene Steiermark-Test wurde einmal ausgeführt; das Kriterium ist bestanden."
+    plain: >
+      Der eingefrorene Stress-Score reiht in Wagna und Kalsdorf gute und schlechte Jahre deutlich richtig. Die Scores für 2026 wurden erst nach dem Festschreiben berechnet und
+      liegen viel tiefer als alle anderen; die Versuche brachen 2026 tatsächlich ein. 13 der 15 Punkte kannten wir aber schon, und einfaches NDVI schafft fast dasselbe.
+    metrics:
+      - label: "Stress-Score gegen Ertrag am 1.9. (Spearman ρ)"
+        value: "0,77"
+        ci: "[0,30; 0,98]"
+        n: "15 Standort-Jahre, 9 Jahre"
+        plain: "Je näher an 1, desto besser stimmt die Reihenfolge der Jahre. Das Kriterium (Intervall über 0, mindestens 15 Punkte) ist erfüllt."
+      - label: "Einfaches NDVI zum Vergleich (ρ)"
+        value: "0,72"
+        ci: "[0,27; 0,95]"
+        n: "15 Standort-Jahre, 9 Jahre"
+        plain: "Fast gleich gut; ein Mehrwert des Scores gegenüber einfachem Grün ist nicht gezeigt."
+      - label: "Ohne 2026 (ρ)"
+        value: "0,66"
+        ci: "[0,15; 1,00]"
+        n: "13 Standort-Jahre, 8 Jahre"
+        plain: "Der Zusammenhang hängt nicht allein am Extremjahr, diese Punkte waren aber alle vorher bekannt."
+    found:
+      - "Wagna 2026 (3,3 t/ha) und Kalsdorf 2026 (8,0 t/ha) haben die niedrigsten Scores aller 15 Standort-Jahre, ihre Erträge liegen auf Rang 2 und 3 von unten."
+      - "Die Felder wurden 2026 rund drei Dekaden früher braun. Kein Artefakt gefunden: viele Szenen, beide Sensoren, heißester und im August trockenster Sommer seit 2018 laut ERA5."
+      - "Die Gegenprobe ist bestanden: 2024 neu gerechnet ergab exakt die alten Werte."
+    limits:
+      - "13 von 15 Punkten waren vorher bekannt; blind sind nur zwei Punkte aus demselben Jahr, also ein unabhängiges Jahr."
+      - "Geprüft sind nur Jahre. Der Score beschreibt Maisfelder im Umkreis von 5 km, nicht die Versuchsfläche; die Feldkarte ist damit in Österreich nicht bestätigt."
+      - "Ein tiefer Score heißt nicht immer Verlust: Mauthausen 2018 hatte einen ähnlichen Score bei normalem Ertrag."
+    figures:
+      - {file: at_test3_scatter.png, caption: "Stress-Score am 1.9. gegen relativen Ertrag; rot die blinden Punkte 2026"}
+      - {file: at_test3_curves.png, caption: "Median-NDVI der Maisschläge je Jahr, 2026 rot, gestrichelt die Referenz"}
+    links:
+      - label: "Ergebnisbericht"
+        path: reports/at_test3_ergebnis.md
+      - label: "Datenkritik"
+        path: reports/data_review/at_test3_ergebnis.md
+      - label: "Protokoll"
+        path: reports/freeze_protocol_at3.md
+      - label: "Metriken"
+        path: results/2026-10-28_at_test3/metrics.json
   - id: freeze-at-3
     date: 2026-10-28
     phase: "Österreich-Test III: Steiermark mit Hatzendorf-Excel-Reihen (explorativ, Tag freeze-at-3)"

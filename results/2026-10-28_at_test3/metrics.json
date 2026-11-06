@@ -1,0 +1,651 @@
+{
+  "protocol": "reports/freeze_protocol_at3.md",
+  "tag": "freeze-at-3",
+  "primary_core_variants": {
+    "n_site_years": 15,
+    "per_site": {
+      "kalsdorf": 6,
+      "wagna": 9
+    },
+    "per_year": {
+      "2018": 2,
+      "2019": 1,
+      "2020": 2,
+      "2021": 2,
+      "2022": 2,
+      "2023": 1,
+      "2024": 2,
+      "2025": 1,
+      "2026": 2
+    },
+    "baseline_kind": {
+      "prior5": 9,
+      "baseline_short": 6
+    },
+    "cutoffs": {
+      "07-15": {
+        "S-A_stress_score": {
+          "n": 12,
+          "clusters": 8,
+          "rho": 0.10563642228059981,
+          "lo": -0.808604605159044,
+          "hi": 0.7430068833373064,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.22701095408174404,
+          "lo": -0.8531290488171082,
+          "hi": 0.516635135110007,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.0,
+            "wagna": 0.234
+          },
+          "median": 0.11712187015042269,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": -0.273,
+          "2019": 0.193,
+          "2021": 0.239,
+          "2022": 0.243,
+          "2023": 0.147,
+          "2024": 0.147,
+          "2025": -0.165,
+          "2026": 0.239
+        }
+      },
+      "08-01": {
+        "S-A_stress_score": {
+          "n": 15,
+          "clusters": 9,
+          "rho": 0.4535714285714285,
+          "lo": -0.19910755148741413,
+          "hi": 0.8168600435097897,
+          "verdict": "nicht belegt"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.36199044029251076,
+          "lo": -0.8034568278069828,
+          "hi": 0.5337605126836238,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.6,
+            "wagna": 0.567
+          },
+          "median": 0.5833333333333333,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.445,
+          "2019": 0.477,
+          "2020": 0.319,
+          "2021": 0.527,
+          "2022": 0.604,
+          "2023": 0.547,
+          "2024": 0.473,
+          "2025": 0.327,
+          "2026": 0.297
+        }
+      },
+      "08-15": {
+        "S-A_stress_score": {
+          "n": 15,
+          "clusters": 9,
+          "rho": 0.7,
+          "lo": 0.15635583730450042,
+          "hi": 0.9121196493037644,
+          "verdict": "bestanden"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.263823541230135,
+          "lo": -0.8088910721681112,
+          "hi": 0.46667351112161076,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.714,
+            "wagna": 0.8
+          },
+          "median": 0.7571428571428571,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.714,
+          "2019": 0.697,
+          "2020": 0.654,
+          "2021": 0.72,
+          "2022": 0.698,
+          "2023": 0.833,
+          "2024": 0.742,
+          "2025": 0.631,
+          "2026": 0.544
+        }
+      },
+      "09-01": {
+        "S-A_stress_score": {
+          "n": 15,
+          "clusters": 9,
+          "rho": 0.7678571428571428,
+          "lo": 0.30253918289184945,
+          "hi": 0.9746325066136673,
+          "verdict": "bestanden"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.263823541230135,
+          "lo": -0.7906200277635727,
+          "hi": 0.5337605126836238,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.829,
+            "wagna": 0.717
+          },
+          "median": 0.7726190476190478,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.83,
+          "2019": 0.771,
+          "2020": 0.731,
+          "2021": 0.769,
+          "2022": 0.703,
+          "2023": 0.89,
+          "2024": 0.775,
+          "2025": 0.727,
+          "2026": 0.665
+        },
+        "S-baseline_NDVI": {
+          "n": 15,
+          "clusters": 9,
+          "rho": 0.7214285714285712,
+          "lo": 0.26710648222101535,
+          "hi": 0.9463759611740686
+        },
+        "pooled_Austria_stress_score_descriptive": {
+          "n": 49,
+          "clusters": 9,
+          "rho": 0.5248979591836734,
+          "lo": 0.25102992362443105,
+          "hi": 0.7307853234631476
+        }
+      }
+    }
+  },
+  "sensitivity_without_seen_new_points": {
+    "n_site_years": 13,
+    "per_site": {
+      "kalsdorf": 5,
+      "wagna": 8
+    },
+    "per_year": {
+      "2018": 2,
+      "2019": 1,
+      "2020": 1,
+      "2021": 2,
+      "2022": 2,
+      "2023": 1,
+      "2024": 2,
+      "2026": 2
+    },
+    "baseline_kind": {
+      "prior5": 8,
+      "baseline_short": 5
+    },
+    "cutoffs": {
+      "07-15": {
+        "S-A_stress_score": {
+          "n": 11,
+          "clusters": 7,
+          "rho": -0.1651445647689541,
+          "lo": -0.8742138364779874,
+          "hi": 0.5608301212404962,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 9,
+          "clusters": 6,
+          "rho": -0.2025478734167333,
+          "lo": -0.8503024610475833,
+          "hi": 0.48719876576469007,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.0,
+            "wagna": -0.232
+          },
+          "median": -0.11595420713048968,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": -0.75,
+          "2019": -0.08,
+          "2021": -0.051,
+          "2022": -0.042,
+          "2023": -0.141,
+          "2024": -0.141,
+          "2026": -0.051
+        }
+      },
+      "08-01": {
+        "S-A_stress_score": {
+          "n": 13,
+          "clusters": 8,
+          "rho": 0.3021978021978022,
+          "lo": -0.4182103264996198,
+          "hi": 0.7811027643591326,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 9,
+          "clusters": 6,
+          "rho": -0.38821675738207223,
+          "lo": -0.8033264176742436,
+          "hi": 0.50469493868284,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.3,
+            "wagna": 0.381
+          },
+          "median": 0.3404761904761905,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.236,
+          "2019": 0.329,
+          "2020": 0.133,
+          "2021": 0.418,
+          "2022": 0.473,
+          "2023": 0.392,
+          "2024": 0.327,
+          "2026": 0.073
+        }
+      },
+      "08-15": {
+        "S-A_stress_score": {
+          "n": 13,
+          "clusters": 8,
+          "rho": 0.6043956043956044,
+          "lo": -0.06557076101468612,
+          "hi": 0.8967151294865969,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 9,
+          "clusters": 6,
+          "rho": -0.25318484177091666,
+          "lo": -0.8033264176742436,
+          "hi": 0.5233873438192413,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.6,
+            "wagna": 0.714
+          },
+          "median": 0.6571428571428573,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.6,
+          "2019": 0.594,
+          "2020": 0.559,
+          "2021": 0.636,
+          "2022": 0.6,
+          "2023": 0.755,
+          "2024": 0.664,
+          "2026": 0.355
+        }
+      },
+      "09-01": {
+        "S-A_stress_score": {
+          "n": 13,
+          "clusters": 8,
+          "rho": 0.6868131868131868,
+          "lo": 0.027522935779816515,
+          "hi": 0.963963963963964,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 9,
+          "clusters": 6,
+          "rho": -0.25318484177091666,
+          "lo": -0.7905694150420947,
+          "hi": 0.50469493868284,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.9,
+            "wagna": 0.619
+          },
+          "median": 0.7595238095238095,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.745,
+          "2019": 0.685,
+          "2020": 0.678,
+          "2021": 0.682,
+          "2022": 0.582,
+          "2023": 0.874,
+          "2024": 0.7,
+          "2026": 0.491
+        },
+        "S-baseline_NDVI": {
+          "n": 13,
+          "clusters": 8,
+          "rho": 0.6153846153846153,
+          "lo": 0.09324215246636777,
+          "hi": 0.9125168413173652
+        }
+      }
+    }
+  },
+  "blind_site_years_2026": [
+    {
+      "site": "kalsdorf",
+      "year": 2026,
+      "ndvi_base": 0.7761517842299918,
+      "score_07-15": -9.591211772382944e-05,
+      "pred_07-15": NaN,
+      "n_valid_07-15": 29,
+      "score_08-01": -0.0031887317921602,
+      "pred_08-01": NaN,
+      "n_valid_08-01": 100,
+      "score_08-15": -0.0102019759487014,
+      "pred_08-15": NaN,
+      "n_valid_08-15": 100,
+      "score_09-01": -0.0523466470055527,
+      "pred_09-01": NaN,
+      "n_valid_09-01": 100,
+      "y_t_ha": 7.960705882352942,
+      "baseline": 12.943572385620918,
+      "yas_site": 0.6150315882805686,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "wagna",
+      "year": 2026,
+      "ndvi_base": 0.7909683441810538,
+      "score_07-15": -9.97144456356787e-06,
+      "pred_07-15": NaN,
+      "n_valid_07-15": 83,
+      "score_08-01": -0.001371985126049,
+      "pred_08-01": NaN,
+      "n_valid_08-01": 100,
+      "score_08-15": -0.0078788639014481,
+      "pred_08-15": NaN,
+      "n_valid_08-15": 100,
+      "score_09-01": -0.0502472502017925,
+      "pred_09-01": NaN,
+      "n_valid_09-01": 100,
+      "y_t_ha": 3.25625,
+      "baseline": 6.795177777777778,
+      "yas_site": 0.47920011903866466,
+      "baseline_kind": "prior5"
+    }
+  ],
+  "sensitivity_all_variants": {
+    "n_site_years": 15,
+    "per_site": {
+      "kalsdorf": 6,
+      "wagna": 9
+    },
+    "per_year": {
+      "2018": 2,
+      "2019": 1,
+      "2020": 2,
+      "2021": 2,
+      "2022": 2,
+      "2023": 1,
+      "2024": 2,
+      "2025": 1,
+      "2026": 2
+    },
+    "baseline_kind": {
+      "prior5": 9,
+      "baseline_short": 6
+    },
+    "cutoffs": {
+      "07-15": {
+        "S-A_stress_score": {
+          "n": 12,
+          "clusters": 8,
+          "rho": 0.10563642228059981,
+          "lo": -0.808604605159044,
+          "hi": 0.7430068833373064,
+          "verdict": "nicht auswertbar"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.22701095408174404,
+          "lo": -0.8531290488171082,
+          "hi": 0.516635135110007,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.0,
+            "wagna": 0.234
+          },
+          "median": 0.11712187015042269,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": -0.273,
+          "2019": 0.193,
+          "2021": 0.239,
+          "2022": 0.243,
+          "2023": 0.147,
+          "2024": 0.147,
+          "2025": -0.165,
+          "2026": 0.239
+        }
+      },
+      "08-01": {
+        "S-A_stress_score": {
+          "n": 15,
+          "clusters": 9,
+          "rho": 0.4535714285714285,
+          "lo": -0.19910755148741413,
+          "hi": 0.8168600435097897,
+          "verdict": "nicht belegt"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.36199044029251076,
+          "lo": -0.8034568278069828,
+          "hi": 0.5337605126836238,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.6,
+            "wagna": 0.567
+          },
+          "median": 0.5833333333333333,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.445,
+          "2019": 0.477,
+          "2020": 0.319,
+          "2021": 0.527,
+          "2022": 0.604,
+          "2023": 0.547,
+          "2024": 0.473,
+          "2025": 0.327,
+          "2026": 0.297
+        }
+      },
+      "08-15": {
+        "S-A_stress_score": {
+          "n": 15,
+          "clusters": 9,
+          "rho": 0.7,
+          "lo": 0.15635583730450042,
+          "hi": 0.9121196493037644,
+          "verdict": "bestanden"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.263823541230135,
+          "lo": -0.8088910721681112,
+          "hi": 0.46667351112161076,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.714,
+            "wagna": 0.8
+          },
+          "median": 0.7571428571428571,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.714,
+          "2019": 0.697,
+          "2020": 0.654,
+          "2021": 0.72,
+          "2022": 0.698,
+          "2023": 0.833,
+          "2024": 0.742,
+          "2025": 0.631,
+          "2026": 0.544
+        }
+      },
+      "09-01": {
+        "S-A_stress_score": {
+          "n": 15,
+          "clusters": 9,
+          "rho": 0.7678571428571428,
+          "lo": 0.30253918289184945,
+          "hi": 0.9746325066136673,
+          "verdict": "bestanden"
+        },
+        "S-B_regional_model": {
+          "n": 10,
+          "clusters": 6,
+          "rho": -0.263823541230135,
+          "lo": -0.7906200277635727,
+          "hi": 0.5337605126836238,
+          "verdict": "nicht auswertbar"
+        },
+        "S-A_within_site": {
+          "per_group": {
+            "kalsdorf": 0.829,
+            "wagna": 0.717
+          },
+          "median": 0.7726190476190478,
+          "n_groups": 2
+        },
+        "S-A_within_year": {
+          "per_group": {},
+          "median": NaN,
+          "n_groups": 0
+        },
+        "S-A_leave_one_year_out": {
+          "2018": 0.83,
+          "2019": 0.771,
+          "2020": 0.731,
+          "2021": 0.769,
+          "2022": 0.703,
+          "2023": 0.89,
+          "2024": 0.775,
+          "2025": 0.727,
+          "2026": 0.665
+        },
+        "S-baseline_NDVI": {
+          "n": 15,
+          "clusters": 9,
+          "rho": 0.7214285714285712,
+          "lo": 0.26710648222101535,
+          "hi": 0.9463759611740686
+        },
+        "pooled_Austria_stress_score_descriptive": {
+          "n": 49,
+          "clusters": 9,
+          "rho": 0.5266326530612244,
+          "lo": 0.25102992362443105,
+          "hi": 0.7367108933560571
+        }
+      }
+    }
+  }
+}

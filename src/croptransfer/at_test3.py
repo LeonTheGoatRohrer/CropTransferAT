@@ -100,16 +100,17 @@ def load_scores(cfg) -> pd.DataFrame:
     return pd.concat([first[[c for c in keep if c in first]], new[[c for c in keep if c in new]]], ignore_index=True)
 
 
-def sample_parcels(cfg, year: int, base: str) -> pd.DataFrame:
-    """Frozen parcel sampling of `at_fields` for one year, kept for the test sites; writes fields + membership -> membership."""
+def sample_parcels(cfg, year: int, base: str, sites: list[str] | None = None) -> pd.DataFrame:
+    """Frozen parcel sampling of `at_fields` for one year, kept for the given sites (default: test sites); writes fields + membership."""
     atc, t3 = cfg["at_test"], cfg["at_test3"]
+    keep = sites or t3["sites"]
     out = repo_path(base)
     (out / "obs").mkdir(parents=True, exist_ok=True)
     cent = json.loads(repo_path("reports/freeze_at/site_centroids.json").read_text(encoding="utf-8"))
     g = at_fields.read_maize(invekos.find_gpkgs(repo_path("data/raw/invekos"))[year], atc["invekos_code"])
     sel, mem = at_fields.select_year(g, year, atc["sites"], cent, atc)    # all sites: the seed offset depends on the full list
     mem = pd.DataFrame(mem)
-    mem = mem[mem.site.isin(t3["sites"])].copy()
+    mem = mem[mem.site.isin(keep)].copy()
     mem["fy_key"] = "AT|" + mem.year.astype(str) + "|" + mem.fid.astype(str)
     sub = g.loc[sorted(set(mem.fid))].copy()
     sub["year"], sub["fid"] = year, sub.index.astype(int)
@@ -120,7 +121,7 @@ def sample_parcels(cfg, year: int, base: str) -> pd.DataFrame:
     sub = sub[~sub.geometry.is_empty & sub.geometry.notna()]
     sub.to_crs(4326)[["fy_key", "year", "fid", invekos.AREA_COL, "area_buffered_ha", "geometry"]].to_parquet(out / "fields.parquet")
     mem.to_csv(out / "membership.csv", index=False)
-    pd.DataFrame([r for r in sel if r["site"] in t3["sites"]]).to_csv(out / "selection.csv", index=False)
+    pd.DataFrame([r for r in sel if r["site"] in keep]).to_csv(out / "selection.csv", index=False)
     return mem
 
 

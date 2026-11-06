@@ -385,6 +385,8 @@ Alternativer Zugang ohne Download: OGC API Features `https://gis.lfrz.gv.at/api/
 | 2024 | `inspire_schlaege_2024-2_polygon.gpkg` | 1 252 226 580 | 4,6 GB | b037d48d-06f3-4af2-ac48-ae07e7ca1e00 |
 | 2025 | `inspire_schlaege_2025-2_polygon.gpkg` | 1 259 234 212 | 4,6 GB | c6e594ce-e151-4ad5-8525-942208f956e8 |
 
+| 2026 | `inspire_schlaege_2026-1_polygon.gpkg` (Fassung 1, Stand Mai 2026; abgerufen 2026-11-06; nur Österreich-Test III) | 1 255 084 858 | 4,6 GB | SHA-256 ZIP `f37651666fb54d278fc77540364ed2fcfe551787f01f754a7a1faefe2412cc32` |
+
 Ablage `data/raw/invekos/<jahr>/` (ZIP + GPKG, zusammen 52 GB). Verifikation: ZIP-Größe = Content-Length, `unzip -t` fehlerfrei, alle Features mit pyogrio lesbar.
 
 **Neu-Download (Beispiel 2025):**

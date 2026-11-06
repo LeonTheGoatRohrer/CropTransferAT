@@ -1,0 +1,1609 @@
+{
+  "rho_without_2026": {
+    "n": 13,
+    "clusters": 8,
+    "rho": 0.6648351648351648,
+    "lo": 0.15053729406365263,
+    "hi": 0.9999999999999999
+  },
+  "rho_ndvi_without_2026": {
+    "n": 13,
+    "clusters": 8,
+    "rho": 0.5934065934065934,
+    "lo": 0.09914184397163134,
+    "hi": 0.9573517533687873
+  },
+  "rho_late_dekads_observed": {
+    "n": 14,
+    "clusters": 9,
+    "rho": 0.7494505494505495,
+    "lo": 0.30229246198641235,
+    "hi": 0.9508247155379598
+  },
+  "control_yields": [
+    {
+      "site": "linden",
+      "year": 2018,
+      "y_t_ha": 12.928,
+      "baseline": 10.878,
+      "yas_site": 1.188,
+      "baseline_kind": "prior5"
+    },
+    {
+      "site": "linden",
+      "year": 2020,
+      "y_t_ha": 13.406,
+      "baseline": 11.408,
+      "yas_site": 1.175,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "linden",
+      "year": 2021,
+      "y_t_ha": 13.018,
+      "baseline": 11.44,
+      "yas_site": 1.138,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "linden",
+      "year": 2022,
+      "y_t_ha": 14.244,
+      "baseline": 11.338,
+      "yas_site": 1.256,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "linden",
+      "year": 2023,
+      "y_t_ha": 11.964,
+      "baseline": 11.528,
+      "yas_site": 1.038,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "linden",
+      "year": 2024,
+      "y_t_ha": 11.662,
+      "baseline": 11.553,
+      "yas_site": 1.009,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "linden",
+      "year": 2025,
+      "y_t_ha": 12.926,
+      "baseline": 12.796,
+      "yas_site": 1.01,
+      "baseline_kind": "prior5"
+    },
+    {
+      "site": "linden",
+      "year": 2026,
+      "y_t_ha": 8.196,
+      "baseline": 12.636,
+      "yas_site": 0.649,
+      "baseline_kind": "prior5"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2018,
+      "y_t_ha": 13.008,
+      "baseline": 12.372,
+      "yas_site": 1.051,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2020,
+      "y_t_ha": 13.888,
+      "baseline": 12.284,
+      "yas_site": 1.131,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2021,
+      "y_t_ha": 12.956,
+      "baseline": 12.377,
+      "yas_site": 1.047,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2022,
+      "y_t_ha": 15.162,
+      "baseline": 12.157,
+      "yas_site": 1.247,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2023,
+      "y_t_ha": 10.824,
+      "baseline": 12.59,
+      "yas_site": 0.86,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2024,
+      "y_t_ha": 12.519,
+      "baseline": 12.421,
+      "yas_site": 1.008,
+      "baseline_kind": "baseline_short"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2025,
+      "y_t_ha": 14.416,
+      "baseline": 13.121,
+      "yas_site": 1.099,
+      "baseline_kind": "prior5"
+    }
+  ],
+  "site_year_checks": [
+    {
+      "site": "wagna",
+      "year": 2018,
+      "fields": 100,
+      "scenes": 67,
+      "median_dekads": 19.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.23,
+      "score": -0.014,
+      "score_without_abrupt_drop": -0.0129,
+      "shortfall_dk11": -0.0014,
+      "shortfall_dk12": -0.0101,
+      "shortfall_dk13": -0.0201,
+      "shortfall_dk14": -0.0857,
+      "score_S30": -0.0157,
+      "score_L30": -0.0179,
+      "observed_dk13": 0.89,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0132
+    },
+    {
+      "site": "wagna",
+      "year": 2019,
+      "fields": 96,
+      "scenes": 57,
+      "median_dekads": 18.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0208,
+      "score": -0.0019,
+      "score_without_abrupt_drop": -0.0017,
+      "shortfall_dk11": -0.0026,
+      "shortfall_dk12": -0.0014,
+      "shortfall_dk13": -0.0019,
+      "shortfall_dk14": -0.0098,
+      "score_S30": -0.0019,
+      "score_L30": NaN,
+      "observed_dk13": 0.9688,
+      "observed_dk14": 0.9062,
+      "score_late_dekads_observed": -0.0019
+    },
+    {
+      "site": "wagna",
+      "year": 2020,
+      "fields": 97,
+      "scenes": 49,
+      "median_dekads": 15.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0,
+      "score": -0.0016,
+      "score_without_abrupt_drop": -0.0016,
+      "shortfall_dk11": 0.0,
+      "shortfall_dk12": -0.0009,
+      "shortfall_dk13": -0.0017,
+      "shortfall_dk14": -0.0087,
+      "score_S30": -0.0017,
+      "score_L30": NaN,
+      "observed_dk13": 0.9485,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0017
+    },
+    {
+      "site": "wagna",
+      "year": 2021,
+      "fields": 100,
+      "scenes": 59,
+      "median_dekads": 18.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.01,
+      "score": -0.0121,
+      "score_without_abrupt_drop": -0.0117,
+      "shortfall_dk11": -0.0248,
+      "shortfall_dk12": -0.0209,
+      "shortfall_dk13": -0.0314,
+      "shortfall_dk14": -0.0285,
+      "score_S30": -0.0124,
+      "score_L30": -0.0184,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0121
+    },
+    {
+      "site": "wagna",
+      "year": 2022,
+      "fields": 96,
+      "scenes": 63,
+      "median_dekads": 18.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.4479,
+      "score": -0.0186,
+      "score_without_abrupt_drop": -0.0062,
+      "shortfall_dk11": -0.0003,
+      "shortfall_dk12": -0.018,
+      "shortfall_dk13": -0.1066,
+      "shortfall_dk14": -0.2249,
+      "score_S30": -0.0205,
+      "score_L30": -0.0206,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.125,
+      "score_late_dekads_observed": -0.0474
+    },
+    {
+      "site": "wagna",
+      "year": 2023,
+      "fields": 98,
+      "scenes": 53,
+      "median_dekads": 19.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0102,
+      "score": -0.0016,
+      "score_without_abrupt_drop": -0.0016,
+      "shortfall_dk11": -0.0,
+      "shortfall_dk12": -0.0001,
+      "shortfall_dk13": -0.002,
+      "shortfall_dk14": -0.0104,
+      "score_S30": -0.0016,
+      "score_L30": NaN,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0016
+    },
+    {
+      "site": "wagna",
+      "year": 2024,
+      "fields": 99,
+      "scenes": 56,
+      "median_dekads": 18.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.6566,
+      "score": -0.0123,
+      "score_without_abrupt_drop": -0.0083,
+      "shortfall_dk11": -0.0017,
+      "shortfall_dk12": -0.0028,
+      "shortfall_dk13": -0.0126,
+      "shortfall_dk14": -0.0759,
+      "score_S30": -0.0125,
+      "score_L30": -0.0125,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.9798,
+      "score_late_dekads_observed": -0.0124
+    },
+    {
+      "site": "wagna",
+      "year": 2025,
+      "fields": 100,
+      "scenes": 100,
+      "median_dekads": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.24,
+      "score": -0.0231,
+      "score_without_abrupt_drop": -0.0207,
+      "shortfall_dk11": -0.014,
+      "shortfall_dk12": -0.0114,
+      "shortfall_dk13": -0.0406,
+      "shortfall_dk14": -0.0849,
+      "score_S30": -0.0225,
+      "score_L30": -0.0265,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0231
+    },
+    {
+      "site": "wagna",
+      "year": 2026,
+      "fields": 100,
+      "scenes": 99,
+      "median_dekads": 21.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.48,
+      "score": -0.0502,
+      "score_without_abrupt_drop": -0.0286,
+      "shortfall_dk11": -0.0073,
+      "shortfall_dk12": -0.0464,
+      "shortfall_dk13": -0.1564,
+      "shortfall_dk14": -0.2351,
+      "score_S30": -0.0512,
+      "score_L30": -0.0358,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0502
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2018,
+      "fields": 100,
+      "scenes": 76,
+      "median_dekads": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.02,
+      "score": -0.0058,
+      "score_without_abrupt_drop": -0.0055,
+      "shortfall_dk11": -0.0009,
+      "shortfall_dk12": -0.0022,
+      "shortfall_dk13": -0.0072,
+      "shortfall_dk14": -0.0373,
+      "score_S30": -0.006,
+      "score_L30": -0.0173,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0058
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2019,
+      "fields": 100,
+      "scenes": 71,
+      "median_dekads": 19.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.01,
+      "score": -0.0053,
+      "score_without_abrupt_drop": -0.0046,
+      "shortfall_dk11": -0.0009,
+      "shortfall_dk12": -0.0007,
+      "shortfall_dk13": -0.0106,
+      "shortfall_dk14": -0.0237,
+      "score_S30": -0.0045,
+      "score_L30": -0.0083,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.99,
+      "score_late_dekads_observed": -0.0054
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2020,
+      "fields": 100,
+      "scenes": 64,
+      "median_dekads": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.01,
+      "score": -0.0005,
+      "score_without_abrupt_drop": -0.0005,
+      "shortfall_dk11": 0.0,
+      "shortfall_dk12": -0.0004,
+      "shortfall_dk13": -0.0005,
+      "shortfall_dk14": -0.0013,
+      "score_S30": -0.0004,
+      "score_L30": NaN,
+      "observed_dk13": 0.99,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0005
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2021,
+      "fields": 100,
+      "scenes": 64,
+      "median_dekads": 16.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0,
+      "score": -0.0042,
+      "score_without_abrupt_drop": -0.0042,
+      "shortfall_dk11": -0.0012,
+      "shortfall_dk12": 0.0,
+      "shortfall_dk13": -0.0021,
+      "shortfall_dk14": -0.0116,
+      "score_S30": -0.0028,
+      "score_L30": -0.006,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.89,
+      "score_late_dekads_observed": -0.0047
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2022,
+      "fields": 100,
+      "scenes": 82,
+      "median_dekads": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.29,
+      "score": -0.0074,
+      "score_without_abrupt_drop": -0.0053,
+      "shortfall_dk11": -0.0033,
+      "shortfall_dk12": -0.003,
+      "shortfall_dk13": -0.0436,
+      "shortfall_dk14": -0.0763,
+      "score_S30": -0.0086,
+      "score_L30": -0.0075,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.08,
+      "score_late_dekads_observed": NaN
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2023,
+      "fields": 100,
+      "scenes": 79,
+      "median_dekads": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.01,
+      "score": -0.0091,
+      "score_without_abrupt_drop": -0.0087,
+      "shortfall_dk11": -0.0005,
+      "shortfall_dk12": -0.0549,
+      "shortfall_dk13": -0.0038,
+      "shortfall_dk14": -0.0175,
+      "score_S30": -0.0293,
+      "score_L30": -0.0076,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0091
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2024,
+      "fields": 100,
+      "scenes": 76,
+      "median_dekads": 20.5,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.68,
+      "score": -0.0152,
+      "score_without_abrupt_drop": -0.0092,
+      "shortfall_dk11": -0.0021,
+      "shortfall_dk12": -0.0021,
+      "shortfall_dk13": -0.0174,
+      "shortfall_dk14": -0.1059,
+      "score_S30": -0.0157,
+      "score_L30": -0.0291,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0152
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2025,
+      "fields": 100,
+      "scenes": 113,
+      "median_dekads": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.07,
+      "score": -0.0034,
+      "score_without_abrupt_drop": -0.0031,
+      "shortfall_dk11": -0.0001,
+      "shortfall_dk12": -0.0003,
+      "shortfall_dk13": -0.005,
+      "shortfall_dk14": -0.0173,
+      "score_S30": -0.003,
+      "score_L30": -0.0019,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0034
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2026,
+      "fields": 100,
+      "scenes": 119,
+      "median_dekads": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.27,
+      "score": -0.0523,
+      "score_without_abrupt_drop": -0.0356,
+      "shortfall_dk11": -0.0122,
+      "shortfall_dk12": -0.0465,
+      "shortfall_dk13": -0.1404,
+      "shortfall_dk14": -0.2241,
+      "score_S30": -0.0517,
+      "score_L30": -0.0729,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0523
+    }
+  ],
+  "control_sites_no_yields": [
+    {
+      "site": "linden",
+      "year": 2026,
+      "fields": 100,
+      "scenes": 98,
+      "median_dekads": 19.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.31,
+      "score": -0.0778,
+      "score_without_abrupt_drop": -0.0691,
+      "shortfall_dk11": -0.0308,
+      "shortfall_dk12": -0.1105,
+      "shortfall_dk13": -0.2212,
+      "shortfall_dk14": -0.2337,
+      "score_S30": -0.0822,
+      "score_L30": -0.0982,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0778
+    },
+    {
+      "site": "linden",
+      "year": 2018,
+      "fields": 100,
+      "scenes": 75,
+      "median_dekads": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.37,
+      "score": -0.0296,
+      "score_without_abrupt_drop": -0.026,
+      "shortfall_dk11": -0.0017,
+      "shortfall_dk12": -0.005,
+      "shortfall_dk13": -0.0623,
+      "shortfall_dk14": -0.1786,
+      "score_S30": -0.0281,
+      "score_L30": NaN,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0296
+    },
+    {
+      "site": "linden",
+      "year": 2019,
+      "fields": 100,
+      "scenes": 57,
+      "median_dekads": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.02,
+      "score": -0.0149,
+      "score_without_abrupt_drop": -0.0148,
+      "shortfall_dk11": -0.0125,
+      "shortfall_dk12": NaN,
+      "shortfall_dk13": -0.0264,
+      "shortfall_dk14": -0.0579,
+      "score_S30": -0.0148,
+      "score_L30": NaN,
+      "observed_dk13": 0.44,
+      "observed_dk14": 0.97,
+      "score_late_dekads_observed": -0.0191
+    },
+    {
+      "site": "linden",
+      "year": 2020,
+      "fields": 100,
+      "scenes": 60,
+      "median_dekads": 18.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.01,
+      "score": -0.0033,
+      "score_without_abrupt_drop": -0.0033,
+      "shortfall_dk11": -0.0005,
+      "shortfall_dk12": -0.0008,
+      "shortfall_dk13": -0.0121,
+      "shortfall_dk14": -0.0051,
+      "score_S30": -0.0027,
+      "score_L30": -0.003,
+      "observed_dk13": 0.95,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0026
+    },
+    {
+      "site": "linden",
+      "year": 2021,
+      "fields": 100,
+      "scenes": 55,
+      "median_dekads": 16.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0,
+      "score": -0.0038,
+      "score_without_abrupt_drop": -0.0038,
+      "shortfall_dk11": -0.0013,
+      "shortfall_dk12": -0.0011,
+      "shortfall_dk13": -0.0052,
+      "shortfall_dk14": -0.0147,
+      "score_S30": -0.004,
+      "score_L30": -0.004,
+      "observed_dk13": 0.98,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0038
+    },
+    {
+      "site": "linden",
+      "year": 2022,
+      "fields": 100,
+      "scenes": 75,
+      "median_dekads": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.05,
+      "score": -0.0025,
+      "score_without_abrupt_drop": -0.0021,
+      "shortfall_dk11": -0.0016,
+      "shortfall_dk12": -0.0017,
+      "shortfall_dk13": -0.0167,
+      "shortfall_dk14": NaN,
+      "score_S30": -0.0024,
+      "score_L30": -0.0013,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.0,
+      "score_late_dekads_observed": NaN
+    },
+    {
+      "site": "linden",
+      "year": 2023,
+      "fields": 100,
+      "scenes": 78,
+      "median_dekads": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0,
+      "score": -0.0178,
+      "score_without_abrupt_drop": -0.0178,
+      "shortfall_dk11": -0.0096,
+      "shortfall_dk12": -0.0018,
+      "shortfall_dk13": -0.0102,
+      "shortfall_dk14": -0.0319,
+      "score_S30": -0.0161,
+      "score_L30": -0.021,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0178
+    },
+    {
+      "site": "linden",
+      "year": 2024,
+      "fields": 100,
+      "scenes": 67,
+      "median_dekads": 16.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.37,
+      "score": -0.0021,
+      "score_without_abrupt_drop": -0.0016,
+      "shortfall_dk11": 0.0,
+      "shortfall_dk12": -0.0019,
+      "shortfall_dk13": -0.0119,
+      "shortfall_dk14": -0.0525,
+      "score_S30": -0.0035,
+      "score_L30": -0.0015,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.01,
+      "score_late_dekads_observed": NaN
+    },
+    {
+      "site": "linden",
+      "year": 2025,
+      "fields": 100,
+      "scenes": 85,
+      "median_dekads": 19.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.01,
+      "score": -0.0022,
+      "score_without_abrupt_drop": -0.0022,
+      "shortfall_dk11": -0.0002,
+      "shortfall_dk12": -0.0002,
+      "shortfall_dk13": -0.0051,
+      "shortfall_dk14": -0.0125,
+      "score_S30": -0.0021,
+      "score_L30": -0.0032,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0022
+    },
+    {
+      "site": "mauthausen",
+      "year": 2026,
+      "fields": 100,
+      "scenes": 87,
+      "median_dekads": 19.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.51,
+      "score": -0.0648,
+      "score_without_abrupt_drop": -0.0353,
+      "shortfall_dk11": -0.0111,
+      "shortfall_dk12": -0.0782,
+      "shortfall_dk13": -0.1824,
+      "shortfall_dk14": -0.2963,
+      "score_S30": -0.0664,
+      "score_L30": -0.0802,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0648
+    },
+    {
+      "site": "mauthausen",
+      "year": 2018,
+      "fields": 100,
+      "scenes": 66,
+      "median_dekads": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.6,
+      "score": -0.0554,
+      "score_without_abrupt_drop": -0.0448,
+      "shortfall_dk11": -0.0021,
+      "shortfall_dk12": -0.0386,
+      "shortfall_dk13": -0.133,
+      "shortfall_dk14": -0.2864,
+      "score_S30": -0.0554,
+      "score_L30": NaN,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0554
+    },
+    {
+      "site": "mauthausen",
+      "year": 2019,
+      "fields": 100,
+      "scenes": 55,
+      "median_dekads": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.03,
+      "score": -0.0165,
+      "score_without_abrupt_drop": -0.016,
+      "shortfall_dk11": -0.0069,
+      "shortfall_dk12": -0.0123,
+      "shortfall_dk13": -0.0145,
+      "shortfall_dk14": -0.0868,
+      "score_S30": -0.0164,
+      "score_L30": NaN,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.91,
+      "score_late_dekads_observed": -0.0166
+    },
+    {
+      "site": "mauthausen",
+      "year": 2020,
+      "fields": 100,
+      "scenes": 55,
+      "median_dekads": 17.5,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0,
+      "score": -0.0055,
+      "score_without_abrupt_drop": -0.0055,
+      "shortfall_dk11": -0.0062,
+      "shortfall_dk12": -0.0083,
+      "shortfall_dk13": -0.0145,
+      "shortfall_dk14": -0.0097,
+      "score_S30": -0.0056,
+      "score_L30": NaN,
+      "observed_dk13": 0.99,
+      "observed_dk14": 0.99,
+      "score_late_dekads_observed": -0.0056
+    },
+    {
+      "site": "mauthausen",
+      "year": 2021,
+      "fields": 100,
+      "scenes": 49,
+      "median_dekads": 16.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0,
+      "score": -0.0053,
+      "score_without_abrupt_drop": -0.0053,
+      "shortfall_dk11": -0.0013,
+      "shortfall_dk12": -0.0011,
+      "shortfall_dk13": -0.0123,
+      "shortfall_dk14": -0.0203,
+      "score_S30": -0.0052,
+      "score_L30": NaN,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.92,
+      "score_late_dekads_observed": -0.0055
+    },
+    {
+      "site": "mauthausen",
+      "year": 2022,
+      "fields": 100,
+      "scenes": 55,
+      "median_dekads": 16.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.1,
+      "score": -0.0036,
+      "score_without_abrupt_drop": -0.003,
+      "shortfall_dk11": -0.0017,
+      "shortfall_dk12": -0.0012,
+      "shortfall_dk13": -0.0257,
+      "shortfall_dk14": NaN,
+      "score_S30": -0.0037,
+      "score_L30": -0.0009,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.0,
+      "score_late_dekads_observed": NaN
+    },
+    {
+      "site": "mauthausen",
+      "year": 2023,
+      "fields": 100,
+      "scenes": 64,
+      "median_dekads": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.01,
+      "score": -0.0142,
+      "score_without_abrupt_drop": -0.0143,
+      "shortfall_dk11": -0.0075,
+      "shortfall_dk12": -0.004,
+      "shortfall_dk13": -0.0114,
+      "shortfall_dk14": -0.0507,
+      "score_S30": -0.0103,
+      "score_L30": -0.0235,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0142
+    },
+    {
+      "site": "mauthausen",
+      "year": 2024,
+      "fields": 100,
+      "scenes": 50,
+      "median_dekads": 17.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.76,
+      "score": -0.0368,
+      "score_without_abrupt_drop": -0.0253,
+      "shortfall_dk11": -0.0056,
+      "shortfall_dk12": -0.0307,
+      "shortfall_dk13": -0.0871,
+      "shortfall_dk14": -0.1893,
+      "score_S30": -0.0419,
+      "score_L30": -0.0245,
+      "observed_dk13": 1.0,
+      "observed_dk14": 0.92,
+      "score_late_dekads_observed": -0.0379
+    },
+    {
+      "site": "mauthausen",
+      "year": 2025,
+      "fields": 100,
+      "scenes": 87,
+      "median_dekads": 20.0,
+      "peak_lt_06": 0.0,
+      "abrupt_drop": 0.0,
+      "score": -0.0023,
+      "score_without_abrupt_drop": -0.0023,
+      "shortfall_dk11": -0.0012,
+      "shortfall_dk12": 0.0,
+      "shortfall_dk13": -0.0034,
+      "shortfall_dk14": -0.0094,
+      "score_S30": -0.0023,
+      "score_L30": -0.0028,
+      "observed_dk13": 1.0,
+      "observed_dk14": 1.0,
+      "score_late_dekads_observed": -0.0023
+    }
+  ],
+  "august_scenes_2026": {
+    "wagna": [
+      {
+        "date": "2026-08-01",
+        "source": "L30",
+        "fields": 71,
+        "ndvi": 0.836
+      },
+      {
+        "date": "2026-08-01",
+        "source": "S30",
+        "fields": 31,
+        "ndvi": 0.78
+      },
+      {
+        "date": "2026-08-02",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.827
+      },
+      {
+        "date": "2026-08-04",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.797
+      },
+      {
+        "date": "2026-08-09",
+        "source": "L30",
+        "fields": 100,
+        "ndvi": 0.754
+      },
+      {
+        "date": "2026-08-09",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.771
+      },
+      {
+        "date": "2026-08-12",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.729
+      },
+      {
+        "date": "2026-08-14",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.708
+      },
+      {
+        "date": "2026-08-14",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.714
+      },
+      {
+        "date": "2026-08-19",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.676
+      },
+      {
+        "date": "2026-08-31",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.563
+      }
+    ],
+    "kalsdorf": [
+      {
+        "date": "2026-08-01",
+        "source": "L30",
+        "fields": 100,
+        "ndvi": 0.799
+      },
+      {
+        "date": "2026-08-01",
+        "source": "S30",
+        "fields": 76,
+        "ndvi": 0.79
+      },
+      {
+        "date": "2026-08-02",
+        "source": "L30",
+        "fields": 100,
+        "ndvi": 0.799
+      },
+      {
+        "date": "2026-08-02",
+        "source": "S30",
+        "fields": 75,
+        "ndvi": 0.798
+      },
+      {
+        "date": "2026-08-04",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.782
+      },
+      {
+        "date": "2026-08-09",
+        "source": "L30",
+        "fields": 100,
+        "ndvi": 0.748
+      },
+      {
+        "date": "2026-08-09",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.757
+      },
+      {
+        "date": "2026-08-10",
+        "source": "L30",
+        "fields": 96,
+        "ndvi": 0.706
+      },
+      {
+        "date": "2026-08-12",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.751
+      },
+      {
+        "date": "2026-08-14",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.722
+      },
+      {
+        "date": "2026-08-14",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.729
+      },
+      {
+        "date": "2026-08-19",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.707
+      },
+      {
+        "date": "2026-08-24",
+        "source": "S30",
+        "fields": 97,
+        "ndvi": 0.687
+      },
+      {
+        "date": "2026-08-24",
+        "source": "S30",
+        "fields": 99,
+        "ndvi": 0.685
+      },
+      {
+        "date": "2026-08-26",
+        "source": "L30",
+        "fields": 99,
+        "ndvi": 0.663
+      },
+      {
+        "date": "2026-08-27",
+        "source": "S30",
+        "fields": 71,
+        "ndvi": 0.592
+      },
+      {
+        "date": "2026-08-31",
+        "source": "S30",
+        "fields": 55,
+        "ndvi": 0.669
+      }
+    ]
+  },
+  "august_scenes_2025": {
+    "wagna": [
+      {
+        "date": "2025-08-04",
+        "source": "S30",
+        "fields": 85,
+        "ndvi": 0.864
+      },
+      {
+        "date": "2025-08-07",
+        "source": "S30",
+        "fields": 98,
+        "ndvi": 0.851
+      },
+      {
+        "date": "2025-08-09",
+        "source": "S30",
+        "fields": 99,
+        "ndvi": 0.843
+      },
+      {
+        "date": "2025-08-09",
+        "source": "S30",
+        "fields": 91,
+        "ndvi": 0.85
+      },
+      {
+        "date": "2025-08-12",
+        "source": "S30",
+        "fields": 90,
+        "ndvi": 0.847
+      },
+      {
+        "date": "2025-08-14",
+        "source": "L30",
+        "fields": 100,
+        "ndvi": 0.81
+      },
+      {
+        "date": "2025-08-14",
+        "source": "S30",
+        "fields": 83,
+        "ndvi": 0.817
+      },
+      {
+        "date": "2025-08-16",
+        "source": "S30",
+        "fields": 98,
+        "ndvi": 0.798
+      },
+      {
+        "date": "2025-08-17",
+        "source": "S30",
+        "fields": 50,
+        "ndvi": 0.819
+      },
+      {
+        "date": "2025-08-19",
+        "source": "S30",
+        "fields": 95,
+        "ndvi": 0.804
+      },
+      {
+        "date": "2025-08-19",
+        "source": "S30",
+        "fields": 93,
+        "ndvi": 0.817
+      },
+      {
+        "date": "2025-08-22",
+        "source": "L30",
+        "fields": 17,
+        "ndvi": 0.781
+      },
+      {
+        "date": "2025-08-22",
+        "source": "S30",
+        "fields": 16,
+        "ndvi": 0.812
+      },
+      {
+        "date": "2025-08-24",
+        "source": "S30",
+        "fields": 10,
+        "ndvi": 0.824
+      },
+      {
+        "date": "2025-08-26",
+        "source": "S30",
+        "fields": 97,
+        "ndvi": 0.76
+      },
+      {
+        "date": "2025-08-27",
+        "source": "S30",
+        "fields": 97,
+        "ndvi": 0.761
+      },
+      {
+        "date": "2025-08-29",
+        "source": "S30",
+        "fields": 29,
+        "ndvi": 0.779
+      }
+    ],
+    "kalsdorf": [
+      {
+        "date": "2025-08-07",
+        "source": "L30",
+        "fields": 100,
+        "ndvi": 0.87
+      },
+      {
+        "date": "2025-08-07",
+        "source": "S30",
+        "fields": 87,
+        "ndvi": 0.888
+      },
+      {
+        "date": "2025-08-09",
+        "source": "S30",
+        "fields": 99,
+        "ndvi": 0.887
+      },
+      {
+        "date": "2025-08-09",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.892
+      },
+      {
+        "date": "2025-08-12",
+        "source": "S30",
+        "fields": 97,
+        "ndvi": 0.884
+      },
+      {
+        "date": "2025-08-14",
+        "source": "L30",
+        "fields": 100,
+        "ndvi": 0.86
+      },
+      {
+        "date": "2025-08-14",
+        "source": "S30",
+        "fields": 89,
+        "ndvi": 0.862
+      },
+      {
+        "date": "2025-08-15",
+        "source": "L30",
+        "fields": 100,
+        "ndvi": 0.857
+      },
+      {
+        "date": "2025-08-16",
+        "source": "S30",
+        "fields": 98,
+        "ndvi": 0.862
+      },
+      {
+        "date": "2025-08-19",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.866
+      },
+      {
+        "date": "2025-08-19",
+        "source": "S30",
+        "fields": 98,
+        "ndvi": 0.872
+      },
+      {
+        "date": "2025-08-22",
+        "source": "S30",
+        "fields": 36,
+        "ndvi": 0.877
+      },
+      {
+        "date": "2025-08-26",
+        "source": "S30",
+        "fields": 100,
+        "ndvi": 0.853
+      },
+      {
+        "date": "2025-08-27",
+        "source": "S30",
+        "fields": 67,
+        "ndvi": 0.841
+      },
+      {
+        "date": "2025-08-29",
+        "source": "S30",
+        "fields": 76,
+        "ndvi": 0.818
+      },
+      {
+        "date": "2025-08-29",
+        "source": "S30",
+        "fields": 71,
+        "ndvi": 0.833
+      }
+    ]
+  },
+  "weather_era5": [
+    {
+      "site": "kalsdorf",
+      "year": 2018,
+      "days": 92,
+      "rain_jja_mm": 333.34,
+      "tmax_jja_c": 24.72,
+      "rain_aug_mm": 118.34,
+      "tmax_aug_c": 26.0,
+      "last_date": "2018-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2018,
+      "days": 92,
+      "rain_jja_mm": 322.38,
+      "tmax_jja_c": 24.48,
+      "rain_aug_mm": 89.79,
+      "tmax_aug_c": 26.29,
+      "last_date": "2018-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2018,
+      "days": 92,
+      "rain_jja_mm": 224.92,
+      "tmax_jja_c": 25.88,
+      "rain_aug_mm": 55.33,
+      "tmax_aug_c": 27.76,
+      "last_date": "2018-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2018,
+      "days": 92,
+      "rain_jja_mm": 389.28,
+      "tmax_jja_c": 24.99,
+      "rain_aug_mm": 167.28,
+      "tmax_aug_c": 26.17,
+      "last_date": "2018-08-31"
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2019,
+      "days": 92,
+      "rain_jja_mm": 226.89,
+      "tmax_jja_c": 26.22,
+      "rain_aug_mm": 83.09,
+      "tmax_aug_c": 25.83,
+      "last_date": "2019-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2019,
+      "days": 92,
+      "rain_jja_mm": 230.52,
+      "tmax_jja_c": 25.32,
+      "rain_aug_mm": 81.66,
+      "tmax_aug_c": 24.98,
+      "last_date": "2019-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2019,
+      "days": 92,
+      "rain_jja_mm": 157.03,
+      "tmax_jja_c": 26.63,
+      "rain_aug_mm": 51.04,
+      "tmax_aug_c": 26.46,
+      "last_date": "2019-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2019,
+      "days": 92,
+      "rain_jja_mm": 302.23,
+      "tmax_jja_c": 26.39,
+      "rain_aug_mm": 136.14,
+      "tmax_aug_c": 25.85,
+      "last_date": "2019-08-31"
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2020,
+      "days": 92,
+      "rain_jja_mm": 379.3,
+      "tmax_jja_c": 24.16,
+      "rain_aug_mm": 144.18,
+      "tmax_aug_c": 25.17,
+      "last_date": "2020-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2020,
+      "days": 92,
+      "rain_jja_mm": 425.49,
+      "tmax_jja_c": 22.71,
+      "rain_aug_mm": 150.63,
+      "tmax_aug_c": 23.94,
+      "last_date": "2020-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2020,
+      "days": 92,
+      "rain_jja_mm": 333.14,
+      "tmax_jja_c": 23.74,
+      "rain_aug_mm": 107.82,
+      "tmax_aug_c": 24.99,
+      "last_date": "2020-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2020,
+      "days": 92,
+      "rain_jja_mm": 392.33,
+      "tmax_jja_c": 24.47,
+      "rain_aug_mm": 148.85,
+      "tmax_aug_c": 25.43,
+      "last_date": "2020-08-31"
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2021,
+      "days": 92,
+      "rain_jja_mm": 222.91,
+      "tmax_jja_c": 25.61,
+      "rain_aug_mm": 84.77,
+      "tmax_aug_c": 24.06,
+      "last_date": "2021-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2021,
+      "days": 92,
+      "rain_jja_mm": 421.98,
+      "tmax_jja_c": 23.2,
+      "rain_aug_mm": 161.77,
+      "tmax_aug_c": 21.0,
+      "last_date": "2021-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2021,
+      "days": 92,
+      "rain_jja_mm": 287.97,
+      "tmax_jja_c": 24.4,
+      "rain_aug_mm": 110.21,
+      "tmax_aug_c": 22.13,
+      "last_date": "2021-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2021,
+      "days": 92,
+      "rain_jja_mm": 260.96,
+      "tmax_jja_c": 25.83,
+      "rain_aug_mm": 85.07,
+      "tmax_aug_c": 24.39,
+      "last_date": "2021-08-31"
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2022,
+      "days": 92,
+      "rain_jja_mm": 274.7,
+      "tmax_jja_c": 25.9,
+      "rain_aug_mm": 86.69,
+      "tmax_aug_c": 26.28,
+      "last_date": "2022-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2022,
+      "days": 92,
+      "rain_jja_mm": 415.35,
+      "tmax_jja_c": 23.99,
+      "rain_aug_mm": 118.7,
+      "tmax_aug_c": 23.64,
+      "last_date": "2022-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2022,
+      "days": 92,
+      "rain_jja_mm": 321.45,
+      "tmax_jja_c": 25.06,
+      "rain_aug_mm": 105.06,
+      "tmax_aug_c": 24.92,
+      "last_date": "2022-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2022,
+      "days": 92,
+      "rain_jja_mm": 354.21,
+      "tmax_jja_c": 26.03,
+      "rain_aug_mm": 119.14,
+      "tmax_aug_c": 26.22,
+      "last_date": "2022-08-31"
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2023,
+      "days": 92,
+      "rain_jja_mm": 331.03,
+      "tmax_jja_c": 24.53,
+      "rain_aug_mm": 142.68,
+      "tmax_aug_c": 24.59,
+      "last_date": "2023-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2023,
+      "days": 92,
+      "rain_jja_mm": 282.22,
+      "tmax_jja_c": 24.28,
+      "rain_aug_mm": 161.32,
+      "tmax_aug_c": 23.99,
+      "last_date": "2023-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2023,
+      "days": 92,
+      "rain_jja_mm": 226.4,
+      "tmax_jja_c": 25.3,
+      "rain_aug_mm": 119.79,
+      "tmax_aug_c": 25.09,
+      "last_date": "2023-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2023,
+      "days": 92,
+      "rain_jja_mm": 453.81,
+      "tmax_jja_c": 24.86,
+      "rain_aug_mm": 198.78,
+      "tmax_aug_c": 25.01,
+      "last_date": "2023-08-31"
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2024,
+      "days": 92,
+      "rain_jja_mm": 187.25,
+      "tmax_jja_c": 26.49,
+      "rain_aug_mm": 49.21,
+      "tmax_aug_c": 28.46,
+      "last_date": "2024-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2024,
+      "days": 92,
+      "rain_jja_mm": 319.88,
+      "tmax_jja_c": 24.82,
+      "rain_aug_mm": 73.98,
+      "tmax_aug_c": 26.56,
+      "last_date": "2024-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2024,
+      "days": 92,
+      "rain_jja_mm": 188.08,
+      "tmax_jja_c": 26.34,
+      "rain_aug_mm": 40.23,
+      "tmax_aug_c": 28.5,
+      "last_date": "2024-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2024,
+      "days": 92,
+      "rain_jja_mm": 246.45,
+      "tmax_jja_c": 26.62,
+      "rain_aug_mm": 77.46,
+      "tmax_aug_c": 28.24,
+      "last_date": "2024-08-31"
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2025,
+      "days": 92,
+      "rain_jja_mm": 167.72,
+      "tmax_jja_c": 25.87,
+      "rain_aug_mm": 52.05,
+      "tmax_aug_c": 25.86,
+      "last_date": "2025-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2025,
+      "days": 92,
+      "rain_jja_mm": 319.76,
+      "tmax_jja_c": 24.2,
+      "rain_aug_mm": 76.97,
+      "tmax_aug_c": 24.23,
+      "last_date": "2025-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2025,
+      "days": 92,
+      "rain_jja_mm": 235.27,
+      "tmax_jja_c": 25.44,
+      "rain_aug_mm": 52.41,
+      "tmax_aug_c": 25.47,
+      "last_date": "2025-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2025,
+      "days": 92,
+      "rain_jja_mm": 213.22,
+      "tmax_jja_c": 26.17,
+      "rain_aug_mm": 63.34,
+      "tmax_aug_c": 25.93,
+      "last_date": "2025-08-31"
+    },
+    {
+      "site": "kalsdorf",
+      "year": 2026,
+      "days": 92,
+      "rain_jja_mm": 155.85,
+      "tmax_jja_c": 27.7,
+      "rain_aug_mm": 27.6,
+      "tmax_aug_c": 29.63,
+      "last_date": "2026-08-31"
+    },
+    {
+      "site": "linden",
+      "year": 2026,
+      "days": 92,
+      "rain_jja_mm": 235.46,
+      "tmax_jja_c": 26.67,
+      "rain_aug_mm": 77.38,
+      "tmax_aug_c": 28.03,
+      "last_date": "2026-08-31"
+    },
+    {
+      "site": "mauthausen",
+      "year": 2026,
+      "days": 92,
+      "rain_jja_mm": 159.76,
+      "tmax_jja_c": 28.11,
+      "rain_aug_mm": 51.03,
+      "tmax_aug_c": 29.49,
+      "last_date": "2026-08-31"
+    },
+    {
+      "site": "wagna",
+      "year": 2026,
+      "days": 92,
+      "rain_jja_mm": 190.03,
+      "tmax_jja_c": 28.21,
+      "rain_aug_mm": 38.45,
+      "tmax_aug_c": 29.95,
+      "last_date": "2026-08-31"
+    }
+  ]
+}
