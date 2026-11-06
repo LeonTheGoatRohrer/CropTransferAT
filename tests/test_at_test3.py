@@ -46,6 +46,16 @@ def test_site_year_yields_core_variants_and_exclusions():
     assert excl.year.tolist() == [2020] and excl.n_variants.tolist() == [3]       # 2021 excluded -> Z1 becomes core
 
 
+def test_replication_gaps_flags_only_real_differences():
+    cols = {"site": ["wagna"], "year": [2024], "score_09-01": [-0.02], "ndvi_base": [float("nan")]}
+    old = pd.DataFrame(cols)
+    assert at_test3.replication_gaps(pd.DataFrame(cols), old, ["09-01"]) == []
+    moved = pd.DataFrame({**cols, "score_09-01": [-0.021]})
+    assert len(at_test3.replication_gaps(moved, old, ["09-01"])) == 1
+    filled = pd.DataFrame({**cols, "ndvi_base": [0.7]})                     # NaN against a value is a gap, too
+    assert len(at_test3.replication_gaps(filled, old, ["09-01"])) == 1
+
+
 def test_config_seen_points_inside_test_window():
     t3 = load_config()["at_test3"]
     for key in t3["seen_new_points"]:

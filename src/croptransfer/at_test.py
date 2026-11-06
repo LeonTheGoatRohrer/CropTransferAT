@@ -26,9 +26,9 @@ BL_KEY = {"Steiermark": "Steiermark", "Oberoesterreich": "Oberösterreich"}
 
 
 # ------------------------------------------------------------------------------------------ fields
-def load_field_obs(cfg) -> pd.DataFrame:
+def load_field_obs(cfg, base: str = "data/interim/at") -> pd.DataFrame:
     """Valid HLS scenes of all sampled parcels (clear_frac >= 0.7), duplicates from shared parcels removed."""
-    files = sorted((repo_path("data/interim/at") / "obs").glob("*_HLS.parquet"))
+    files = sorted((repo_path(base) / "obs").glob("*_HLS.parquet"))
     obs = pd.concat([pd.read_parquet(f) for f in files], ignore_index=True)
     obs = obs.drop_duplicates(["fy_key", "date", "img_id"])
     obs = ts.add_indices(ts.to_reflectance(obs))
@@ -57,10 +57,10 @@ def scores_from_matrix(mat: pd.DataFrame, ref: pd.Series, cutoff: str, first_dek
     return pd.DataFrame({"score": score, "n_obs": n}, index=mat.index)
 
 
-def field_table(cfg) -> pd.DataFrame:
+def field_table(cfg, base: str = "data/interim/at") -> pd.DataFrame:
     atc = cfg["at_test"]
     ref = pd.read_csv(repo_path("reports/freeze_at/stress_reference_hls_ndvi.csv"), index_col=0)["ndvi_median"]
-    obs = load_field_obs(cfg)
+    obs = load_field_obs(cfg, base)
     mat = dekad_matrix(obs)
     out = pd.DataFrame(index=mat.index)
     for c in atc["cutoffs"]:
@@ -76,10 +76,10 @@ def field_table(cfg) -> pd.DataFrame:
     return out.reset_index(names="fy_key")
 
 
-def site_year_scores(fields: pd.DataFrame, cfg) -> pd.DataFrame:
+def site_year_scores(fields: pd.DataFrame, cfg, base: str = "data/interim/at") -> pd.DataFrame:
     """Mean score over the valid fields of each site-year (>= min_fields_per_site_year, else NaN + flag)."""
     atc = cfg["at_test"]
-    mem = pd.read_csv(repo_path("data/interim/at/membership.csv"))
+    mem = pd.read_csv(repo_path(base) / "membership.csv")
     d = mem.merge(fields, on=["fy_key"], how="left", suffixes=("", "_f"))
     rows = []
     for (site, year), g in d.groupby(["site", "year"]):

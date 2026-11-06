@@ -6,6 +6,8 @@ and 2026 is added. Scores 2018-2025 are taken unchanged from the first test (`si
 are computed later with the frozen rules (same parcel sampling, HLS extraction and stress score).
 
 Usage:  python -m croptransfer.at_test3 --yields-only   (tidy yield table + site-year yields, no scores read)
+        python -m croptransfer.at_test3 --replicate Y   (check: recompute year Y, must repeat the first test; no yield read)
+        python -m croptransfer.at_test3 --scores-2026   (frozen rules on INVEKOS 2026-1; only after the check passed)
         python -m croptransfer.at_test3                 (full evaluation, only after freeze-at-3)
 """
 
@@ -15,11 +17,12 @@ import argparse
 import json
 import re
 
+import geopandas as gpd
 import numpy as np
 import pandas as pd
 from openpyxl import load_workbook
 
-from croptransfer import at_test
+from croptransfer import at_extract, at_fields, at_test, gee_extract, invekos
 from croptransfer.at_test_stmk import evaluate
 from croptransfer.config import load_config, repo_path
 
@@ -97,9 +100,61 @@ def load_scores(cfg) -> pd.DataFrame:
     return pd.concat([first[[c for c in keep if c in first]], new[[c for c in keep if c in new]]], ignore_index=True)
 
 
+def sample_parcels(cfg, year: int, base: str) -> pd.DataFrame:
+    """Frozen parcel sampling of `at_fields` for one year, kept for the test sites; writes fields + membership -> membership."""
+    atc, t3 = cfg["at_test"], cfg["at_test3"]
+    out = repo_path(base)
+    (out / "obs").mkdir(parents=True, exist_ok=True)
+    cent = json.loads(repo_path("reports/freeze_at/site_centroids.json").read_text(encoding="utf-8"))
+    g = at_fields.read_maize(invekos.find_gpkgs(repo_path("data/raw/invekos"))[year], atc["invekos_code"])
+    sel, mem = at_fields.select_year(g, year, atc["sites"], cent, atc)    # all sites: the seed offset depends on the full list
+    mem = pd.DataFrame(mem)
+    mem = mem[mem.site.isin(t3["sites"])].copy()
+    mem["fy_key"] = "AT|" + mem.year.astype(str) + "|" + mem.fid.astype(str)
+    sub = g.loc[sorted(set(mem.fid))].copy()
+    sub["year"], sub["fid"] = year, sub.index.astype(int)
+    sub["fy_key"] = "AT|" + str(year) + "|" + sub["fid"].astype(str)
+    buf = sub.geometry.buffer(cfg["field"]["inner_buffer_m"])
+    sub["area_buffered_ha"] = buf.area / 1e4
+    sub = sub.assign(geometry=buf)
+    sub = sub[~sub.geometry.is_empty & sub.geometry.notna()]
+    sub.to_crs(4326)[["fy_key", "year", "fid", invekos.AREA_COL, "area_buffered_ha", "geometry"]].to_parquet(out / "fields.parquet")
+    mem.to_csv(out / "membership.csv", index=False)
+    pd.DataFrame([r for r in sel if r["site"] in t3["sites"]]).to_csv(out / "selection.csv", index=False)
+    return mem
+
+
+def extract_and_score(cfg, year: int, base: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """HLS scene statistics (cached per site-year) and the frozen stress score -> field table, site-year table."""
+    out = repo_path(base)
+    fields, mem = gpd.read_parquet(out / "fields.parquet"), pd.read_csv(out / "membership.csv")
+    gee_extract.init_ee()
+    for site, keys in mem.groupby("site").fy_key:
+        path = out / "obs" / f"{site}_{year}_HLS.parquet"
+        if not path.exists():
+            at_extract._stats(cfg, fields[fields.fy_key.isin(keys)], year).to_parquet(path)
+            print("extracted", path.name, flush=True)
+    table = at_test.field_table(cfg, base)
+    return table, at_test.site_year_scores(table, cfg, base)
+
+
+def replication_gaps(new: pd.DataFrame, old: pd.DataFrame, cutoffs: list[str], tol: float = 1e-9) -> list[str]:
+    """Protocol section 2 check: which site-year scores differ from the first test? Empty list = exact repeat."""
+    a, b = new.set_index(["site", "year"]), old.set_index(["site", "year"])
+    gaps = []
+    for key in a.index:
+        for col in [f"score_{c}" for c in cutoffs] + ["ndvi_base"]:
+            x, y = a.at[key, col], b.at[key, col]
+            if not ((np.isnan(x) and np.isnan(y)) or abs(x - y) <= tol):
+                gaps.append(f"{key[0]} {key[1]} {col}: {x} vs {y}")
+    return gaps
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--yields-only", action="store_true")
+    ap.add_argument("--replicate", type=int, default=None)
+    ap.add_argument("--scores-2026", action="store_true")
     a = ap.parse_args()
     cfg = load_config()
     t3 = cfg["at_test3"]
@@ -108,15 +163,39 @@ def main() -> None:
         tidy.to_csv(repo_path(t3["tidy_csv"]), index=False)
         print(site_year_yields(tidy, t3["first_yield_year"]).to_string(index=False))
         return
+    if a.replicate:
+        base = f"data/interim/at3/check_{a.replicate}"
+        mem = sample_parcels(cfg, a.replicate, base)
+        first_mem = pd.read_csv(repo_path("data/interim/at/membership.csv"))
+        first_mem = first_mem[(first_mem.year == a.replicate) & first_mem.site.isin(t3["sites"])]
+        same = set(zip(mem.site, mem.fid)) == set(zip(first_mem.site, first_mem.fid))
+        print("same parcels as the first test:", same, len(mem), flush=True)
+        _, sy = extract_and_score(cfg, a.replicate, base)
+        first = pd.read_csv(repo_path(cfg["at_test_stmk"]["first_test_results"]), usecols=["site", "year", "ndvi_base"] + [f"score_{c}" for c in cfg["at_test"]["cutoffs"]])
+        gaps = replication_gaps(sy, first, cfg["at_test"]["cutoffs"])
+        print("score gaps:", gaps or "none", flush=True)
+        raise SystemExit(0 if same and not gaps else 1)
+    if a.scores_2026:
+        base = "data/interim/at3/2026"
+        sample_parcels(cfg, 2026, base)
+        table, sy = extract_and_score(cfg, 2026, base)
+        path = repo_path(t3["scores_2026"])
+        path.parent.mkdir(parents=True, exist_ok=True)
+        table.to_parquet(path.parent / "field_scores_2026.parquet")
+        sy.to_csv(path, index=False)
+        print(sy.to_string(index=False))
+        return
     out = repo_path(t3["results_dir"])
     out.mkdir(parents=True, exist_ok=True)
     scores = load_scores(cfg)
+    first = pd.read_csv(repo_path(cfg["at_test_stmk"]["first_test_results"]))
+    upper_austria = first[~first.site.isin(cfg["at_test_stmk"]["sites"])]     # descriptive pool (protocol section 3), not independent
     res = {"protocol": "reports/freeze_protocol_at3.md", "tag": "freeze-at-3"}
     for name, core in [("primary_core_variants", True), ("sensitivity_all_variants", False)]:
         df = rows(cfg, scores, core)
         if core:
             df.to_csv(out / "site_year.csv", index=False)
-        res[name] = evaluate(df, cfg)       # same metrics and thresholds as freeze-at-2 (min 15 site-years)
+        res[name] = evaluate(df, cfg, pooled_with=upper_austria)    # same metrics and thresholds as freeze-at-2 (min 15 site-years)
         if core:
             seen = (df.site + "|" + df.year.astype(str)).isin(t3["seen_new_points"])
             res["sensitivity_without_seen_new_points"] = evaluate(df[~seen], cfg)
