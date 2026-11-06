@@ -22,7 +22,9 @@ from croptransfer import at_test, at_test3, gee_extract, stress
 from croptransfer import timeseries as ts
 from croptransfer.config import load_config, repo_path
 
-CONTROL_SITES = ["linden", "mauthausen"]    # Upper Austria, chosen before any 2026 value of these sites was computed
+# Upper Austria, descriptive. Linden and Mauthausen were chosen before any 2026 value was computed; the other three were
+# added afterwards because they are the remaining sites with a 2026 trial yield (protocol review of 2026-11-06).
+CONTROL_SITES = ["linden", "mauthausen", "walding", "wimsbach", "innviertel"]
 CONTROL_BASE = "data/interim/at3/control_2026"
 SCORE_CUTOFF = "09-01"
 
@@ -146,9 +148,13 @@ def main() -> None:
     c = SCORE_CUTOFF
     late = v.merge(checks[["site", "year", "score_late_dekads_observed"]], on=["site", "year"])
     trial = at_test.yas_site(at_test.trial_yields(cfg)[["site", "year", "y_t_ha"]])      # descriptive, outside the protocol
+    seen = (without_2026.site + "|" + without_2026.year.astype(str)).isin(t3["seen_new_points"])
+    known = without_2026[~seen]         # post-hoc: neither blind nor new points, how much rests on the extremes?
     report = {
         "rho_without_2026": at_test.rho_ci(without_2026[f"score_{c}"], without_2026.yas_site, without_2026.year, cfg),
         "rho_ndvi_without_2026": at_test.rho_ci(without_2026.ndvi_base, without_2026.yas_site, without_2026.year, cfg),
+        "rho_without_2026_and_seen_points": at_test.rho_ci(known[f"score_{c}"], known.yas_site, known.year, cfg),
+        "rho_ndvi_without_2026_and_seen_points": at_test.rho_ci(known.ndvi_base, known.yas_site, known.year, cfg),
         "rho_late_dekads_observed": at_test.rho_ci(late.score_late_dekads_observed, late.yas_site, late.year, cfg),
         "control_yields": trial[trial.site.isin(CONTROL_SITES) & trial.year.between(2018, 2026)].round(3).to_dict("records"),
         "site_year_checks": checks.round(4).to_dict("records"),
@@ -164,7 +170,7 @@ def main() -> None:
     print(checks.round(3)[["site", "year", "scenes", "observed_dk13", "observed_dk14", "score", "score_late_dekads_observed", "score_without_abrupt_drop"]].to_string(index=False))
     print(pd.DataFrame(control).round(3)[["site", "year", "scenes", "observed_dk14", "score", "score_late_dekads_observed"]].to_string(index=False))
     print(pd.DataFrame(report["control_yields"]).to_string(index=False))
-    print(json.dumps({k: report[k] for k in ("rho_without_2026", "rho_ndvi_without_2026", "rho_late_dekads_observed")}, default=float, ensure_ascii=False))
+    print(json.dumps({k: v for k, v in report.items() if k.startswith("rho_")}, default=float, ensure_ascii=False))
 
 
 if __name__ == "__main__":

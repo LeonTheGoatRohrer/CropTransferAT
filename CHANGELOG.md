@@ -5,7 +5,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 ## [Unreleased]
 
 ### Added (Branch `phase-7-at-test-3`, Ergebnis nach `freeze-at-3`)
-- **Österreich-Test III ausgeführt:** S-A am 1.9. ρ = 0,77 [0,30; 0,98], n = 15 Standort-Jahre, 9 Jahre, **bestanden**; NDVI 0,72 [0,27; 0,95]. Die zwei blinden Punkte 2026 haben die niedrigsten Scores; 13 von 15 Punkten waren vorher bekannt. Bericht `reports/at_test3_ergebnis.md`, Datenkritik `reports/data_review/at_test3_ergebnis.md`, Lauf `results/2026-10-28_at_test3/`, neues Modul `at_test3_review.py`, INVEKOS 2026-1 geladen.
+- **Österreich-Test III ausgeführt:** S-A am 1.9. ρ = 0,77 [0,30; 0,97], n = 15 Standort-Jahre, 9 Jahre, **bestanden**; NDVI 0,72 [0,27; 0,95]. Die zwei blinden Punkte 2026 haben die niedrigsten Scores; 13 von 15 Punkten waren vorher bekannt. Bericht `reports/at_test3_ergebnis.md`, Datenkritik `reports/data_review/at_test3_ergebnis.md`, Lauf `results/2026-10-28_at_test3/`, neues Modul `at_test3_review.py`, INVEKOS 2026-1 geladen.
 
 ### Added (Branch `phase-7-at-test-3`, Tag `freeze-at-3`)
 - **Österreich-Test III vorab festgeschrieben:** Protokoll `reports/freeze_protocol_at3.md`, Konfiguration `at_test3` (`reports/freeze_at/at_test3_config.json`), Modul `at_test3.py` (Einlesen der Hatzendorf-Excel-Reihen Wagna 2007–2026 und Kalsdorf 2009–2026, Kernvarianten-Mittel, Auswertung), Tests `tests/test_at_test3.py`, Datenkritik `reports/data_review/at_test3_ertraege.md` (⚠️). Noch kein Ergebnis: Scores 2026 folgen nach dem Freeze.

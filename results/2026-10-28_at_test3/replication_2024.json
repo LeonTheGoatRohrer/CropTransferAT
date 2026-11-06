@@ -1,0 +1,7 @@
+{
+  "year": 2024,
+  "parcels": 200,
+  "same_parcels": true,
+  "tolerance": 1e-09,
+  "score_gaps": []
+}

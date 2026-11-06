@@ -175,6 +175,8 @@ def main() -> None:
         first = pd.read_csv(repo_path(cfg["at_test_stmk"]["first_test_results"]), usecols=["site", "year", "ndvi_base"] + [f"score_{c}" for c in cfg["at_test"]["cutoffs"]])
         gaps = replication_gaps(sy, first, cfg["at_test"]["cutoffs"])
         print("score gaps:", gaps or "none", flush=True)
+        check = {"year": a.replicate, "parcels": len(mem), "same_parcels": same, "tolerance": 1e-9, "score_gaps": gaps}
+        (repo_path(t3["results_dir"]) / f"replication_{a.replicate}.json").write_text(json.dumps(check, indent=2), encoding="utf-8")
         raise SystemExit(0 if same and not gaps else 1)
     if a.scores_2026:
         base = "data/interim/at3/2026"
