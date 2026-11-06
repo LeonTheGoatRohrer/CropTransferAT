@@ -41,7 +41,8 @@ def main() -> None:
     subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(a.film), "-vf", f"{pick},scale=480:-1,{draw},tile=6x6:padding=2", "-fps_mode", "vfr", "-q:v", "4", str(out / "s%02d.jpg")], check=True)
     n = math.ceil(v / a.step / per)
     print(f"{n} Kontaktbögen in {out}")
-    timeline = a.film.parent / "build" / ("w960_anon" if "ohne" in a.film.stem else "w960") / "timeline.json"
+    width = subprocess.run(["ffprobe", "-v", "error", "-select_streams", "v:0", "-show_entries", "stream=width", "-of", "csv=p=0", str(a.film)], capture_output=True, text=True, check=True).stdout.strip()
+    timeline = a.film.parent / "build" / (f"w{width}_anon" if "ohne" in a.film.stem else f"w{width}") / "timeline.json"
     if timeline.exists():
         print(" ".join(f"{e['id']}={int(e['start'] // 60)}:{e['start'] % 60:04.1f}" for e in json.loads(timeline.read_text(encoding='utf-8'))))
 

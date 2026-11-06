@@ -46,7 +46,9 @@ async function openField(page, letter) {
 const scroll = (page, y) => page.evaluate((v) => window.scrollTo({ top: v, behavior: 'instant' }), y);
 
 const browser = await chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-gl=swiftshader', '--enable-webgl', '--ignore-gpu-blocklist'] });
-const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 }, reducedMotion: 'reduce', locale: 'de-AT' });
+// Double pixel density: the film zooms into the page, and text would turn soft at 1080p otherwise.
+const scale = Number(process.argv.find((a) => a.startsWith('--scale='))?.slice(8) || 2);
+const ctx = await browser.newContext({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: scale, reducedMotion: 'reduce', locale: 'de-AT' });
 const page = await ctx.newPage();
 page.on('pageerror', (e) => console.error('PAGE ERROR', e.message));
 

@@ -3,10 +3,10 @@
 The voice sets the timing: every segment is as long as its measured voice line plus LEAD and TAIL. The voice is never sped up.
 
 Usage:  python build_film.py --plan             write ../export/mg/timeline.js and print the render list for render_mg.mjs
-        python build_film.py [--width 960]      build the film
+        python build_film.py [--width 960]      build the film (--width 1920 also needs the clips in ../export/ai1080)
         python build_film.py --anon             variant with aggregated values and without place names
         python build_film.py --audio-only       keep the picture, only remix the sound
-Output: ../export/DeltaGreen_Finale_Prototyp[_ohne_Ortsnamen].mp4 (not in the repository).
+Output: ../export/DeltaGreen_Finale_{Prototyp,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
 """
 from __future__ import annotations
 
@@ -36,6 +36,8 @@ ap.add_argument("--anon", action="store_true")
 ap.add_argument("--audio-only", action="store_true")
 args = ap.parse_args()
 W, H = args.width, args.width * 9 // 16
+if W >= 1920:
+    AI = EXPORT / "ai1080"      # the mood clips in high resolution; same frames and length as the drafts, so all cuts stay
 SUF = "_anon" if args.anon else ""
 SWAP = {"f01": "x01", "f02": "x02"} if args.anon else {}
 BUILD_DIR = BUILD / f"w{W}{SUF}"
@@ -150,7 +152,7 @@ def caption_png(key: str, title: str, sub: str) -> Path:
 
 
 GRADE = f"scale={W}:{H}:flags=lanczos,eq=contrast=1.05:saturation=0.94,vignette=PI/5,noise=alls=4:allf=t,fps={FPS},format=yuv420p"
-ENC = ["-c:v", "libx264", "-preset", "veryfast", "-crf", "19", "-pix_fmt", "yuv420p", "-r", str(FPS), "-an"]
+ENC = ["-c:v", "libx264", "-preset", "medium" if W >= 1920 else "veryfast", "-crf", "16" if W >= 1920 else "19", "-pix_fmt", "yuv420p", "-r", str(FPS), "-an"]
 
 
 def render_film(seg: dict, out: Path) -> None:
@@ -372,7 +374,7 @@ def main() -> None:
     total = duration(picture)
     audio = BUILD_DIR / "audio.m4a"
     mix_audio({s["id"]: s["t"] for s in SEGMENTS}, total, audio)
-    name = "DeltaGreen_Finale_Prototyp" + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
+    name = ("DeltaGreen_Finale_1080p" if W >= 1920 else "DeltaGreen_Finale_Prototyp") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
     final = EXPORT / name
     run(["-i", str(picture), "-i", str(audio), "-c:v", "copy", "-c:a", "copy", "-t", f"{total:.3f}", "-movflags", "+faststart", str(final)])
     print("Film", final, round(duration(final), 2), "s", round(final.stat().st_size / 1e6, 1), "MB")

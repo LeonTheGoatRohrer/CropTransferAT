@@ -5,6 +5,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 ## [Unreleased]
 
 ### Added (Branch `phase-9-finale-video`)
+- **Finale-Video, 1080p:** beide Fassungen in 1920×1080 gebaut. Motion Graphics und App-Aufnahme neu in voller Auflösung, die 10 KI-Clips hochskaliert statt fertiggestellt (Fertigstellen hätte 960 Credits gekostet). Virtuelle Kamera auf `zoompan` umgestellt, weil `crop` seine Größe nur einmal auswertet und nicht zoomte.
 - **Finale-Video, Prototyp 960×540:** vollständiger 5-Minuten-Film mit KI-Stimme Helmut (ElevenLabs), Higgsfield-Clips, Motion Graphics aus echten Daten und App-Aufnahme, dazu eine Variante mit zusammengefassten Werten ohne Ortsnamen. Skripte `pitch/finale/render/`, Faktencheck `reports/finale_video/FAKTENCHECK.md`, Videos und Daten nur lokal unter `pitch/finale/export/`. Keine eingefrorenen Ergebnisse geändert.
 - **Finale-Video:** Drehbuch `pitch/finale/DREHBUCH.md`, Einstieg aus echten BARC-Daten `pitch/finale/render/` (Rendercode, Ton synthetisch).
 - **Datenkritik Feldkarte:** Modul `within_field_coverage.py`, Bericht `reports/data_review/within_field_coverage.md`. Die Kernzahl 0,68 hält auch nur auf Zellen nahe echter Messpunkte; 1,5 % der Zellen liegen weit weg, 4 von 41 Feld-Jahren betroffen.
