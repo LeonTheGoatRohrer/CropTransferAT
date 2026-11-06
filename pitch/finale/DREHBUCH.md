@@ -2,6 +2,8 @@
 
 **Fassung 1, 2026-11-06.** Zum Lesen und Probesprechen. Annahmen, bis du etwas anderes sagst: deine eigene Stimme, dunkler Delta-Green-Look, Deutsch.
 
+**Stand Prototyp:** Der gebaute Film folgt dem späteren Auftrag und weicht von dieser Fassung ab (Reihenfolge, KI-Stimme, korrigierte Zeiten). Gültiger Sprechtext: `render/voice_lines.tsv`. Zahlen und Abweichungen: `reports/finale_video/FAKTENCHECK.md`. Bauen: `render/build_film.py` (Ablauf im Kopf der Datei).
+
 **Roter Faden:** Der Mähdrescher misst im Herbst. Der Satellit hat es im Sommer schon gesehen.
 
 ## Grundregeln

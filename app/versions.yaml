@@ -17,6 +17,28 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: finale-video-prototyp
+    date: 2026-11-06
+    phase: "Phase 9: Finale-Video"
+    title: "Prototyp des 5-Minuten-Films"
+    status: zwischenstand
+    changed: "Ein vollständiger Prototyp des Finalvideos in niedriger Auflösung ist gebaut; am Modell und an den Ergebnissen wurde nichts geändert."
+    plain: >
+      Der Film erzählt das Projekt in fünf Minuten: Problem, Lösung, Daten, Prototyp und was nach der Abgabe kam. Alles, was wie ein Messwert aussieht, kommt aus echten Daten.
+      Die Stimmungsbilder, die Stimme und die Musik sind KI-generiert und gekennzeichnet. Jede Zahl im Film steht mit Quelle im Faktencheck.
+    metrics: []
+    found:
+      - "Alle automatisch geprüften Filmzahlen stimmen mit den Ergebnisdateien überein; die Kernzahl 0,68 wurde dafür aus den Rohwerten neu gerechnet (0,676)."
+    limits:
+      - "Prototyp in 960×540: Den Klang konnte der KI-Assistent nur messen, nicht hören."
+      - "Abgabedatum, ETH-Antwort und ZALF-Punktzahl stammen aus der Angabe des Projektinhabers, nicht aus dem Repository."
+      - "Vor dem Zeigen offen: Freigaben für Ortsnamen und Institutionen, Regeln des Finales, Tarif der KI-Stimme."
+    figures: []
+    links:
+      - label: "Faktencheck"
+        path: reports/finale_video/FAKTENCHECK.md
+      - label: "Drehbuch"
+        path: pitch/finale/DREHBUCH.md
   - id: within-field-coverage
     date: 2026-11-06
     phase: "Datenkritik der Feldkarte (BARC)"
