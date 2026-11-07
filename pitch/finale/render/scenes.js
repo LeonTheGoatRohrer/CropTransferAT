@@ -123,7 +123,7 @@ S.freezescan = (t, d) => {
 // ---- 2: the field falls apart into its yield spectrum, and all of it collapses into one number.
 S.spread = (t, d) => {
   bg(); chapter(0, t, d);
-  const v = voiceAt('spread', 'b01');
+  const v = voiceAt('spread', 'b01b');
   const appear = seg(t, .1, .7), fall = seg(t, v(2) + 1.2, v(2) + 3.2), one = seg(t, v(3) - .1, v(3) + 1.4);
   const fit = fieldFit(200, 110, 1520, 800);
   const lo = 0.3, hi = 1.5, bins = 60, base = 880, ax0 = 360, ax1 = 1560;
@@ -562,26 +562,159 @@ S.lines = (t, d) => {
 
 // ---- 7: the logo (real Pixel-Delta from the website), and who did what.
 const LOGO = [[[32, 8.31], [24, 22.18], [40, 22.18], '#23704a'], [[22, 25.64], [14, 39.51], [30, 39.51], '#55a05a'], [[24, 24.49], [40, 24.49], [32, 38.36], '#9dbb5c'], [[42, 25.64], [34, 39.51], [50, 39.51], '#e4694a'], [[12, 42.98], [4, 56.84], [20, 56.84], '#9dbb5c'], [[14, 41.82], [30, 41.82], [22, 55.69], '#55a05a'], [[32, 42.98], [24, 56.84], [40, 56.84], '#c4a44b'], [[34, 41.82], [50, 41.82], [42, 55.69], '#55a05a'], [[52, 42.98], [44, 56.84], [60, 56.84], '#8a6a36']];
-S.end = (t, d) => {
-  bg();
-  const size = 4.6, cx = 960, cy = 340;
+const TAGLINE = 'Schon im Sommer sehen, wo im Feld Ertrag fehlt.';
+function drawLogo(cx, cy, size, t, start, step, span) {
   LOGO.forEach(([a, b, c, col], i) => {
-    const e = seg(t, .15 + i * .07, .7 + i * .07); if (e <= 0) return;
+    const e = seg(t, start + i * step, start + span + i * step); if (e <= 0) return;
     const pts = [a, b, c].map(p => [p[0] - 32, p[1] - 32]), m = [(pts[0][0] + pts[1][0] + pts[2][0]) / 3, (pts[0][1] + pts[1][1] + pts[2][1]) / 3];
     g.save(); g.globalAlpha = e; g.fillStyle = col; g.beginPath();
     pts.forEach((p, k) => { const x = cx + ((p[0] - m[0]) * (.5 + .5 * e) + m[0] * (1 + (1 - e) * 1.6)) * size, y = cy + ((p[1] - m[1]) * (.5 + .5 * e) + m[1] * (1 + (1 - e) * 1.6)) * size; k ? g.lineTo(x, y) : g.moveTo(x, y); });
     g.closePath(); g.fill(); g.restore();
   });
-  const e = seg(t, .9, 1.5);
-  g.save(); g.globalAlpha = e; g.font = `650 148px "${F.d}"`; g.textBaseline = 'alphabetic';
-  const w1 = g.measureText('Delta ').width, w2 = g.measureText('Green').width, x = 960 - (w1 + w2) / 2, y = 660 + (1 - e) * 16;
+}
+function drawName(size, y, a) {
+  g.save(); g.globalAlpha = a; g.font = `650 ${size}px "${F.d}"`; g.textBaseline = 'alphabetic';
+  const w1 = g.measureText('Delta ').width, w2 = g.measureText('Green').width, x = 960 - (w1 + w2) / 2;
   g.fillStyle = C.ink; g.fillText('Delta ', x, y); g.fillStyle = C.green; g.fillText('Green', x + w1, y); g.restore();
-  text('Sichtbar machen, wo im Feld Ertrag fehlt.', 960, 736, 40, { al: 'center', c: '#BEC4B2', w: 400, a: seg(t, 1.4, 1.9) });
+}
+S.end = (t, d) => {
+  bg();
+  drawLogo(960, 340, 4.6, t, .15, .07, .55);
+  const e = seg(t, .9, 1.5);
+  drawName(148, 660 + (1 - e) * 16, e);
+  text(TAGLINE, 960, 736, 40, { al: 'center', c: '#BEC4B2', w: 400, a: seg(t, 1.4, 1.9) });
   const c = seg(t, 2.2, 2.8);
   text('Stimme: KI (ElevenLabs)  ·  Stimmungsbilder und Musik: KI-generiert (Higgsfield)  ·  Alles, was wie ein Messwert aussieht: echte Daten', 960, 960, 22, { f: F.m, al: 'center', c: '#7C8476', a: c });
   text('Hilfe und Datenquellen: SUPPORT.md', 960, 996, 22, { f: F.m, al: 'center', c: '#7C8476', a: c });
   vignette(.4); fade(t, d, .2, .7);
 };
+
+// ---- opening: the title lands on the biggest hit of the music, over the real field.
+S.titlecard = (t, d) => {
+  bg();
+  const fit = fieldFit(120, 60, 1680, 960), s = 1 + .03 * t / d;
+  g.save(); g.translate(960, 540); g.scale(s, s); g.translate(-960, -540);
+  drawField(fit, i => rgb(ramp(FLD.relr[i])), .1 * seg(t, 0, .6));
+  drawLogo(960, 330, 5.2, t, 0, .025, .3);
+  const e = seg(t, .1, .45);
+  drawName(176, 680 + (1 - e) * 22, e);
+  text(TAGLINE, 960, 772, 50, { f: F.d, w: 500, al: 'center', c: '#D5DAC9', a: seg(t, .55, 1.1) });
+  g.restore();
+  vignette(.55);
+  rect(0, 0, 1920, 1080, '#F3F8E0', .85 * (1 - seg(t, 0, .32)));
+  fade(t, d, 0, .5);
+};
+
+// ---- opening: what the product is meant to do. A phone with the real orthophoto and the real maize parcel of the pitch intro (basemap.at 2024, INVEKOS 2024).
+// The notification does not exist on the website yet, so the scene says so in the picture; the phone map is an example, not a measurement.
+const PARCEL = [[189.8, 534.9], [252.5, 509.4], [248.5, 314.7], [202.5, 318.4], [178.2, 324.3], [111.0, 348.2]];
+const PHONE = { x: 870, y: 86, w: 470, h: 908, sx: 886, sy: 102, sw: 438, sh: 876 };
+function phoneScreen(t, v) {
+  const P = PHONE, k = P.sh / 746, up = seg(t, 2.1, 2.5), ox = P.sx - (394 * k - P.sw) / 2, oy = P.sy - 190 * up, pt = p => [ox + p[0] * k, oy + p[1] * k];   // the map moves up with the sheet, so the parcel stays in view
+  const lock = seg(t, v(1) - .1, v(1) + .2);
+  // map, parcel outline, threshold sheet
+  if (lock < 1) {
+    if (IMG.map && IMG.map.naturalWidth) { g.filter = 'brightness(1.12) saturate(1.15) contrast(1.05)'; g.drawImage(IMG.map, ox, oy, 394 * k, 746 * k); g.filter = 'none'; }
+    const t0 = .85, step = .2, n = PARCEL.length, done = clamp((t - t0) / (step * n));
+    const shown = Math.floor(done * n), frac = done * n - shown;
+    if (done >= 1) { g.beginPath(); PARCEL.forEach((p, i) => { const q = pt(p); i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); }); g.closePath(); g.fillStyle = `rgba(157,187,92,${.34 * seg(t, t0 + step * n, t0 + step * n + .25)})`; g.fill(); }
+    g.save(); g.strokeStyle = '#E8F5B0'; g.lineWidth = 5; g.lineJoin = 'round'; g.beginPath();
+    for (let i = 0; i <= Math.min(shown, n); i++) { const q = pt(PARCEL[i % n]); i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); }
+    let tip = null;
+    if (t > t0 && shown < n) { const a = pt(PARCEL[shown]), b = pt(PARCEL[(shown + 1) % n]); tip = [lerp(a[0], b[0], frac), lerp(a[1], b[1], frac)]; g.lineTo(tip[0], tip[1]); }
+    g.stroke(); g.restore();
+    PARCEL.forEach((p, i) => { const on = t - (t0 + i * step); if (on < 0) return; const q = pt(p); dot(q[0], q[1], 9, '#F6FBDC'); if (on < .4) ring(q[0], q[1], 9 + 60 * on, '#F6FBDC', 3, 1 - on / .4); });
+    if (tip) dot(tip[0], tip[1], 20, '#FFFFFF', .35);
+    if (done >= 1) { const q = pt([200, 425]); text('2,9 ha', q[0], q[1], 30, { f: F.m, al: 'center', w: 700, a: seg(t, t0 + step * n, t0 + step * n + .2) }); }
+    rect(P.sx, P.sy, P.sw, 108, 'rgba(10,14,10,.86)');            // header below the notch
+    text('Delta Green', P.sx + 26, P.sy + 90, 28, { f: F.d, w: 600 });
+    text(t < 2.15 ? 'Feld umranden' : 'Warnschwelle', P.sx + P.sw - 26, P.sy + 89, 22, { f: F.m, al: 'right', c: C.green });
+    if (up > 0) {
+      const H = 348, y = P.sy + P.sh - H * up;
+      g.save(); g.fillStyle = '#10160F'; g.beginPath(); g.roundRect(P.sx, y, P.sw, H + 30, [30, 30, 0, 0]); g.fill(); g.restore();
+      text('Warnen ab', P.sx + 34, y + 66, 32, { c: C.dim });
+      const val = 10 * seg(t, 2.5, 3.5);
+      text(`${Math.round(val)} %`, P.sx + 34, y + 176, 104, { f: F.d, w: 600, c: C.green });
+      text('auffälliger Feldfläche', P.sx + 34, y + 224, 30, { c: C.ink });
+      const tx = P.sx + 34, tw = P.sw - 68, ty = y + 282, kx = tx + tw * (val / 50);
+      rect(tx, ty - 4, tw, 8, C.line); rect(tx, ty - 4, kx - tx, 8, C.green); dot(kx, ty, 17, '#FFFFFF');
+    }
+  }
+  // lock screen: the message
+  if (lock > 0) {
+    const gr = g.createLinearGradient(0, P.sy, 0, P.sy + P.sh); gr.addColorStop(0, '#0D1A12'); gr.addColorStop(1, '#040705');
+    g.save(); g.globalAlpha = lock; g.fillStyle = gr; g.fillRect(P.sx, P.sy, P.sw, P.sh); g.restore();
+    const cx = P.sx + P.sw / 2;
+    text('9:41', cx, P.sy + 170, 110, { f: F.d, w: 500, al: 'center', a: lock });
+    const n0 = v(1) + 1.15, nk = clamp((t - n0) / .28);
+    if (nk > 0) {
+      const over = 1 + .05 * Math.sin(nk * Math.PI), y = P.sy + 210 + (1 - ease(nk)) * -150;
+      g.save(); g.translate(cx, y + 74); g.scale(over, over); g.translate(-cx, -(y + 74)); g.globalAlpha = nk;
+      g.fillStyle = 'rgba(236,240,226,.97)'; g.beginPath(); g.roundRect(P.sx + 14, y, P.sw - 28, 150, 28); g.fill();
+      g.restore();
+      text('DELTA GREEN', P.sx + 38, y + 40, 21, { f: F.m, c: '#47513F', a: nk, w: 700, sp: 1 });
+      text('jetzt', P.sx + P.sw - 38, y + 40, 21, { f: F.m, al: 'right', c: '#6B7564', a: nk });
+      text('Schwache Zone im Feld', P.sx + 38, y + 86, 31, { f: F.d, w: 700, c: '#10160F', a: nk });
+      text('Schwelle 10 % überschritten', P.sx + 38, y + 124, 26, { c: '#2E352A', a: nk });
+      const m = seg(t, n0 + .25, n0 + .7);
+      if (m > 0) {
+        const fit = fieldFit(P.sx + 22, P.sy + 396, P.sw - 44, 340);
+        drawField(fit, i => FLD.ndvi[i] < .25 ? rgb([228, 88, 62]) : rgb(ramp(FLD.ndvi[i]), .38), m, .08);
+        text('Hier zuerst hinschauen', cx, P.sy + 796, 36, { f: F.d, w: 600, al: 'center', a: m });
+      }
+    }
+  }
+}
+S.phone = (t, d) => {
+  bg();
+  const v = voiceAt('phone', 'o8'), P = PHONE, n0 = v(1) + 1.15;
+  // satellite and Earth behind everything: the real film clip, black becomes the dark background
+  if (IMG.sat && IMG.sat.naturalWidth) {
+    const dx = 680, dy = -130, drift = t * 5;
+    g.save(); g.globalCompositeOperation = 'lighten'; g.globalAlpha = seg(t, 0, .5); g.drawImage(IMG.sat, dx - drift, dy, 1920, 1080); g.restore();
+    const gb = g.createLinearGradient(0, 640, 0, 950); gb.addColorStop(0, 'rgba(10,14,10,0)'); gb.addColorStop(1, C.bg); g.fillStyle = gb; g.fillRect(0, 640, 1920, 440);
+  }
+  // the signal leaves the satellite and reaches the phone
+  const bA = inout(t, v(1) + .1, v(1) + .4, n0 + .55, n0 + .95), sx = 1590, sy = 400, ex = P.x + P.w - 26, ey = P.y + 190;
+  if (bA > 0) {
+    line(sx, sy, ex, ey, C.green, 2.5, bA * .55);
+    for (let i = 0; i < 6; i++) {
+      const k = ((t * 1.5 + i / 6) % 1), x = lerp(sx, ex, k), y = lerp(sy, ey, k);
+      dot(x, y, 8, '#D6EE9A', bA * Math.sin(k * Math.PI), 16); ring(x, y, 10 + 20 * k, C.green, 2, bA * (1 - k) * .7);
+    }
+    dot(sx, sy, 10, '#E8F5B0', bA, 26);
+  }
+  // left: three plain steps
+  const steps = [['Feld umranden', 0, 2.1], ['Schwelle einstellen', 2.1, v(1) - .1], ['Nachricht aufs Handy', v(1) - .1, 99]];
+  text('DAS ZIEL', 110, 268, 28, { f: F.m, c: C.green, sp: 5, a: seg(t, .1, .5) });
+  steps.forEach(([s, a, b], i) => {
+    const y = 390 + i * 150, on = t >= a && t < b, past = t >= b, k = seg(t, Math.max(a - .05, .15), Math.max(a, .15) + .3);
+    if (k <= 0) return;
+    ring(150, y - 18, 34, on ? C.green : C.line, 4, k); if (on) dot(150, y - 18, 34, C.green, k * .2);
+    text(past ? '✓' : String(i + 1), 150, y - 3, 40, { f: F.d, w: 700, al: 'center', c: on || past ? C.green : C.dim, a: k });
+    text(s, 212, y, 54, { f: F.d, w: on ? 650 : 500, c: on ? C.ink : '#778071', a: k });
+  });
+  text('Zielbild: Die Benachrichtigung', 110, 880, 34, { c: C.amber, a: seg(t, .5, 1) });
+  text('ist noch nicht umgesetzt.', 110, 926, 34, { c: C.amber, a: seg(t, .5, 1) });
+  text('Beispiel. Luftbild: basemap.at', 110, 972, 22, { f: F.m, c: '#7C8476', a: seg(t, .5, 1) });
+  // phone: rises in, buzzes when the message arrives
+  const up = 1 - ease(t / .55), buzz = t > n0 && t < n0 + .55 ? Math.sin((t - n0) * 90) * 6 * (1 - (t - n0) / .55) : 0;
+  g.save(); g.translate(buzz, up * 220);
+  g.fillStyle = '#050705'; g.strokeStyle = '#3B453A'; g.lineWidth = 3; g.beginPath(); g.roundRect(P.x, P.y, P.w, P.h, 62); g.fill(); g.stroke();
+  g.save(); g.beginPath(); g.roundRect(P.sx, P.sy, P.sw, P.sh, 48); g.clip();
+  phoneScreen(t, v);
+  g.restore();
+  rect(P.x + P.w / 2 - 62, P.sy + 12, 124, 30, '#050705');
+  g.restore();
+  if (t > n0 && t < n0 + .8) { const k = (t - n0) / .8; g.save(); g.strokeStyle = '#D6EE9A'; g.globalAlpha = 1 - k; g.lineWidth = 5; g.beginPath(); g.roundRect(P.x - k * 40, P.y - k * 40, P.w + k * 80, P.h + k * 80, 62 + k * 30); g.stroke(); g.restore(); }
+  vignette(.35);
+};
+
+// ---- opening: the three words, screen-blended over film
+function bigWord(s, t, d) { blackbg(); const a = seg(t, 0, .12) * (1 - seg(t, d - .08, d)); g.save(); g.translate(960, 540); const z = 1 + .05 * t / d; g.scale(z, z); text(s, 0, 56, 176, { f: F.d, w: 700, al: 'center', sp: 10, a, glow: 26, glowc: 'rgba(255,255,255,.35)' }); g.restore(); }
+S.p_duerre = (t, d) => bigWord('DÜRRE', t, d);
+S.p_befall = (t, d) => bigWord('BEFALL', t, d);
+S.p_unwetter = (t, d) => bigWord('UNWETTER', t, d);
 
 // ---- plates, screen-blended over film (black = transparent)
 S.p_ch0 = (t, d) => { blackbg(); chapter(0, t, d); };

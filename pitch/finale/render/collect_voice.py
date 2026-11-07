@@ -31,10 +31,14 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--since", required=True)
     ap.add_argument("--apply", action="store_true")
+    ap.add_argument("--only", default="", help="comma separated ids, in the order they were downloaded")
     a = ap.parse_args()
     since = dt.datetime.fromisoformat(a.since).timestamp()
     with open(HERE / "voice_lines.tsv", encoding="utf-8", newline="") as f:
         lines = list(csv.DictReader(f, delimiter="\t"))
+    if a.only:
+        wanted = a.only.split(",")
+        lines = [next(l for l in lines if l["id"] == i) for i in wanted]
     files = sorted((p for p in DOWNLOADS.iterdir() if p.is_file() and p.stat().st_mtime >= since and p.suffix in (".tmp", ".mp3")), key=lambda p: p.stat().st_mtime)
     print(f"{len(files)} files, {len(lines)} lines")
     seen: dict[str, str] = {}

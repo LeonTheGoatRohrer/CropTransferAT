@@ -177,6 +177,8 @@ def voice_beats() -> dict:
     # Two takes where a comma pause is longer than the sentence pause: measured pause positions, set by hand.
     beats["b01"]["s"] = [0.05, 2.62, 4.11, 11.43]
     beats["b02"]["s"] = [0.08, 3.96, 5.36]
+    # b01 is cut in two at its first sentence: the name falls on the title, the rest opens the problem chapter. Same indices as b01.
+    beats["b01b"] = {"dur": round(beats["b01"]["dur"] - 2.62, 2), "s": [0.0, 0.0, round(4.11 - 2.62, 2), round(11.43 - 2.62, 2)]}
     return beats
 
 

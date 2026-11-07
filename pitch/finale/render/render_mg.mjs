@@ -26,7 +26,7 @@ const anon = process.argv.includes('--anon');
 const FPS = 25;
 
 const face = (fam, file) => `@font-face{font-family:"${fam}";src:url(${pathToFileURL(path.join(fonts, file)).href});font-weight:100 900}`;
-const imgs = ['freeze1', 'freeze2', 'logo'].map((n) => [n, path.join(mg, `${n}.png`)]).filter(([, f]) => fs.existsSync(f));
+const imgs = [['freeze1', 'freeze1.png'], ['freeze2', 'freeze2.png'], ['map', 'map_ortho.jpg'], ['sat', 'sat.png']].map(([n, f]) => [n, path.join(mg, f)]).filter(([, f]) => fs.existsSync(f));
 const html = `<!doctype html><meta charset="utf-8"><style>
 ${face('Bricolage', 'bricolage-grotesque-latin-wght-normal.ttf')}
 ${face('Instrument', 'instrument-sans-latin-wght-normal.ttf')}
