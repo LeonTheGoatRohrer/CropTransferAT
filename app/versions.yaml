@@ -29,10 +29,12 @@ versions:
     metrics: []
     found:
       - "Alle automatisch geprüften Filmzahlen stimmen mit den Ergebnisdateien überein; die Kernzahl 0,68 wurde dafür aus den Rohwerten neu gerechnet (0,676)."
+      - "Fassung v4: Sprechtext und Grafiken wurden nach Rückmeldung verständlicher, eine unabhängige Prüfung der neuen Aussagen fand keine falsche Zahl."
     limits:
       - "Den Klang konnte der KI-Assistent nur messen, nicht hören."
       - "Die KI-Stimmungsbilder sind von 480p hochskaliert, nicht neu in 1080p erzeugt."
       - "Abgabedatum, ETH-Antwort und ZALF-Punktzahl stammen aus der Angabe des Projektinhabers, nicht aus dem Repository."
+      - "Die Einschränkungen zu Oberösterreich und zu den 13 von 15 bekannten Punkten stehen im Film nur noch kurz und in Fußzeilen; vollständig stehen sie in den Berichten."
       - "Vor dem Zeigen offen: Freigaben für Ortsnamen und Institutionen, Regeln des Finales, Tarif der KI-Stimme."
     figures: []
     links:

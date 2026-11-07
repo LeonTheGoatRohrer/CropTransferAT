@@ -7,7 +7,7 @@ Usage:  python build_film.py --plan             write ../export/mg/timeline.js a
         python build_film.py --anon             variant with aggregated values and without place names
         python build_film.py --audio-only       keep the picture, only remix the sound
         python build_film.py --opening          only the opening up to the title, for review
-Output: ../export/DeltaGreen_{Anfang,Finale_v3}_{540p,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
+Output: ../export/DeltaGreen_{Anfang,Finale_v4}_{540p,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
 """
 from __future__ import annotations
 
@@ -99,15 +99,15 @@ def segments() -> list[dict]:
         # 3 solution: the satellite was just introduced in the opening, so this starts at "Zehn Meter pro Pixel"; the scan into real pixels falls on "Sein Bild zeigt ..."
         {"id": "c_desc", "kind": "film", "clips": [clip("a05_descent", 3.9, 3.1)], "plate": "p_desc", "voice": ("c01c", 0.1)},
         {"id": "zoom", "kind": "mg", "scene": "zoom", "dur": round(0.2 + c01 + 0.7 - 9.3, 2), "voice": None, "lead": -9.1},
-        mg("wall", "wall", "c02", tail=1.0),
+        mg("wall", "wall", "c02", tail=0.7),
         mg("quart", "quart", "c03", tail=0.8),
-        mg("tiles", "tiles", "c04", tail=0.9),
+        mg("tiles", "tiles", "c04", tail=0.7),
         mg("failed", "failed", "c05", tail=0.8),
         # 4 data
-        mg("sources", "sources", "d01", lead=0.5, tail=0.8),
+        mg("sources", "sources", "d01", lead=0.5, tail=0.7),
         mg("zero", "zero", "d02", tail=0.7),
         mg("freezeoo", "freezeoo", "d03", tail=1.0),
-        mg("stmk", "stmk", "d04", tail=1.3),
+        mg("stmk", "stmk", "d04", tail=1.0),
         # 5 product
         # Shots follow the sentences of e01/e02. Crops stay inside the content, so that no control is cut off; the caption covers the page below.
         {"id": "app_d_map", "kind": "app", "file": EXPORT / "app" / "d_map.webm", "start": 0.0, "dur": 5.6, "voice": ("e01", 0.3),
@@ -127,8 +127,8 @@ def segments() -> list[dict]:
         mg("stamp", "stamp", "f03", tail=0.9),
         {"id": "f_heat", "kind": "film", "clips": [clip("a07_heat", 0.5, 3.2)], "plate": "p_ch4", "extra_label": "Stimmungsbild, nicht die Versuchsflächen"},
         mg("scatter", "scatter", "f04", lead=2.4, tail=0.4, variant=True),
-        mg("big", "big", "f05", lead=0.5, tail=1.1),
-        mg("lines", "lines", "f06", tail=1.3),
+        mg("big", "big", "f05", lead=0.5, tail=0.9),
+        mg("lines", "lines", "f06", tail=1.0),
         # 7 end
         # pull back from the field up to the orbit
         {"id": "g_rise", "kind": "film", "clips": [clip("a10_rise", 1.5, 5.6), clip("a12_sat", 3.0, 3.0)], "voice": ("g01", 0.4)},
@@ -196,21 +196,38 @@ def plate_suffix(seg: dict) -> str:
 
 
 def render_app(seg: dict, out: Path) -> None:
-    (x0, y0, w0, h0), (x1, y1, w1, h1) = seg["z0"], seg["z1"]
+    """A slow virtual camera inside the recording, computed per frame with subpixel precision.
+
+    ffmpeg's zoompan rounds the crop to whole pixels, which made the picture jump back and forth by a pixel per frame.
+    """
+    z0, z1 = np.array(seg["z0"], float), np.array(seg["z1"], float)     # x, y, w, h in the 1920x1080 space of the page
     d = seg["dur"]
-    n = int(d * FPS)
-    k = f"min(on/{n},1)"
-    p = f"({k}*{k}*(3-2*{k}))"                                  # slow virtual camera inside the recording
-    # zoompan, not crop: crop evaluates its size only once, so the camera would pan without ever zooming.
-    # The doubled input keeps the move from stepping in whole pixels.
-    zoom = f"zoompan=z='1920/({w0}+({w1}-{w0})*{p})':x='2*({x0}+({x1}-{x0})*{p})':y='2*({y0}+({y1}-{y0})*{p})':d=1:s={W}x{H}:fps={FPS}"
-    graph = f"[0:v]fps={FPS},setpts=PTS-STARTPTS,tpad=stop_mode=clone:stop_duration={d},scale=3840:2160:flags=lanczos,{zoom},format=yuv420p[v]"
-    inputs, last = ["-ss", str(seg["start"]), "-i", str(seg["file"])], "v"
+    n = round(d * FPS)
+    SW, SH = 3840, 2160
+    source = subprocess.Popen(["ffmpeg", "-v", "error", "-ss", str(seg["start"]), "-i", str(seg["file"]),
+                               "-vf", f"fps={FPS},setpts=PTS-STARTPTS,tpad=stop_mode=clone:stop_duration={d},scale={SW}:{SH}:flags=lanczos,format=rgb24",
+                               "-frames:v", str(n), "-f", "rawvideo", "-"], stdout=subprocess.PIPE)
+    inputs, graph, maps = ["-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}", "-r", str(FPS), "-i", "-"], [], ["-map", "0:v"]
     if seg.get("caption"):
         inputs += ["-i", str(caption_png(seg["id"], *seg["caption"]))]
-        graph += ";[v][1:v]overlay=0:0:format=auto[o]"
-        last = "o"
-    run([*inputs, "-filter_complex", graph, "-map", f"[{last}]", "-t", str(d), *ENC, str(out)])
+        graph, maps = ["-filter_complex", "[0:v][1:v]overlay=0:0:format=auto,format=yuv420p[o]"], ["-map", "[o]"]
+    sink = subprocess.Popen(["ffmpeg", "-y", "-v", "error", *inputs, *graph, *maps, "-t", str(d), *ENC, str(out)], stdin=subprocess.PIPE)
+    size = SW * SH * 3
+    for i in range(n):
+        data = source.stdout.read(size)
+        if len(data) < size:
+            break
+        k = min(i / n, 1.0)
+        x, y, w, h = z0 + (z1 - z0) * (k * k * (3 - 2 * k))
+        frame = Image.frombuffer("RGB", (SW, SH), data, "raw", "RGB", 0, 1)
+        sx, sy = SW / 1920, SH / 1080
+        view = frame.transform((W, H), Image.Transform.AFFINE, (w * sx / W, 0, x * sx, 0, h * sy / H, y * sy), Image.Resampling.BICUBIC)
+        sink.stdin.write(view.tobytes())
+    source.stdout.close()
+    source.wait()
+    sink.stdin.close()
+    if sink.wait() != 0:
+        raise RuntimeError(f"encoding {seg['id']} failed")
 
 
 def render_mg(seg: dict, out: Path) -> None:
@@ -421,7 +438,7 @@ def main() -> None:
     total = duration(picture)
     audio = BUILD_DIR / "audio.m4a"
     mix_audio({s["id"]: s["t"] for s in SEGMENTS}, total, audio)
-    name = ("DeltaGreen_Anfang" if args.opening else "DeltaGreen_Finale_v3") + ("_1080p" if W >= 1920 else "_540p") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
+    name = ("DeltaGreen_Anfang" if args.opening else "DeltaGreen_Finale_v4") + ("_1080p" if W >= 1920 else "_540p") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
     final = EXPORT / name
     run(["-i", str(picture), "-i", str(audio), "-c:v", "copy", "-c:a", "copy", "-t", f"{total:.3f}", "-movflags", "+faststart", str(final)])
     print("Film", final, round(duration(final), 2), "s", round(final.stat().st_size / 1e6, 1), "MB")

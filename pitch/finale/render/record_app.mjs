@@ -26,7 +26,7 @@ const tab = (name) => (p) => p.getByRole('tab', { name }).first().click();
 const reveal = (p) => p.getByRole('button', { name: 'Ergebnis aufdecken' }).click();
 const SHOTS = [
   { file: 'd_map', field: 'D', y0: 0, y1: 0, dur: 5.7, before: tab('Gemessener Ertrag'), act: [2.6, tab('Schwache Zonen')] },
-  { file: 'd_curve', field: 'D', y0: 2265, y1: 2285, dur: 3.1 },
+  { file: 'd_curve', field: 'D', y0: 2265, y1: 2265, dur: 3.1 },
   { file: 'd_alarm', field: 'D', y0: 1098, y1: 1098, dur: 4.9, act: [1.5, reveal] },     // this scroll hides the half-cut eyebrow line
   { file: 'e_alarm', field: 'E', y0: 1098, y1: 1098, dur: 3.9, before: reveal },
   { file: 'e_map', field: 'E', y0: 0, y1: 0, dur: 4.3, before: tab('Schwache Zonen') },

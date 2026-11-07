@@ -4,22 +4,22 @@ a02	Der Satellit hat es im Sommer schon gesehen.
 b01	Ich bin Leon Rohrer, und das ist Delta Green. Kein Feld ist überall gleich. Auf diesem reicht der Ertrag von vierzig bis fast hundertvierzig Prozent des Mittels. Am Ende bleibt davon oft nur eine Zahl: der Durchschnitt.
 b02	Wo genau Ertrag fehlt, zeigt nur eine Ertragskarte. Die fehlt meist. Und in Österreich gibt es keine öffentlichen Erträge einzelner Felder.
 c01	Aber über jedes Feld in Europa fliegt alle paar Tage derselbe Satellit: Sentinel-2. Zehn Meter pro Pixel, frei für alle. Sein Bild zeigt, wo im Feld man zuerst hinschauen sollte. Ohne Sensor auf der Maschine, ohne Kosten für den Betrieb.
-c02	Geprüft habe ich das an einundvierzig Feld-Jahren aus den USA, jeweils gegen die Ertragskarte vom Mähdrescher. Die Rangkorrelation liegt bei null Komma sechs acht. Null wäre Zufall, eins wäre perfekt. Und sie ist in allen einundvierzig Fällen positiv.
-c03	Markiere ich das schwächste Viertel der Pixel, liegen achtundfünfzig Prozent davon wirklich in einer Problemzone. Zufällig wären es siebenundzwanzig. Belastbar ist das bisher an diesem einen Standort.
-c04	Natürlich wollte ich wissen, ob KI das besser kann. Also habe ich siebenhundertzweiundachtzig Modellvarianten trainiert und bewertet. Das Überraschende: Die einfachen Methoden haben sich durchgesetzt. Von den drei Ergebnissen, die übrig blieben, sind zwei gar kein gelerntes Modell.
+c02	Geprüft habe ich das an einundvierzig Feld-Jahren aus den USA, jeweils gegen die Ertragskarte vom Mähdrescher. Die Rangkorrelation liegt bei null Komma sechs acht. Null: kein Zusammenhang. Eins: exakt dieselbe Reihenfolge. Und sie ist in allen einundvierzig Fällen positiv.
+c03	Von hundert Stellen, die der Satellit als schwach markiert, liegen achtundfünfzig wirklich in einer Problemzone. Zufällig wären es siebenundzwanzig. Belastbar ist das bisher an diesem einen Standort.
+c04	Holt eine KI aus diesen Daten noch mehr für das einzelne Feld heraus? Also habe ich siebenhundertzweiundachtzig Modellvarianten trainiert und bewertet. Das Überraschende: Die einfachen Methoden haben sich durchgesetzt. Von den drei Ergebnissen, die übrig blieben, sind zwei gar kein gelerntes Modell.
 c05	Und was gescheitert ist, steht genauso im Bericht: Radar, Wärmebild und drei Runden Jahresvorhersage haben nicht gereicht.
 d01	Für das Training gab es keine österreichischen Erträge. Also habe ich öffentliche Datensätze aus anderen Ländern genommen, und Fachleute, Versuchsstationen und Hochschulen angefragt. Viele Anfragen sind noch offen.
 d02	Österreich bleibt reine Prüfung. Im Training steckt kein einziger österreichischer Wert.
-d03	Die Regel wird eingefroren, dann kommt der Test. In Oberösterreich erkennt der Stress-Score an vierunddreißig Standort-Jahren gute und schlechte Jahre, mit null Komma fünf. Einzelne Standorte im selben Jahr unterscheidet er nicht, und ein einfacher Grünwert schafft dasselbe.
+d03	Die Regel wird eingefroren, dann kommt der Test. In Oberösterreich besteht sie den ersten Test: Ohne jede Anpassung erkennt sie gute und schlechte Jahre. Das schafft auch ein einfacher Grünwert. Standorte im selben Jahr trennt sie noch nicht.
 d04	In der Steiermark reichten die Daten nicht für einen Test: zwölf statt fünfzehn Standort-Jahre. So stand es, als ich abgegeben habe.
 e01	Daraus ist ein Prototyp entstanden. Dieses US-Feld kannte das Verfahren nicht. Im Juli bleibt die Kurve unter der Referenz, der Alarm schlägt an, geerntet wurde rund ein Viertel unter dem Üblichen.
 e02	Das Nachbarfeld blieb knapp unter der Schwelle. Eine Warnung zeigt, wo man hinschauen sollte, nicht warum.
 f01	Abgegeben habe ich am Sonntag, dem achtzehnten Oktober. Am Wochenende kam keine Antwort. Am Montag um neun Uhr vierundvierzig schrieb die ETH Zürich. Dann kam eine Ertragskarte aus Brandenburg mit fast achtundzwanzigtausend Punkten. Beides nicht aus Österreich.
 f02	Und am achtundzwanzigsten Oktober, zehn Tage nach der Abgabe, kamen die Excel-Reihen der Versuchsstation Hatzendorf: Wagna und Kalsdorf, bis zu zwanzig Jahre.
 f03	Damit war der Test möglich, der vorher an den Daten gescheitert war. Ich habe ihn vorab festgeschrieben und dann einmal ausgewertet.
-f04	Die zwei blinden Punkte aus zweitausendsechsundzwanzig haben die niedrigsten Scores aller fünfzehn. Und die Versuche lagen tatsächlich weit unter dem Üblichen.
+f04	Neu sind die zwei Punkte aus zweitausendsechsundzwanzig, ihre Scores entstanden erst danach. Sie sind die niedrigsten aller fünfzehn. Und die Versuche lagen tatsächlich weit unter dem Üblichen.
 f05	Null Komma sieben sieben, bei fünfzehn Standort-Jahren. Kriterium bestanden.
-f06	Aber dreizehn von fünfzehn Punkten waren vorher bekannt. Es ist nur ein einziges blindes Jahr. Und einfaches Grün liegt bei null Komma sieben zwei. Die Daten der Hagelversicherung sind angefragt.
+f06	Der nächste Schritt: mehr neue Jahre. Einfaches Grün liegt mit null Komma sieben zwei fast gleichauf. Die Daten der Hagelversicherung sind angefragt.
 g01	Ein Satellitenbild, das allen gehört. Und ein ehrlicher Blick auf das, was es kann. Das ist Delta Green.
 x01	Abgegeben habe ich am Sonntag, dem achtzehnten Oktober. Am Wochenende kam keine Antwort. Danach schrieb eine Hochschule aus der Schweiz. Dann kam eine Ertragskarte aus Deutschland mit fast achtundzwanzigtausend Punkten. Beides nicht aus Österreich.
 x02	Und am achtundzwanzigsten Oktober, zehn Tage nach der Abgabe, kamen Versuchsreihen aus der Steiermark: zwei Standorte, bis zu zwanzig Jahre.
