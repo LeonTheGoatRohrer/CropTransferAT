@@ -175,10 +175,11 @@ def voice_beats() -> dict:
         first = float(np.argmax(~quiet) * 0.01)
         beats[line["id"]] = {"dur": round(dur, 2), "s": [round(first, 2)] + [round(s, 2) for s in starts]}
     # Two takes where a comma pause is longer than the sentence pause: measured pause positions, set by hand.
-    beats["b01"]["s"] = [0.05, 2.62, 4.11, 11.43]
+    beats["b01"]["s"] = [0.05, 4.11, 6.37, 11.43]
     beats["b02"]["s"] = [0.08, 3.96, 5.36]
-    # b01 is cut in two at its first sentence: the name falls on the title, the rest opens the problem chapter. Same indices as b01.
-    beats["b01b"] = {"dur": round(beats["b01"]["dur"] - 2.62, 2), "s": [0.0, 0.0, round(4.11 - 2.62, 2), round(11.43 - 2.62, 2)]}
+    # b01 is cut in two in the pause after "... Delta Green." (3.38-4.11 s): the name falls on the title, the rest opens the problem chapter. Same indices as b01.
+    cut = 3.85
+    beats["b01b"] = {"dur": round(beats["b01"]["dur"] - cut, 2), "s": [round(4.11 - cut, 2)] + [round(s - cut, 2) for s in beats["b01"]["s"][1:]]}
     return beats
 
 

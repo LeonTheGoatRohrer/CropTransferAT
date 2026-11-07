@@ -7,7 +7,7 @@ Usage:  python build_film.py --plan             write ../export/mg/timeline.js a
         python build_film.py --anon             variant with aggregated values and without place names
         python build_film.py --audio-only       keep the picture, only remix the sound
         python build_film.py --opening          only the opening up to the title, for review
-Output: ../export/DeltaGreen_{Anfang,Finale_v2}_{540p,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
+Output: ../export/DeltaGreen_{Anfang,Finale_v3}_{540p,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
 """
 from __future__ import annotations
 
@@ -62,7 +62,7 @@ def clip(name, start=0.0, dur=3.0, speed=1.0, vf=""):
 
 
 def mg(sid, scene, voice=None, lead=0.3, tail=0.6, dur=None, variant=False):
-    d = dur if dur is not None else lead + vd(voice) + tail
+    d = dur if dur is not None else lead + vd(voice) + tail     # a voice line may run on into the next segment when dur is given
     return {"id": sid, "kind": "mg", "scene": scene, "dur": round(d, 2), "voice": (voice, lead) if voice else None, "lead": lead, "variant": variant}
 
 
@@ -79,20 +79,21 @@ def segments() -> list[dict]:
         {"id": "o_storm", "kind": "film", "clips": [clip("a09_storm", 1.5, 0.87)], "bars": True, "plate": "p_unwetter"},
         {"id": "o_night", "kind": "film", "clips": [clip("a08_night", 3.0, 1.2)], "bars": True, "voice": ("o4", 0.1)},
         {"id": "o_grain", "kind": "film", "clips": [clip("a11_grain", 1.0, 1.2)], "bars": True},
-        {"id": "o_combine", "kind": "film", "clips": [clip("a01_combine", 1.46, 0.5)], "bars": True},
-        mg("o_scan", "freezescan", dur=1.5),
-        {"id": "o_tracks", "kind": "file", "file": OPENER, "start": OPENER_CUT, "dur": 1.6, "speed": 4.69},
+        # The camera rises from the ground to above the combine; its last frame is the frame the scan starts from.
+        {"id": "o_rise", "kind": "film", "clips": [clip("a14_rise", 0.0, 5.0)], "bars": True},
+        mg("o_scan", "freezescan", "o9", lead=0.1, dur=1.5),
+        # The real track, now slow enough to follow and explained in the picture.
+        {"id": "o_tracks", "kind": "file", "file": OPENER, "start": OPENER_CUT, "dur": 5.0, "speed": 1.5, "plate": "p_tracks"},
         {"id": "o_sat", "kind": "film", "clips": [clip("a12_sat", 0.0, 3.0)], "voice": ("o5", 0.1)},
-        {"id": "o_pixels", "kind": "file", "file": OPENER, "start": 14.2, "dur": 3.0, "speed": 1.6, "voice": ("o6", 0.15)},
+        {"id": "o_pixels", "kind": "file", "file": OPENER, "start": 14.2, "dur": 2.85, "speed": 1.6, "voice": ("o6", 0.05)},
         {"id": "o_split", "kind": "file", "file": OPENER, "start": 20.0, "dur": 2.0, "speed": 1.25, "voice": ("o7", 0.2)},
-        mg("phone", "phone", "o8", lead=0.2, tail=0.27),
-        mg("titlecard", "titlecard", "b01a", lead=0.4, tail=0.98),
+        mg("phone", "phone", "o8", lead=0.15, tail=0.1),
+        mg("titlecard", "titlecard", "b01a", lead=0.4, tail=0.6),
         # 2 problem
         mg("spread", "spread", "b01b"),
         mg("nomap", "nomap", "b02"),
-        # 3 solution: the scan into real pixels falls on "Sein Bild zeigt ..."
-        {"id": "c_sat", "kind": "film", "clips": [clip("a12_sat", 0.0, 6.2, 0.97)], "plate": "p_sat", "voice": ("c01", 0.2)},
-        {"id": "c_desc", "kind": "film", "clips": [clip("a05_descent", 3.9, 3.1)], "plate": "p_desc"},
+        # 3 solution: the satellite was just introduced in the opening, so this starts at "Zehn Meter pro Pixel"; the scan into real pixels falls on "Sein Bild zeigt ..."
+        {"id": "c_desc", "kind": "film", "clips": [clip("a05_descent", 3.9, 3.1)], "plate": "p_desc", "voice": ("c01c", 0.1)},
         {"id": "zoom", "kind": "mg", "scene": "zoom", "dur": round(0.2 + c01 + 0.7 - 9.3, 2), "voice": None, "lead": -9.1},
         mg("wall", "wall", "c02", tail=1.0),
         mg("quart", "quart", "c03", tail=0.8),
@@ -215,8 +216,14 @@ def render_mg(seg: dict, out: Path) -> None:
 
 def render_file(seg: dict, out: Path) -> None:
     speed = seg.get("speed", 1.0)                               # the opener's real data, shortened for the 30 s opening
-    vf = f"setpts=PTS/{speed},scale={W}:{H}:flags=lanczos,fps={FPS},noise=alls=2:allf=t,format=yuv420p"
-    run(["-ss", str(seg["start"]), "-t", f"{seg['dur'] * speed:.3f}", "-i", str(seg["file"]), "-vf", vf, "-t", str(seg["dur"]), *ENC, str(out)])
+    base = f"setpts=PTS/{speed},scale={W}:{H}:flags=lanczos,fps={FPS},noise=alls=2:allf=t,format=gbrp"
+    inputs = ["-ss", str(seg["start"]), "-t", f"{seg['dur'] * speed:.3f}", "-i", str(seg["file"])]
+    if seg.get("plate"):
+        inputs += ["-i", str(MG / f"{seg['plate']}.mp4")]
+        graph = f"[0:v]{base}[b];[1:v]scale={W}:{H},fps={FPS},format=gbrp[p];[b][p]blend=all_mode=screen:shortest=1,format=yuv420p[o]"
+    else:
+        graph = f"[0:v]{base},format=yuv420p[o]"
+    run([*inputs, "-filter_complex", graph, "-map", "[o]", "-t", str(seg["dur"]), *ENC, str(out)])
 
 
 def render_black(seg: dict, out: Path) -> None:
@@ -271,18 +278,19 @@ def mix_audio(at: dict, total_s: float, out: Path) -> None:
     rl = int(1.6 * SR)
     place(sfx, rain[:rl] * ramp(rl, [(0, .6), (1.0, .6), (1.6, 0)])[:, None], at["o_storm"])
     engine = load_audio(SFX / "engine.mp3")
-    for name, gain, dur in (("o_night", .5, 2.4), ("o_combine", .8, 2.2), ("o_tracks", .55, 1.6)):     # the first one runs under the voice
+    for name, gain, dur in (("o_night", .5, 2.4), ("o_rise", .9, 5.0), ("o_scan", .35, 6.5)):     # under the voice quieter; the engine stays under the real track
         el = int(dur * SR)
-        place(sfx, engine[:el] * ramp(el, [(0, 0), (.1, gain), (dur - .4, gain), (dur, 0)])[:, None], at[name])
+        take = np.tile(engine, (el // len(engine) + 1, 1))[:el]
+        place(sfx, take * ramp(el, [(0, 0), (.2, gain), (dur - .6, gain), (dur, 0)])[:, None], at[name])
     place(sfx, scan, at["o_scan"], .8)
     place(sfx, scan, at["o_pixels"], .3)
     place(sfx, boom, at["o_heat"], .3)
-    place(sfx, boom, at["o_pixels"], .35)
+    place(sfx, boom, at["o_pixels"], .2)
     place(sfx, boom, title_hit, 1.0)
     tn = np.arange(int(.09 * SR)) / SR
     tick = np.sin(2 * np.pi * 2300 * tn) * np.exp(-tn * 70)
     for i in range(6):                                      # one tap per corner of the parcel, same times as S.phone
-        place(sfx, np.column_stack([tick, tick]), phone + .85 + i * .2, .22)
+        place(sfx, np.column_stack([tick, tick]), phone + 1.25 + i * .24, .22)
     message = phone + next(s for s in SEGMENTS if s["id"] == "phone")["lead"] + beats["o8"]["s"][1] + 1.15     # same moment as in S.phone
     place(sfx, scan, message - 1.0, .35)
     tp = np.arange(int(.5 * SR)) / SR
@@ -293,8 +301,12 @@ def mix_audio(at: dict, total_s: float, out: Path) -> None:
     place(sfx, np.column_stack([bz, bz]), message, .22)
     # Music: the new cue builds to the title, its biggest hit (36.0 s in the file) lands exactly on the name.
     cue1 = load_audio(SFX / "music1b.mp3")
-    c1 = cue1[int((36.0 - title_hit) * SR):]
-    place(music, c1 * ramp(len(c1), [(0, 1.0), (title_hit + 2.4, 1.0), (title_hit + 3.6, .2), (title_hit + 6, 0), (1000, 0)])[:, None], 0)
+    # The opening is longer than the cue's 36 s: its sections repeat every 12 s, so the first seconds come from the end of the first section.
+    lead_in = title_hit - 36.0
+    c1 = np.concatenate([cue1[int((12.0 - lead_in) * SR):int(12.0 * SR)], cue1]) if lead_in > 0 else cue1[int(-lead_in * SR):]
+    fall = title_hit + 3.6                                  # the title's voice ends about here; cue 2 takes over
+    first_hit = title_hit - 36.0                            # falls into the very first sentence: taken back, the voice comes first
+    place(music, c1 * ramp(len(c1), [(0, 0), (.3, 1.0), (first_hit - .15, 1.0), (first_hit, .3), (first_hit + 1.0, .3), (first_hit + 1.6, 1.0), (fall - 1.2, 1.0), (fall, .2), (fall + 2.4, 0), (1000, 0)])[:, None], 0)
     if "end" in at:
         place(sfx, scan, at["zoom"], .55)
         stamp = load_audio(SFX / "stamp.mp3")
@@ -372,7 +384,7 @@ def plan() -> None:
     MGDIR.mkdir(parents=True, exist_ok=True)
     (MGDIR / "timeline.js").write_text("const LEAD = " + json.dumps(lead) + ";", encoding="utf-8")
     scenes = [f"{s['scene']}:{s['dur']}" for s in SEGMENTS if s["kind"] == "mg"]
-    plates = [f"{s['plate']}:{sum(c['dur'] for c in s['clips'])}" for s in SEGMENTS if s.get("plate")]
+    plates = [f"{s['plate']}:{sum(c['dur'] for c in s['clips']) if s['kind'] == 'film' else s['dur']}" for s in SEGMENTS if s.get("plate")]
     variants = [f"{s['scene']}:{s['dur']}" for s in SEGMENTS if s.get("variant")]
     print("MAIN", ",".join(scenes + plates))
     print("VARIANT", ",".join(variants))
@@ -404,7 +416,7 @@ def main() -> None:
     total = duration(picture)
     audio = BUILD_DIR / "audio.m4a"
     mix_audio({s["id"]: s["t"] for s in SEGMENTS}, total, audio)
-    name = ("DeltaGreen_Anfang" if args.opening else "DeltaGreen_Finale_v2") + ("_1080p" if W >= 1920 else "_540p") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
+    name = ("DeltaGreen_Anfang" if args.opening else "DeltaGreen_Finale_v3") + ("_1080p" if W >= 1920 else "_540p") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
     final = EXPORT / name
     run(["-i", str(picture), "-i", str(audio), "-c:v", "copy", "-c:a", "copy", "-t", f"{total:.3f}", "-movflags", "+faststart", str(final)])
     print("Film", final, round(duration(final), 2), "s", round(final.stat().st_size / 1e6, 1), "MB")

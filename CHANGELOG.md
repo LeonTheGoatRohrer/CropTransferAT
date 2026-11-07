@@ -5,7 +5,7 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 ## [Unreleased]
 
 ### Added (Branch `phase-9-finale-video`)
-- **Finale-Video, neuer Anfang:** Die ersten 30 s erklären jetzt Problem, vorhandene Daten und Zielbild (Handy, als Zielbild gekennzeichnet), der Titel fällt auf den stärksten Einschlag der neuen Musik. Neue Unterzeile „Schon im Sommer sehen, wo im Feld Ertrag fehlt.“ Fassung `DeltaGreen_Finale_v2_1080p`.
+- **Finale-Video, neuer Anfang:** Der Anfang erklärt jetzt Problem, vorhandene Daten und Zielbild (Handy, als Zielbild gekennzeichnet), der Titel fällt auf den stärksten Einschlag der neuen Musik. Der Mähdrescher wird per Kameraflug eingeführt, seine echte Spur läuft länger und ist erklärt. Neue Unterzeile „Schon im Sommer sehen, wo im Feld Ertrag fehlt.“ Fix: „… und das ist Delta Green“ war an der falschen Pause geteilt.
 - **Finale-Video, 1080p:** beide Fassungen in 1920×1080 gebaut. Motion Graphics und App-Aufnahme neu in voller Auflösung, die 10 KI-Clips hochskaliert statt fertiggestellt (Fertigstellen hätte 960 Credits gekostet). Virtuelle Kamera auf `zoompan` umgestellt, weil `crop` seine Größe nur einmal auswertet und nicht zoomte.
 - **Finale-Video, Prototyp 960×540:** vollständiger 5-Minuten-Film mit KI-Stimme Helmut (ElevenLabs), Higgsfield-Clips, Motion Graphics aus echten Daten und App-Aufnahme, dazu eine Variante mit zusammengefassten Werten ohne Ortsnamen. Skripte `pitch/finale/render/`, Faktencheck `reports/finale_video/FAKTENCHECK.md`, Videos und Daten nur lokal unter `pitch/finale/export/`. Keine eingefrorenen Ergebnisse geändert.
 - **Finale-Video:** Drehbuch `pitch/finale/DREHBUCH.md`, Einstieg aus echten BARC-Daten `pitch/finale/render/` (Rendercode, Ton synthetisch).

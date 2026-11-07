@@ -7,10 +7,11 @@ Jede Zahl aus Bild und Sprechtext, mit Quelle. **Automatisch** heißt: `pitch/fi
 | Aussage im Film | Wert | Quelle | Prüfung |
 |---|---|---|---|
 | „Ein Maisfeld siehst du nur vom Rand“, „oft zeigt es erst die Ernte“ | keine Zahl | Vorgabe des Projektinhabers, allgemeine Beschreibung des Problems. **Im Repository nicht quantifiziert** | nicht belegbar als Zahl |
+| „Der Mähdrescher misst bei der Ernte, Meter für Meter“ | 8.472 Messpunkte in diesem Feld | echte Spur, `opener.py`; im Bild „Echte Spur. Echte Messwerte.“ Der Flug davor ist KI-generiert und gekennzeichnet | von Hand |
 | „Dürre. Befall. Unwetter.“ | keine Zahl | Vorgabe des Projektinhabers: mögliche Ursachen. Das Verfahren erkennt die Ursache **nicht**; das sagt der Film später („wo, nicht warum“) | von Hand |
 | Satellit alle paar Tage, frei für alle | – | Sentinel-2, `DATA_SOURCES.md`, Drehbuch §3 | von Hand |
 | Unterzeile „Schon im Sommer sehen, wo im Feld Ertrag fehlt“ | 0,68, 41 Feld-Jahre | NDVI 16.7.–15.8. gegen Ernte-Ertrag, `hauptergebnis.md` §1. Gilt belastbar nur für BARC, das sagt der Film bei 1:45. Keine Vorhersage von Einbrüchen | von Hand |
-| Feld umranden, Warnschwelle, Nachricht aufs Handy | Schwelle 10 % ist ein Beispiel | **Zielbild.** Die Benachrichtigung gibt es in der Website nicht, gezeichnete Felder laufen nur als Simulation (`web/src/pages/Analyse.tsx`). Im Bild steht „Zielbild: Die Benachrichtigung ist noch nicht umgesetzt“, die Stimme sagt „Das Ziel“ | im Code gesucht |
+| Eigenes Feld einstellen, Warnschwelle, Nachricht aufs Handy | Schwelle 10 % ist ein Beispiel | **Zielbild.** Die Benachrichtigung gibt es in der Website nicht, gezeichnete Felder laufen nur als Simulation (`web/src/pages/Analyse.tsx`). Im Bild steht „Zielbild: Die Benachrichtigung ist noch nicht umgesetzt“, die Stimme sagt „Das Ziel“ | im Code gesucht |
 | Maisschlag im Handy | 2,9 ha, 2,85 ha gemessen | `pitch/intro/assets/map_ortho.json`, echter INVEKOS-Schlag 2024, Luftbild basemap.at 2024 (CC BY 4.0) | von Hand |
 | Feldkarte in der Nachricht | Beispiel | Echte BARC-Daten, schwächstes Viertel der Pixel, nicht der Schlag aus dem Luftbild | im Bild als Beispiel gekennzeichnet |
 
@@ -92,7 +93,8 @@ Geprüft gegen die Liste „Nicht sagen“ im Drehbuch und die Vorgaben im Auftr
 
 ## Abweichungen vom Drehbuch
 
-- **Anfang (2026-11-07) auf Wunsch des Projektinhabers neu:** erklärt in 30 s Problem, vorhandene Daten und Zielbild, der Titel fällt erst bei 30 s. Die gesprochenen Sätze „Der Mähdrescher misst im Herbst …“ sind entfallen; die echte Mähdrescher- und Satellitenkarte bleibt im Bild, nur gekürzt.
+- **Satelliten-Wiederholung gestrichen (2026-11-07):** Der Satz „Aber über jedes Feld in Europa fliegt alle paar Tage derselbe Satellit: Sentinel-2.“ im Kapitel „Die Lösung“ entfällt, weil der neue Anfang das schon sagt und der Film sonst über 5:00 läge.
+- **Anfang (2026-11-07) auf Wunsch des Projektinhabers neu:** erklärt Problem, vorhandene Daten und Zielbild, der Titel fällt erst bei 38 s. Die gesprochenen Sätze „Der Mähdrescher misst im Herbst …“ sind entfallen; die echte Mähdrescher- und Satellitenkarte bleibt im Bild, nur gekürzt.
 - **Schlusssatz:** „Ein ehrlicher Blick in jedes Feld“ wurde zu „Ein ehrlicher Blick auf das, was es kann“, weil belastbar bisher nur ein Standort ist und die Feldkarte in Österreich nicht bestätigt ist.
 - **Ablauf:** nach dem Auftrag umgestellt. Der gesprochene Satz „bis zu 20 Jahre“ ersetzt „aus der Steiermark“ in der Zeitfolge; die Hatzendorf-Daten stehen jetzt korrekt beim 28.10.
 - **Selbst vor der Kamera (ca. 8 s):** entfällt im Prototyp, es gibt keine Aufnahme. Der Satz „Ich bin Leon Rohrer“ wird von der KI-Stimme gesprochen.

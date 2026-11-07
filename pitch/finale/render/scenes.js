@@ -610,12 +610,12 @@ S.titlecard = (t, d) => {
 const PARCEL = [[189.8, 534.9], [252.5, 509.4], [248.5, 314.7], [202.5, 318.4], [178.2, 324.3], [111.0, 348.2]];
 const PHONE = { x: 870, y: 86, w: 470, h: 908, sx: 886, sy: 102, sw: 438, sh: 876 };
 function phoneScreen(t, v) {
-  const P = PHONE, k = P.sh / 746, up = seg(t, 2.1, 2.5), ox = P.sx - (394 * k - P.sw) / 2, oy = P.sy - 190 * up, pt = p => [ox + p[0] * k, oy + p[1] * k];   // the map moves up with the sheet, so the parcel stays in view
+  const P = PHONE, k = P.sh / 746, up = seg(t, 2.8, 3.2), ox = P.sx - (394 * k - P.sw) / 2, oy = P.sy - 190 * up, pt = p => [ox + p[0] * k, oy + p[1] * k];   // the map moves up with the sheet, so the parcel stays in view
   const lock = seg(t, v(1) - .1, v(1) + .2);
   // map, parcel outline, threshold sheet
   if (lock < 1) {
     if (IMG.map && IMG.map.naturalWidth) { g.filter = 'brightness(1.12) saturate(1.15) contrast(1.05)'; g.drawImage(IMG.map, ox, oy, 394 * k, 746 * k); g.filter = 'none'; }
-    const t0 = .85, step = .2, n = PARCEL.length, done = clamp((t - t0) / (step * n));
+    const t0 = 1.25, step = .24, n = PARCEL.length, done = clamp((t - t0) / (step * n));
     const shown = Math.floor(done * n), frac = done * n - shown;
     if (done >= 1) { g.beginPath(); PARCEL.forEach((p, i) => { const q = pt(p); i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]); }); g.closePath(); g.fillStyle = `rgba(157,187,92,${.34 * seg(t, t0 + step * n, t0 + step * n + .25)})`; g.fill(); }
     g.save(); g.strokeStyle = '#E8F5B0'; g.lineWidth = 5; g.lineJoin = 'round'; g.beginPath();
@@ -628,12 +628,12 @@ function phoneScreen(t, v) {
     if (done >= 1) { const q = pt([200, 425]); text('2,9 ha', q[0], q[1], 30, { f: F.m, al: 'center', w: 700, a: seg(t, t0 + step * n, t0 + step * n + .2) }); }
     rect(P.sx, P.sy, P.sw, 108, 'rgba(10,14,10,.86)');            // header below the notch
     text('Delta Green', P.sx + 26, P.sy + 90, 28, { f: F.d, w: 600 });
-    text(t < 2.15 ? 'Feld umranden' : 'Warnschwelle', P.sx + P.sw - 26, P.sy + 89, 22, { f: F.m, al: 'right', c: C.green });
+    text(t < 2.85 ? 'Eigenes Feld' : 'Warnschwelle', P.sx + P.sw - 26, P.sy + 89, 22, { f: F.m, al: 'right', c: C.green });
     if (up > 0) {
       const H = 348, y = P.sy + P.sh - H * up;
       g.save(); g.fillStyle = '#10160F'; g.beginPath(); g.roundRect(P.sx, y, P.sw, H + 30, [30, 30, 0, 0]); g.fill(); g.restore();
       text('Warnen ab', P.sx + 34, y + 66, 32, { c: C.dim });
-      const val = 10 * seg(t, 2.5, 3.5);
+      const val = 10 * seg(t, 3.1, 4.0);
       text(`${Math.round(val)} %`, P.sx + 34, y + 176, 104, { f: F.d, w: 600, c: C.green });
       text('auffälliger Feldfläche', P.sx + 34, y + 224, 30, { c: C.ink });
       const tx = P.sx + 34, tw = P.sw - 68, ty = y + 282, kx = tx + tw * (val / 50);
@@ -685,14 +685,14 @@ S.phone = (t, d) => {
     dot(sx, sy, 10, '#E8F5B0', bA, 26);
   }
   // left: three plain steps
-  const steps = [['Feld umranden', 0, 2.1], ['Schwelle einstellen', 2.1, v(1) - .1], ['Nachricht aufs Handy', v(1) - .1, 99]];
+  const steps = [['Eigenes Feld einstellen', .7, 2.85], ['Schwelle einstellen', 2.85, v(1) - .1], ['Nachricht aufs Handy', v(1) - .1, 99]];
   text('DAS ZIEL', 110, 268, 28, { f: F.m, c: C.green, sp: 5, a: seg(t, .1, .5) });
   steps.forEach(([s, a, b], i) => {
     const y = 390 + i * 150, on = t >= a && t < b, past = t >= b, k = seg(t, Math.max(a - .05, .15), Math.max(a, .15) + .3);
     if (k <= 0) return;
     ring(150, y - 18, 34, on ? C.green : C.line, 4, k); if (on) dot(150, y - 18, 34, C.green, k * .2);
     text(past ? '✓' : String(i + 1), 150, y - 3, 40, { f: F.d, w: 700, al: 'center', c: on || past ? C.green : C.dim, a: k });
-    text(s, 212, y, 54, { f: F.d, w: on ? 650 : 500, c: on ? C.ink : '#778071', a: k });
+    text(s, 212, y, 50, { f: F.d, w: on ? 650 : 500, c: on ? C.ink : '#778071', a: k });
   });
   text('Zielbild: Die Benachrichtigung', 110, 880, 34, { c: C.amber, a: seg(t, .5, 1) });
   text('ist noch nicht umgesetzt.', 110, 926, 34, { c: C.amber, a: seg(t, .5, 1) });
@@ -712,6 +712,16 @@ S.phone = (t, d) => {
 
 // ---- opening: the three words, screen-blended over film
 function bigWord(s, t, d) { blackbg(); const a = seg(t, 0, .12) * (1 - seg(t, d - .08, d)); g.save(); g.translate(960, 540); const z = 1 + .05 * t / d; g.scale(z, z); text(s, 0, 56, 176, { f: F.d, w: 700, al: 'center', sp: 10, a, glow: 26, glowc: 'rgba(255,255,255,.35)' }); g.restore(); }
+// ---- opening: what the real combine track on screen means
+S.p_tracks = (t, d) => {
+  blackbg();
+  const a = inout(t, .2, .7, d - .3, d), x = 1490;           // right of the field's spike, nothing touches the track
+  text('Echte Spur.', x, 150, 46, { f: F.d, w: 650, a });
+  text('Echte Messwerte.', x, 206, 46, { f: F.d, w: 650, a });
+  for (let i = 0; i < 38; i++) rect(x + i * 10, 234, 10.5, 18, rgb(ramp(i / 37)), a);
+  text('wenig Ertrag', x, 286, 26, { c: C.sig, a });
+  text('viel', x + 380, 286, 26, { al: 'right', c: C.green, a });
+};
 S.p_duerre = (t, d) => bigWord('DÜRRE', t, d);
 S.p_befall = (t, d) => bigWord('BEFALL', t, d);
 S.p_unwetter = (t, d) => bigWord('UNWETTER', t, d);
