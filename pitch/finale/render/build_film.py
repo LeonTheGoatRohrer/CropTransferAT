@@ -57,6 +57,9 @@ def run(cmd: list[str]) -> None:
     subprocess.run(["ffmpeg", "-y", "-v", "error", *cmd], check=True)
 
 
+SLOWMO = f"minterpolate=fps={FPS}:mi_mode=mci:mc_mode=aobmc:vsbmc=1,setsar=1"      # new in-between frames, so slow motion does not stutter
+
+
 def clip(name, start=0.0, dur=3.0, speed=1.0, vf=""):
     return {"file": AI / f"{name}.mp4", "start": start, "dur": dur, "speed": speed, "vf": vf}
 
@@ -80,7 +83,8 @@ def segments() -> list[dict]:
         {"id": "o_night", "kind": "film", "clips": [clip("a08_night", 3.0, 1.2)], "bars": True, "voice": ("o4", 0.1)},
         {"id": "o_grain", "kind": "film", "clips": [clip("a11_grain", 1.0, 1.2)], "bars": True},
         # The camera rises from the ground to above the combine; its last frame is the frame the scan starts from.
-        {"id": "o_rise", "kind": "film", "clips": [clip("a14_rise", 0.0, 5.0)], "bars": True},
+        # Only the start and the end of the AI clip: in between the machine turns on the spot. a14_tail comes from retouch_rise.py.
+        {"id": "o_rise", "kind": "film", "clips": [clip("a14_rise", 0.0, 1.36, .7, vf=SLOWMO), clip("a14_tail", 0.0, 2.32, .7, vf=SLOWMO)], "bars": True},
         mg("o_scan", "freezescan", "o9", lead=0.1, dur=1.5),
         # The real track, now slow enough to follow and explained in the picture.
         {"id": "o_tracks", "kind": "file", "file": OPENER, "start": OPENER_CUT, "dur": 5.0, "speed": 1.5, "plate": "p_tracks"},
@@ -278,13 +282,14 @@ def mix_audio(at: dict, total_s: float, out: Path) -> None:
     rl = int(1.6 * SR)
     place(sfx, rain[:rl] * ramp(rl, [(0, .6), (1.0, .6), (1.6, 0)])[:, None], at["o_storm"])
     engine = load_audio(SFX / "engine.mp3")
-    for name, gain, dur in (("o_night", .5, 2.4), ("o_rise", .9, 5.0), ("o_scan", .35, 6.5)):     # under the voice quieter; the engine stays under the real track
+    for name, gain, dur in (("o_night", .5, 2.4), ("o_rise", .9, 3.68), ("o_scan", .35, 6.5)):     # under the voice quieter; the engine stays under the real track
         el = int(dur * SR)
         take = np.tile(engine, (el // len(engine) + 1, 1))[:el]
         place(sfx, take * ramp(el, [(0, 0), (.2, gain), (dur - .6, gain), (dur, 0)])[:, None], at[name])
     place(sfx, scan, at["o_scan"], .8)
     place(sfx, scan, at["o_pixels"], .3)
     place(sfx, boom, at["o_heat"], .3)
+    place(sfx, boom, at["o_rise"] + 1.36, .25)              # the hard cut from the ground to the air, on a beat of the cue
     place(sfx, boom, at["o_pixels"], .2)
     place(sfx, boom, title_hit, 1.0)
     tn = np.arange(int(.09 * SR)) / SR

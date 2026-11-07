@@ -111,7 +111,9 @@ S.freezescan = (t, d) => {
   vignette(.45);
   const y = 1080 * seg(t, .12, 1.25) * 1.04;
   if (IMG.freeze1 && IMG.freeze1.naturalWidth) {
-    g.save(); g.beginPath(); g.rect(0, y, 1920, 1080); g.clip(); g.drawImage(IMG.freeze1, 0, 0, 1920, 1080); rect(0, 0, 1920, 130, '#000'); rect(0, 950, 1920, 130, '#000');
+    g.save(); g.beginPath(); g.rect(0, y, 1920, 1080); g.clip();
+    // The canvas sits 21 px low on the page (the font-preload spans above it), so the film frame moves up to meet the cut exactly.
+    g.drawImage(IMG.freeze1, 0, -21, 1920, 1080); rect(0, 0, 1920, 108, '#000'); rect(0, 930, 1920, 150, '#000');
     g.restore();
   }
   if (t > .1 && y < 1080) {

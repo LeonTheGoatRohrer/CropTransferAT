@@ -94,7 +94,7 @@ Geprüft gegen die Liste „Nicht sagen“ im Drehbuch und die Vorgaben im Auftr
 ## Abweichungen vom Drehbuch
 
 - **Satelliten-Wiederholung gestrichen (2026-11-07):** Der Satz „Aber über jedes Feld in Europa fliegt alle paar Tage derselbe Satellit: Sentinel-2.“ im Kapitel „Die Lösung“ entfällt, weil der neue Anfang das schon sagt und der Film sonst über 5:00 läge.
-- **Anfang (2026-11-07) auf Wunsch des Projektinhabers neu:** erklärt Problem, vorhandene Daten und Zielbild, der Titel fällt erst bei 38 s. Die gesprochenen Sätze „Der Mähdrescher misst im Herbst …“ sind entfallen; die echte Mähdrescher- und Satellitenkarte bleibt im Bild, nur gekürzt.
+- **Anfang (2026-11-07) auf Wunsch des Projektinhabers neu:** erklärt Problem, vorhandene Daten und Zielbild, der Titel fällt erst bei 37 s. Die gesprochenen Sätze „Der Mähdrescher misst im Herbst …“ sind entfallen; die echte Mähdrescher- und Satellitenkarte bleibt im Bild, nur gekürzt.
 - **Schlusssatz:** „Ein ehrlicher Blick in jedes Feld“ wurde zu „Ein ehrlicher Blick auf das, was es kann“, weil belastbar bisher nur ein Standort ist und die Feldkarte in Österreich nicht bestätigt ist.
 - **Ablauf:** nach dem Auftrag umgestellt. Der gesprochene Satz „bis zu 20 Jahre“ ersetzt „aus der Steiermark“ in der Zeitfolge; die Hatzendorf-Daten stehen jetzt korrekt beim 28.10.
 - **Selbst vor der Kamera (ca. 8 s):** entfällt im Prototyp, es gibt keine Aufnahme. Der Satz „Ich bin Leon Rohrer“ wird von der KI-Stimme gesprochen.
