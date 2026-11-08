@@ -9,8 +9,11 @@ from pathlib import Path
 
 import numpy as np
 
+import sys
+
 VOICE = Path(__file__).resolve().parent.parent / "export" / "voice"
-TAKES = VOICE / "takes_v4"
+V5 = "--v5" in sys.argv
+TAKES = VOICE / ("takes_v5" if V5 else "takes_v4")
 SR = 44100
 GAP = 0.45      # pause between sentences, as in the old takes
 
@@ -23,6 +26,18 @@ PLAN = {
     "f04": ["n6", GAP, (6.11, None)],
     "f06": ["n7", GAP, (9.76, None)],
 }
+# v5 (2026-11-08): ElevenLabs had no credits left; the new takes are Higgsfield Seed Audio, cloned from c05+d01 of the old voice.
+# b01b loses its last sentence ("... der Durchschnitt."); f10/x10/f11 are new lines, f01 only serves as their loudness reference (<id>_alt.mp3).
+if V5:
+    PLAN = {
+        "b01b": [(0.0, 7.40)],
+        "c04": ["c04a", GAP, (4.52, None)],
+        "c05": ["c05_new"],
+        "f10": ["f10"],
+        "x10": ["x10"],
+        "f11": ["f11"],
+    }
+END = {"f11": 12.95} if V5 else {}      # the f11 take ends in a click after a long pause
 
 
 def load(path: Path) -> np.ndarray:
@@ -64,6 +79,8 @@ def main() -> None:
                 a, b = p
                 pieces.append(soft(old[int(a * SR):None if b is None else int(b * SR)]))
         out = np.concatenate(pieces)
+        if name in END:
+            out = soft(out[:int(END[name] * SR)])
         peak = float(np.abs(out).max())
         if peak > .99:
             out = out * (.99 / peak)

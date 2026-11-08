@@ -6,8 +6,8 @@ b02	Wo genau Ertrag fehlt, zeigt nur eine Ertragskarte. Die fehlt meist. Und in 
 c01	Aber über jedes Feld in Europa fliegt alle paar Tage derselbe Satellit: Sentinel-2. Zehn Meter pro Pixel, frei für alle. Sein Bild zeigt, wo im Feld man zuerst hinschauen sollte. Ohne Sensor auf der Maschine, ohne Kosten für den Betrieb.
 c02	Geprüft habe ich das an einundvierzig Feld-Jahren aus den USA, jeweils gegen die Ertragskarte vom Mähdrescher. Die Rangkorrelation liegt bei null Komma sechs acht. Null: kein Zusammenhang. Eins: exakt dieselbe Reihenfolge. Und sie ist in allen einundvierzig Fällen positiv.
 c03	Von hundert Stellen, die der Satellit als schwach markiert, liegen achtundfünfzig wirklich in einer Problemzone. Zufällig wären es siebenundzwanzig. Belastbar ist das bisher an diesem einen Standort.
-c04	Holt eine KI aus diesen Daten noch mehr für das einzelne Feld heraus? Also habe ich siebenhundertzweiundachtzig Modellvarianten trainiert und bewertet. Das Überraschende: Die einfachen Methoden haben sich durchgesetzt. Von den drei Ergebnissen, die übrig blieben, sind zwei gar kein gelerntes Modell.
-c05	Und was gescheitert ist, steht genauso im Bericht: Radar, Wärmebild und drei Runden Jahresvorhersage haben nicht gereicht.
+c04	Erkennt ein trainiertes Modell schwache Stellen früher als das bloße Bild? Also habe ich siebenhundertzweiundachtzig Modellvarianten trainiert und bewertet. Das Überraschende: Die einfachen Methoden haben sich durchgesetzt. Von den drei Ergebnissen, die übrig blieben, sind zwei gar kein gelerntes Modell.
+c05	Und was gescheitert ist, steht genauso im Bericht: Radar, Wärmebild und drei Runden Jahresvorhersage haben die vorab festgelegten Kriterien nicht erfüllt.
 d01	Für das Training gab es keine österreichischen Erträge. Also habe ich öffentliche Datensätze aus anderen Ländern genommen, und Fachleute, Versuchsstationen und Hochschulen angefragt. Viele Anfragen sind noch offen.
 d02	Österreich bleibt reine Prüfung. Im Training steckt kein einziger österreichischer Wert.
 d03	Die Regel wird eingefroren, dann kommt der Test. In Oberösterreich besteht sie den ersten Test: Ohne jede Anpassung erkennt sie gute und schlechte Jahre. Das schafft auch ein einfacher Grünwert. Standorte im selben Jahr trennt sie noch nicht.
@@ -32,3 +32,6 @@ o6	Die Bilder sind längst da, frei für alle.
 o7	Man muss sie nur lesen.
 o8	Das Ziel: Eigenes Feld einstellen, Schwelle einstellen. Fällt eine Zone zurück, meldet sich das Handy.
 o9	Der Mähdrescher misst bei der Ernte, Meter für Meter, was das Feld gebracht hat.
+f10	Was nach der Abgabe dazukam, ganz kurz: Von der Hagelversicherung, deren Schadensdaten sehr vielversprechend wären, kam bisher nichts. Am Wochenende kam keine Antwort. Am Montag schrieb die ETH Zürich, danach kam vom ZALF in Brandenburg eine Ertragskarte. Und am achtundzwanzigsten Oktober die Versuchsreihen aus Hatzendorf in der Steiermark.
+x10	Was nach der Abgabe dazukam, ganz kurz: Von einer Hagelversicherung, deren Schadensdaten sehr vielversprechend wären, kam bisher nichts. Am Wochenende kam keine Antwort. Danach schrieb eine Hochschule aus der Schweiz, dann kam eine Ertragskarte aus Deutschland. Und am achtundzwanzigsten Oktober Versuchsreihen aus der Steiermark.
+f11	Damit war der Steiermark-Test möglich. Mit dem neuen Jahr zweitausendsechsundzwanzig stieg die Rangkorrelation von null Komma sechs sechs auf null Komma sieben sieben. Kriterium bestanden.

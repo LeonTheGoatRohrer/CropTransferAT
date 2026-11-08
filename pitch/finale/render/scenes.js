@@ -71,7 +71,7 @@ function drawField(fit, colour, a = 1, gap = .06) {
   g.restore();
 }
 const beat = (id) => DATA.beats[window.ANON && ANONLINES[id] ? ANONLINES[id] : id];
-const ANONLINES = { f01: 'x01', f02: 'x02' };
+const ANONLINES = { f01: 'x01', f02: 'x02', f10: 'x10' };
 const voiceAt = (scene, id) => { const b = beat(id), l = LEAD[scene] ?? 0; return (i) => l + b.s[Math.min(i, b.s.length - 1)]; };
 
 // ---------- maps
@@ -111,23 +111,18 @@ S.freezescan = (t, d) => {
   text('HERBST · MÄHDRESCHER', 92, 76, 24, { f: F.m, sp: 3, a: hud });
   vignette(.45);
   const y = 1080 * seg(t, .12, 1.25) * 1.04;
-  if (IMG.freeze1 && IMG.freeze1.naturalWidth) {
-    g.save(); g.beginPath(); g.rect(0, y, 1920, 1080); g.clip();
-    // The canvas sits 21 px low on the page (the font-preload spans above it), so the film frame moves up to meet the cut exactly.
-    g.drawImage(IMG.freeze1, 0, -21, 1920, 1080); rect(0, 0, 1920, 108, '#000'); rect(0, 930, 1920, 150, '#000');
-    g.restore();
-  }
+  rect(0, y, 1920, 1080, '#000');                            // below the scan line the track is not drawn yet
   if (t > .1 && y < 1080) {
     const gr = g.createLinearGradient(0, y - 90, 0, y); gr.addColorStop(0, 'rgba(157,187,92,0)'); gr.addColorStop(1, 'rgba(157,187,92,.28)');
     g.fillStyle = gr; g.fillRect(0, y - 90, 1920, 90); line(0, y, 1920, y, '#D6EE9A', 3, 1);
   }
 };
 
-// ---- 2: the field falls apart into its yield spectrum, and all of it collapses into one number.
+// ---- 2: the field falls apart into its yield spectrum: 40 to almost 140 % of its own mean.
 S.spread = (t, d) => {
   bg(); chapter(0, t, d);
   const v = voiceAt('spread', 'b01b');
-  const appear = seg(t, .1, .7), fall = seg(t, v(2) + 1.2, v(2) + 3.2), one = seg(t, v(3) - .1, v(3) + 1.4);
+  const appear = seg(t, .1, .7), fall = seg(t, v(2) + 1.2, v(2) + 3.2), one = 0;
   const fit = fieldFit(200, 110, 1520, 800);
   const lo = 0.3, hi = 1.5, bins = 60, base = 880, ax0 = 360, ax1 = 1560;
   const hist = new Array(bins).fill(0); const height = 5.6;
@@ -149,9 +144,10 @@ S.spread = (t, d) => {
     text(lab, x, base + 58, 34, { f: F.m, al: 'center', a: axA, c: val === 1 ? C.ink : (val < 1 ? C.sig : C.green) });
   });
   text('Ertrag je 10-m-Zelle, relativ zum Mittel dieses Feldes', 960, base + 112, 28, { c: C.dim, a: axA, al: 'center' });
-  const oneA = seg(t, v(3) + .5, v(3) + 1.5);
-  text('100 %', 960, 400, 170, { f: F.d, w: 600, al: 'center', a: oneA });
-  text('Der Durchschnitt. Eine Zahl.', 960, 480, 42, { al: 'center', c: C.dim, a: oneA });
+  const span = seg(t, v(2) + 3.0, v(2) + 3.7), sx = val => ax0 + (ax1 - ax0) * ((val - lo) / (hi - lo));
+  line(sx(.4), 330, sx(1.39), 330, C.ink, 3, span); line(sx(.4), 312, sx(.4), 348, C.ink, 3, span); line(sx(1.39), 312, sx(1.39), 348, C.ink, 3, span);
+  text('40 % bis fast 140 %', 960, 270, 96, { f: F.d, w: 600, al: 'center', a: span });
+  text('des Mittels, auf ein und demselben Feld', 960, 400, 40, { al: 'center', c: C.dim, a: span });
   foot('Echte Daten · USDA BARC, Feld 5-12, 2021 · 1.338 Zellen', appear * (1 - fall));
   vignette(); fade(t, d);
 };
@@ -241,37 +237,6 @@ S.wall = (t, d) => {
   vignette(.45); fade(t, d);
 };
 
-// ---- 3c: of 100 spots the satellite marks as weak, 58 really lie in a problem zone; picked at random it would be 27.
-function hundred(x, y, n, col, t, at, a) {
-  const size = 34, gap = 6;
-  for (let i = 0; i < 100; i++) {
-    const px = x + (i % 10) * (size + gap), py = y + Math.floor(i / 10) * (size + gap), on = at + i / n * 1.3;
-    rect(px, py, size, size, C.faint, a);
-    if (i < n) { const k = seg(t, on, on + .12); if (k > 0) rect(px, py, size, size, col, k); }
-  }
-}
-S.quart = (t, d) => {
-  bg(); chapter(1, t, d);
-  const v = voiceAt('quart', 'c03');
-  const fit = fieldFit(84, 170, 900, 560), mark = seg(t, .3, 1.2);
-  drawField(fit, i => FLD.ndvi[i] < .25 ? rgb([lerp(ramp(FLD.ndvi[i])[0], 228, mark), lerp(ramp(FLD.ndvi[i])[1], 88, mark), lerp(ramp(FLD.ndvi[i])[2], 62, mark)]) : rgb(ramp(FLD.ndvi[i]), 1 - mark * .78), seg(t, 0, .5));
-  text('Das schwächste Viertel laut Satellit', 84, 150, 34, { f: F.d, w: 600, a: seg(t, .3, 1), c: C.sig });
-  const xa = 1010, xb = 1442, yg = 210, sa = seg(t, v(0) + .6, v(0) + 1.2), sb = seg(t, v(1) - .1, v(1) + .4);
-  text('Vom Satellit markiert', xa, 180, 30, { c: C.ink, a: sa });
-  hundred(xa, yg, 58, C.sig, t, v(0) + 3.2, sa);
-  text('58 von 100', xa, 668, 62, { f: F.d, w: 600, c: C.white, a: seg(t, v(0) + 4.0, v(0) + 4.6) });
-  text('wirklich in einer Problemzone', xa, 712, 28, { c: C.ink, a: seg(t, v(0) + 4.4, v(0) + 5.0) });
-  text('Zufällig gewählt', xb, 180, 30, { c: C.dim, a: sb });
-  hundred(xb, yg, 27, C.dim, t, v(1), sb);
-  text('27 von 100', xb, 668, 62, { f: F.d, w: 600, c: C.dim, a: seg(t, v(1) + .5, v(1) + 1.1) });
-  text('in einer Problemzone', xb, 712, 28, { c: C.dim, a: seg(t, v(1) + .7, v(1) + 1.2) });
-  text('Rund doppelt so oft getroffen', xa, 778, 40, { f: F.d, w: 600, c: C.green, a: seg(t, v(1) + 1.5, v(1) + 2.1) });
-  const lim = seg(t, v(2), v(2) + .7);
-  rect(84, 820, 1752, 104, '#141A13', lim); rect(84, 820, 8, 104, C.amber, lim);
-  text('Belastbar bisher nur an diesem einen Standort: BARC, Maryland (USA)', 120, 888, 46, { f: F.d, w: 600, a: lim });
-  foot('Median über 41 Feld-Jahre · Problemzone: Ertrag unter 85 % des Feldmittels · Karte: Feld 5-12, 2021', seg(t, .5, 1.1));
-  vignette(.4); fade(t, d);
-};
 
 // ---- 3d: 782 tiles, one per trained variant, grouped by the real blocks; they go out block by block until three results are left.
 S.tiles = (t, d) => {
@@ -296,18 +261,25 @@ S.tiles = (t, d) => {
   const num = Math.round(782 * lit);
   text(`${num}`, 84, 1000 - 40, 96, { f: F.d, w: 600, a: seg(t, start - .2, start + .3) * (1 - ends) });
   text('Modellvarianten trainiert und bewertet', 300, 950, 36, { c: C.dim, a: seg(t, start, start + .6) * (1 - ends) });
-  if (t < v(1) - .2) { text('Holt KI noch mehr heraus?', 960, 520, 96, { f: F.d, w: 600, al: 'center', a: inout(t, .2, .8, v(1) - .6, v(1) - .2) }); }
+  if (t < v(1) - .2) {
+    const q = inout(t, .2, .8, v(1) - .6, v(1) - .2);
+    text('Erkennt ein trainiertes Modell', 960, 480, 84, { f: F.d, w: 600, al: 'center', a: q });
+    text('schwache Stellen früher als das bloße Bild?', 960, 590, 84, { f: F.d, w: 600, al: 'center', a: q });
+  }
   const sTxt = inout(t, v(2), v(2) + .6, v(3) - .4, v(3) - .1);
   rect(0, 440, 1920, 170, C.bg, sTxt * .82);
   text('Die einfachen Methoden haben sich durchgesetzt', 960, 548, 70, { f: F.d, w: 600, al: 'center', a: sTxt });
-  const cards = [['Karte im Feld', 'kein Training', C.green], ['Stress-Score', 'kein Training', C.green], ['EU-Regionalmodell', 'gelernt', C.dim]];
-  cards.forEach(([a, b, c], i) => {
-    const k = seg(t, v(3) + .1 + i * .25, v(3) + .7 + i * .25), x = 150 + i * 560, y = 360 + (1 - k) * 24;
-    rect(x, y, 500, 300, '#141A13', k); rect(x, y, 500, 6, c, k);
-    text(a, x + 30, y + 130, 46, { f: F.d, w: 600, a: k });
-    text(b, x + 30, y + 200, 36, { f: F.m, c, a: k });
+  const cards = [['Wo im Feld?', 'Schwache Stellen direkt', 'im Satellitenbild ablesen', 'kein Training', C.green],
+                 ['Welches Jahr?', 'Wie früh das Feld', 'braun wird', 'kein Training', C.green],
+                 ['Welche Region?', 'Ertrag ganzer Regionen', 'in Europa schätzen', 'gelerntes Modell', C.dim]];
+  cards.forEach(([a, b1, b2, tag, c], i) => {
+    const k = seg(t, v(3) + .1 + i * .25, v(3) + .7 + i * .25), x = 150 + i * 560, y = 340 + (1 - k) * 24;
+    rect(x, y, 500, 340, '#141A13', k); rect(x, y, 500, 6, c, k);
+    text(a, x + 30, y + 95, 50, { f: F.d, w: 600, a: k });
+    text(b1, x + 30, y + 165, 34, { c: C.ink, a: k }); text(b2, x + 30, y + 210, 34, { c: C.ink, a: k });
+    text(tag, x + 30, y + 290, 32, { f: F.m, c, a: k });
   });
-  foot('782 Varianten in 11 Blöcken: Feld, Region, Afrika · Karte im Feld und Stress-Score sind ohne Training, nicht unter den 782', seg(t, start, start + .6));
+  foot('782 Varianten in 11 Blöcken: Feld, Region, Afrika · die beiden Verfahren ohne Training sind nicht unter den 782', seg(t, start, start + .6));
   foot2('Innerhalb des Feldes: gelernt 0,70 statt 0,67 am selben Standort, auf anderen Standorten nicht besser', seg(t, v(3) + .4, v(3) + 1));
   vignette(.4); fade(t, d);
 };
@@ -323,7 +295,7 @@ S.failed = (t, d) => {
     text(s, 150, y, 64, { f: F.d, w: 500, a, c: st > .5 ? C.dim : C.ink });
     g.save(); g.font = `500 64px "${F.d}"`; const w = g.measureText(s).width; g.restore();
     line(140, y - 22, 140 + (w + 20) * st, y - 22, C.sig, 6, a);
-    text('nicht gereicht', 1760, y, 38, { f: F.m, c: C.sig, al: 'right', a: st });
+    text('Kriterien nicht erfüllt', 1760, y, 38, { f: F.m, c: C.sig, al: 'right', a: st });
   });
   foot('Vorab festgelegte Kriterien · Auch das steht im Bericht', seg(t, .5, 1));
   vignette(.4); fade(t, d);
@@ -433,178 +405,45 @@ S.stmk = (t, d) => {
   vignette(.4); fade(t, d);
 };
 
-// ---- 6: the climax. Four steps at the top, always readable: before, what came, what I did, after.
-function steps(i, t, still = false) {
-  const names = ['VORHER', 'WAS DAZUKAM', 'VORGEHEN', 'NACHHER'], a = still ? 1 : seg(t, 0, .4);
-  names.forEach((n, k) => {
-    const x = 84 + k * 330, on = k === i;
-    rect(x, 112, 300, 4, on ? C.green : C.line, a);
-    text(n, x, 152, 25, { f: F.m, sp: 2, c: on ? C.ink : '#5B6456', a });
-  });
-}
+// ---- 6: after the hand-in, kept short: what arrived (the hail insurance first: nothing yet), then the one number it changed.
 const anon = () => !!window.ANON;
 function typed(s, t, at, cps = 34) { const n = Math.floor(clamp((t - at) * cps, 0, s.length)); return s.slice(0, n); }
 
-// One list on one page: the hand-in, then what arrived. The 28.10. is the third arrival; for it the list moves together (k: 0 = wide, 1 = compact).
-function arrivals(k, X = 84) {
-  const Y = lerp(300, 236, k), lh = lerp(158, 92, k), size = lerp(54, 44, k), small = lerp(34, 28, k);
-  return { X, TX: X + 340, size, small, y: i => Y + i * lh, off: lerp(60, 0, k) };
-}
-const FOOT_ARRIVED = () => (anon() ? 'Eine Antwort und eine Ertragskarte: angekommen, für diesen Film nicht ausgewertet.' : 'ETH: Antwort, ZALF: Ertragskarte · angekommen, für diesen Film nicht ausgewertet.');
 S.mail = (t, d) => {
   bg(); chapter(4, t, d, true);
-  const v = voiceAt('mail', 'f01'), L = arrivals(0), { X, TX, size, small } = L;
-  steps(t < v(2) - .2 ? 0 : 1, t);
-  text('So 18.10.2026', X, L.y(0), small, { f: F.m, c: C.dim, a: seg(t, .2, .6) });
-  text(typed('Abgabe. Steiermark nicht testbar, 12 statt 15.', t, .4), TX, L.y(0), size, { f: F.d, w: 600 });
-  const w = seg(t, v(1) - .1, v(1) + .3);
-  text('Wochenende', X, L.y(1), small, { f: F.m, c: C.dim, a: w });
-  text(typed('Keine Antwort.', t, v(1)), TX, L.y(1), size, { f: F.d, w: 500, c: C.dim });
-  const e = seg(t, v(2) - .1, v(2) + .3);
-  text(anon() ? 'Danach' : 'Mo 19.10., 09:44', X, L.y(2), small, { f: F.m, c: C.dim, a: e });
-  text(typed(anon() ? 'Eine Hochschule, Schweiz' : 'ETH Zürich', t, v(2)), TX, L.y(2), size, { f: F.d, w: 600 });
-  text('Kein Österreich', 1836, L.y(2), small, { f: F.m, c: C.amber, al: 'right', a: seg(t, v(4) - .2, v(4) + .4) });
-  const z = seg(t, v(3) - .1, v(3) + .3);
-  text('Danach', X, L.y(3), small, { f: F.m, c: C.dim, a: z });
-  text(typed(anon() ? 'Ertragskarte, Deutschland, 27.811 Punkte' : 'ZALF, Brandenburg: Ertragskarte, 27.811 Punkte', t, v(3), 42), TX, L.y(3), size, { f: F.d, w: 600 });
-  text('Kein Österreich', 1836, L.y(3) + L.off, small, { f: F.m, c: C.amber, al: 'right', a: seg(t, v(4) - .2, v(4) + .4) });
-  foot(FOOT_ARRIVED(), seg(t, v(4), v(4) + .6));
-  vignette(.4); fade(t, d, .3, .001);
-};
-
-S.hatz = (t, d) => {
-  bg(); chapter(4, t, d, true, true); steps(1, t, true);
-  const v = voiceAt('hatz', 'f02'), L = arrivals(seg(t, 0, .6)), { X, TX, size, small } = L;
-  text('So 18.10.2026', X, L.y(0), small, { f: F.m, c: C.dim });
-  text('Abgabe. Steiermark nicht testbar, 12 statt 15.', TX, L.y(0), size, { f: F.d, w: 600 });
-  text('Wochenende', X, L.y(1), small, { f: F.m, c: C.dim });
-  text('Keine Antwort.', TX, L.y(1), size, { f: F.d, w: 500, c: C.dim });
-  text(anon() ? 'Danach' : 'Mo 19.10., 09:44', X, L.y(2), small, { f: F.m, c: C.dim });
-  text(anon() ? 'Eine Hochschule, Schweiz' : 'ETH Zürich', TX, L.y(2), size, { f: F.d, w: 600 });
-  text('Kein Österreich', 1836, L.y(2), small, { f: F.m, c: C.amber, al: 'right' });
-  text('Danach', X, L.y(3), small, { f: F.m, c: C.dim });
-  text(anon() ? 'Ertragskarte, Deutschland, 27.811 Punkte' : 'ZALF, Brandenburg: Ertragskarte, 27.811 Punkte', TX, L.y(3), size, { f: F.d, w: 600 });
-  text('Kein Österreich', 1836, L.y(3) + L.off, small, { f: F.m, c: C.amber, al: 'right' });
-  const at = v(0) + 3.6, on = seg(t, v(0), v(0) + .4);
-  text('28.10.2026', X, L.y(4), small, { f: F.m, c: C.neu, a: on });
-  text(typed(anon() ? 'Versuchsreihen aus der Steiermark' : 'Excel-Reihen der Versuchsstation Hatzendorf', t, at - .5, 42), TX, L.y(4), size, { f: F.d, w: 600 });
-  text('Zehn Tage nach der Abgabe', TX, L.y(4) + 40, 28, { c: C.dim, a: seg(t, v(0) + 1.2, v(0) + 1.8) });
-  text('Aus der Steiermark', 1836, L.y(4), small, { f: F.m, c: C.neu, al: 'right', a: seg(t, at + .6, at + 1.1) });
-  const sz = 56, gap = 9, x0 = 350, base = 690;
-  const rowsH = anon() ? [['Standort A', 2007, []], ['Standort B', 2009, [2017, 2019, 2023, 2025]]] : [['Wagna', 2007, []], ['Kalsdorf', 2009, [2017, 2019, 2023, 2025]]];
-  rowsH.forEach(([n, y0, miss], r) => {
-    const y = base + r * 76;
-    text(n, 320, y + 42, 38, { f: F.d, w: 600, al: 'right', a: seg(t, at, at + .4) });
-    for (let yr = 2007; yr <= 2026; yr++) {
-      const i = yr - 2007, k = seg(t, at + i * .07 + r * .5, at + .2 + i * .07 + r * .5), x = x0 + i * (sz + gap);
-      if (yr < y0) continue;
-      if (miss.includes(yr)) frame(x + 2, y + 2, sz - 4, sz - 4, C.line, 3, k); else rect(x, y, sz, sz, yr === 2026 ? C.neu : C.green, k * (yr === 2026 ? 1 : .7));
-    }
-    if (!anon()) text(`${y0}–2026`, 1836, y + 42, 28, { f: F.m, al: 'right', c: C.dim, a: seg(t, at + 1.2, at + 1.6) });
+  const v = voiceAt('mail', 'f10'), X = 84, TX = 424, y = i => 300 + i * 132, size = 50, small = 31;
+  text('Abgabe: Sonntag, 18.10.2026', X, 200, 30, { f: F.m, c: C.dim, a: seg(t, .2, .7) });
+  const rows = [
+    [v(0) + 2.6, 'Angefragt', 'Hagelversicherung: Schadensdaten', 'bisher nichts', C.amber],
+    [v(1), 'Wochenende', 'Keine Antwort.', '', C.dim],
+    [v(2), anon() ? 'Danach' : 'Mo 19.10.', anon() ? 'Eine Hochschule, Schweiz' : 'ETH Zürich', 'kein Österreich', C.amber],
+    [v(2) + (anon() ? 2.6 : 3.2), 'Danach', anon() ? 'Ertragskarte, Deutschland' : 'ZALF, Brandenburg: Ertragskarte', 'kein Österreich', C.amber],
+    [v(3), '28.10.2026', anon() ? 'Versuchsreihen aus der Steiermark' : 'Versuchsreihen Hatzendorf, Steiermark', 'aus Österreich', C.neu],
+  ];
+  rows.forEach(([at, when, what, note, c], i) => {
+    text(when, X, y(i), small, { f: F.m, c: i === 4 ? C.neu : C.dim, a: seg(t, at - .1, at + .3) });
+    text(typed(what, t, at, 42), TX, y(i), size, { f: F.d, w: i === 1 ? 500 : 600, c: i === 1 ? C.dim : C.ink });
+    if (note) text(note, 1836, y(i), small, { f: F.m, c, al: 'right', a: seg(t, at + .8, at + 1.3) });
   });
-  text('hell: 2026, das neue Jahr  ·  leer: kein gewerteter Maisertrag', 350, 880, 26, { f: F.m, c: '#7C8476', a: seg(t, at + 1.5, at + 2) });
-  foot(FOOT_ARRIVED());
-  vignette(.4); fade(t, d, .001, .3);
-};
-
-S.stamp = (t, d) => {
-  bg(); chapter(4, t, d, true); steps(2, t);
-  const v = voiceAt('stamp', 'f03');
-  text('Der Steiermark-Test, der vorher an den Daten gescheitert war', 960, 310, 54, { f: F.d, w: 500, al: 'center', a: seg(t, .2, .8), c: C.dim });
-  const at = v(1) + .4;
-  ['Stichtag', 'Ertragsgröße', 'Kriterium', 'Standorte, Jahre'].forEach((s, i) => {
-    const k = seg(t, v(1) + i * .16, v(1) + .3 + i * .16), y = 450 + i * 66;
-    text(s, 150, y, 32, { f: F.m, c: C.dim, a: k * .85 }); rect(490, y - 18, 300, 12, C.line, k);
-  });
-  stamp(1330, 540, 'FESTGESCHRIEBEN', `${DATA.freeze.tag} · ${DATA.freeze.commit} · 28.10.2026`, t, at + .5);
-  text('Dann einmal ausgewertet.', 960, 850, 72, { f: F.d, w: 600, al: 'center', a: seg(t, at + 1.5, at + 2.1) });
-  vignette(.4); fade(t, d);
-};
-
-// ---- 6b: real scatter of the 15 site-years; 13 known ones in grey, in silence; then the two new points of 2026 fall in, whose scores did not exist yet when the test was fixed.
-function scatterFoot(t) {
-  const a = seg(t, 2.4, 3);
-  foot('Ertrag 2026 war beim Festschreiben schon bekannt, nur die Scores nicht · keine Vorhersage', a);
-  foot2('Score: bis zu 100 Maisfelder im Umkreis von 5 km · Ertrag: Versuchsfläche · tiefer Score heißt nicht immer Verlust', a);
-}
-function scatterAxes() {
-  const x0 = 180, x1 = 1320, y0 = 890, y1 = 230, sx = v => lerp(x0, x1, (v + .058) / .06), sy = v => lerp(y0, y1, (v - .2) / 1.15);
-  return { x0, x1, y0, y1, sx, sy };
-}
-S.scatter = (t, d) => {
-  bg(); chapter(4, t, d, true); steps(3, t);
-  const v = voiceAt('scatter', 'f04'), v0 = v(0), P = DATA.scatter;
-  const known = P.filter(p => p.year !== 2026).sort((a, b) => a.year - b.year), blind = P.filter(p => p.year === 2026);
-  if (anon()) {                                                                             // aggregated variant: scores only, no yields, no places
-    const sorted = P.slice().sort((a, b) => a.score - b.score), xa = 180, xb = 1740, yy = 560, sx = u => lerp(xa, xb, (u + .058) / .06);
-    line(xa, yy, xb, yy, C.line, 3, seg(t, 0, .5));
-    text('Stress-Score am 1.9.: niedrig bedeutet früher braun', xa, yy + 110, 34, { f: F.m, c: C.dim, a: seg(t, .1, .6) });
-    scatterFoot(t);
-    sorted.filter(p => p.year !== 2026).forEach((p, i) => { const k = seg(t, .3 + i * .13, .5 + i * .13); dot(sx(p.score), yy, 13, C.dim, k); });
-    sorted.filter(p => p.year === 2026).forEach((p, i) => { const at = v0 + .5 + i * .35, k = clamp((t - at) / .3), yp = lerp(170, yy, ease(k)); if (k > 0) dot(sx(p.score), yp, 22, C.neu, 1, 34); });
-    text('Die zwei neuen Punkte', 540, 330, 56, { f: F.d, w: 600, c: C.neu, a: seg(t, v0 + 1.2, v0 + 1.9) });
-    text('Score erst nach dem Festschreiben berechnet', 540, 400, 36, { c: C.dim, a: seg(t, v0 + 3, v0 + 3.6) });
-    text('Die niedrigsten Scores aller 15', 180, 760, 50, { f: F.d, w: 600, a: seg(t, v(1), v(1) + .6) });
-    text('Die Versuche lagen weit unter dem Üblichen', 180, 830, 50, { f: F.d, w: 600, a: seg(t, v(2), v(2) + .6) });
-    vignette(.35); fade(t, d, .3, .1); return;
-  }
-  const A = scatterAxes(), ax = seg(t, 0, .6);
-  line(A.x0, A.y0, A.x1, A.y0, C.line, 3, ax); line(A.x0, A.y0, A.x0, A.y1, C.line, 3, ax);
-  text('Stress-Score am 1.9.: niedrig bedeutet früher braun', (A.x0 + A.x1) / 2, A.y0 + 72, 26, { f: F.m, al: 'center', c: C.dim, a: ax });
-  g.save(); g.translate(A.x0 - 104, (A.y0 + A.y1) / 2); g.rotate(-Math.PI / 2); text('Ertrag relativ zum Üblichen', 0, 0, 28, { f: F.m, al: 'center', c: C.dim, a: ax }); g.restore();
-  [.4, .6, .8, 1.0, 1.2].forEach(u => { text(de(u, 1), A.x0 - 24, A.sy(u) + 8, 24, { f: F.m, al: 'right', c: C.dim, a: ax }); line(A.x0 - 12, A.sy(u), A.x0, A.sy(u), C.line, 2, ax); });
-  [-.05, -.03, -.01].forEach(u => { text(de(u, 2), A.sx(u), A.y0 + 32, 22, { f: F.m, al: 'center', c: C.dim, a: ax }); });
-  const mark = (p, k, col, big = 0) => {
-    const x = A.sx(p.score), y = A.sy(p.yas), r = 12 + big;
-    if (p.site === 'wagna') dot(x, y, r, col, k, big ? 30 : 0); else rect(x - r, y - r, r * 2, r * 2, col, k);
-    text(String(p.year).slice(2), x + r + 5, y - r - 2, 22, { f: F.m, c: col, a: k });
-  };
-  const span = Math.max(v0 - .4, 1);
-  known.forEach((p, i) => mark(p, seg(t, .35 + i * span / known.length, .55 + i * span / known.length), '#9AA292'));
-  blind.forEach((p, i) => {
-    const at = v0 + .9 + i * .4, k = clamp((t - at) / .32); if (k <= 0) return;
-    const f = ease(k), x = A.sx(p.score), y = lerp(40, A.sy(p.yas), f * f), r = 18;
-    if (p.site === 'wagna') dot(x, y, r, C.neu, 1, 34); else { g.save(); g.shadowColor = C.neu; g.shadowBlur = 34 * SC; rect(x - r, y - r, r * 2, r * 2, C.neu); g.restore(); }
-    if (k >= 1) { text(p.site === 'wagna' ? 'Wagna 2026' : 'Kalsdorf 2026', x + 30, y + 10, 30, { f: F.m, c: C.neu }); ring(x, y, 18 + 90 * clamp((t - at - .32) / .7), C.neu, 3, 1 - clamp((t - at - .32) / .7)); }
-  });
-  const bx = 1400;
-  text('● Wagna   ■ Kalsdorf', bx, 270, 28, { f: F.m, c: C.dim, a: ax });
-  text('13 schon bekannte Punkte', bx, 330, 32, { c: '#9AA292', a: seg(t, .4, 1) });
-  const b0 = seg(t, v0 + 1.2, v0 + 1.8), b0b = seg(t, v0 + 3.2, v0 + 3.8), b1 = seg(t, v(1), v(1) + .6), b2 = seg(t, v(2), v(2) + .6);
-  text('2 neue Punkte', bx, 420, 52, { f: F.d, w: 600, c: C.neu, a: b0 });
-  text('Score erst nach dem', bx, 472, 34, { c: C.ink, a: b0b }); text('Festschreiben berechnet', bx, 514, 34, { c: C.ink, a: b0b });
-  text('Ganz links: die', bx, 600, 40, { a: b1 }); text('niedrigsten Scores', bx, 648, 40, { a: b1 });
-  text('Ertrag weit unter', bx, 740, 40, { a: b2 }); text('dem Üblichen', bx, 788, 40, { a: b2 });
-  text('62 % und 48 %', bx, 846, 34, { f: F.m, c: C.neu, a: b2 });
-  scatterFoot(t);
-  vignette(.35); fade(t, d, .3, .1);
+  foot('ETH und ZALF: angekommen, für diesen Film nicht ausgewertet', seg(t, v(3), v(3) + .6));
+  vignette(.4); fade(t, d, .3, .3);
 };
 
 S.big = (t, d) => {
-  bg(); chapter(4, t, d, true); steps(3, t);
-  const k = seg(t, .05, .9), n = .77 * k;
-  text(de(n), 960, 610, 400, { f: F.d, w: 600, al: 'center', glow: 46, a: seg(t, 0, .3) });
-  text('[0,30; 0,97]  ·  15 Standort-Jahre', 960, 720, 48, { f: F.m, al: 'center', c: C.dim, a: seg(t, .7, 1.2) });
-  stamp(960, 880, 'BESTANDEN', 'Kriterium vorab festgelegt', t, voiceAt('big', 'f05')(1) + .4);
-  foot('Rangkorrelation Stress-Score und Ertrag · geprüft: nur die Unterscheidung der Jahre', seg(t, .9, 1.4));
-  vignette(.4);
-};
-
-S.lines = (t, d) => {
-  bg(); chapter(4, t, d, true); steps(3, t);
-  const v = voiceAt('lines', 'f06');
-  const a = seg(t, 0, .5);
-  text('0,77', 84, 270, 84, { f: F.d, w: 600, a }); text('[0,30; 0,97] · n = 15', 310, 268, 34, { f: F.m, c: C.dim, a });
-  [['Nächster Schritt', 'Mehr neue Jahre', v(0), C.green], ['0,72', 'Einfaches Grün: fast gleichauf mit 0,77', v(1), C.amber], ['Angefragt', 'Daten der Hagelversicherung', v(2), C.green]].forEach(([big, s, at, c], i) => {
-    const k = seg(t, at - .05, at + .4), y = 430 + i * 164;
-    rect(84, y - 92, 1752, 138, '#141A13', k); rect(84, y - 92, 8, 138, c, k);
-    text(big, 130, y - 4, 58, { f: F.d, w: 600, a: k, c }); text(s, 660, y - 4, 58, { f: F.d, w: 500, a: k });
-  });
-  foot('13 von 15 Punkten waren beim Festschreiben bekannt, bei 2026 nur der Ertrag, nicht die Scores · ein einziges neues Jahr', seg(t, .6, 1.2));
-  foot2('Geprüft: nur die Unterscheidung der Jahre, nicht die Karte im Feld', seg(t, .6, 1.2));
+  bg(); chapter(4, t, d, true);
+  const v = voiceAt('big', 'f11');
+  text('Damit war der Steiermark-Test möglich', 960, 250, 54, { f: F.d, w: 500, al: 'center', c: C.dim, a: seg(t, v(0), v(0) + .6) });
+  const a0 = seg(t, v(1) + 4.2, v(1) + 4.8), a1 = seg(t, v(1) + 5.9, v(1) + 6.4);
+  text('0,66', 560, 600, 220, { f: F.d, w: 600, al: 'center', c: C.dim, a: a0 });
+  text('ohne 2026 · 13 Standort-Jahre', 560, 690, 34, { f: F.m, al: 'center', c: C.dim, a: a0 });
+  text('→', 960, 560, 120, { f: F.d, al: 'center', c: C.dim, a: a1 });
+  text(de(.77 * a1), 1360, 600, 280, { f: F.d, w: 600, al: 'center', glow: 46, a: a1 });
+  text('mit 2026 · 15 Standort-Jahre', 1360, 690, 34, { f: F.m, al: 'center', c: C.ink, a: a1 });
+  stamp(960, 870, 'BESTANDEN', 'Kriterium vorab festgelegt', t, v(2) + .2);
+  foot('Rangkorrelation Stress-Score und Ertrag, 0,77 [0,30; 0,97] · 13 von 15 Punkten waren vorher bekannt', seg(t, v(1) + 6.4, v(1) + 7));
+  foot2('Geprüft: nur die Unterscheidung guter und schlechter Jahre, nicht die Karte im Feld', seg(t, v(1) + 6.4, v(1) + 7));
   vignette(.4); fade(t, d, .2, .4);
 };
-
 // ---- 7: the logo (real Pixel-Delta from the website), and who did what.
 const LOGO = [[[32, 8.31], [24, 22.18], [40, 22.18], '#23704a'], [[22, 25.64], [14, 39.51], [30, 39.51], '#55a05a'], [[24, 24.49], [40, 24.49], [32, 38.36], '#9dbb5c'], [[42, 25.64], [34, 39.51], [50, 39.51], '#e4694a'], [[12, 42.98], [4, 56.84], [20, 56.84], '#9dbb5c'], [[14, 41.82], [30, 41.82], [22, 55.69], '#55a05a'], [[32, 42.98], [24, 56.84], [40, 56.84], '#c4a44b'], [[34, 41.82], [50, 41.82], [42, 55.69], '#55a05a'], [[52, 42.98], [44, 56.84], [60, 56.84], '#8a6a36']];
 const TAGLINE = 'Schon im Sommer sehen, wo im Feld Ertrag fehlt.';
@@ -782,7 +621,6 @@ S.p_desc = (t, d) => {
   blackbg(); chapter(1, t, d, true);
   text('Zehn Meter pro Pixel. Frei für alle.', 960, 900, 62, { f: F.d, w: 600, al: 'center', a: seg(t, .15, .55) });
 };
-S.p_ch4 = (t, d) => { blackbg(); chapter(4, t, d, true); };
 S.p_rise = (t, d) => { blackbg(); };
 
 window.drawScene = (name, t, d) => {

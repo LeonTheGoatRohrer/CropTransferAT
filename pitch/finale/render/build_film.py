@@ -7,7 +7,7 @@ Usage:  python build_film.py --plan             write ../export/mg/timeline.js a
         python build_film.py --anon             variant with aggregated values and without place names
         python build_film.py --audio-only       keep the picture, only remix the sound
         python build_film.py --opening          only the opening up to the title, for review
-Output: ../export/DeltaGreen_{Anfang,Finale_v4}_{540p,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
+Output: ../export/DeltaGreen_{Anfang,Finale_v5}_{540p,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
 """
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ W, H = args.width, args.width * 9 // 16
 if W >= 1920:
     AI = EXPORT / "ai1080"      # the mood clips in high resolution; same frames and length as the drafts, so all cuts stay
 SUF = "_anon" if args.anon else ""
-SWAP = {"f01": "x01", "f02": "x02"} if args.anon else {}
+SWAP = {"f01": "x01", "f02": "x02", "f10": "x10"} if args.anon else {}
 BUILD_DIR = BUILD / f"w{W}{SUF}"
 
 
@@ -82,9 +82,7 @@ def segments() -> list[dict]:
         {"id": "o_storm", "kind": "film", "clips": [clip("a09_storm", 1.5, 0.87)], "bars": True, "plate": "p_unwetter"},
         {"id": "o_night", "kind": "film", "clips": [clip("a08_night", 3.0, 1.2)], "bars": True, "voice": ("o4", 0.1)},
         {"id": "o_grain", "kind": "film", "clips": [clip("a11_grain", 1.0, 1.2)], "bars": True},
-        # The camera rises from the ground to above the combine; its last frame is the frame the scan starts from.
-        # Only the start and the end of the AI clip: in between the machine turns on the spot. a14_tail comes from retouch_rise.py.
-        {"id": "o_rise", "kind": "film", "clips": [clip("a14_rise", 0.0, 1.36, .7, vf=SLOWMO), clip("a14_tail", 0.0, 2.32, .7, vf=SLOWMO)], "bars": True},
+        # The AI flight over the combine (a14_rise) is out (feedback 2026-11-08: too weak); the scan line runs over black into the real track.
         mg("o_scan", "freezescan", "o9", lead=0.1, dur=1.5),
         # The real track, now slow enough to follow and explained in the picture.
         {"id": "o_tracks", "kind": "file", "file": OPENER, "start": OPENER_CUT, "dur": 5.0, "speed": 1.5, "plate": "p_tracks"},
@@ -100,7 +98,6 @@ def segments() -> list[dict]:
         {"id": "c_desc", "kind": "film", "clips": [clip("a05_descent", 3.9, 3.1)], "plate": "p_desc", "voice": ("c01c", 0.1)},
         {"id": "zoom", "kind": "mg", "scene": "zoom", "dur": round(0.2 + c01 + 0.7 - 9.3, 2), "voice": None, "lead": -9.1},
         mg("wall", "wall", "c02", tail=0.7),
-        mg("quart", "quart", "c03", tail=0.8),
         mg("tiles", "tiles", "c04", tail=0.7),
         mg("failed", "failed", "c05", tail=0.8),
         # 4 data
@@ -120,15 +117,10 @@ def segments() -> list[dict]:
          "z0": (330, 70, 1260, 709), "z1": (352, 76, 1216, 684), "caption": ("NACHBARFELD E", "Kein Alarm: 77 % des Üblichen, Risiko knapp unter der Schwelle.")},
         {"id": "app_e_map", "kind": "app", "file": EXPORT / "app" / "e_map.webm", "start": 0.0, "dur": round(0.2 + vd("e02") + 1.2 - 3.8, 2),
          "z0": (0, 160, 1500, 844), "z1": (40, 170, 1420, 799), "caption": ("EINE WARNUNG ZEIGT, WO", "Nicht warum.")},
-        # 6 climax
+        # 6 after the hand-in, kept short (feedback 2026-11-08): what arrived, then only how far the result rose
         {"id": "black1", "kind": "black", "dur": 0.7},
-        mg("mail", "mail", "f01", lead=0.5, tail=0.8, variant=True),
-        mg("hatz", "hatz", "f02", tail=0.7, variant=True),
-        mg("stamp", "stamp", "f03", tail=0.9),
-        {"id": "f_heat", "kind": "film", "clips": [clip("a07_heat", 0.5, 3.2)], "plate": "p_ch4", "extra_label": "Stimmungsbild, nicht die Versuchsflächen"},
-        mg("scatter", "scatter", "f04", lead=2.4, tail=0.4, variant=True),
-        mg("big", "big", "f05", lead=0.5, tail=0.9),
-        mg("lines", "lines", "f06", tail=1.0),
+        mg("mail", "mail", "f10", lead=0.5, tail=1.0, variant=True),
+        mg("big", "big", "f11", lead=0.4, tail=1.4),
         # 7 end
         # pull back from the field up to the orbit
         {"id": "g_rise", "kind": "film", "clips": [clip("a10_rise", 1.5, 5.6), clip("a12_sat", 3.0, 3.0)], "voice": ("g01", 0.4)},
@@ -299,14 +291,20 @@ def mix_audio(at: dict, total_s: float, out: Path) -> None:
     rl = int(1.6 * SR)
     place(sfx, rain[:rl] * ramp(rl, [(0, .6), (1.0, .6), (1.6, 0)])[:, None], at["o_storm"])
     engine = load_audio(SFX / "engine.mp3")
-    for name, gain, dur in (("o_night", .5, 2.4), ("o_rise", .9, 3.68), ("o_scan", .35, 6.5)):     # under the voice quieter; the engine stays under the real track
+    for name, gain, dur in (("o_night", .5, 2.4), ("o_scan", .6, 6.5)):     # the engine stays under the real track
         el = int(dur * SR)
         take = np.tile(engine, (el // len(engine) + 1, 1))[:el]
         place(sfx, take * ramp(el, [(0, 0), (.2, gain), (dur - .6, gain), (dur, 0)])[:, None], at[name])
     place(sfx, scan, at["o_scan"], .8)
     place(sfx, scan, at["o_pixels"], .3)
     place(sfx, boom, at["o_heat"], .3)
-    place(sfx, boom, at["o_rise"] + 1.36, .25)              # the hard cut from the ground to the air, on a beat of the cue
+    # While the real track is drawn: a dense crackle of short ticks, one per yield point, as in the opener (opener_audio.py).
+    rt, tl = np.random.default_rng(42), int(.018 * SR)
+    tk = np.zeros((int(5.0 * SR), 2))
+    for when in rt.uniform(.2, 4.6, 190):
+        i, f = int(when * SR), rt.uniform(1800, 4200)
+        tk[i:i + tl] += (rt.choice([-1, 1]) * np.exp(-np.arange(tl) / (.004 * SR)) * np.sin(2 * np.pi * f * np.arange(tl) / SR))[:, None]
+    place(sfx, tk, at["o_tracks"], .35)
     place(sfx, boom, at["o_pixels"], .2)
     place(sfx, boom, title_hit, 1.0)
     tn = np.arange(int(.09 * SR)) / SR
@@ -328,18 +326,17 @@ def mix_audio(at: dict, total_s: float, out: Path) -> None:
     c1 = np.concatenate([cue1[int((12.0 - lead_in) * SR):int(12.0 * SR)], cue1]) if lead_in > 0 else cue1[int(-lead_in * SR):]
     fall = title_hit + 3.6                                  # the title's voice ends about here; cue 2 takes over
     first_hit = title_hit - 36.0                            # falls into the very first sentence: taken back, the voice comes first
-    place(music, c1 * ramp(len(c1), [(0, 0), (.3, 1.0), (first_hit - .15, 1.0), (first_hit, .3), (first_hit + 1.0, .3), (first_hit + 1.6, 1.0), (fall - 1.2, 1.0), (fall, .2), (fall + 2.4, 0), (1000, 0)])[:, None], 0)
+    dip = [(first_hit - .15, 1.0), (first_hit, .3), (first_hit + 1.0, .3), (first_hit + 1.6, 1.0)] if first_hit > .5 else []
+    place(music, c1 * ramp(len(c1), [(0, 0), (.3, 1.0), *dip, (fall - 1.2, 1.0), (fall, .2), (fall + 2.4, 0), (1000, 0)])[:, None], 0)
     if "end" in at:
         place(sfx, scan, at["zoom"], .55)
         stamp = load_audio(SFX / "stamp.mp3")
         place(sfx, stamp, at["freezeoo"] + .55, .8)
-        place(sfx, stamp, at["stamp"] + next(s for s in SEGMENTS if s["id"] == "stamp")["lead"] + beats["f03"]["s"][1] + .9, .8)     # same moment as in S.stamp
-        scatter = next(s for s in SEGMENTS if s["id"] == "scatter")
-        drop = at["scatter"] + scatter["lead"] + .9
-        place(sfx, boom, drop + .28, .7)
-        place(sfx, boom, drop + .68, .55)
-        place(sfx, boom, at["big"] + .05, .9)
-        place(sfx, stamp, at["big"] + next(s for s in SEGMENTS if s["id"] == "big")["lead"] + beats["f05"]["s"][1] + .4, .9)
+        big = at["big"] + next(s for s in SEGMENTS if s["id"] == "big")["lead"]
+        drop = big + beats["f11"]["s"][1] + 5.9                # the 0,77 appears, same moment as in S.big
+        place(sfx, boom, big + beats["f11"]["s"][1] + 4.2, .5)
+        place(sfx, boom, drop, .9)
+        place(sfx, stamp, big + beats["f11"]["s"][2] + .6, .9)
         place(sfx, boom, at["end"] + .9, .75)
         mix_rest(at, total_s, music, title_hit, drop)
     finish_mix(voice, sfx, music, n, title_hit, total_s, out)
@@ -438,7 +435,7 @@ def main() -> None:
     total = duration(picture)
     audio = BUILD_DIR / "audio.m4a"
     mix_audio({s["id"]: s["t"] for s in SEGMENTS}, total, audio)
-    name = ("DeltaGreen_Anfang" if args.opening else "DeltaGreen_Finale_v4") + ("_1080p" if W >= 1920 else "_540p") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
+    name = ("DeltaGreen_Anfang" if args.opening else "DeltaGreen_Finale_v5") + ("_1080p" if W >= 1920 else "_540p") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
     final = EXPORT / name
     run(["-i", str(picture), "-i", str(audio), "-c:v", "copy", "-c:a", "copy", "-t", f"{total:.3f}", "-movflags", "+faststart", str(final)])
     print("Film", final, round(duration(final), 2), "s", round(final.stat().st_size / 1e6, 1), "MB")
