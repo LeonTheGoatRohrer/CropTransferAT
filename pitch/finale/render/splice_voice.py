@@ -12,8 +12,9 @@ import numpy as np
 import sys
 
 VOICE = Path(__file__).resolve().parent.parent / "export" / "voice"
-V5 = "--v5" in sys.argv
-TAKES = VOICE / ("takes_v5" if V5 else "takes_v4")
+V6 = "--v6" in sys.argv
+V5 = "--v5" in sys.argv or V6
+TAKES = VOICE / ("takes_v6" if V6 else "takes_v5" if V5 else "takes_v4")
 SR = 44100
 GAP = 0.45      # pause between sentences, as in the old takes
 
@@ -27,6 +28,8 @@ PLAN = {
     "f06": ["n7", GAP, (9.76, None)],
 }
 # v5 (2026-11-08): ElevenLabs had no credits left; the new takes are Higgsfield Seed Audio, cloned from c05+d01 of the old voice.
+# v6 (same day): the Seed Audio takes did not sound like the film; same lines again via Higgsfield text2speech_v2 (ElevenLabs engine),
+# voice element cloned from 67 s of the original ElevenLabs takes (d01, c05, e01, f01, d03). Same plan, no END cut.
 # b01b loses its last sentence ("... der Durchschnitt."); f10/x10/f11 are new lines, f01 only serves as their loudness reference (<id>_alt.mp3).
 if V5:
     PLAN = {
@@ -37,7 +40,7 @@ if V5:
         "x10": ["x10"],
         "f11": ["f11"],
     }
-END = {"f11": 12.95} if V5 else {}      # the f11 take ends in a click after a long pause
+END = {"f11": 12.95} if V5 and not V6 else {}      # the f11 take ends in a click after a long pause
 
 
 def load(path: Path) -> np.ndarray:

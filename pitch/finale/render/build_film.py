@@ -7,7 +7,7 @@ Usage:  python build_film.py --plan             write ../export/mg/timeline.js a
         python build_film.py --anon             variant with aggregated values and without place names
         python build_film.py --audio-only       keep the picture, only remix the sound
         python build_film.py --opening          only the opening up to the title, for review
-Output: ../export/DeltaGreen_{Anfang,Finale_v5}_{540p,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
+Output: ../export/DeltaGreen_{Anfang,Finale_v6}_{540p,1080p}[_ohne_Ortsnamen].mp4 (not in the repository).
 """
 from __future__ import annotations
 
@@ -435,7 +435,7 @@ def main() -> None:
     total = duration(picture)
     audio = BUILD_DIR / "audio.m4a"
     mix_audio({s["id"]: s["t"] for s in SEGMENTS}, total, audio)
-    name = ("DeltaGreen_Anfang" if args.opening else "DeltaGreen_Finale_v5") + ("_1080p" if W >= 1920 else "_540p") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
+    name = ("DeltaGreen_Anfang" if args.opening else "DeltaGreen_Finale_v6") + ("_1080p" if W >= 1920 else "_540p") + ("_ohne_Ortsnamen" if args.anon else "") + ".mp4"
     final = EXPORT / name
     run(["-i", str(picture), "-i", str(audio), "-c:v", "copy", "-c:a", "copy", "-t", f"{total:.3f}", "-movflags", "+faststart", str(final)])
     print("Film", final, round(duration(final), 2), "s", round(final.stat().st_size / 1e6, 1), "MB")

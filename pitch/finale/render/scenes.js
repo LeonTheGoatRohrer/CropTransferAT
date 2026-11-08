@@ -417,7 +417,7 @@ S.mail = (t, d) => {
     [v(0) + 2.6, 'Angefragt', 'Hagelversicherung: Schadensdaten', 'bisher nichts', C.amber],
     [v(1), 'Wochenende', 'Keine Antwort.', '', C.dim],
     [v(2), anon() ? 'Danach' : 'Mo 19.10.', anon() ? 'Eine Hochschule, Schweiz' : 'ETH Zürich', 'kein Österreich', C.amber],
-    [v(2) + (anon() ? 2.6 : 3.2), 'Danach', anon() ? 'Ertragskarte, Deutschland' : 'ZALF, Brandenburg: Ertragskarte', 'kein Österreich', C.amber],
+    [v(2) + (anon() ? 2.6 : 2.5), 'Danach', anon() ? 'Ertragskarte, Deutschland' : 'ZALF, Brandenburg: Ertragskarte', 'kein Österreich', C.amber],
     [v(3), '28.10.2026', anon() ? 'Versuchsreihen aus der Steiermark' : 'Versuchsreihen Hatzendorf, Steiermark', 'aus Österreich', C.neu],
   ];
   rows.forEach(([at, when, what, note, c], i) => {

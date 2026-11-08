@@ -177,8 +177,7 @@ def voice_beats() -> dict:
     # Two takes where a comma pause is longer than the sentence pause: measured pause positions, set by hand.
     beats["b01"]["s"] = [0.05, 4.11, 6.37, 11.43]
     beats["b02"]["s"] = [0.08, 3.96, 5.36]
-    beats["c02"]["s"][2] = 10.11
-    beats["f11"]["s"] = [0.02, 3.01, 11.41]                 # the period pause after "sieben sieben" is shorter than the one the rule picks                            # the colon pause in "Null: ..." is longer than the sentence pause before it
+    beats["c02"]["s"][2] = 10.11                            # the colon pause in "Null: ..." is longer than the sentence pause before it
     # b01 is cut in two in the pause after "... Delta Green." (3.38-4.11 s): the name falls on the title, the rest opens the problem chapter. Same indices as b01.
     cut = 3.85
     beats["b01b"] = {"dur": round(beats["b01"]["dur"] - cut, 2), "s": [round(4.11 - cut, 2)] + [round(s - cut, 2) for s in beats["b01"]["s"][1:]]}
