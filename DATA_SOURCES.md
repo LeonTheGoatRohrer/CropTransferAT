@@ -494,3 +494,15 @@ Abruf 2026-10-17. Gemeinsame Tabelle: `data/processed/gt_pixels.parquet` (`pytho
 **Status: ⚠️ verfügbar mit Einschränkungen** (Kayad: Ertragsmonitor bei 18 000 kg/ha gedeckelt, Feuchtebasis unbekannt, variable N-Düngung; 2018-Koordinaten in Gauss-Boaga, deshalb die mitgelieferte EPSG:32632-Datei verwendet).
 
 **I2 (2026-10-17):** Sentinel-2-Dekaden-Komposite über GEE (`COPERNICUS/S2_SR_HARMONIZED` + `GOOGLE/CLOUD_SCORE_PLUS/V1/S2_HARMONIZED`, cs_cdf ≥ 0,60; `COPERNICUS/DEM/GLO30`, als veraltet markiert) in `data/interim/pixels_dekad/` (54 Dateien, neu erzeugbar mit `python -m croptransfer.innerfeld_extract`), Merkmale `data/processed/features_innerfeld.parquet` (`python -m croptransfer.innerfeld_features`). Einschränkungen: `reports/data_review/if_i2_merkmale.md`.
+
+## 19. Hagelversicherung: Feldstück-Erträge Mais und Winterweichweizen (Österreich-Test IV)
+
+| Datei (nicht im Repository) | Quelle | Inhalt |
+|---|---|---|
+| `data/raw/hagel_at/Mais_2026.xlsx` | Österreichische Hagelversicherung, per E-Mail an den Projektinhaber, erhalten 2026-11-09; nur für dieses Projekt, nicht weitergeben | 829 Zeilen: `field_id`, Ertrag (Kopf „kg/ha“, tatsächlich Gesamt-kg je Feldstück), Erntefeuchte; laut Lieferant nicht qualitätskontrolliert |
+| `data/raw/hagel_at/Weizen_2026.xlsx` | wie oben | 1.472 Zeilen: `field_id`, Ertrag (Gesamt-kg je Feldstück) |
+| `data/raw/hagel_at/Weizen_2025.xlsx` | wie oben | 1.505 Zeilen: `field_id`, Ertrag Betrieb kg/ha; IDs passen nicht zu den 2026er Polygonen |
+| `data/raw/hagel_at/ama_2026_{mais,weizen}_epsg_3416.gpkg` (aus `ama_2026_mais_weizen.7z`) | wie oben, AMA-Feldstücke 2026 | 145.564 Mais- / 86.418 Weizen-Polygone, nur `field_id`, EPSG:3416 |
+
+Bereinigung und Prüfsummen: `reports/freeze_protocol_at4.md`. Feldgenaue Erträge und Scores bleiben unter `data/interim/at4/`; ins Repository kommen nur Kennzahlen.
+**Status: ⚠️ verfügbar mit Einschränkungen** (Einheit erschlossen, Mais nicht kontrolliert, nur ein Jahr mit Polygonen).
