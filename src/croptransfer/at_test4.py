@@ -181,7 +181,8 @@ def main() -> None:
     work = repo_path(t4["work_dir"])
     fields = at_test.field_table(cfg, t4["work_dir"])
     fields.to_parquet(work / "field_scores.parquet")
-    y = pd.read_csv(work / "yields_clean.csv")
+    y = pd.read_csv(work / "yields_clean.csv", keep_default_na=False, na_values={c: [""] for c in ("total_kg", "moisture", "y_t_ha", "y14_t_ha", "area_ha")})
+    y["drop"] = y["drop"].astype(str)                                 # '' = kept (must not become NaN)
     df = y[y["drop"] == ""].merge(fields, on="fy_key", how="left")
     df.to_parquet(work / "evaluation_table.parquet")                  # field-level, stays outside the repo
     res = {"protocol": "reports/freeze_protocol_at4.md", "tag": "freeze-at-4",

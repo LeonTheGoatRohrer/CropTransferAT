@@ -17,6 +17,53 @@
 #   links     Pfade im Repository (Datenkritik, Ergebnisse, Protokolle)
 
 versions:
+  - id: at-test-4
+    date: 2026-11-09
+    phase: "Österreich-Test IV: Maisfelder 2026 der Hagelversicherung (nach freeze-at-4)"
+    title: "Erstmals Felder innerhalb eines Jahres: 635 blinde Maisfelder, ρ 0,84"
+    status: eingeschraenkt
+    changed: "Der eingefrorene Stress-Score wurde einmal an 635 Körnermaisfeldern 2026 mit echten Feldstück-Erträgen geprüft; das vorab festgelegte Kriterium ist bestanden."
+    plain: >
+      Eine Hagelversicherung stellte Erträge einzelner Maisfelder aus 2026 zur Verfügung. Der Score, der nur aus US-Daten stammt und nicht verändert wurde, reiht diese Felder
+      fast genauso wie ihr tatsächlicher Ertrag, auch innerhalb einzelner Gegenden. Das war in den bisherigen Tests nie prüfbar. Einfaches NDVI schafft aber dasselbe, und 2026 war ein extremes Trockenjahr.
+    metrics:
+      - label: "Stress-Score gegen Feldertrag am 1.9. (Spearman ρ)"
+        value: "0,84"
+        ci: "[0,78; 0,88]"
+        n: "635 Felder, 125 Zellen"
+        plain: "Je näher an 1, desto besser stimmt die Reihenfolge der Felder. Das Kriterium (Intervall über 0, mindestens 200 Felder) ist deutlich erfüllt."
+      - label: "Einfaches NDVI zum Vergleich (ρ)"
+        value: "0,87"
+        ci: "[0,81; 0,90]"
+        n: "635 Felder"
+        plain: "Knapp besser als der Score (Unterschied −0,03 [−0,05; −0,01]); ein Mehrwert des Scores ist nicht gezeigt."
+      - label: "Problemfelder erkannt"
+        value: "70 %"
+        n: "127 Felder mit dem tiefsten Score"
+        plain: "So viele der 20 % Felder mit dem tiefsten Score gehören auch zu den 20 % mit dem tiefsten Ertrag. Zufällig wären es 20 %."
+      - label: "Schon am 1.8. (ρ)"
+        value: "0,77"
+        ci: "[0,70; 0,82]"
+        n: "632 Felder"
+        plain: "Rund sechs Wochen vor der Ernte reiht der Score die Felder bereits deutlich richtig."
+    found:
+      - "Mittlerer Ertrag je Score-Fünftel: 3,1 / 4,9 / 6,1 / 8,4 / 11,6 t/ha."
+      - "Kein Artefakt gefunden: Fläche erklärt nichts (ρ −0,03), innerhalb der Ost-West-Streifen 0,79–0,84, innerhalb 20-km-Zellen 0,71, Label-Shuffle 0,00."
+      - "Die Erträge kamen als Gesamt-kg je Feldstück (Spaltenkopf falsch) und wurden durch die Fläche geteilt; 826 Feldstücke, 635 nach vorab festgelegten Regeln behalten."
+    limits:
+      - "Ein Jahr, ein Hitze- und Trockensommer mit Erträgen von 1,5 bis 16 t/ha; in normalen Jahren ist der Zusammenhang vermutlich schwächer."
+      - "Einfaches NDVI ist gleich gut oder knapp besser."
+      - "Erträge vom Lieferanten nicht kontrolliert, Einheit erschlossen; ob Erträge teils satellitengestützt geschätzt wurden, ist noch zu klären. Die Erträge waren vorher bekannt, blind waren die Scores."
+      - "Nur Feldmittel; die Feldkarte innerhalb des Feldes ist damit nicht geprüft."
+    figures:
+      - {file: at_test4_scatter.png, caption: "Stress-Score am 1.9. gegen Feldertrag 2026 und mittlerer Ertrag je Score-Fünftel"}
+    links:
+      - label: "Ergebnisbericht"
+        path: reports/at_test4_ergebnis.md
+      - label: "Datenkritik"
+        path: reports/data_review/at_test4.md
+      - label: "Freeze-Protokoll"
+        path: reports/freeze_protocol_at4.md
   - id: at-test-3
     date: 2026-11-06
     phase: "Österreich-Test III: Steiermark mit Hatzendorf-Excel-Reihen (explorativ, nach freeze-at-3)"

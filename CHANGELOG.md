@@ -4,6 +4,9 @@ Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionen 
 
 ## [Unreleased]
 
+### Added (Branch `phase-7-at-test-4`, Tag `freeze-at-4` und Ergebnis)
+- **Österreich-Test IV (Maisfelder 2026, Hagelversicherung):** Protokoll `reports/freeze_protocol_at4.md`, Modul `at_test4.py` (Bereinigung, INVEKOS-Code-105-Prüfung, HLS je 10-km-Zelle, Auswertung), `at_test4_figure.py`, Tests `tests/test_at_test4.py`. Ergebnis: ρ(1.9.) 0,84 [0,78; 0,88], n = 635 Felder, **bestanden**; NDVI 0,87, nicht besser als NDVI. Bericht `reports/at_test4_ergebnis.md`, Datenkritik `reports/data_review/at_test4.md` (⚠️).
+
 ### Added (Branch `phase-7-at-test-3`, Ergebnis nach `freeze-at-3`)
 - **Österreich-Test III ausgeführt:** S-A am 1.9. ρ = 0,77 [0,30; 0,97], n = 15 Standort-Jahre, 9 Jahre, **bestanden**; NDVI 0,72 [0,27; 0,95]. Die zwei blinden Punkte 2026 haben die niedrigsten Scores; 13 von 15 Punkten waren vorher bekannt. Bericht `reports/at_test3_ergebnis.md`, Datenkritik `reports/data_review/at_test3_ergebnis.md`, Lauf `results/2026-10-28_at_test3/`, neues Modul `at_test3_review.py`, INVEKOS 2026-1 geladen.
 

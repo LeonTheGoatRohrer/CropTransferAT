@@ -6,6 +6,7 @@ Laut Teilnahmebedingungen muss jede Unterstützung (Personen, Institutionen, Dat
 
 | Datum | Werkzeug | Art der Unterstützung |
 |---|---|---|
+| 2026-11-09 | Claude (Anthropic), Claude Code (Opus 5.5) | Sichtung und Qualitätseinschätzung der Hagelversicherungs-Daten; Österreich-Test IV: Bereinigungsregeln, Freeze-Protokoll `freeze-at-4`, Modul `at_test4.py`, Tests, GEE-Abfrage, Auswertung, Datenkritik, Ergebnisbericht, Website-Eintrag (Entscheidung „Test jetzt starten“ beim Projektinhaber) |
 | 2026-11-06 | Claude (Anthropic), Claude Code (Opus 5.5) | Österreich-Test III: Parzellenauswahl 2026, Gegenprobe, Auswertung, Datenkritik mit Modul `at_test3_review.py`, Ergebnisbericht; Vorschlag des Video-Ablaufs fürs Finale. Entscheidung zum Testlauf beim Projektinhaber |
 | 2026-10-28 | Claude (Anthropic), Claude Code (Opus 5.5) | Sichtung der Hatzendorf-Excel-Reihen und der Ertragskarte (Pablo), Einschätzung des Nutzens; Österreich-Test III: Einlesemodul `at_test3.py`, Tests, Datenkritik, Freeze-Protokoll `freeze-at-3` (Festlegungen vorgeschlagen, Entscheidung „Mit 2026“ beim Projektinhaber) |
 | 2026-10-17 | Claude (Anthropic), Claude Code (Sonnet 5.5) | Steiermark-Test (Österreich II): Zusammenführen der Branches, Freeze-Protokoll `freeze-at-2`, Auswertungsmodul, Tests, Ergebnisbericht und Datenkritik (alle Festlegungen vorab, Entscheidung des Projektinhabers im Chat) |
@@ -38,6 +39,7 @@ Details, Lizenzen und Zitate in `DATA_SOURCES.md`.
 | SSURGO (Soil Data Access) | USDA NRCS | US-Boden-Ertragspotenzial (NCCPI Mais, Mais-Ertragsschätzung) |
 | Versuchsberichte Versuchsstation Hatzendorf; Praxisversuche Körnermais | Land Steiermark (Landwirtschaftliche Fachschulen); Landwirtschaftskammer Oberösterreich | Österreich-Test V2 (nur nach dem Freeze ausgewertet) |
 | Excel-Ertragsreihen der Körnermais-Stickstoffversuche Wagna (2007–2026) und Kalsdorf (2009–2026), Feldpläne 2026 | Christoph Hödl, Versuchsstation für Pflanzenbau Hatzendorf (Amt d. Stmk. Landesregierung, A10), per E-Mail 2026-10-28 | Österreich-Test III (nur nach `freeze-at-3` ausgewertet) |
+| Feldstück-Erträge Körnermais und Winterweichweizen 2025/2026, AMA-Feldstück-Polygone 2026 | Österreichische Hagelversicherung, per E-Mail an den Projektinhaber 2026-11-09 | Österreich-Test IV (nur nach `freeze-at-4` ausgewertet) |
 | Akron Dryland Yield/TPI | USDA-ARS Akron (Poss et al., DOI 10.15482/USDA.ADC/28914434.v1) | Ergänzende Ertragspunkte |
 | CY-Bench v1.10 | Kallenberg et al. 2026 (DOI 10.5281/zenodo.17279151) | Regionalmodell EU → AT |
 | Feldfruchternte | Statistik Austria; Eurostat | Regionalerträge Österreich |

@@ -1,0 +1,19 @@
+at_test4:
+  version: 1
+  base_freeze: freeze-at-1           # stress score, reference curve, HLS rules and inner buffer unchanged
+  year: 2026
+  yields: data/raw/hagel_at/Mais_2026.xlsx              # Hagelversicherung, received 2026-11-09; cols: field_id, total kg per Feldstueck, Erntefeuchte
+  polygons: data/raw/hagel_at/ama_2026_mais_epsg_3416.gpkg
+  invekos: data/raw/invekos/2026/INSPIRE_SCHLAEGE_2026-1_POLYGON.gpkg
+  invekos_code: "105"                # Koernermais, as in freeze-at-1
+  min_share_code: 0.9                # share of the Feldstueck covered by code-105 Schlaege
+  min_area_ha: 1.0                   # frozen parcel rule of freeze-at-1
+  plausible_t_ha: [1.5, 16.0]        # yield as delivered / polygon area
+  moisture_range: [0.10, 0.40]       # sensitivity: correction to 14 % only inside this range
+  cluster_km: 10                     # bootstrap clusters (spatial dependence)
+  within_cell_km: 20                 # descriptive within-cell rho
+  min_fields_cell: 8
+  min_fields: 200                    # criterion only evaluable with >= 200 scored fields
+  problem_share: 0.2                 # lowest 20 % score vs lowest 20 % yield (descriptive)
+  work_dir: data/interim/at4
+  results_dir: results/2026-11-09_at_test4
